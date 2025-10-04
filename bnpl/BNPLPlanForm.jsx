@@ -1,0 +1,246 @@
+
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { X, DollarSign } from "lucide-react";
+import { motion } from "framer-motion";
+
+const providers = [
+    { value: "klarna", label: "Klarna" },
+    { value: "afterpay", label: "Afterpay" },
+    { value: "affirm", label: "Affirm" },
+    { value: "paypal", label: "PayPal Pay in 4" },
+    { value: "sezzle", label: "Sezzle" },
+    { value: "quadpay", label: "Zip (Quadpay)" },
+    { value: "other", label: "Other" }
+];
+
+const frequencies = [
+    { value: "weekly", label: "Weekly" },
+    { value: "biweekly", label: "Every 2 weeks" },
+    { value: "monthly", label: "Monthly" }
+];
+
+const statuses = [
+    { value: "active", label: "Active" },
+    { value: "paid", label: "Paid Off" },
+    { value: "overdue", label: "Overdue" },
+    { value: "cancelled", label: "Cancelled" }
+];
+
+export default function BNPLPlanForm({ plan, onSubmit, onCancel }) {
+    const [formData, setFormData] = useState(plan || {
+        provider: "",
+        merchant: "",
+        principal_amount: "",
+        installment_amount: "",
+        total_installments: 4,
+        remaining_installments: 4,
+        first_payment_date: new Date().toISOString().split('T')[0],
+        payment_frequency: "biweekly",
+        next_due_date: new Date().toISOString().split('T')[0],
+        status: "active",
+        notes: ""
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSubmit({
+            ...formData,
+            principal_amount: parseFloat(formData.principal_amount),
+            installment_amount: parseFloat(formData.installment_amount),
+            total_installments: parseInt(formData.total_installments),
+            remaining_installments: parseInt(formData.remaining_installments)
+        });
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+        >
+            <Card className="border shadow-xl bg-card backdrop-blur-sm">
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle className="text-xl font-bold text-foreground">
+                        {plan ? "Edit BNPL Plan" : "Add New BNPL Plan"}
+                    </CardTitle>
+                    <Button variant="ghost" size="icon" onClick={onCancel}>
+                        <X className="h-4 w-4" />
+                    </Button>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="provider" className="text-foreground">Provider</Label>
+                                <Select
+                                    value={formData.provider}
+                                    onValueChange={(value) => setFormData({...formData, provider: value})}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select provider" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {providers.map((provider) => (
+                                            <SelectItem key={provider.value} value={provider.value}>
+                                                {provider.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="merchant" className="text-foreground">Merchant/Store</Label>
+                                <Input
+                                    id="merchant"
+                                    placeholder="e.g., Amazon, Target"
+                                    value={formData.merchant}
+                                    onChange={(e) => setFormData({...formData, merchant: e.target.value})}
+                                    required
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="principal_amount" className="text-foreground">Purchase Amount</Label>
+                                <div className="relative">
+                                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                    <Input
+                                        id="principal_amount"
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        placeholder="0.00"
+                                        className="pl-10"
+                                        value={formData.principal_amount}
+                                        onChange={(e) => setFormData({...formData, principal_amount: e.target.value})}
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="installment_amount" className="text-foreground">Payment Amount</Label>
+                                <div className="relative">
+                                    <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                    <Input
+                                        id="installment_amount"
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        placeholder="0.00"
+                                        className="pl-10"
+                                        value={formData.installment_amount}
+                                        onChange={(e) => setFormData({...formData, installment_amount: e.target.value})}
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="total_installments" className="text-foreground">Total Payments</Label>
+                                <Input
+                                    id="total_installments"
+                                    type="number"
+                                    min="1"
+                                    value={formData.total_installments}
+                                    onChange={(e) => setFormData({...formData, total_installments: e.target.value})}
+                                    required
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="remaining_installments" className="text-foreground">Payments Left</Label>
+                                <Input
+                                    id="remaining_installments"
+                                    type="number"
+                                    min="0"
+                                    value={formData.remaining_installments}
+                                    onChange={(e) => setFormData({...formData, remaining_installments: e.target.value})}
+                                    required
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="payment_frequency" className="text-foreground">Payment Schedule</Label>
+                                <Select
+                                    value={formData.payment_frequency}
+                                    onValueChange={(value) => setFormData({...formData, payment_frequency: value})}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {frequencies.map((freq) => (
+                                            <SelectItem key={freq.value} value={freq.value}>
+                                                {freq.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="next_due_date" className="text-foreground">Next Payment Due</Label>
+                                <Input
+                                    id="next_due_date"
+                                    type="date"
+                                    value={formData.next_due_date}
+                                    onChange={(e) => setFormData({...formData, next_due_date: e.target.value})}
+                                    required
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="status" className="text-foreground">Status</Label>
+                                <Select
+                                    value={formData.status}
+                                    onValueChange={(value) => setFormData({...formData, status: value})}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {statuses.map((status) => (
+                                            <SelectItem key={status.value} value={status.value}>
+                                                {status.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="notes" className="text-foreground">Notes (Optional)</Label>
+                            <Textarea
+                                id="notes"
+                                placeholder="Additional details..."
+                                value={formData.notes}
+                                onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                                className="h-20"
+                            />
+                        </div>
+
+                        <div className="flex justify-end gap-3">
+                            <Button type="button" variant="outline" onClick={onCancel}>
+                                Cancel
+                            </Button>
+                            <Button 
+                                type="submit" 
+                                className="bg-primary hover:bg-primary/90"
+                            >
+                                {plan ? 'Update' : 'Add'} Plan
+                            </Button>
+                        </div>
+                    </form>
+                </CardContent>
+            </Card>
+        </motion.div>
+    );
+}
