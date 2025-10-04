@@ -36,6 +36,11 @@ export default function ScenarioSimulator({ startingBalance = 5000, monthlyContr
         };
     }, [customRate, startingBalance, monthlyContribution, horizon]);
 
+    const potentialInvestment = startingBalance + horizon * 12 * monthlyContribution;
+    const progressValue = potentialInvestment > 0
+        ? Math.min(100, (projection.endingBalance / potentialInvestment) * 100)
+        : 0;
+
     return (
         <Card className="h-full">
             <CardHeader>
@@ -92,7 +97,7 @@ export default function ScenarioSimulator({ startingBalance = 5000, monthlyContr
                         <span>Projected Value</span>
                         <span className="font-semibold">${projection.endingBalance.toFixed(0)}</span>
                     </div>
-                    <Progress value={Math.min(100, (projection.endingBalance / (startingBalance + horizon * 12 * monthlyContribution)) * 100)} />
+                    <Progress value={progressValue} />
                 </div>
                 <Button variant="outline" className="w-full" onClick={() => setCustomRate(growthPresets[preset])}>
                     Reset to Preset

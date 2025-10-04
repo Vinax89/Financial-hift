@@ -17,10 +17,16 @@ export default function PerfInspector() {
 
     useEffect(() => {
         let animationFrame;
-        let lastFrame = performance.now();
+        let lastFrame = null;
 
         const measure = () => {
             const now = performance.now();
+            if (lastFrame == null) {
+                lastFrame = now;
+                animationFrame = requestAnimationFrame(measure);
+                return;
+            }
+
             const fps = Math.round(1000 / (now - lastFrame));
             lastFrame = now;
 
@@ -43,7 +49,7 @@ export default function PerfInspector() {
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     Performance Inspector
-                    <Badge variant={metrics.fps >= 50 ? 'success' : metrics.fps >= 30 ? 'secondary' : 'destructive'}>
+                    <Badge variant={metrics.fps >= 50 ? 'default' : metrics.fps >= 30 ? 'secondary' : 'destructive'}>
                         {metrics.fps || '—'} FPS
                     </Badge>
                 </CardTitle>

@@ -6,8 +6,8 @@ import { format } from 'date-fns';
 
 const statusVariant = {
     active: 'default',
-    completed: 'success',
-    paused: 'secondary'
+    completed: 'secondary',
+    paused: 'outline'
 };
 
 const formatCurrency = (value) => {
