@@ -43,7 +43,7 @@ export default function GoalList({ goals = [], onEdit, onDelete }) {
         const target = Number(goal.target_amount ?? goal.target ?? 0);
         const current = Number(goal.current_amount ?? goal.saved ?? 0);
         return (
-          <Card key={goal.id ?? goal.title}>
+          <Card key={goal.id ?? `goal-${JSON.stringify(goal)}`}>
             <CardHeader className="flex flex-row items-center justify-between gap-4 space-y-0">
               <div>
                 <CardTitle className="text-lg">{goal.title ?? "Untitled goal"}</CardTitle>
