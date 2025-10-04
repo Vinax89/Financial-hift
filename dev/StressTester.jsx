@@ -23,9 +23,12 @@ export default function StressTester() {
                 const value = Math.sqrt(i * Math.random());
                 loops += 1 + value / 1000;
             }
+            if (!active) {
+                return;
+            }
             if (performance.now() - start < 2000) {
                 requestAnimationFrame(pump);
-            } else {
+            } else if (active) {
                 const end = performance.now();
                 setIterations(Math.round(loops));
                 setDuration(Math.round(end - start));
