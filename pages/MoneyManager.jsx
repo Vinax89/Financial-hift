@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Wallet, List, ReceiptText, RefreshCw } from "lucide-react";
 import { Loading, CardLoading } from "@/components/ui/loading";
-import ReceiptScanner from "@/components/scanning/ReceiptScanner";
+
+const ReceiptScanner = React.lazy(() => import("@/components/scanning/ReceiptScanner"));
 
 // Existing components (present in repo)
 import TransactionList from "@/components/transactions/TransactionList";
@@ -91,7 +92,9 @@ export default function MoneyManager() {
             </TabsContent>
 
             <TabsContent value="receipts">
-              <ReceiptScanner refreshData={() => refreshData(["transactions", "bills"])} />
+              <Suspense fallback={<CardLoading />}>
+                <ReceiptScanner refreshData={() => refreshData(["transactions", "bills"])} />
+              </Suspense>
             </TabsContent>
           </Tabs>
         )}

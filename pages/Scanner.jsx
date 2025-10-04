@@ -1,11 +1,13 @@
 
-import React from 'react';
-import ReceiptScanner from '../components/scanning/ReceiptScanner';
+import React, { Suspense } from 'react';
 import { useFinancialData } from '../components/hooks/useFinancialData';
 import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
 import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
 import { Scan, Camera, FileText, Zap } from 'lucide-react';
 import { CardContent } from '@/components/ui/card';
+import { CardLoading } from '@/components/ui/loading';
+
+const ReceiptScanner = React.lazy(() => import('@/components/scanning/ReceiptScanner'));
 
 export default function ScannerPage() {
     const { refreshData } = useFinancialData();
@@ -43,11 +45,13 @@ export default function ScannerPage() {
                     {/* Main Scanner */}
                     <div className="lg:col-span-2 min-h-[500px]">
                         <FloatingElement>
-                            <ReceiptScanner
-                                onTransactionAdded={handleTransactionAdded}
-                                onBillAdded={handleBillAdded}
-                                refreshData={refreshData}
-                            />
+                            <Suspense fallback={<CardLoading />}>
+                                <ReceiptScanner
+                                    onTransactionAdded={handleTransactionAdded}
+                                    onBillAdded={handleBillAdded}
+                                    refreshData={refreshData}
+                                />
+                            </Suspense>
                         </FloatingElement>
                     </div>
 

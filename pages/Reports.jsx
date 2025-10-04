@@ -1,13 +1,15 @@
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import IncomeStatement from '../components/reports/IncomeStatement';
-import BalanceSheet from '../components/reports/BalanceSheet';
-import CashFlowStatement from '../components/reports/CashFlowStatement';
+import { CardLoading } from '@/components/ui/loading';
 import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
 import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
 import { BarChart3 } from 'lucide-react';
 import { CardContent } from '@/components/ui/card';
+
+const IncomeStatement = React.lazy(() => import('@/components/reports/IncomeStatement'));
+const BalanceSheet = React.lazy(() => import('@/components/reports/BalanceSheet'));
+const CashFlowStatement = React.lazy(() => import('@/components/reports/CashFlowStatement'));
 
 export default function ReportsPage() {
     return (
@@ -39,13 +41,19 @@ export default function ReportsPage() {
                                     <TabsTrigger value="cashflow">Cash Flow</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="income" className="mt-6">
-                                    <IncomeStatement />
+                                    <Suspense fallback={<CardLoading />}>
+                                        <IncomeStatement />
+                                    </Suspense>
                                 </TabsContent>
                                 <TabsContent value="balance" className="mt-6">
-                                    <BalanceSheet />
+                                    <Suspense fallback={<CardLoading />}>
+                                        <BalanceSheet />
+                                    </Suspense>
                                 </TabsContent>
                                 <TabsContent value="cashflow" className="mt-6">
-                                    <CashFlowStatement />
+                                    <Suspense fallback={<CardLoading />}>
+                                        <CashFlowStatement />
+                                    </Suspense>
                                 </TabsContent>
                             </Tabs>
                         </CardContent>
