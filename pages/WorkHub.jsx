@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import { ThemedCard, GlassContainer } from '../ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '../ui/theme-aware-animations';
 import { Clock, Calculator, Settings, Upload, Plus, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,15 +10,15 @@ import { Badge } from '@/components/ui/badge';
 // Import existing components
 import { Shift } from '@/api/entities';
 import { ShiftRule } from '@/api/entities';
-import ShiftForm from '../components/shifts/ShiftForm';
-import ShiftList from '../components/shifts/ShiftList';
-import ShiftStats from '../components/shifts/ShiftStats';
-import PaycheckCalculator from '../components/paycheck/PaycheckCalculator';
-import ShiftRuleForm from '../components/shift-rules/ShiftRuleForm';
-import ShiftRuleList from '../components/shift-rules/ShiftRuleList';
-import ShiftRulePreview from '../components/shift-rules/ShiftRulePreview';
-import ShiftImport from '../components/shifts/ShiftImport';
-import { LoadingWrapper, TableLoading } from '../components/ui/loading';
+import ShiftForm from '../shifts/ShiftForm';
+import ShiftList from '../shifts/ShiftList';
+import ShiftStats from '../shifts/ShiftStats';
+import PaycheckCalculator from '../paycheck/PaycheckCalculator';
+import ShiftRuleForm from '../shift-rules/ShiftRuleForm';
+import ShiftRuleList from '../shift-rules/ShiftRuleList';
+import ShiftRulePreview from '../shift-rules/ShiftRulePreview';
+import ShiftImport from '../shifts/ShiftImport';
+import { LoadingWrapper, TableLoading } from '../ui/loading';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AnimatePresence } from 'framer-motion';
 import { useToast } from '@/components/ui/use-toast';

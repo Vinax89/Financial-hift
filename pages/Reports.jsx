@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import IncomeStatement from '../components/reports/IncomeStatement';
-import BalanceSheet from '../components/reports/BalanceSheet';
-import CashFlowStatement from '../components/reports/CashFlowStatement';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import IncomeStatement from '../reports/IncomeStatement';
+import BalanceSheet from '../reports/BalanceSheet';
+import CashFlowStatement from '../reports/CashFlowStatement';
+import { ThemedCard, GlassContainer } from '../ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '../ui/theme-aware-animations';
 import { BarChart3 } from 'lucide-react';
 import { CardContent } from '@/components/ui/card';
 

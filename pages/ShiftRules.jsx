@@ -8,13 +8,13 @@ import { Input } from '@/components/ui/input';
 import { Settings, Plus, Search, Filter, DollarSign, Clock, Star, AlertTriangle, CheckCircle, Edit, Trash2, Copy } from 'lucide-react';
 import { ShiftRule } from '@/api/entities';
 import { useToast } from '@/components/ui/use-toast';
-import { formatCurrency } from '../components/utils/calculations';
-import { ThemedCard, ThemedButton } from '../components/ui/enhanced-components';
-import { Loading, LoadingWrapper } from '../components/ui/loading';
-import { ErrorBoundary } from '../components/shared/ErrorBoundary';
-import ShiftRuleForm from '../components/shift-rules/ShiftRuleForm';
-import ShiftRuleList from '../components/shift-rules/ShiftRuleList';
-import ShiftRulePreview from '../components/shift-rules/ShiftRulePreview';
+import { formatCurrency } from '../utils/calculations';
+import { ThemedCard, ThemedButton } from '../ui/enhanced-components';
+import { Loading, LoadingWrapper } from '../ui/loading';
+import { ErrorBoundary } from '../shared/ErrorBoundary';
+import ShiftRuleForm from '../shift-rules/ShiftRuleForm';
+import ShiftRuleList from '../shift-rules/ShiftRuleList';
+import ShiftRulePreview from '../shift-rules/ShiftRulePreview';
 
 export default function ShiftRulesPage() {
     const [shiftRules, setShiftRules] = useState([]);
