@@ -74,7 +74,7 @@ export default function DebtList({ debts = [], onEdit, onDelete }) {
                   </Button>
                 )}
                 {typeof onDelete === "function" && (
-                  <Button variant="destructive" size="sm" onClick={() => onDelete(debt.id ?? debt)}>
+                  <Button variant="destructive" size="sm" onClick={() => onDelete(debt.id)}>
                     Delete
                   </Button>
                 )}
