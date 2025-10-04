@@ -5,14 +5,17 @@ import { format, addMonths, setDate, isBefore, differenceInDays, parseISO } from
 import { formatCurrency } from "@/utils/calculations";
 
 function resolveDate(entry) {
-  const now = new Date();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   if (!entry) return null;
 
   if (typeof entry === "string") {
     try {
       const parsed = parseISO(entry);
       if (!Number.isNaN(parsed.getTime())) {
-        return parsed < now ? addMonths(parsed, 1) : parsed;
+        const parsedDate = new Date(parsed);
+        parsedDate.setHours(0, 0, 0, 0);
+        return parsedDate < today ? addMonths(parsed, 1) : parsed;
       }
     } catch {
       // ignore parse errors
@@ -21,8 +24,8 @@ function resolveDate(entry) {
 
   const asNumber = Number(entry);
   if (Number.isFinite(asNumber) && asNumber > 0 && asNumber <= 31) {
-    const candidate = setDate(now, asNumber);
-    return isBefore(candidate, now) ? addMonths(candidate, 1) : candidate;
+    const candidate = setDate(today, asNumber);
+    return isBefore(candidate, today) ? addMonths(candidate, 1) : candidate;
   }
 
   return null;
