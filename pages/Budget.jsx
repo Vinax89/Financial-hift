@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { Budget } from '@/api/entities';
 import { Transaction } from '@/api/entities';
-import BudgetOverview from '../components/budget/BudgetOverview';
-import CategoryBreakdown from '../components/budget/CategoryBreakdown';
-import BudgetForm from '../components/budget/BudgetForm';
-import { ThemedCard, ThemedButton, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
-import { LoadingWrapper, CardLoading } from '../components/ui/loading';
+import BudgetOverview from '@/budget/BudgetOverview';
+import CategoryBreakdown from '@/budget/CategoryBreakdown';
+import BudgetForm from '@/budget/BudgetForm';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
+import { LoadingWrapper, CardLoading } from '@/ui/loading';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Wallet } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';

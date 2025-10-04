@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { BNPLPlan } from '@/api/entities';
-import BNPLPlanList from '../components/bnpl/BNPLPlanList';
-import BNPLPlanForm from '../components/bnpl/BNPLPlanForm';
-import BNPLSummary from '../components/bnpl/BNPLSummary';
-import { ThemedCard, ThemedButton, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
-import { LoadingWrapper, TableLoading } from '../components/ui/loading';
+import BNPLPlanList from '@/bnpl/BNPLPlanList';
+import BNPLPlanForm from '@/bnpl/BNPLPlanForm';
+import BNPLSummary from '@/bnpl/BNPLSummary';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
+import { LoadingWrapper, TableLoading } from '@/ui/loading';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Zap } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';

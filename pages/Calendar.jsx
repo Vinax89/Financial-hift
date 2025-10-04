@@ -1,11 +1,11 @@
 
 import React, { useState, useMemo } from 'react';
-import CashflowCalendar from '../components/calendar/CashflowCalendar';
-import { ThemedCard, GlassContainer, ThemedButton } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import CashflowCalendar from '@/calendar/CashflowCalendar';
+import { ThemedCard, GlassContainer, ThemedButton } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useFinancialData } from '../components/hooks/useFinancialData';
-import { LoadingWrapper, CardLoading } from '../components/ui/loading';
+import { useFinancialData } from '@/hooks/useFinancialData';
+import { LoadingWrapper, CardLoading } from '@/ui/loading';
 import {
     startOfMonth,
     endOfMonth,

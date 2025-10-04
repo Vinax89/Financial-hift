@@ -4,7 +4,7 @@ import { toast as sonnerToast } from "@/components/ui/sonner";
 // Exposes the same API surface used across the app, without requiring a Provider.
 
 export function useToast() {
-  const toast = ({ title, description, variant = "default" }) => {
+  const toastImpl = ({ title, description, variant = "default" }) => {
     // Map variants to Sonner styles
     if (variant === "destructive" || variant === "error") {
       sonnerToast.error(title || "Error", { description });
@@ -28,6 +28,13 @@ export function useToast() {
 
   // Dismiss not supported per-toast without id; provide a global clear as fallback
   const dismiss = () => sonnerToast.dismiss();
+
+  const toast = Object.assign(toastImpl, {
+    success,
+    error,
+    warning,
+    dismiss,
+  });
 
   return { toast, dismiss, success, error, warning };
 }

@@ -34,18 +34,18 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import AuthGuard from "./components/AuthGuard";
-import { ErrorBoundary } from "./components/shared/ErrorBoundary";
-import { Loading } from "./components/ui/loading"; // Corrected import statement
+import AuthGuard from "@/AuthGuard.jsx";
+import { ErrorBoundary } from "@/shared/ErrorBoundary.jsx";
+import { Loading } from "@/ui/loading"; // Corrected import statement
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider, useTheme } from "./components/theme/ThemeProvider";
-import { ThemeToggle } from "./components/theme/ThemeToggle";
-import { BackgroundPattern } from "./components/ui/theme-aware-animations";
-import useGamification from "./components/hooks/useGamification";
+import { ThemeProvider, useTheme } from "@/theme/ThemeProvider.jsx";
+import { ThemeToggle } from "@/theme/ThemeToggle.jsx";
+import { BackgroundPattern } from "@/ui/theme-aware-animations";
+import useGamification from "@/hooks/useGamification";
 import { User as UserEntity } from "@/api/entities";
-import CommandPalette from "./components/shared/CommandPalette";
-import NotificationsCenter from "./components/shared/NotificationsCenter.js";
-import PrivacyToggle from "./components/shared/PrivacyToggle.js";
+import CommandPalette from "@/shared/CommandPalette.jsx";
+import NotificationsCenter from "@/shared/NotificationsCenter.jsx";
+import PrivacyToggle from "@/shared/PrivacyToggle.jsx";
 
 const navigationItems = [
     {
