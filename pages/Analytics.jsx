@@ -1,18 +1,18 @@
 
 import React, { Suspense } from 'react';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import { ThemedCard, GlassContainer } from '@/components/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/components/ui/theme-aware-animations';
 import { BarChart3 } from 'lucide-react';
 import { CardHeader, CardTitle, CardContent } from '@/components/ui/card'; // This import is now mostly unused but kept as it was in original.
-import { useFinancialData } from '../components/hooks/useFinancialData';
-import { ErrorBoundary } from '../components/shared/ErrorBoundary';
-import { CardLoading, ChartLoading } from '../components/ui/loading';
+import { useFinancialData } from '@/components/hooks/useFinancialData';
+import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
+import { CardLoading, ChartLoading } from '@/components/ui/loading';
 
 // Lazy load chart components
-const FinancialMetrics = React.lazy(() => import('../components/analytics/FinancialMetrics'));
-const IncomeChart = React.lazy(() => import('../components/analytics/IncomeChart'));
-const SpendingTrends = React.lazy(() => import('../components/analytics/SpendingTrends'));
-const MonthlyComparison = React.lazy(() => import('../components/analytics/MonthlyComparison'));
+const FinancialMetrics = React.lazy(() => import('@/components/analytics/FinancialMetrics'));
+const IncomeChart = React.lazy(() => import('@/components/analytics/IncomeChart'));
+const SpendingTrends = React.lazy(() => import('@/components/analytics/SpendingTrends'));
+const MonthlyComparison = React.lazy(() => import('@/components/analytics/MonthlyComparison'));
 
 const ChartFallback = () => <ChartLoading />;
 const CardFallback = () => <CardLoading />;

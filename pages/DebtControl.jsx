@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import { ThemedCard, GlassContainer } from '@/components/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/components/ui/theme-aware-animations';
 import { Landmark, CreditCard, Calculator, Plus, TrendingDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,13 +12,13 @@ import { DebtAccount } from '@/api/entities';
 import { BNPLPlan } from '@/api/entities';
 
 // Import components
-import DebtList from '../components/debt/DebtList';
-import DebtForm from '../components/debt/DebtForm';
-import DebtSimulator from '../components/debt/DebtSimulator';
-import BNPLPlanList from '../components/bnpl/BNPLPlanList';
-import BNPLPlanForm from '../components/bnpl/BNPLPlanForm';
-import BNPLSummary from '../components/bnpl/BNPLSummary';
-import { LoadingWrapper, TableLoading, CardLoading } from '../components/ui/loading';
+import DebtList from '@/components/debt/DebtList';
+import DebtForm from '@/components/debt/DebtForm';
+import DebtSimulator from '@/components/debt/DebtSimulator';
+import BNPLPlanList from '@/components/bnpl/BNPLPlanList';
+import BNPLPlanForm from '@/components/bnpl/BNPLPlanForm';
+import BNPLSummary from '@/components/bnpl/BNPLSummary';
+import { LoadingWrapper, TableLoading, CardLoading } from '@/components/ui/loading';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AnimatePresence } from 'framer-motion';
 import { useToast } from '@/components/ui/use-toast';

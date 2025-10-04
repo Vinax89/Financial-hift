@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Bot, Plus, Send, RefreshCw, Layers, ShieldCheck, Bug, GitBranch, MessageSquare, AlertCircle, Brain, TrendingUp, Terminal, Zap } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { agentSDK } from '@/agents';
-import MessageBubble from '../components/agents/MessageBubble';
+import MessageBubble from '@/components/agents/MessageBubble';
 
 const AGENT_CONFIGS = {
     financial_orchestrator: {

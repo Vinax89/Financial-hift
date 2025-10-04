@@ -1,9 +1,9 @@
 
 import React from 'react';
-import ReceiptScanner from '../components/scanning/ReceiptScanner';
-import { useFinancialData } from '../components/hooks/useFinancialData';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import ReceiptScanner from '@/components/scanning/ReceiptScanner';
+import { useFinancialData } from '@/components/hooks/useFinancialData';
+import { ThemedCard, GlassContainer } from '@/components/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/components/ui/theme-aware-animations';
 import { Scan, Camera, FileText, Zap } from 'lucide-react';
 import { CardContent } from '@/components/ui/card';
 

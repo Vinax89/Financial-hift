@@ -1,8 +1,8 @@
 
 import React from 'react';
-import ShiftImport from '../components/shifts/ShiftImport';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import ShiftImport from '@/components/shifts/ShiftImport';
+import { ThemedCard, GlassContainer } from '@/components/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/components/ui/theme-aware-animations';
 import { Upload } from 'lucide-react';
 import { CardContent } from '@/components/ui/card';
 

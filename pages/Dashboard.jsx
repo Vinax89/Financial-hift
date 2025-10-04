@@ -1,16 +1,16 @@
 
 import React, { useEffect, useMemo, Suspense, useCallback } from 'react';
-import { useFinancialData } from '../components/hooks/useFinancialData';
-import { Loading, ShimmerBox, CardLoading, ChartLoading } from '../components/ui/loading';
+import { useFinancialData } from '@/components/hooks/useFinancialData';
+import { Loading, ShimmerBox, CardLoading, ChartLoading } from '@/components/ui/loading';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RefreshCw, LayoutGrid, FileText, Landmark, Wallet, BrainCircuit, Bot, Bug, Download, BellRing, Mail } from 'lucide-react';
-import { ThemedButton, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
-import { useTheme } from '../components/theme/ThemeProvider';
-import { ThemeToggle } from '../components/theme/ThemeToggle';
+import { ThemedButton, GlassContainer } from '@/components/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/components/ui/theme-aware-animations';
+import { useTheme } from '@/components/theme/ThemeProvider';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { useToast } from '@/components/ui/use-toast';
-import { ErrorBoundary } from '../components/shared/ErrorBoundary';
-import { useLocalStorage } from '../components/hooks/useLocalStorage';
+import { ErrorBoundary } from '@/components/shared/ErrorBoundary';
+import { useLocalStorage } from '@/components/hooks/useLocalStorage';
 import { Button } from '@/components/ui/button';
 import DataExport from "@/components/shared/DataExport";
 import { generateFinancialReport } from "@/api/functions";
@@ -19,20 +19,20 @@ import UpcomingDue from "@/components/dashboard/UpcomingDue";
 import { generateReminders } from "@/api/functions";
 import { emailUpcomingBills } from "@/api/functions";
 import PrivacyToggle from "@/components/shared/PrivacyToggle.js";
-import { useIdlePrefetch } from "../components/hooks/useIdlePrefetch";
+import { useIdlePrefetch } from "@/components/hooks/useIdlePrefetch";
 // Replace the OnboardingModal import to avoid extension-specific path issues
 import OnboardingModal from "@/components/onboarding/OnboardingModal";
 
 // Lazy load heavy components
-const OptimizedMoneyHub = React.lazy(() => import('../components/dashboard/OptimizedMoneyHub'));
-const DebtVisualizer = React.lazy(() => import('../components/dashboard/DebtVisualizer'));
-const ScenarioSimulator = React.lazy(() => import('../components/dashboard/ScenarioSimulator'));
-const EnvelopeBudgeting = React.lazy(() => import('../components/dashboard/EnvelopeBudgeting'));
-const BurnoutAnalyzer = React.lazy(() => import('../components/dashboard/BurnoutAnalyzer'));
-const BillNegotiator = React.lazy(() => import('../components/dashboard/BillNegotiator'));
-const GamificationCenter = React.lazy(() => import('../components/dashboard/GamificationCenter'));
-const IncomeViabilityCalculator = React.lazy(() => import('../components/tools/IncomeViabilityCalculator'));
-const AutomationCenter = React.lazy(() => import('../components/dashboard/AutomationCenter'));
+const OptimizedMoneyHub = React.lazy(() => import('@/components/dashboard/OptimizedMoneyHub'));
+const DebtVisualizer = React.lazy(() => import('@/components/dashboard/DebtVisualizer'));
+const ScenarioSimulator = React.lazy(() => import('@/components/dashboard/ScenarioSimulator'));
+const EnvelopeBudgeting = React.lazy(() => import('@/components/dashboard/EnvelopeBudgeting'));
+const BurnoutAnalyzer = React.lazy(() => import('@/components/dashboard/BurnoutAnalyzer'));
+const BillNegotiator = React.lazy(() => import('@/components/dashboard/BillNegotiator'));
+const GamificationCenter = React.lazy(() => import('@/components/dashboard/GamificationCenter'));
+const IncomeViabilityCalculator = React.lazy(() => import('@/components/tools/IncomeViabilityCalculator'));
+const AutomationCenter = React.lazy(() => import('@/components/dashboard/AutomationCenter'));
 const DataImporter = React.lazy(() => import('@/components/tools/DataImporter'));
 const AutomationRulesCenter = React.lazy(() => import('@/components/automation/AutomationRulesCenter'));
 const KPIBar = React.lazy(() => import('@/components/analytics/KPIBar'));
@@ -301,20 +301,20 @@ export default function Dashboard() {
     // Warm up heavy lazy components when idle after initial data load
     useIdlePrefetch([
         // Debts tab
-        () => import("../components/dashboard/DebtVisualizer"),
-        () => import("../components/dashboard/ScenarioSimulator"),
+        () => import("@/components/dashboard/DebtVisualizer"),
+        () => import("@/components/dashboard/ScenarioSimulator"),
         // Budget tab (already used, but ensure warmed)
-        () => import("../components/dashboard/EnvelopeBudgeting"),
+        () => import("@/components/dashboard/EnvelopeBudgeting"),
         // Tools tab
-        () => import("../components/dashboard/BillNegotiator"),
-        () => import("../components/tools/IncomeViabilityCalculator"),
+        () => import("@/components/dashboard/BillNegotiator"),
+        () => import("@/components/tools/IncomeViabilityCalculator"),
         () => import("@/components/scanning/ReceiptScanner"),
         () => import("@/components/tools/DataImporter"),
         () => import("@/components/automation/AutomationRulesCenter"),
         // Automations
-        () => import("../components/dashboard/AutomationCenter"), // Corrected path to match lazy import
+        () => import("@/components/dashboard/AutomationCenter"), // Corrected path to match lazy import
         // Progress
-        () => import("../components/dashboard/GamificationCenter"),
+        () => import("@/components/dashboard/GamificationCenter"),
         // Analytics / cards
         () => import("@/components/analytics/KPIBar"),
         () => import("@/components/analytics/CashflowForecast"),

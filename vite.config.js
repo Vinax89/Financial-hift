@@ -9,9 +9,16 @@ export default defineConfig({
     allowedHosts: true
   },
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+    alias: [
+      {
+        find: /^@\/components\//,
+        replacement: `${path.resolve(__dirname, '.')}/`,
+      },
+      {
+        find: '@',
+        replacement: path.resolve(__dirname, '.'),
+      },
+    ],
     extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
   },
   optimizeDeps: {

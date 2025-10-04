@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Transaction } from '@/api/entities';
-import TransactionList from '../components/transactions/TransactionList';
-import TransactionForm from '../components/transactions/TransactionForm';
-import TransactionFilters from '../components/transactions/TransactionFilters';
-import { ThemedCard, ThemedButton, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
-import { LoadingWrapper, TableLoading } from '../components/ui/loading';
+import TransactionList from '@/components/transactions/TransactionList';
+import TransactionForm from '@/components/transactions/TransactionForm';
+import TransactionFilters from '@/components/transactions/TransactionFilters';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/components/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/components/ui/theme-aware-animations';
+import { LoadingWrapper, TableLoading } from '@/components/ui/loading';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CreditCard, Plus } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';

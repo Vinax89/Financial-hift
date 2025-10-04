@@ -4,9 +4,9 @@ import { Sparkles, Send, Loader2, Brain, ChevronDown } from 'lucide-react';
 import { agentSDK } from '@/agents';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import MessageBubble from '../components/agents/MessageBubble';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import MessageBubble from '@/components/agents/MessageBubble';
+import { ThemedCard, GlassContainer } from '@/components/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/components/ui/theme-aware-animations';
 
 const QUICK_PROMPTS = [
   "Analyze my spending from last month.",
