@@ -131,55 +131,55 @@ function PagesContent() {
                     <Route path="/" element={<Transactions />} />
                 
                 
-                <Route path="/Transactions" element={<Transactions />} />
-                
-                <Route path="/FileUpload" element={<FileUpload />} />
-                
-                <Route path="/BNPL" element={<BNPL />} />
-                
-                <Route path="/Shifts" element={<Shifts />} />
-                
-                <Route path="/Calendar" element={<Calendar />} />
-                
-                <Route path="/DebtPlanner" element={<DebtPlanner />} />
-                
-                <Route path="/AIAdvisor" element={<AIAdvisor />} />
-                
-                <Route path="/Budget" element={<Budget />} />
-                
-                <Route path="/Goals" element={<Goals />} />
-                
-                <Route path="/Paycheck" element={<Paycheck />} />
-                
-                <Route path="/Analytics" element={<Analytics />} />
-                
-                <Route path="/Reports" element={<Reports />} />
-                
-                <Route path="/ShiftRules" element={<ShiftRules />} />
-                
-                <Route path="/Agents" element={<Agents />} />
-                
-                <Route path="/Scanner" element={<Scanner />} />
-                
-                <Route path="/WorkHub" element={<WorkHub />} />
-                
-                <Route path="/DebtControl" element={<DebtControl />} />
-                
-                <Route path="/FinancialPlanning" element={<FinancialPlanning />} />
-                
-                <Route path="/AIAssistant" element={<AIAssistant />} />
-                
-                <Route path="/Settings" element={<Settings />} />
-                
-                <Route path="/MoneyManager" element={<MoneyManager />} />
-                
-                <Route path="/UnifiedCalendar" element={<UnifiedCalendar />} />
-                
-                <Route path="/Dashboard" element={<Dashboard />} />
-                
-                <Route path="/Diagnostics" element={<Diagnostics />} />
-                
-                <Route path="/Pricing" element={<Pricing />} />
+                <Route path="/transactions" element={<Transactions />} />
+
+                <Route path="/fileupload" element={<FileUpload />} />
+
+                <Route path="/bnpl" element={<BNPL />} />
+
+                <Route path="/shifts" element={<Shifts />} />
+
+                <Route path="/calendar" element={<Calendar />} />
+
+                <Route path="/debtplanner" element={<DebtPlanner />} />
+
+                <Route path="/aiadvisor" element={<AIAdvisor />} />
+
+                <Route path="/budget" element={<Budget />} />
+
+                <Route path="/goals" element={<Goals />} />
+
+                <Route path="/paycheck" element={<Paycheck />} />
+
+                <Route path="/analytics" element={<Analytics />} />
+
+                <Route path="/reports" element={<Reports />} />
+
+                <Route path="/shiftrules" element={<ShiftRules />} />
+
+                <Route path="/agents" element={<Agents />} />
+
+                <Route path="/scanner" element={<Scanner />} />
+
+                <Route path="/workhub" element={<WorkHub />} />
+
+                <Route path="/debtcontrol" element={<DebtControl />} />
+
+                <Route path="/financialplanning" element={<FinancialPlanning />} />
+
+                <Route path="/aiassistant" element={<AIAssistant />} />
+
+                <Route path="/settings" element={<Settings />} />
+
+                <Route path="/moneymanager" element={<MoneyManager />} />
+
+                <Route path="/unifiedcalendar" element={<UnifiedCalendar />} />
+
+                <Route path="/dashboard" element={<Dashboard />} />
+
+                <Route path="/diagnostics" element={<Diagnostics />} />
+
+                <Route path="/pricing" element={<Pricing />} />
                 
             </Routes>
         </Layout>
