@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/ui/skeleton.jsx';
 import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfMonth, endOfMonth, subMonths, parseISO } from 'date-fns';
 import { getChartTheme } from './ChartTheme';

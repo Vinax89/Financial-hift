@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { TrendingUp, TrendingDown, DollarSign, Target } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/ui/skeleton.jsx";
 
 export default function FinancialSummary({ monthlyIncome, monthlyExpenses, netIncome, totalGoals, isLoading }) {
     const formatCurrency = (amount) => {

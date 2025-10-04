@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/ui/skeleton.jsx';
 import { Loader2, CheckCircle, AlertCircle, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useTheme } from '@/components/theme/ThemeProvider';
+import { useTheme } from '@/theme/ThemeProvider.jsx';
 
 // Professional loading component with enhanced UX
 export function Loading({ 

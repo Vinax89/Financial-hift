@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
+import { Button } from "@/ui/button.jsx";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover.jsx";
+import { Calendar } from "@/ui/calendar.jsx";
 import { Filter, Calendar as CalendarIcon, X } from "lucide-react";
 import { format, startOfMonth, endOfMonth, subMonths } from "date-fns";
 

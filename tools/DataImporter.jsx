@@ -1,16 +1,16 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/ui/card.jsx";
+import { Button } from "@/ui/button.jsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
+import { Label } from "@/ui/label.jsx";
+import { Input } from "@/ui/input.jsx";
+import { ScrollArea } from "@/ui/scroll-area.jsx";
 import { UploadFile, ExtractDataFromUploadedFile } from "@/api/integrations";
 import { Transaction } from "@/api/entities";
 import { Bill } from "@/api/entities";
 import { DebtAccount } from "@/api/entities";
-import { useToast } from "@/components/ui/use-toast";
-import { TableLoading } from "@/components/ui/loading";
+import { useToast } from "@/ui/use-toast.jsx";
+import { TableLoading } from "@/ui/loading.jsx";
 
 const ENTITY_SCHEMAS = {
   Transaction: {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/ui/button.jsx';
+import { Badge } from '@/ui/badge.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { 
     Edit, 
     Trash2, 

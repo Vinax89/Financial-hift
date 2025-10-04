@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
-import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { CardHeader, CardTitle, CardContent } from '@/ui/card.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { TrendingUp, TrendingDown, DollarSign, Target, Calendar, AlertTriangle, Clock } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
 import { useFinancialMetrics } from '../hooks/useOptimizedCalculations';

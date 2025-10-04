@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Skeleton } from '@/ui/skeleton.jsx';
 import { DollarSign, Percent, TrendingUp, TrendingDown, PiggyBank, CreditCard } from 'lucide-react';
 
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);

@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import IncomeStatement from '../components/reports/IncomeStatement';
-import BalanceSheet from '../components/reports/BalanceSheet';
-import CashFlowStatement from '../components/reports/CashFlowStatement';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
+import IncomeStatement from '@/reports/IncomeStatement.jsx';
+import BalanceSheet from '@/reports/BalanceSheet.jsx';
+import CashFlowStatement from '@/reports/CashFlowStatement.jsx';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { BarChart3 } from 'lucide-react';
-import { CardContent } from '@/components/ui/card';
+import { CardContent } from '@/ui/card.jsx';
 
 export default function ReportsPage() {
     return (

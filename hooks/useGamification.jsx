@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Gamification } from '@/api/entities';
 import { User } from '@/api/entities';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/ui/use-toast.jsx';
 
 const XP_PER_LEVEL = 100;
 

@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { Label } from '@/ui/label.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
 import { Calculator, DollarSign, Percent, Loader2 } from 'lucide-react';
 import { PaycheckSettings } from '@/api/entities';
-import { useToast } from "@/components/ui/use-toast";
-import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/ui/use-toast.jsx";
+import { Switch } from "@/ui/switch.jsx";
 import { computeTaxBurden } from "@/api/functions";
 
 // A mock calculation function - replace with a real one if available

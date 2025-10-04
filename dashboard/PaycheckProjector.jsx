@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { Label } from '@/ui/label.jsx';
 import { X, Calculator, Plus, Minus, DollarSign } from 'lucide-react';
 import { formatCurrency, calculateTaxes } from '../utils/calculations';
 import { useLocalStorage } from '../hooks/useLocalStorage';

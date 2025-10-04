@@ -1,11 +1,11 @@
 
 import React from 'react';
-import ReceiptScanner from '../components/scanning/ReceiptScanner';
-import { useFinancialData } from '../components/hooks/useFinancialData';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import ReceiptScanner from '@/scanning/ReceiptScanner.jsx';
+import { useFinancialData } from '@/hooks/useFinancialData.jsx';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Scan, Camera, FileText, Zap } from 'lucide-react';
-import { CardContent } from '@/components/ui/card';
+import { CardContent } from '@/ui/card.jsx';
 
 export default function ScannerPage() {
     const { refreshData } = useFinancialData();

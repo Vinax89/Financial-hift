@@ -1,15 +1,15 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Shift } from '@/api/entities';
-import ShiftForm from '../components/shifts/ShiftForm';
-import ShiftList from '../components/shifts/ShiftList';
-import ShiftStats from '../components/shifts/ShiftStats';
-import { ThemedCard, ThemedButton, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import ShiftForm from '@/shifts/ShiftForm.jsx';
+import ShiftList from '@/shifts/ShiftList.jsx';
+import ShiftStats from '@/shifts/ShiftStats.jsx';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Plus, Clock } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
-import { LoadingWrapper, TableLoading } from '../components/ui/loading';
+import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
 
 export default function ShiftsPage() {
     const [shifts, setShifts] = useState([]);

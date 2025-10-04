@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/ui/card.jsx";
+import { Badge } from "@/ui/badge.jsx";
+import { Button } from "@/ui/button.jsx";
 import { Check, Crown, Rocket } from "lucide-react";
 import { Plan } from "@/api/entities";
 import { Subscription } from "@/api/entities";

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/ui/button.jsx";
+import { Input } from "@/ui/input.jsx";
+import { Textarea } from "@/ui/textarea.jsx";
+import { Label } from "@/ui/label.jsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
+import { Calendar } from "@/ui/calendar.jsx";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover.jsx";
 import { CalendarIcon, DollarSign, X, Save, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
-import { validateTransaction, sanitizeInput } from "@/components/utils/validation";
-import { useToast } from "@/components/ui/toast";
+import { validateTransaction, sanitizeInput } from "@/utils/validation";
+import { useToast } from "@/ui/toast.jsx";
 
 const transactionCategories = {
     income: [

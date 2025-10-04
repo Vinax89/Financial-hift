@@ -1,9 +1,9 @@
 
 import React from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
-import { Card, CardContent } from "@/components/ui/card";
-import { useTheme } from "@/components/theme/ThemeProvider";
-import { formatCurrency } from "@/components/utils/calculations";
+import { Card, CardContent } from "@/ui/card.jsx";
+import { useTheme } from "@/theme/ThemeProvider.jsx";
+import { formatCurrency } from "@/utils/calculations";
 
 function themed(colorVar) {
   return `hsl(var(${colorVar}))`;

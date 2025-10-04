@@ -1,8 +1,8 @@
 
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui/button.jsx";
 import { Eye, EyeOff } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/ui/use-toast.jsx";
 import { User } from "@/api/entities";
 
 export default function PrivacyToggle({ className }) {

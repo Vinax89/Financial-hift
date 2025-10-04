@@ -1,8 +1,8 @@
 
 import React from 'react';
-import PaycheckCalculator from '../components/paycheck/PaycheckCalculator';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import PaycheckCalculator from '@/paycheck/PaycheckCalculator.jsx';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Calculator } from 'lucide-react';
 
 export default function PaycheckPage() {

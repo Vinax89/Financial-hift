@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { Goal } from '@/api/entities';
-import GoalList from '../components/goals/GoalList';
-import GoalForm from '../components/goals/GoalForm';
-import GoalStats from '../components/goals/GoalStats';
-import { ThemedCard, ThemedButton, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
-import { LoadingWrapper, CardLoading } from '../components/ui/loading';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import GoalList from '@/goals/GoalList.jsx';
+import GoalForm from '@/goals/GoalForm.jsx';
+import GoalStats from '@/goals/GoalStats.jsx';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
+import { LoadingWrapper, CardLoading } from '@/ui/loading.jsx';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Plus, Target } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 

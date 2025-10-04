@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Button } from '@/ui/button.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { useTheme } from '../theme/ThemeProvider';
 import { cn } from '@/lib/utils';
 import { MagneticHover, GlowEffect } from './theme-aware-animations';

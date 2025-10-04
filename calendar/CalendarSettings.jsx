@@ -1,8 +1,8 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Button } from "@/ui/button.jsx";
+import { Switch } from "@/ui/switch.jsx";
+import { Label } from "@/ui/label.jsx";
+import { Popover, PopoverTrigger, PopoverContent } from "@/ui/popover.jsx";
 import { SlidersHorizontal } from "lucide-react";
 
 export default function CalendarSettings({ value, onChange }) {
