@@ -45,6 +45,7 @@ export default function UpcomingDue({ bills = [], debts = [] }) {
 
         return [...upcomingBills, ...upcomingDebts]
             .filter((item) => item.dueDate)
+            .filter((item) => !isNaN(new Date(item.dueDate).getTime()))
             .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
             .slice(0, 6);
     }, [bills, debts]);
