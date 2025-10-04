@@ -6,16 +6,20 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: true
+    allowedHosts: true,
   },
   resolve: {
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '.'),
-    },
-    extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
-  },
-    extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
+    alias: [
+      {
+        find: /^@\/components\//,
+        replacement: `${path.resolve(__dirname, '.')}/`,
+      },
+      {
+        find: '@',
+        replacement: path.resolve(__dirname, '.'),
+      },
+    ],
+    extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
   },
   optimizeDeps: {
     esbuildOptions: {
@@ -24,4 +28,4 @@ export default defineConfig({
       },
     },
   },
-}) 
+})
