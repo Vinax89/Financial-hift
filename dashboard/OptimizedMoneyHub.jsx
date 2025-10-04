@@ -109,11 +109,37 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
     const monthlyData = useMemo(() => {
         const now = new Date();
         const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-        const monthlyTransactions = (transactions || []).filter(t => new Date(t.date) >= monthStart);
-        const income = monthlyTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + (t.amount || 0), 0);
+        const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        const monthlyTransactions = (transactions || [])
+            .filter(t => {
+                const tDate = new Date(t.date);
+                return tDate >= monthStart && tDate <= monthEnd;
+            });
+        const transactionIncome = monthlyTransactions
+            .filter(t => t.type === 'income')
+            .reduce((sum, t) => sum + (t.amount || 0), 0);
+        const monthlyShiftIncome = (shifts || [])
+            .filter(shift => {
+                try {
+                    const shiftDate = new Date(shift.start_datetime || shift.date);
+                    return shiftDate >= monthStart && shiftDate <= monthEnd;
+                } catch {
+                    return false;
+                }
+            })
+            .reduce((sum, shift) => {
+                const netPay = Number(shift?.net_pay);
+                const grossPay = Number(shift?.gross_pay);
+                if (!Number.isFinite(netPay) && !Number.isFinite(grossPay)) {
+                    return sum;
+                }
+                return sum + (Number.isFinite(netPay) ? netPay : grossPay);
+            }, 0);
+        // We assume shift income is not already represented within transactions to avoid double counting.
+        const income = transactionIncome + monthlyShiftIncome;
         const expenses = monthlyTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + (t.amount || 0), 0);
-        return { income, expenses, net: income - expenses, transactionCount: monthlyTransactions.length };
-    }, [transactions]);
+        return { income, expenses, net: income - expenses, transactionCount: monthlyTransactions.length, shiftIncome: monthlyShiftIncome };
+    }, [transactions, shifts]);
 
     return (
         <div className="space-y-8">

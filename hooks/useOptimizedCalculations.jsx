@@ -42,9 +42,30 @@ export function useFinancialMetrics(transactions, shifts, debts, investments, go
             return tDate >= monthStart && tDate <= monthEnd;
         });
 
-        const monthlyIncome = monthlyTransactions
+        const monthlyShiftIncome = safeShifts
+            .filter(shift => {
+                try {
+                    const shiftDate = new Date(shift.start_datetime || shift.date);
+                    return shiftDate >= monthStart && shiftDate <= monthEnd;
+                } catch {
+                    return false;
+                }
+            })
+            .reduce((sum, shift) => {
+                const netPay = Number(shift?.net_pay);
+                const grossPay = Number(shift?.gross_pay);
+                if (!Number.isFinite(netPay) && !Number.isFinite(grossPay)) {
+                    return sum;
+                }
+                return sum + (Number.isFinite(netPay) ? netPay : grossPay);
+            }, 0);
+
+        const transactionIncome = monthlyTransactions
             .filter(t => t.type === 'income')
             .reduce((sum, t) => sum + (t.amount || 0), 0);
+
+        // We assume shift income is not already represented within transactions to avoid double counting.
+        const monthlyIncome = transactionIncome + monthlyShiftIncome;
 
         const monthlyExpenses = monthlyTransactions
             .filter(t => t.type === 'expense')
