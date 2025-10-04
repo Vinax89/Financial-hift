@@ -1,54 +1,54 @@
-import Layout from "./Layout.jsx";
+import Layout from "@/pages/Layout.jsx";
 
-import Transactions from "./Transactions";
+import Transactions from "@/pages/Transactions.jsx";
 
-import FileUpload from "./FileUpload";
+import FileUpload from "@/pages/FileUpload.jsx";
 
-import BNPL from "./BNPL";
+import BNPL from "@/pages/BNPL.jsx";
 
-import Shifts from "./Shifts";
+import Shifts from "@/pages/Shifts.jsx";
 
-import Calendar from "./Calendar";
+import Calendar from "@/pages/Calendar.jsx";
 
-import DebtPlanner from "./DebtPlanner";
+import DebtPlanner from "@/pages/DebtPlanner.jsx";
 
-import AIAdvisor from "./AIAdvisor";
+import AIAdvisor from "@/pages/AIAdvisor.jsx";
 
-import Budget from "./Budget";
+import Budget from "@/pages/Budget.jsx";
 
-import Goals from "./Goals";
+import Goals from "@/pages/Goals.jsx";
 
-import Paycheck from "./Paycheck";
+import Paycheck from "@/pages/Paycheck.jsx";
 
-import Analytics from "./Analytics";
+import Analytics from "@/pages/Analytics.jsx";
 
-import Reports from "./Reports";
+import Reports from "@/pages/Reports.jsx";
 
-import ShiftRules from "./ShiftRules";
+import ShiftRules from "@/pages/ShiftRules.jsx";
 
-import Agents from "./Agents";
+import Agents from "@/pages/Agents.jsx";
 
-import Scanner from "./Scanner";
+import Scanner from "@/pages/Scanner.jsx";
 
-import WorkHub from "./WorkHub";
+import WorkHub from "@/pages/WorkHub.jsx";
 
-import DebtControl from "./DebtControl";
+import DebtControl from "@/pages/DebtControl.jsx";
 
-import FinancialPlanning from "./FinancialPlanning";
+import FinancialPlanning from "@/pages/FinancialPlanning.jsx";
 
-import AIAssistant from "./AIAssistant";
+import AIAssistant from "@/pages/AIAssistant.jsx";
 
-import Settings from "./Settings";
+import Settings from "@/pages/Settings.jsx";
 
-import MoneyManager from "./MoneyManager";
+import MoneyManager from "@/pages/MoneyManager.jsx";
 
-import UnifiedCalendar from "./UnifiedCalendar";
+import UnifiedCalendar from "@/pages/UnifiedCalendar.jsx";
 
-import Dashboard from "./Dashboard";
+import Dashboard from "@/pages/Dashboard.jsx";
 
-import Diagnostics from "./Diagnostics";
+import Diagnostics from "@/pages/Diagnostics.jsx";
 
-import Pricing from "./Pricing";
+import Pricing from "@/pages/Pricing.jsx";
 
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
