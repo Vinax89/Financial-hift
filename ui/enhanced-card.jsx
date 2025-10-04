@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Badge } from '@/ui/badge.jsx';
+import { Button } from '@/ui/button.jsx';
 import { MoreVertical, Sparkles, TrendingUp, TrendingDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -9,7 +9,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/ui/dropdown-menu.jsx";
 
 // Enhanced card with better visual hierarchy and interactions
 export function EnhancedCard({ 

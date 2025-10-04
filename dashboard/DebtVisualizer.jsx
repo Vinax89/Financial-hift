@@ -1,14 +1,14 @@
 
 import React, { useMemo, useState } from 'react';
-import { CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
+import { Button } from '@/ui/button.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { AlertTriangle, TrendingDown, Calculator, Zap } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
-import { ThemedCard } from '../ui/enhanced-components';
+import { ThemedCard } from '@/ui/enhanced-components.jsx';
 import { useTheme } from '../theme/ThemeProvider';
-import { ChartLoading } from '../ui/loading';
+import { ChartLoading } from '@/ui/loading.jsx';
 
 const DEBT_COLORS_LIGHT = ['#ef4444', '#f97316', '#eab308', '#22c588', '#3b82f6', '#8b5cf6', '#ec4899'];
 const DEBT_COLORS_DARK = ['#f87171', '#fb923c', '#facc15', '#4ade80', '#60a5fa', '#a78bfa', '#f472b6'];

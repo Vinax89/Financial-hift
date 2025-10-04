@@ -1,9 +1,9 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/ui/card.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { DollarSign, Clock, ShieldAlert, BadgePercent, Utensils, Zap, CheckCircle, XCircle } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
-import { ThemedCard } from '../ui/enhanced-components';
+import { ThemedCard } from '@/ui/enhanced-components.jsx';
 
 export default function ShiftRulePreview({ rule }) {
     if (!rule) {

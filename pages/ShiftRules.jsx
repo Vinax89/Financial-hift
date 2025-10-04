@@ -1,20 +1,20 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
+import { Button } from '@/ui/button.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Badge } from '@/ui/badge.jsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
+import { Input } from '@/ui/input.jsx';
 import { Settings, Plus, Search, Filter, DollarSign, Clock, Star, AlertTriangle, CheckCircle, Edit, Trash2, Copy } from 'lucide-react';
 import { ShiftRule } from '@/api/entities';
-import { useToast } from '@/components/ui/use-toast';
-import { formatCurrency } from '../components/utils/calculations';
-import { ThemedCard, ThemedButton } from '../components/ui/enhanced-components';
-import { Loading, LoadingWrapper } from '../components/ui/loading';
-import { ErrorBoundary } from '../components/shared/ErrorBoundary';
-import ShiftRuleForm from '../components/shift-rules/ShiftRuleForm';
-import ShiftRuleList from '../components/shift-rules/ShiftRuleList';
-import ShiftRulePreview from '../components/shift-rules/ShiftRulePreview';
+import { useToast } from '@/ui/use-toast.jsx';
+import { formatCurrency } from '@/utils/calculations.jsx';
+import { ThemedCard, ThemedButton } from '@/ui/enhanced-components.jsx';
+import { Loading, LoadingWrapper } from '@/ui/loading.jsx';
+import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
+import ShiftRuleForm from '@/shift-rules/ShiftRuleForm.jsx';
+import ShiftRuleList from '@/shift-rules/ShiftRuleList.jsx';
+import ShiftRulePreview from '@/shift-rules/ShiftRulePreview.jsx';
 
 export default function ShiftRulesPage() {
     const [shiftRules, setShiftRules] = useState([]);

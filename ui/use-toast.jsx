@@ -1,4 +1,4 @@
-import { toast as sonnerToast } from "@/components/ui/sonner";
+import { toast as sonnerToast } from "sonner";
 
 // Provider-less toast wrapper that works globally with Sonner.
 // Exposes the same API surface used across the app, without requiring a Provider.

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/ui/button.jsx";
+import { Input } from "@/ui/input.jsx";
+import { Label } from "@/ui/label.jsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
+import { Badge } from "@/ui/badge.jsx";
 import { FileSliders, Save, DollarSign } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/ui/skeleton.jsx";
 
 export default function TaxSettings({ settings, onUpdate, isLoading }) {
     const [localSettings, setLocalSettings] = useState(settings || {});

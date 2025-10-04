@@ -1,13 +1,13 @@
 
 import React, { useMemo } from 'react';
-import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { CardHeader, CardTitle, CardContent } from '@/ui/card.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { TrendingUp, TrendingDown, DollarSign, Target, Calendar, AlertTriangle, Clock } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
-import { useFinancialMetrics } from '../hooks/useOptimizedCalculations';
-import { ThemedCard, ThemedProgress } from '../ui/enhanced-components';
+import { useFinancialMetrics } from '@/hooks/useOptimizedCalculations.jsx';
+import { ThemedCard, ThemedProgress } from '@/ui/enhanced-components.jsx';
 import { format, addDays, startOfToday } from 'date-fns';
-import { EmptyState } from '../ui/empty-state';
+import { EmptyState } from '@/ui/empty-state.jsx';
 
 const MetricCard = React.memo(({ title, value, subtitle, icon: Icon, colorClass }) => (
     <ThemedCard>

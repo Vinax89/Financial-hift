@@ -1,11 +1,11 @@
 
 import React, { useMemo } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/ui/table.jsx";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu.jsx";
 import { MoreHorizontal, Clock } from 'lucide-react';
 import { format, formatDistance, parseISO } from "date-fns";
-import { TableLoading } from '@/components/ui/loading';
-import { EmptyState } from '../ui/empty-state';
+import { TableLoading } from '@/ui/loading.jsx';
+import { EmptyState } from '@/ui/empty-state.jsx';
 import { VirtualizedList } from '../optimized/VirtualizedList';
 
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount || 0);

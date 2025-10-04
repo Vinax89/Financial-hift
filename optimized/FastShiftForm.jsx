@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { ThemedButton, ThemedInput } from '../ui/enhanced-components';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { Label } from '@/ui/label.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
+import { Textarea } from '@/ui/textarea.jsx';
+import { Badge } from '@/ui/badge.jsx';
+import { ThemedButton, ThemedInput } from '@/ui/enhanced-components.jsx';
 import { Clock, MapPin, DollarSign, Calendar, Tag, AlertTriangle } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
 import { validateShift } from '../utils/validation';

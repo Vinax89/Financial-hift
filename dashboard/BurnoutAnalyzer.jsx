@@ -1,12 +1,12 @@
 
 import React, { useMemo } from 'react';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { AlertTriangle, Clock, TrendingUp, Battery } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format, endOfWeek, eachWeekOfInterval, subWeeks, startOfWeek } from 'date-fns';
-import { ThemedCard } from '../ui/enhanced-components';
-import { ChartLoading } from '../ui/loading';
+import { ThemedCard } from '@/ui/enhanced-components.jsx';
+import { ChartLoading } from '@/ui/loading.jsx';
 
 const RiskBadge = ({ level }) => {
     const config = {

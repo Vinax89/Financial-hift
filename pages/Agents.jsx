@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { ScrollArea } from '@/ui/scroll-area.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
+import { Badge } from '@/ui/badge.jsx';
+import { Separator } from '@/ui/separator.jsx';
 import { Bot, Plus, Send, RefreshCw, Layers, ShieldCheck, Bug, GitBranch, MessageSquare, AlertCircle, Brain, TrendingUp, Terminal, Zap } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/ui/use-toast.jsx';
 import { agentSDK } from '@/agents';
-import MessageBubble from '../components/agents/MessageBubble';
+import MessageBubble from '@/agents/MessageBubble.jsx';
 
 const AGENT_CONFIGS = {
     financial_orchestrator: {

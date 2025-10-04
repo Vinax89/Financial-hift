@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { User } from '@/api/entities';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/ui/card.jsx";
 import { Loader2, AlertCircle } from "lucide-react";
 
 export default function AuthGuard({ children }) {

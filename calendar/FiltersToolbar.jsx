@@ -1,7 +1,7 @@
 import React from "react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
+import { Switch } from "@/ui/switch.jsx";
+import { Label } from "@/ui/label.jsx";
+import { Card } from "@/ui/card.jsx";
 
 function FiltersToolbarInner({ filters, onChange }) {
   const toggle = React.useCallback((key) => {

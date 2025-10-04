@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ThemedProgress } from '../ui/enhanced-components';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { ThemedProgress } from '@/ui/enhanced-components.jsx';
 import { DollarSign, TrendingDown, PiggyBank } from 'lucide-react';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 

@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
+import { Badge } from "@/ui/badge.jsx";
 import { ArrowUpCircle, ArrowDownCircle, Clock } from "lucide-react";
 import { format } from "date-fns";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/ui/skeleton.jsx";
 
 const categoryColors = {
     food_dining: "bg-red-100 text-red-800",

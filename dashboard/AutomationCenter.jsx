@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AgentTask } from '@/api/entities';
-import { Button } from '@/components/ui/button';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/ui/button.jsx';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { Bot, Play, RefreshCw, Layers, ShieldCheck, Bug, GitBranch, MessageSquare, AlertCircle, Brain, TrendingUp, Loader2, CheckCircle, XCircle, Zap } from 'lucide-react';
-import { ThemedCard } from '../ui/enhanced-components';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useToast } from '@/components/ui/use-toast';
+import { ThemedCard } from '@/ui/enhanced-components.jsx';
+import { ScrollArea } from '@/ui/scroll-area.jsx';
+import { useToast } from '@/ui/use-toast.jsx';
 import { agentSDK } from '@/agents';
 import ReactMarkdown from 'react-markdown';
-import { Loading, LoadingWrapper } from '@/components/ui/loading';
-import { ErrorBoundary } from '../shared/ErrorBoundary';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { Loading, LoadingWrapper } from '@/ui/loading.jsx';
+import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
+import { useLocalStorage } from '@/hooks/useLocalStorage.jsx';
 
 const AGENT_ICONS = {
     financial_orchestrator: Layers,

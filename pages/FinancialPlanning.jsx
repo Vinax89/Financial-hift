@@ -1,34 +1,34 @@
 
 import React, { Suspense, useState, useEffect, useCallback } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Target, BarChart3, FileText, Plus, TrendingUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/ui/button.jsx';
+import { Badge } from '@/ui/badge.jsx';
 
 // Import entities
 import { Goal } from '@/api/entities';
 
 // Import components
-import GoalList from '../components/goals/GoalList';
-import GoalForm from '../components/goals/GoalForm';
-import GoalStats from '../components/goals/GoalStats';
-import { LoadingWrapper, CardLoading, ChartLoading } from '../components/ui/loading';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import GoalList from '@/goals/GoalList.jsx';
+import GoalForm from '@/goals/GoalForm.jsx';
+import GoalStats from '@/goals/GoalStats.jsx';
+import { LoadingWrapper, CardLoading, ChartLoading } from '@/ui/loading.jsx';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { AnimatePresence } from 'framer-motion';
-import { useToast } from '@/components/ui/use-toast';
-import { useFinancialData } from '../components/hooks/useFinancialData';
-import { ErrorBoundary } from '../components/shared/ErrorBoundary';
+import { useToast } from '@/ui/use-toast.jsx';
+import { useFinancialData } from '@/hooks/useFinancialData.jsx';
+import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
 
 // Lazy load heavy analytics components
-const FinancialMetrics = React.lazy(() => import('../components/analytics/FinancialMetrics'));
-const IncomeChart = React.lazy(() => import('../components/analytics/IncomeChart'));
-const SpendingTrends = React.lazy(() => import('../components/analytics/SpendingTrends'));
-const MonthlyComparison = React.lazy(() => import('../components/analytics/MonthlyComparison'));
-const IncomeStatement = React.lazy(() => import('../components/reports/IncomeStatement'));
-const BalanceSheet = React.lazy(() => import('../components/reports/BalanceSheet'));
-const CashFlowStatement = React.lazy(() => import('../components/reports/CashFlowStatement'));
+const FinancialMetrics = React.lazy(() => import('@/analytics/FinancialMetrics.jsx'));
+const IncomeChart = React.lazy(() => import('@/analytics/IncomeChart.jsx'));
+const SpendingTrends = React.lazy(() => import('@/analytics/SpendingTrends.jsx'));
+const MonthlyComparison = React.lazy(() => import('@/analytics/MonthlyComparison.jsx'));
+const IncomeStatement = React.lazy(() => import('@/reports/IncomeStatement.jsx'));
+const BalanceSheet = React.lazy(() => import('@/reports/BalanceSheet.jsx'));
+const CashFlowStatement = React.lazy(() => import('@/reports/CashFlowStatement.jsx'));
 
 const ChartFallback = () => <ChartLoading />;
 const CardFallback = () => <CardLoading />;

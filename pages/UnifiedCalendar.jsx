@@ -1,22 +1,22 @@
 
 import React from "react";
 import { addDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, isSameMonth, addMonths, format, parseISO } from "date-fns";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/ui/button.jsx";
+import { Input } from "@/ui/input.jsx";
+import { Card, CardHeader, CardTitle, CardContent } from "@/ui/card.jsx";
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, RefreshCw, Search } from "lucide-react";
-import { useFinancialData } from "@/components/hooks/useFinancialData";
+import { useFinancialData } from "@/hooks/useFinancialData.jsx";
 import { BNPLPlan } from "@/api/entities";
 import { Transaction } from "@/api/entities";
 import { Shift } from "@/api/entities";
 import { Bill } from "@/api/entities";
-import FiltersToolbar from "@/components/calendar/FiltersToolbar";
-import UnifiedMonthGrid from "@/components/calendar/UnifiedMonthGrid";
-import ExportMenu from "@/components/calendar/ExportMenu";
-import CalendarSettings from "@/components/calendar/CalendarSettings";
-import { Loading } from "@/components/ui/loading";
-import { useLocalStorage } from "@/components/hooks/useLocalStorage";
-import QuickFilters from "@/components/calendar/QuickFilters";
+import FiltersToolbar from "@/calendar/FiltersToolbar.jsx";
+import UnifiedMonthGrid from "@/calendar/UnifiedMonthGrid.jsx";
+import ExportMenu from "@/calendar/ExportMenu.jsx";
+import CalendarSettings from "@/calendar/CalendarSettings.jsx";
+import { Loading } from "@/ui/loading.jsx";
+import { useLocalStorage } from "@/hooks/useLocalStorage.jsx";
+import QuickFilters from "@/calendar/QuickFilters.jsx";
 
 function formatCurrency(n) {
   try {

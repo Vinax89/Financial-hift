@@ -1,10 +1,10 @@
 
 import React from 'react';
-import ShiftImport from '../components/shifts/ShiftImport';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import ShiftImport from '@/shifts/ShiftImport.jsx';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Upload } from 'lucide-react';
-import { CardContent } from '@/components/ui/card';
+import { CardContent } from '@/ui/card.jsx';
 
 export default function FileUploadPage() {
     return (

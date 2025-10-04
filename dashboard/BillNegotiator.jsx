@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { Textarea } from '@/ui/textarea.jsx';
+import { Label } from '@/ui/label.jsx';
 import { InvokeLLM } from '@/api/integrations';
 import { MessageSquare, Sparkles, Loader2, Copy } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import { useToast } from '@/components/ui/use-toast';
-import { ThemedCard } from '../ui/enhanced-components';
+import { useToast } from '@/ui/use-toast.jsx';
+import { ThemedCard } from '@/ui/enhanced-components.jsx';
 
 export default function BillNegotiator({ bills }) {
     const { toast } = useToast();

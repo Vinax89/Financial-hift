@@ -1,28 +1,28 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ThemedCard, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Landmark, CreditCard, Calculator, Plus, TrendingDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@/ui/button.jsx';
+import { Badge } from '@/ui/badge.jsx';
 
 // Import entities
 import { DebtAccount } from '@/api/entities';
 import { BNPLPlan } from '@/api/entities';
 
 // Import components
-import DebtList from '../components/debt/DebtList';
-import DebtForm from '../components/debt/DebtForm';
-import DebtSimulator from '../components/debt/DebtSimulator';
-import BNPLPlanList from '../components/bnpl/BNPLPlanList';
-import BNPLPlanForm from '../components/bnpl/BNPLPlanForm';
-import BNPLSummary from '../components/bnpl/BNPLSummary';
-import { LoadingWrapper, TableLoading, CardLoading } from '../components/ui/loading';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import DebtList from '@/debt/DebtList.jsx';
+import DebtForm from '@/debt/DebtForm.jsx';
+import DebtSimulator from '@/debt/DebtSimulator.jsx';
+import BNPLPlanList from '@/bnpl/BNPLPlanList.jsx';
+import BNPLPlanForm from '@/bnpl/BNPLPlanForm.jsx';
+import BNPLSummary from '@/bnpl/BNPLSummary.jsx';
+import { LoadingWrapper, TableLoading, CardLoading } from '@/ui/loading.jsx';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { AnimatePresence } from 'framer-motion';
-import { useToast } from '@/components/ui/use-toast';
-import { formatCurrency } from "@/components/utils/calculations";
+import { useToast } from '@/ui/use-toast.jsx';
+import { formatCurrency } from "@/utils/calculations.jsx";
 
 
 export default function DebtControlPage() {

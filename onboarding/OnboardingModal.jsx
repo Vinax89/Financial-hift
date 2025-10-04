@@ -1,13 +1,13 @@
 
 import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/ui/dialog.jsx";
+import { Button } from "@/ui/button.jsx";
+import { Input } from "@/ui/input.jsx";
+import { Label } from "@/ui/label.jsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
 import { User } from "@/api/entities";
 import { PaycheckSettings } from "@/api/entities";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/ui/use-toast.jsx";
 
 // The requested change 'export { default } from "./OnboardingModal";' would turn this file
 // into an index file re-exporting another file named OnboardingModal.

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { Label } from '@/ui/label.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
+import { Switch } from '@/ui/switch.jsx';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/ui/accordion.jsx';
 import { DollarSign, Clock, PlusCircle, Trash2, SlidersHorizontal, UserCheck, Utensils, Zap, ShieldAlert, BadgePercent, Settings2 } from 'lucide-react';
-import { ThemedCard, ThemedButton } from '../ui/enhanced-components';
+import { ThemedCard, ThemedButton } from '@/ui/enhanced-components.jsx';
 import { formatCurrency } from '../utils/calculations';
 
 // Helper to create a new, empty differential

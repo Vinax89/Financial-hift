@@ -1,14 +1,14 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
+import { Button } from "@/ui/button.jsx";
+import { Badge } from "@/ui/badge.jsx";
+import { Progress } from "@/ui/progress.jsx";
 import { Calendar, Edit, Trash2, CheckCircle2, CreditCard } from "lucide-react";
 import { format } from "date-fns";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/ui/skeleton.jsx";
 import { motion, AnimatePresence } from "framer-motion";
-import { formatCurrency } from "@/components/utils/calculations";
+import { formatCurrency } from "@/utils/calculations.jsx";
 
 const providerColors = {
     klarna: "bg-pink-100 text-pink-800 dark:bg-pink-900/20 dark:text-pink-400",

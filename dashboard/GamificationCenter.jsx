@@ -1,9 +1,9 @@
 import React from 'react';
-import useGamification from '../hooks/useGamification';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+import useGamification from '@/hooks/useGamification.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Progress } from '@/ui/progress.jsx';
 import { Award, Star } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/ui/skeleton.jsx';
 
 export default function GamificationCenter() {
     const { gameState, isLoading, allBadges, xpPerLevel } = useGamification();

@@ -1,16 +1,16 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { Label } from '@/ui/label.jsx';
 import { Loader2, DollarSign, Scale, AlertTriangle, CheckCircle, TrendingUp, BarChart3, Copy, Shuffle } from 'lucide-react';
 import { getTaxAndCostOfLiving } from '@/api/functions';
-import { useToast } from "@/components/ui/use-toast";
-import { formatCurrency } from '@/components/utils/calculations';
-import useGamification from '@/components/hooks/useGamification';
-import ViabilityInputs from '@/components/tools/income-viability/ViabilityInputs';
-import ViabilityCharts from '@/components/tools/income-viability/ViabilityCharts';
-import ScenarioList from '@/components/tools/income-viability/ScenarioList';
+import { useToast } from "@/ui/use-toast.jsx";
+import { formatCurrency } from '@/utils/calculations.jsx';
+import useGamification from '@/hooks/useGamification.jsx';
+import ViabilityInputs from '@/tools/income-viability/ViabilityInputs.jsx';
+import ViabilityCharts from '@/tools/income-viability/ViabilityCharts.jsx';
+import ScenarioList from '@/tools/income-viability/ScenarioList.jsx';
 
 export default function IncomeViabilityCalculatorInner(props) {
   const { debts = [] } = props;

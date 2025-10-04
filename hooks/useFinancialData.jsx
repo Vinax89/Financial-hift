@@ -8,8 +8,8 @@ import { Budget } from '@/api/entities';
 import { Bill } from '@/api/entities';
 import { Investment } from '@/api/entities';
 import { useLocalStorage } from './useLocalStorage';
-import { retryWithBackoff } from '@/components/utils/api';
-import { perfLog, perfEnabled } from '@/components/utils/perf';
+import { retryWithBackoff } from '@/utils/api.jsx';
+import { perfLog, perfEnabled } from '@/utils/perf.jsx';
 
 const ENTITIES = {
     transactions: Transaction,
