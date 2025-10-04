@@ -12,10 +12,19 @@ function buildPriorityList(debts) {
 }
 
 function payoffProgress(debts) {
-  const totalBalance = debts.reduce((sum, debt) => sum + (debt.balance ?? debt.principal ?? 0), 0);
-  const original = debts.reduce((sum, debt) => sum + (debt.original_balance ?? debt.starting_balance ?? (debt.balance ?? 0)), 0);
-  if (!original) return 0;
-  return Math.min(100, Math.max(0, ((original - totalBalance) / original) * 100));
+  const totalBalance = debts.reduce(
+    (sum, debt) => sum + (debt.balance ?? debt.principal ?? 0),
+    0
+  );
+  const original = debts.reduce(
+    (sum, debt) => sum + (debt.original_balance ?? debt.starting_balance ?? 0),
+    0
+  );
+  if (!original) return null;
+  return Math.min(
+    100,
+    Math.max(0, ((original - totalBalance) / original) * 100)
+  );
 }
 
 export default function DebtSimulator({ debts = [] }) {
