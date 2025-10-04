@@ -97,6 +97,7 @@ export default function AnalyticsPage() {
                             <div className="min-h-[400px]">
                                 <MonthlyComparison
                                     transactions={transactions}
+                                    shifts={shifts}
                                     isLoading={isLoading}
                                 />
                             </div>
