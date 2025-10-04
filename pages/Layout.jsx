@@ -45,7 +45,7 @@ import useGamification from "./components/hooks/useGamification";
 import { User as UserEntity } from "@/api/entities";
 import CommandPalette from "./components/shared/CommandPalette";
 import NotificationsCenter from "./components/shared/NotificationsCenter.js";
-import PrivacyToggle from "./components/shared/PrivacyToggle.js";
+import PrivacyToggle from "./components/shared/PrivacyToggle.jsx";
 
 const navigationItems = [
     {

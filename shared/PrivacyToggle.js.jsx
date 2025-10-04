@@ -1,1 +1,1 @@
-export default function PrivacyToggle.js() { return null; }
+export { default } from "./PrivacyToggle.jsx";
