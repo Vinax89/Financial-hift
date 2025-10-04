@@ -11,7 +11,7 @@ import { CalendarIcon, DollarSign, X, Save, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { validateTransaction, sanitizeInput } from "@/components/utils/validation";
-import { useToast } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const transactionCategories = {
     income: [

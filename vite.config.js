@@ -9,9 +9,12 @@ export default defineConfig({
     allowedHosts: true
   },
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+    alias: [
+      { find: '@/agents', replacement: path.resolve(__dirname, 'components/agents') },
+      { find: '@/hooks', replacement: path.resolve(__dirname, 'components/hooks') },
+      { find: '@/utils', replacement: path.resolve(__dirname, 'components/utils') },
+      { find: '@', replacement: path.resolve(__dirname) },
+    ],
     extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
   },
   optimizeDeps: {

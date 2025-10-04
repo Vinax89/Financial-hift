@@ -2,7 +2,7 @@ import React from "react";
 import { User } from "@/api/entities";
 import { useTheme } from "@/components/theme/ThemeProvider";
 import { ThemeSelector } from "@/components/theme/ThemeToggle";
-import PrivacyToggle from "@/components/shared/PrivacyToggle.js";
+import PrivacyToggle from "@/components/shared/PrivacyToggle";
 import { useToast } from "@/components/ui/use-toast";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
