@@ -25,12 +25,23 @@ export default function GoalForm({ goal, onSubmit, onCancel }) {
 
     useEffect(() => {
         if (goal) {
+            let formattedDeadline = '';
+            if (goal.deadline) {
+                try {
+                    const date = new Date(goal.deadline);
+                    if (!isNaN(date.getTime())) {
+                        formattedDeadline = format(date, 'yyyy-MM-dd');
+                    }
+                } catch (error) {
+                    // Invalid date, leave empty
+                }
+            }
             setFormState({
                 title: goal.title || '',
                 description: goal.description || '',
                 target_amount: goal.target_amount ?? '',
                 current_amount: goal.current_amount ?? '',
-                deadline: goal.deadline ? format(new Date(goal.deadline), 'yyyy-MM-dd') : '',
+                deadline: formattedDeadline,
                 status: goal.status || 'active'
             });
         } else {
