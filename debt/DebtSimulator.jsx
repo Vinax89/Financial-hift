@@ -16,14 +16,16 @@ const formatCurrency = (value) => {
 };
 
 const snowballProjection = (debts) => {
-    const sorted = [...debts].sort((a, b) => (a.balance || 0) - (b.balance || 0));
-    const monthlyBudget = sorted.reduce((acc, debt) => acc + (debt.minimum_payment || 0), 0);
-    let remainingBudget = monthlyBudget;
+    const sorted = [...debts].sort(
+        (a, b) => (Number(a.balance) || 0) - (Number(b.balance) || 0)
+    );
+    let snowballExtra = 0;
     const projections = sorted.map((debt) => {
-        const balance = debt.balance || 0;
-        const payment = Math.max(debt.minimum_payment || 0, remainingBudget);
+        const balance = Number(debt.balance) || 0;
+        const minimum = Number(debt.minimum_payment) || 0;
+        const payment = minimum + snowballExtra;
         const months = payment > 0 ? Math.ceil(balance / payment) : 0;
-        remainingBudget += debt.minimum_payment || 0;
+        snowballExtra += minimum;
         return {
             name: debt.name || debt.account_name,
             months
