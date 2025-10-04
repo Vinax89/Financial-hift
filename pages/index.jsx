@@ -50,7 +50,8 @@ import Diagnostics from "./Diagnostics";
 
 import Pricing from "./Pricing";
 
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { createPageUrl } from "@/utils";
 
 const PAGES = {
     
@@ -115,7 +116,12 @@ function _getCurrentPage(url) {
         urlLastPart = urlLastPart.split('?')[0];
     }
 
-    const pageName = Object.keys(PAGES).find(page => page.toLowerCase() === urlLastPart.toLowerCase());
+    const normalizedPath = urlLastPart.toLowerCase();
+    const normalizedPathCompact = normalizedPath.replace(/-/g, '');
+    const pageName = Object.keys(PAGES).find(page => {
+        const slug = createPageUrl(page).slice(1);
+        return slug === normalizedPath || slug.replace(/-/g, '') === normalizedPathCompact;
+    });
     return pageName || Object.keys(PAGES)[0];
 }
 
@@ -126,61 +132,30 @@ function PagesContent() {
     
     return (
         <Layout currentPageName={currentPage}>
-            <Routes>            
-                
-                    <Route path="/" element={<Transactions />} />
-                
-                
-                <Route path="/Transactions" element={<Transactions />} />
-                
-                <Route path="/FileUpload" element={<FileUpload />} />
-                
-                <Route path="/BNPL" element={<BNPL />} />
-                
-                <Route path="/Shifts" element={<Shifts />} />
-                
-                <Route path="/Calendar" element={<Calendar />} />
-                
-                <Route path="/DebtPlanner" element={<DebtPlanner />} />
-                
-                <Route path="/AIAdvisor" element={<AIAdvisor />} />
-                
-                <Route path="/Budget" element={<Budget />} />
-                
-                <Route path="/Goals" element={<Goals />} />
-                
-                <Route path="/Paycheck" element={<Paycheck />} />
-                
-                <Route path="/Analytics" element={<Analytics />} />
-                
-                <Route path="/Reports" element={<Reports />} />
-                
-                <Route path="/ShiftRules" element={<ShiftRules />} />
-                
-                <Route path="/Agents" element={<Agents />} />
-                
-                <Route path="/Scanner" element={<Scanner />} />
-                
-                <Route path="/WorkHub" element={<WorkHub />} />
-                
-                <Route path="/DebtControl" element={<DebtControl />} />
-                
-                <Route path="/FinancialPlanning" element={<FinancialPlanning />} />
-                
-                <Route path="/AIAssistant" element={<AIAssistant />} />
-                
-                <Route path="/Settings" element={<Settings />} />
-                
-                <Route path="/MoneyManager" element={<MoneyManager />} />
-                
-                <Route path="/UnifiedCalendar" element={<UnifiedCalendar />} />
-                
-                <Route path="/Dashboard" element={<Dashboard />} />
-                
-                <Route path="/Diagnostics" element={<Diagnostics />} />
-                
-                <Route path="/Pricing" element={<Pricing />} />
-                
+            <Routes>
+                <Route path="/" element={<Transactions />} />
+                {Object.entries(PAGES).map(([pageName, Component]) => (
+                    <Route
+                        key={pageName}
+                        path={createPageUrl(pageName)}
+                        element={<Component />}
+                    />
+                ))}
+                {Object.keys(PAGES).map(pageName => {
+                    const legacyPath = `/${pageName}`;
+                    const canonicalPath = createPageUrl(pageName);
+                    if (legacyPath.toLowerCase() === canonicalPath) {
+                        return null;
+                    }
+
+                    return (
+                        <Route
+                            key={`${pageName}-legacy`}
+                            path={legacyPath}
+                            element={<Navigate to={canonicalPath} replace />}
+                        />
+                    );
+                })}
             </Routes>
         </Layout>
     );
