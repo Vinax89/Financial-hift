@@ -152,14 +152,27 @@ function PagesContent() {
     return (
         <Layout currentPageName={currentPage}>
             <Routes>
-                <Route path="/" element={<Transactions />} />
-                {Object.entries(PAGES).map(([pageName, Component]) => (
+// At the top of pages/index.jsx, update the import:
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
+
+// …later, inside your JSX…
+             <Routes>
+                 <Route path="/" element={<Transactions />} />
+                 {Object.entries(PAGES).map(([pageName, Component]) => (
+                     <Route
+                         key={pageName}
+                         path={createPageUrl(pageName)}
+                         element={<Component />}
+                     />
+                 ))}
+                {Object.keys(PAGES).map((pageName) => (
                     <Route
-                        key={pageName}
-                        path={createPageUrl(pageName)}
-                        element={<Component />}
+                        key={`${pageName}-legacy`}
+                        path={`/${pageName}`}
+                        element={<Navigate to={createPageUrl(pageName)} replace />}
                     />
                 ))}
+             </Routes>
             </Routes>
         </Layout>
     );
