@@ -113,27 +113,36 @@ const agentSDK = {
       metadata: message.metadata,
     };
 
-    conversation.messages = [...(conversation.messages || []), normalizedMessage];
-    conversation.updated_at = now;
-
-    conversations.set(conversation.id, cloneConversation(conversation));
-    notifyListeners(conversation);
+    // Read latest state from Map to avoid race
+    const latest = conversations.get(conversation.id);
+    const updated = {
+      ...latest,
+      messages: [...(latest.messages || []), normalizedMessage],
+      updated_at: now,
+    };
+    conversations.set(conversation.id, cloneConversation(updated));
+    notifyListeners(updated);
 
     if (normalizedMessage.role === 'user') {
       const assistantMessage = {
         id: generateMessageId(),
         role: 'assistant',
-        content: generateAssistantReply(conversation, normalizedMessage),
+        content: generateAssistantReply(updated, normalizedMessage),
         created_at: new Date().toISOString(),
       };
 
-      conversation.messages = [...conversation.messages, assistantMessage];
-      conversation.updated_at = new Date().toISOString();
-      conversations.set(conversation.id, cloneConversation(conversation));
-      notifyListeners(conversation);
+      // Read latest state again
+      const latest2 = conversations.get(updated.id);
+      const updated2 = {
+        ...latest2,
+        messages: [...latest2.messages, assistantMessage],
+        updated_at: new Date().toISOString(),
+      };
+      conversations.set(updated2.id, cloneConversation(updated2));
+      notifyListeners(updated2);
     }
 
-    return cloneConversation(conversation);
+    return cloneConversation(conversations.get(conversation.id));
   },
 
   subscribeToConversation(conversationId, callback) {
