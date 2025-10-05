@@ -50,6 +50,7 @@ import Diagnostics from "./Diagnostics";
 
 import Pricing from "./Pricing";
 
+import { createPageUrl } from "@/utils";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
@@ -107,16 +108,31 @@ const PAGES = {
 }
 
 function _getCurrentPage(url) {
+    const pageNames = Object.keys(PAGES);
+    const defaultPage = pageNames[0];
+
+    if (!url) {
+        return defaultPage;
+    }
+
     if (url.endsWith('/')) {
         url = url.slice(0, -1);
     }
-    let urlLastPart = url.split('/').pop();
+    let urlLastPart = url.split('/').pop() || '';
     if (urlLastPart.includes('?')) {
         urlLastPart = urlLastPart.split('?')[0];
     }
 
-    const pageName = Object.keys(PAGES).find(page => page.toLowerCase() === urlLastPart.toLowerCase());
-    return pageName || Object.keys(PAGES)[0];
+    if (!urlLastPart) {
+        return defaultPage;
+    }
+
+    const normalizedSegment = urlLastPart.toLowerCase();
+    const pageName = pageNames.find(
+        (page) => createPageUrl(page).slice(1) === normalizedSegment
+    );
+
+    return pageName || defaultPage;
 }
 
 // Create a wrapper component that uses useLocation inside the Router context
@@ -126,61 +142,15 @@ function PagesContent() {
     
     return (
         <Layout currentPageName={currentPage}>
-            <Routes>            
-                
-                    <Route path="/" element={<Transactions />} />
-                
-                
-                <Route path="/transactions" element={<Transactions />} />
-
-                <Route path="/fileupload" element={<FileUpload />} />
-
-                <Route path="/bnpl" element={<BNPL />} />
-
-                <Route path="/shifts" element={<Shifts />} />
-
-                <Route path="/calendar" element={<Calendar />} />
-
-                <Route path="/debtplanner" element={<DebtPlanner />} />
-
-                <Route path="/aiadvisor" element={<AIAdvisor />} />
-
-                <Route path="/budget" element={<Budget />} />
-
-                <Route path="/goals" element={<Goals />} />
-
-                <Route path="/paycheck" element={<Paycheck />} />
-
-                <Route path="/analytics" element={<Analytics />} />
-
-                <Route path="/reports" element={<Reports />} />
-
-                <Route path="/shiftrules" element={<ShiftRules />} />
-
-                <Route path="/agents" element={<Agents />} />
-
-                <Route path="/scanner" element={<Scanner />} />
-
-                <Route path="/workhub" element={<WorkHub />} />
-
-                <Route path="/debtcontrol" element={<DebtControl />} />
-
-                <Route path="/financialplanning" element={<FinancialPlanning />} />
-
-                <Route path="/aiassistant" element={<AIAssistant />} />
-
-                <Route path="/settings" element={<Settings />} />
-
-                <Route path="/moneymanager" element={<MoneyManager />} />
-
-                <Route path="/unifiedcalendar" element={<UnifiedCalendar />} />
-
-                <Route path="/dashboard" element={<Dashboard />} />
-
-                <Route path="/diagnostics" element={<Diagnostics />} />
-
-                <Route path="/pricing" element={<Pricing />} />
-                
+            <Routes>
+                <Route path="/" element={<Transactions />} />
+                {Object.entries(PAGES).map(([pageName, Component]) => (
+                    <Route
+                        key={pageName}
+                        path={createPageUrl(pageName)}
+                        element={<Component />}
+                    />
+                ))}
             </Routes>
         </Layout>
     );
