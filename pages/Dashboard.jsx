@@ -18,8 +18,8 @@ import { User } from "@/api/entities";
 import UpcomingDue from "@/dashboard/UpcomingDue";
 import { generateReminders } from "@/api/functions";
 import { emailUpcomingBills } from "@/api/functions";
-import PrivacyToggle from "@/shared/PrivacyToggle.jsx";
-import { useIdlePrefetch } from "@/hooks/useIdlePrefetch.jsx";
+import PrivacyToggle from "@/components/shared/PrivacyToggle.jsx";
+import { useIdlePrefetch } from "../components/hooks/useIdlePrefetch";
 // Replace the OnboardingModal import to avoid extension-specific path issues
 import OnboardingModal from "@/onboarding/OnboardingModal";
 
