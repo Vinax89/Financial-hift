@@ -50,6 +50,7 @@ import Diagnostics from "@/pages/Diagnostics.jsx";
 
 import Pricing from "@/pages/Pricing.jsx";
 
+import { createPageUrl } from "@/utils";
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
@@ -106,81 +107,72 @@ const PAGES = {
     
 }
 
+/**
+ * Determine the current page name from a URL path.
+ * @param {string} url - The URL pathname or path segment to evaluate (may include a trailing slash or query string).
+ * @returns {string} The matching page name from PAGES, or the first page name as the default.
+ */
 function _getCurrentPage(url) {
+    const pageNames = Object.keys(PAGES);
+    const defaultPage = pageNames[0];
+
+    if (!url) {
+        return defaultPage;
+    }
+
     if (url.endsWith('/')) {
         url = url.slice(0, -1);
     }
-    let urlLastPart = url.split('/').pop();
+    let urlLastPart = url.split('/').pop() || '';
     if (urlLastPart.includes('?')) {
         urlLastPart = urlLastPart.split('?')[0];
     }
 
-    const pageName = Object.keys(PAGES).find(page => page.toLowerCase() === urlLastPart.toLowerCase());
-    return pageName || Object.keys(PAGES)[0];
+    if (!urlLastPart) {
+        return defaultPage;
+    }
+
+    const normalizedSegment = urlLastPart.toLowerCase();
+    const pageName = pageNames.find(
+        (page) => createPageUrl(page).slice(1) === normalizedSegment
+    );
+
+    return pageName || defaultPage;
 }
 
-// Create a wrapper component that uses useLocation inside the Router context
+/**
+ * Render application pages within the layout and route them based on the current URL.
+ *
+ * @returns {JSX.Element} The layout containing Routes that render the active page component.
+ */
 function PagesContent() {
     const location = useLocation();
     const currentPage = _getCurrentPage(location.pathname);
     
     return (
         <Layout currentPageName={currentPage}>
-            <Routes>            
-                
-                    <Route path="/" element={<Transactions />} />
-                
-                
-                <Route path="/transactions" element={<Transactions />} />
+            <Routes>
+// At the top of pages/index.jsx, update the import:
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 
-                <Route path="/fileupload" element={<FileUpload />} />
-
-                <Route path="/bnpl" element={<BNPL />} />
-
-                <Route path="/shifts" element={<Shifts />} />
-
-                <Route path="/calendar" element={<Calendar />} />
-
-                <Route path="/debtplanner" element={<DebtPlanner />} />
-
-                <Route path="/aiadvisor" element={<AIAdvisor />} />
-
-                <Route path="/budget" element={<Budget />} />
-
-                <Route path="/goals" element={<Goals />} />
-
-                <Route path="/paycheck" element={<Paycheck />} />
-
-                <Route path="/analytics" element={<Analytics />} />
-
-                <Route path="/reports" element={<Reports />} />
-
-                <Route path="/shiftrules" element={<ShiftRules />} />
-
-                <Route path="/agents" element={<Agents />} />
-
-                <Route path="/scanner" element={<Scanner />} />
-
-                <Route path="/workhub" element={<WorkHub />} />
-
-                <Route path="/debtcontrol" element={<DebtControl />} />
-
-                <Route path="/financialplanning" element={<FinancialPlanning />} />
-
-                <Route path="/aiassistant" element={<AIAssistant />} />
-
-                <Route path="/settings" element={<Settings />} />
-
-                <Route path="/moneymanager" element={<MoneyManager />} />
-
-                <Route path="/unifiedcalendar" element={<UnifiedCalendar />} />
-
-                <Route path="/dashboard" element={<Dashboard />} />
-
-                <Route path="/diagnostics" element={<Diagnostics />} />
-
-                <Route path="/pricing" element={<Pricing />} />
-                
+// …later, inside your JSX…
+             <Routes>
+                 <Route path="/" element={<Transactions />} />
+                 {Object.entries(PAGES).map(([pageName, Component]) => (
+                     <Route
+                         key={pageName}
+                         path={createPageUrl(pageName)}
+                         element={<Component />}
+                     />
+                 ))}
+                {Object.keys(PAGES).map((pageName) => (
+                    <Route
+                        key={`${pageName}-legacy`}
+                        path={`/${pageName}`}
+                        element={<Navigate to={createPageUrl(pageName)} replace />}
+                    />
+                ))}
+             </Routes>
             </Routes>
         </Layout>
     );
