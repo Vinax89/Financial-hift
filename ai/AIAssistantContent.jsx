@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ThemedCard, GlassContainer } from '@/components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '@/components/ui/theme-aware-animations';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Bot, Terminal, MessageCircle, Zap, Send, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import MessageBubble from '@/components/agents/MessageBubble';
+import { Button } from '@/ui/button.jsx';
+import { Textarea } from '@/ui/textarea.jsx';
+import { Badge } from '@/ui/badge.jsx';
+import MessageBubble from '@/agents/MessageBubble.jsx';
 import { AgentTask } from '@/api/entities';
 import { agentSDK } from '@/agents';
-import { LoadingWrapper, CardLoading } from '@/components/ui/loading';
-import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
-import { useFinancialData } from '@/components/hooks/useFinancialData';
+import { LoadingWrapper, CardLoading } from '@/ui/loading.jsx';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { useToast } from '@/ui/use-toast.jsx';
+import { useFinancialData } from '@/hooks/useFinancialData.jsx';
 import { InvokeLLM } from '@/api/integrations';
 
 const QUICK_PROMPTS = [

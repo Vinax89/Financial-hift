@@ -1,14 +1,14 @@
 
 import React, { Suspense } from "react";
-import StressTester from "@/components/dev/StressTester"; // Keep for potential type inference or if used elsewhere, though not directly in this file anymore
-import { GlassContainer } from "@/components/ui/enhanced-components";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PerfInspector from "@/components/dev/PerfInspector";
-import NetworkMonitor from "@/components/dev/NetworkMonitor";
-import { Button } from "@/components/ui/button";
+import StressTester from "@/dev/StressTester.jsx"; // Keep for potential type inference or if used elsewhere, though not directly in this file anymore
+import { GlassContainer } from "@/ui/enhanced-components.jsx";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs.jsx";
+import PerfInspector from "@/dev/PerfInspector.jsx";
+import NetworkMonitor from "@/dev/NetworkMonitor.jsx";
+import { Button } from "@/ui/button.jsx";
 
 // Replace direct import usage with lazy import
-const StressTesterLazy = React.lazy(() => import("@/components/dev/StressTester"));
+const StressTesterLazy = React.lazy(() => import("@/dev/StressTester.jsx"));
 
 export default function Diagnostics() {
   const [perfLite, setPerfLite] = React.useState(() => {

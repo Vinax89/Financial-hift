@@ -1,7 +1,7 @@
 
 import React, { useMemo } from "react";
-import { ThemedCard } from "@/components/ui/enhanced-components";
-import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ThemedCard } from "@/ui/enhanced-components.jsx";
+import { CardHeader, CardTitle, CardContent } from "@/ui/card.jsx";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from "recharts";
 
 const CategoryTrends = React.memo(function CategoryTrends({ transactions = [] }) {

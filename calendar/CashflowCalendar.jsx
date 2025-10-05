@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent } from '@/ui/card.jsx';
+import { Skeleton } from '@/ui/skeleton.jsx';
 import { format, isToday, getDay } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useTheme } from '../theme/ThemeProvider';

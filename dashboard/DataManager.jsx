@@ -6,13 +6,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from '@/components/ui/button';
-import { useToast } from "@/components/ui/use-toast";
+} from "@/ui/dropdown-menu.jsx";
+import { Button } from '@/ui/button.jsx';
+import { useToast } from "@/ui/use-toast.jsx";
 import { Download, Upload, Server, Loader2, ShieldCheck, Sparkles } from 'lucide-react';
 import { useFinancialData } from '../hooks/useFinancialData';
 import { ThemedCard } from '../ui/enhanced-components';
-import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { CardHeader, CardTitle, CardContent } from '@/ui/card.jsx';
 import { agentSDK } from '@/agents';
 import { AgentTask } from '@/api/entities';
 

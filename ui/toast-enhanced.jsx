@@ -1,5 +1,5 @@
 import React from 'react';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/ui/use-toast.jsx';
 import { CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 
 // Enhanced toast system with better visual feedback

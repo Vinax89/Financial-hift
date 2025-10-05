@@ -1,9 +1,9 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { agentSDK } from '@/agents';
 import { AgentTask } from '@/api/entities';
 import { Wallet, Brain, AlertTriangle, Target, Loader2 } from 'lucide-react';
@@ -11,8 +11,8 @@ import { formatCurrency } from '../utils/calculations';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { ThemedCard, ThemedProgress } from '../ui/enhanced-components';
 import ReactMarkdown from 'react-markdown';
-import { useToast } from '@/components/ui/use-toast';
-import { Loading } from '@/components/ui/loading';
+import { useToast } from '@/ui/use-toast.jsx';
+import { Loading } from '@/ui/loading.jsx';
 
 
 const CATEGORY_COLORS = {

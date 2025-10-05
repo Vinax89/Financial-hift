@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Skeleton } from '@/ui/skeleton.jsx';
 import { DollarSign, Clock, TrendingUp, Calendar } from 'lucide-react';
 import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO, isWithinInterval } from 'date-fns'; // Added isWithinInterval
 import { formatCurrency } from '../utils/calculations'; // Moved formatCurrency to a utility file

@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
 import { Upload, FileText, CheckCircle, Loader2, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/ui/button.jsx';
 import { ThemedProgress } from '../ui/enhanced-components';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/ui/card.jsx';
 import { Shift } from '@/api/entities';
 import { toast } from 'sonner';
 

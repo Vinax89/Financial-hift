@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui/button.jsx";
 
 function QuickFilters({ value, onChange }) {
   const setAll = React.useCallback(() => onChange({ shifts: true, bills: true, debts: true, bnpl: true, subscriptions: true, payments: true }), [onChange]);

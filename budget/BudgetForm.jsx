@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/ui/button.jsx';
+import { Input } from '@/ui/input.jsx';
+import { Label } from '@/ui/label.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
 import { DollarSign } from 'lucide-react';
 import { format } from 'date-fns';
 

@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/ui/skeleton.jsx';
 import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 import { getChartTheme } from './ChartTheme'; // Added import

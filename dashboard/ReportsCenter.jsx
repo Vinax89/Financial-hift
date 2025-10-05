@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
 import { BarChart3, TrendingUp, TrendingDown, PieChart as PieIcon } from 'lucide-react';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { formatCurrency } from '../utils/calculations';

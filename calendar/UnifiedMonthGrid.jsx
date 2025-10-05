@@ -1,8 +1,8 @@
 import React from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/ui/badge.jsx";
+import { Button } from "@/ui/button.jsx";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/sheet.jsx";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu.jsx";
 import { format, isSameDay } from "date-fns";
 import { Plus, Check, MoreHorizontal, DollarSign } from "lucide-react";
 

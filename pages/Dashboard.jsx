@@ -1,46 +1,46 @@
 
 import React, { useEffect, useMemo, Suspense, useCallback } from 'react';
-import { useFinancialData } from '../components/hooks/useFinancialData';
-import { Loading, ShimmerBox, CardLoading, ChartLoading } from '../components/ui/loading';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useFinancialData } from '@/hooks/useFinancialData.jsx';
+import { Loading, ShimmerBox, CardLoading, ChartLoading } from '@/ui/loading.jsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
 import { RefreshCw, LayoutGrid, FileText, Landmark, Wallet, BrainCircuit, Bot, Bug, Download, BellRing, Mail } from 'lucide-react';
-import { ThemedButton, GlassContainer } from '../components/ui/enhanced-components';
-import { FloatingElement, GlowEffect } from '../components/ui/theme-aware-animations';
-import { useTheme } from '../components/theme/ThemeProvider';
-import { ThemeToggle } from '../components/theme/ThemeToggle';
-import { useToast } from '@/components/ui/use-toast';
-import { ErrorBoundary } from '../components/shared/ErrorBoundary';
-import { useLocalStorage } from '../components/hooks/useLocalStorage';
-import { Button } from '@/components/ui/button';
-import DataExport from "@/components/shared/DataExport";
+import { ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
+import { useTheme } from '@/theme/ThemeProvider.jsx';
+import { ThemeToggle } from '@/theme/ThemeToggle.jsx';
+import { useToast } from '@/ui/use-toast.jsx';
+import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
+import { useLocalStorage } from '@/hooks/useLocalStorage.jsx';
+import { Button } from '@/ui/button.jsx';
+import DataExport from "@/shared/DataExport";
 import { generateFinancialReport } from "@/api/functions";
 import { User } from "@/api/entities";
-import UpcomingDue from "@/components/dashboard/UpcomingDue";
+import UpcomingDue from "@/dashboard/UpcomingDue";
 import { generateReminders } from "@/api/functions";
 import { emailUpcomingBills } from "@/api/functions";
 import PrivacyToggle from "@/components/shared/PrivacyToggle.jsx";
 import { useIdlePrefetch } from "../components/hooks/useIdlePrefetch";
 // Replace the OnboardingModal import to avoid extension-specific path issues
-import OnboardingModal from "@/components/onboarding/OnboardingModal";
+import OnboardingModal from "@/onboarding/OnboardingModal";
 
 // Lazy load heavy components
-const OptimizedMoneyHub = React.lazy(() => import('../components/dashboard/OptimizedMoneyHub'));
-const DebtVisualizer = React.lazy(() => import('../components/dashboard/DebtVisualizer'));
-const ScenarioSimulator = React.lazy(() => import('../components/dashboard/ScenarioSimulator'));
-const EnvelopeBudgeting = React.lazy(() => import('../components/dashboard/EnvelopeBudgeting'));
-const BurnoutAnalyzer = React.lazy(() => import('../components/dashboard/BurnoutAnalyzer'));
-const BillNegotiator = React.lazy(() => import('../components/dashboard/BillNegotiator'));
-const GamificationCenter = React.lazy(() => import('../components/dashboard/GamificationCenter'));
-const IncomeViabilityCalculator = React.lazy(() => import('../components/tools/IncomeViabilityCalculator'));
-const AutomationCenter = React.lazy(() => import('../components/dashboard/AutomationCenter'));
-const DataImporter = React.lazy(() => import('@/components/tools/DataImporter'));
-const AutomationRulesCenter = React.lazy(() => import('@/components/automation/AutomationRulesCenter'));
-const KPIBar = React.lazy(() => import('@/components/analytics/KPIBar'));
-const CashflowForecast = React.lazy(() => import('@/components/analytics/CashflowForecast'));
-const CategoryTrends = React.lazy(() => import('@/components/analytics/CategoryTrends'));
-const ReceiptScanner = React.lazy(() => import('@/components/scanning/ReceiptScanner'));
+const OptimizedMoneyHub = React.lazy(() => import('@/dashboard/OptimizedMoneyHub.jsx'));
+const DebtVisualizer = React.lazy(() => import('@/dashboard/DebtVisualizer.jsx'));
+const ScenarioSimulator = React.lazy(() => import('@/dashboard/ScenarioSimulator.jsx'));
+const EnvelopeBudgeting = React.lazy(() => import('@/dashboard/EnvelopeBudgeting.jsx'));
+const BurnoutAnalyzer = React.lazy(() => import('@/dashboard/BurnoutAnalyzer.jsx'));
+const BillNegotiator = React.lazy(() => import('@/dashboard/BillNegotiator.jsx'));
+const GamificationCenter = React.lazy(() => import('@/dashboard/GamificationCenter.jsx'));
+const IncomeViabilityCalculator = React.lazy(() => import('@/tools/IncomeViabilityCalculator'));
+const AutomationCenter = React.lazy(() => import('@/dashboard/AutomationCenter.jsx'));
+const DataImporter = React.lazy(() => import('@/tools/DataImporter'));
+const AutomationRulesCenter = React.lazy(() => import('@/automation/AutomationRulesCenter.jsx'));
+const KPIBar = React.lazy(() => import('@/analytics/KPIBar.jsx'));
+const CashflowForecast = React.lazy(() => import('@/analytics/CashflowForecast.jsx'));
+const CategoryTrends = React.lazy(() => import('@/analytics/CategoryTrends.jsx'));
+const ReceiptScanner = React.lazy(() => import('@/scanning/ReceiptScanner.jsx'));
 // Add lazy import for the new Sankey card
-const CashflowSankey = React.lazy(() => import('@/components/analytics/CashflowSankey'));
+const CashflowSankey = React.lazy(() => import('@/analytics/CashflowSankey.jsx'));
 
 const ComponentFallback = ({ name, type = 'card' }) => {
     if (type === 'chart') {
@@ -301,25 +301,25 @@ export default function Dashboard() {
     // Warm up heavy lazy components when idle after initial data load
     useIdlePrefetch([
         // Debts tab
-        () => import("../components/dashboard/DebtVisualizer"),
-        () => import("../components/dashboard/ScenarioSimulator"),
+        () => import("@/dashboard/DebtVisualizer.jsx"),
+        () => import("@/dashboard/ScenarioSimulator.jsx"),
         // Budget tab (already used, but ensure warmed)
-        () => import("../components/dashboard/EnvelopeBudgeting"),
+        () => import("@/dashboard/EnvelopeBudgeting.jsx"),
         // Tools tab
-        () => import("../components/dashboard/BillNegotiator"),
-        () => import("../components/tools/IncomeViabilityCalculator"),
-        () => import("@/components/scanning/ReceiptScanner"),
-        () => import("@/components/tools/DataImporter"),
-        () => import("@/components/automation/AutomationRulesCenter"),
+        () => import("@/dashboard/BillNegotiator.jsx"),
+        () => import("@/tools/IncomeViabilityCalculator"),
+        () => import("@/scanning/ReceiptScanner.jsx"),
+        () => import("@/tools/DataImporter"),
+        () => import("@/automation/AutomationRulesCenter.jsx"),
         // Automations
-        () => import("../components/dashboard/AutomationCenter"), // Corrected path to match lazy import
+        () => import("@/dashboard/AutomationCenter.jsx"), // Corrected path to match lazy import
         // Progress
-        () => import("../components/dashboard/GamificationCenter"),
+        () => import("@/dashboard/GamificationCenter.jsx"),
         // Analytics / cards
-        () => import("@/components/analytics/KPIBar"),
-        () => import("@/components/analytics/CashflowForecast"),
-        () => import("@/components/analytics/CategoryTrends"),
-        () => import("@/components/analytics/CashflowSankey"),
+        () => import("@/analytics/KPIBar.jsx"),
+        () => import("@/analytics/CashflowForecast.jsx"),
+        () => import("@/analytics/CategoryTrends.jsx"),
+        () => import("@/analytics/CashflowSankey.jsx"),
     ], [dataLoaded]);
 
     if (loading.all && !dataLoaded) {

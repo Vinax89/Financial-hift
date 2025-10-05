@@ -1,8 +1,8 @@
 
 import React, { useMemo, useState } from 'react';
-import { CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
+import { Button } from '@/ui/button.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { AlertTriangle, TrendingDown, Calculator, Zap } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';

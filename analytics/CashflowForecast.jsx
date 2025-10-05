@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { ThemedCard } from "@/components/ui/enhanced-components";
-import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ThemedCard } from "@/ui/enhanced-components.jsx";
+import { CardHeader, CardTitle, CardContent } from "@/ui/card.jsx";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { format, addDays } from "date-fns";
 

@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Progress } from '@/ui/progress.jsx';
 import { TrendingUp, TrendingDown, DollarSign, PieChart } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Cell, Legend, Pie } from 'recharts';

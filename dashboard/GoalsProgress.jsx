@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
+import { Progress } from "@/ui/progress.jsx";
 import { Target, Calendar } from "lucide-react";
 import { format } from "date-fns";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/ui/skeleton.jsx";
 
 export default function GoalsProgress({ goals, isLoading }) {
     const activeGoals = goals.filter(g => g.status === 'active').slice(0, 4);

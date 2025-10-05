@@ -5,12 +5,12 @@ import { ThemeSelector } from "@/components/theme/ThemeToggle";
 import PrivacyToggle from "@/components/shared/PrivacyToggle.jsx";
 import { useToast } from "@/components/ui/use-toast";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
+import { Button } from "@/ui/button.jsx";
+import { Label } from "@/ui/label.jsx";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
+import { Switch } from "@/ui/switch.jsx";
+import { Separator } from "@/ui/separator.jsx";
 import { RefreshCw, Save, Palette, Shield, Globe, CalendarDays, LayoutGrid } from "lucide-react";
 
 const DEFAULT_TABS = ["overview", "debts", "budget", "tools", "automations", "progress"];

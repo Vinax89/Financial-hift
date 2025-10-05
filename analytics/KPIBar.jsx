@@ -1,6 +1,6 @@
 
 import React from "react";
-import { ThemedCard } from "@/components/ui/enhanced-components";
+import { ThemedCard } from "@/ui/enhanced-components.jsx";
 
 export default function KPIBar({ metrics }) {
   const items = [

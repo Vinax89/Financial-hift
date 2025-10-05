@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/ui/button.jsx';
 import { Sun, Moon, Monitor, Zap } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { cn } from '@/lib/utils';

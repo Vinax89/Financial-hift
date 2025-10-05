@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Wallet, TrendingUp, TrendingDown, ShieldCheck } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/ui/skeleton.jsx';
 
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {

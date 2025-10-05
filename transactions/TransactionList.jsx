@@ -1,11 +1,11 @@
 
 import React, { useMemo } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/ui/table.jsx";
+import { Badge } from "@/ui/badge.jsx";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu.jsx";
 import { MoreHorizontal, ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
 import { format } from "date-fns";
-import { TableLoading } from '@/components/ui/loading';
+import { TableLoading } from '@/ui/loading.jsx';
 import { EmptyState } from '../ui/empty-state';
 import { VirtualizedList } from '../optimized/VirtualizedList';
 

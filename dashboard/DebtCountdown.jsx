@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/ui/progress.jsx';
+import { Badge } from '@/ui/badge.jsx';
 import { Calendar, Target, Zap } from 'lucide-react';
 import { formatCurrency, calculateDebtPayoff } from '../utils/calculations';
 import { format, addMonths } from 'date-fns';

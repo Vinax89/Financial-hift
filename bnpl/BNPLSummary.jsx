@@ -1,8 +1,8 @@
 
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { formatCurrency } from '../utils/calculations';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/ui/skeleton.jsx';
 
 // Note: Lucide icons (CreditCard, Calendar, DollarSign, AlertTriangle) and date-fns 'format'
 // have been removed from imports as per the provided outline's import section.

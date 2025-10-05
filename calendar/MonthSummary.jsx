@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/ui/card.jsx";
 import { format } from "date-fns";
 
 function sumByType(events, type) {
