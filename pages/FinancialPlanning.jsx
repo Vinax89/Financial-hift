@@ -293,6 +293,7 @@ export default function FinancialPlanningPage() {
                                         <div className="min-h-[400px]">
                                             <MonthlyComparison
                                                 transactions={transactions}
+                                                shifts={shifts}
                                                 isLoading={dataLoading}
                                             />
                                         </div>
