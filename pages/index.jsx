@@ -107,6 +107,11 @@ const PAGES = {
     
 }
 
+/**
+ * Determine the current page name from a URL path.
+ * @param {string} url - The URL pathname or path segment to evaluate (may include a trailing slash or query string).
+ * @returns {string} The matching page name from PAGES, or the first page name as the default.
+ */
 function _getCurrentPage(url) {
     const pageNames = Object.keys(PAGES);
     const defaultPage = pageNames[0];
@@ -135,7 +140,11 @@ function _getCurrentPage(url) {
     return pageName || defaultPage;
 }
 
-// Create a wrapper component that uses useLocation inside the Router context
+/**
+ * Render application pages within the layout and route them based on the current URL.
+ *
+ * @returns {JSX.Element} The layout containing Routes that render the active page component.
+ */
 function PagesContent() {
     const location = useLocation();
     const currentPage = _getCurrentPage(location.pathname);
