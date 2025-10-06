@@ -4,7 +4,7 @@ import CashflowCalendar from '@/calendar/CashflowCalendar.jsx';
 import { ThemedCard, GlassContainer, ThemedButton } from '@/ui/enhanced-components.jsx';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useFinancialData } from '@/hooks/useFinancialData.jsx';
+import { useTransactions, useShifts, useBills } from '@/hooks/useEntityQueries.jsx';
 import { LoadingWrapper, CardLoading } from '@/ui/loading.jsx';
 import {
     startOfMonth,
@@ -18,13 +18,17 @@ import {
 
 export default function CalendarPage() {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const { transactions, shifts, bills, isLoading: isFinancialDataLoading, dataLoaded, loadAllData } = useFinancialData();
+    
+    // React Query hooks - automatic caching and background refetching
+    const { data: transactions = [], isLoading: loadingTransactions } = useTransactions();
+    const { data: shifts = [], isLoading: loadingShifts } = useShifts();
+    const { data: bills = [], isLoading: loadingBills } = useBills();
+    
+    // Combined loading state
+    const isLoading = loadingTransactions || loadingShifts || loadingBills;
+    const dataLoaded = !isLoading;
 
-    React.useEffect(() => {
-        if (!dataLoaded) {
-            loadAllData();
-        }
-    }, [dataLoaded, loadAllData]);
+    // React Query handles data loading automatically - no manual effect needed!
 
     const calendarData = useMemo(() => {
         if (!dataLoaded) return []; // Return empty array if no data, loader will handle visual
@@ -101,9 +105,9 @@ export default function CalendarPage() {
                     </header>
                 </GlassContainer>
 
-                <FloatingElement disabled={isFinancialDataLoading}>
+                <FloatingElement disabled={isLoading}>
                     <ThemedCard elevated className="min-h-[70vh]">
-                        <LoadingWrapper isLoading={isFinancialDataLoading && !dataLoaded} fallback={<CardLoading/>}>
+                        <LoadingWrapper isLoading={isLoading} fallback={<CardLoading/>}>
                             <CashflowCalendar
                                 calendarData={calendarData}
                                 currentDate={currentDate}

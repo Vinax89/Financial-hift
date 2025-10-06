@@ -1,6 +1,6 @@
 
 import React, { useEffect, useMemo, Suspense, useCallback } from 'react';
-import { useFinancialData } from '@/hooks/useFinancialData.jsx';
+import { useTransactions, useShifts, useGoals, useDebts, useBudgets, useBills, useInvestments } from '@/hooks/useEntityQueries.jsx';
 import { Loading, ShimmerBox, CardLoading, ChartLoading } from '@/ui/loading.jsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
 import { RefreshCw, LayoutGrid, FileText, Landmark, Wallet, BrainCircuit, Bot, Bug, Download, BellRing, Mail } from 'lucide-react';
@@ -50,10 +50,30 @@ const ComponentFallback = ({ name, type = 'card' }) => {
 };
 
 export default function Dashboard() {
-    const {
-        transactions, shifts, goals, debts, budgets, bills, investments,
-        loading, loadAllData, dataLoaded, hasErrors, errors, refreshData
-    } = useFinancialData();
+    // React Query hooks - automatic caching, refetching, and optimistic updates
+    const { data: transactions = [], isLoading: loadingTransactions, error: transactionsError, refetch: refetchTransactions } = useTransactions();
+    const { data: shifts = [], isLoading: loadingShifts, error: shiftsError, refetch: refetchShifts } = useShifts();
+    const { data: goals = [], isLoading: loadingGoals, error: goalsError, refetch: refetchGoals } = useGoals();
+    const { data: debts = [], isLoading: loadingDebts, error: debtsError, refetch: refetchDebts } = useDebts();
+    const { data: budgets = [], isLoading: loadingBudgets, error: budgetsError, refetch: refetchBudgets } = useBudgets();
+    const { data: bills = [], isLoading: loadingBills, error: billsError, refetch: refetchBills } = useBills();
+    const { data: investments = [], isLoading: loadingInvestments, error: investmentsError, refetch: refetchInvestments } = useInvestments();
+    
+    // Combined loading state
+    const loading = loadingTransactions || loadingShifts || loadingGoals || loadingDebts || loadingBudgets || loadingBills || loadingInvestments;
+    const dataLoaded = !loading;
+    
+    // Combined error state
+    const errors = {
+        ...(transactionsError && { transactions: transactionsError.message }),
+        ...(shiftsError && { shifts: shiftsError.message }),
+        ...(goalsError && { goals: goalsError.message }),
+        ...(debtsError && { debts: debtsError.message }),
+        ...(budgetsError && { budgets: budgetsError.message }),
+        ...(billsError && { bills: billsError.message }),
+        ...(investmentsError && { investments: investmentsError.message }),
+    };
+    const hasErrors = Object.keys(errors).length > 0;
     
     const { isOled } = useTheme();
     const { toast } = useToast();
@@ -124,12 +144,9 @@ export default function Dashboard() {
         }
     }, []);
 
-    useEffect(() => {
-        if (!dataLoaded) {
-            loadAllData();
-        }
-    }, [dataLoaded, loadAllData]);
-
+    // React Query handles data loading automatically - no need for manual loadAllData
+    
+    // Show error toast if any data fails to load
     useEffect(() => {
         if (hasErrors) {
             const errorMessages = Object.entries(errors).map(([entity, message]) => 
@@ -194,7 +211,16 @@ export default function Dashboard() {
 
     const handleRefresh = useCallback(async () => {
         try {
-            await loadAllData(false);
+            // React Query's refetch - automatically uses cache and background refetching
+            await Promise.all([
+                refetchTransactions(),
+                refetchShifts(),
+                refetchGoals(),
+                refetchDebts(),
+                refetchBudgets(),
+                refetchBills(),
+                refetchInvestments(),
+            ]);
             toast({
                 title: "Data Refreshed",
                 description: "All financial data has been updated",
@@ -206,7 +232,7 @@ export default function Dashboard() {
                 variant: "destructive",
             });
         }
-    }, [loadAllData, toast]);
+    }, [refetchTransactions, refetchShifts, refetchGoals, refetchDebts, refetchBudgets, refetchBills, refetchInvestments, toast]);
 
     const handleExportPdf = useCallback(async () => {
         try {

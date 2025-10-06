@@ -4,7 +4,7 @@ import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { BarChart3 } from 'lucide-react';
 import { CardHeader, CardTitle, CardContent } from '@/ui/card.jsx'; // This import is now mostly unused but kept as it was in original.
-import { useFinancialData } from '@/hooks/useFinancialData.jsx';
+import { useTransactions, useShifts, useBills, useGoals } from '@/hooks/useEntityQueries.jsx';
 import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
 import { CardLoading, ChartLoading } from '@/ui/loading.jsx';
 
@@ -18,13 +18,14 @@ const ChartFallback = () => <ChartLoading />;
 const CardFallback = () => <CardLoading />;
 
 export default function AnalyticsPage() {
-    const {
-        transactions,
-        shifts,
-        bills,
-        goals,
-        isLoading
-    } = useFinancialData();
+    // React Query hooks - automatic caching and background refetching
+    const { data: transactions = [], isLoading: loadingTransactions } = useTransactions();
+    const { data: shifts = [], isLoading: loadingShifts } = useShifts();
+    const { data: bills = [], isLoading: loadingBills } = useBills();
+    const { data: goals = [], isLoading: loadingGoals } = useGoals();
+    
+    // Combined loading state
+    const isLoading = loadingTransactions || loadingShifts || loadingBills || loadingGoals;
 
     return (
         <div className="min-h-screen bg-background p-4 md:p-8">

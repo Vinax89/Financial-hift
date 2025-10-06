@@ -1,7 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { Budget } from '@/api/entities';
-import { Transaction } from '@/api/entities';
+import React, { useState } from 'react';
+import { useBudgets, useTransactions, useCreateBudget, useUpdateBudget, useDeleteBudget } from '@/hooks/useEntityQueries.jsx';
 import BudgetOverview from '@/budget/BudgetOverview.jsx';
 import CategoryBreakdown from '@/budget/CategoryBreakdown.jsx';
 import BudgetForm from '@/budget/BudgetForm.jsx';
@@ -16,34 +15,27 @@ import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 import { ErrorBoundary } from '@/shared/ErrorBoundary';
 
 export default function BudgetPage() {
-    const [budgets, setBudgets] = useState([]);
-    const [transactions, setTransactions] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // React Query hooks - automatic caching and background refetching
+    const { data: budgets = [], isLoading: loadingBudgets, refetch: refetchBudgets } = useBudgets();
+    const { data: transactions = [], isLoading: loadingTransactions } = useTransactions('-date', 500);
+    
+    // Mutation hooks with optimistic updates
+    const createBudget = useCreateBudget();
+    const updateBudget = useUpdateBudget();
+    const deleteBudget = useDeleteBudget();
+    
+    // Combined loading state
+    const loading = loadingBudgets || loadingTransactions;
+    
     const [showForm, setShowForm] = useState(false);
     const [editingBudget, setEditingBudget] = useState(null);
 
-    const loadData = async () => {
-        setLoading(true);
-        const [budgetData, transactionData] = await Promise.all([
-            Budget.list(),
-            Transaction.list('-date', 500)
-        ]);
-        setBudgets(budgetData);
-        setTransactions(transactionData);
-        setLoading(false);
-    };
-
-    useEffect(() => {
-        loadData();
-    }, []);
-
     const handleFormSubmit = async (data) => {
         if (editingBudget) {
-            await Budget.update(editingBudget.id, data);
+            await updateBudget.mutateAsync({ id: editingBudget.id, data });
         } else {
-            await Budget.create(data);
+            await createBudget.mutateAsync(data);
         }
-        await loadData();
         setShowForm(false);
         setEditingBudget(null);
     };
@@ -54,8 +46,7 @@ export default function BudgetPage() {
     };
 
     const handleDelete = async (id) => {
-        await Budget.delete(id);
-        await loadData();
+        await deleteBudget.mutateAsync(id);
     };
 
     // Keyboard shortcuts
@@ -64,7 +55,7 @@ export default function BudgetPage() {
             setEditingBudget(null);
             setShowForm(true);
         },
-        onRefresh: loadData,
+        onRefresh: refetchBudgets,
     });
 
     return (

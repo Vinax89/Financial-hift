@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { Goal } from '@/api/entities';
+import React, { useState } from 'react';
+import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from '@/hooks/useEntityQueries.jsx';
 import GoalList from '@/goals/GoalList.jsx';
 import GoalForm from '@/goals/GoalForm.jsx';
 import GoalStats from '@/goals/GoalStats.jsx';
@@ -13,29 +13,23 @@ import { Plus, Target } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 
 export default function GoalsPage() {
-    const [goals, setGoals] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // React Query hooks - automatic caching and background refetching
+    const { data: goals = [], isLoading: loading } = useGoals();
+    
+    // Mutation hooks with optimistic updates
+    const createGoal = useCreateGoal();
+    const updateGoal = useUpdateGoal();
+    const deleteGoal = useDeleteGoal();
+    
     const [showForm, setShowForm] = useState(false);
     const [editingGoal, setEditingGoal] = useState(null);
 
-    const loadGoals = async () => {
-        setLoading(true);
-        const data = await Goal.list();
-        setGoals(data);
-        setLoading(false);
-    };
-
-    useEffect(() => {
-        loadGoals();
-    }, []);
-
     const handleFormSubmit = async (data) => {
         if (editingGoal) {
-            await Goal.update(editingGoal.id, data);
+            await updateGoal.mutateAsync({ id: editingGoal.id, data });
         } else {
-            await Goal.create(data);
+            await createGoal.mutateAsync(data);
         }
-        await loadGoals();
         setShowForm(false);
         setEditingGoal(null);
     };
@@ -46,8 +40,7 @@ export default function GoalsPage() {
     };
 
     const handleDelete = async (id) => {
-        await Goal.delete(id);
-        await loadGoals();
+        await deleteGoal.mutateAsync(id);
     };
 
     return (
