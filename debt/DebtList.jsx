@@ -1,8 +1,19 @@
+/**
+ * @fileoverview Debt list component displaying all debt accounts in a table
+ * @description Shows debt details including balance, interest rate, minimum payment,
+ * and status with edit/delete actions
+ */
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Badge } from '@/ui/badge.jsx';
 
+/**
+ * Format value as USD currency with safety checks
+ * @param {number|string} value - Value to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (value) => {
     const amount = typeof value === 'number' ? value : parseFloat(value);
     if (!Number.isFinite(amount)) {
@@ -11,6 +22,11 @@ const formatCurrency = (value) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 };
 
+/**
+ * Format interest rate as percentage
+ * @param {number|string} value - Rate to format
+ * @returns {string} Formatted percentage string
+ */
 const formatRate = (value) => {
     const rate = typeof value === 'number' ? value : parseFloat(value);
     if (!Number.isFinite(rate)) {
@@ -19,7 +35,15 @@ const formatRate = (value) => {
     return `${rate.toFixed(2)}%`;
 };
 
-export default function DebtList({ debts = [], onEdit, onDelete }) {
+/**
+ * Debt list table component
+ * @param {Object} props - Component props
+ * @param {Array<Object>} [props.debts=[]] - List of debt accounts
+ * @param {Function} props.onEdit - Edit debt handler
+ * @param {Function} props.onDelete - Delete debt handler
+ * @returns {JSX.Element} Debts table
+ */
+function DebtList({ debts = [], onEdit, onDelete }) {
     return (
         <Table>
             <TableHeader>
@@ -66,3 +90,5 @@ export default function DebtList({ debts = [], onEdit, onDelete }) {
         </Table>
     );
 }
+
+export default React.memo(DebtList);

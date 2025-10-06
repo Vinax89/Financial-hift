@@ -1,15 +1,30 @@
+/**
+ * @fileoverview Goal list component displaying all financial goals in a table
+ * @description Shows goal details including target amount, current progress, deadline,
+ * and status with edit/delete actions
+ */
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Badge } from '@/ui/badge.jsx';
 import { format } from 'date-fns';
 
+/**
+ * Badge variants for goal status
+ * @type {Object.<string, string>}
+ */
 const statusVariant = {
     active: 'default',
     completed: 'secondary',
     paused: 'outline'
 };
 
+/**
+ * Format value as USD currency
+ * @param {number} value - Value to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (value) => {
     if (typeof value !== 'number' || Number.isNaN(value)) {
         return '$0.00';
@@ -21,6 +36,11 @@ const formatCurrency = (value) => {
     }).format(value);
 };
 
+/**
+ * Format date for display
+ * @param {string|Date} value - Date to format
+ * @returns {string} Formatted date string
+ */
 const formatDate = (value) => {
     if (!value) return '—';
     try {
@@ -30,7 +50,15 @@ const formatDate = (value) => {
     }
 };
 
-export default function GoalList({ goals = [], onEdit, onDelete }) {
+/**
+ * Goal list table component
+ * @param {Object} props - Component props
+ * @param {Array<Object>} [props.goals=[]] - List of financial goals
+ * @param {Function} props.onEdit - Edit goal handler
+ * @param {Function} props.onDelete - Delete goal handler
+ * @returns {JSX.Element} Goals table
+ */
+function GoalList({ goals = [], onEdit, onDelete }) {
     return (
         <Table>
             <TableHeader>
@@ -80,3 +108,5 @@ export default function GoalList({ goals = [], onEdit, onDelete }) {
         </Table>
     );
 }
+
+export default React.memo(GoalList);

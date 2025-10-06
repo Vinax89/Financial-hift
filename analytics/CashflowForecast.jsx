@@ -1,10 +1,25 @@
+/**
+ * @fileoverview 30-day cashflow forecast component
+ * @description Displays projected balance over next 30 days based on scheduled transactions and bills
+ */
+
 import React, { useMemo } from "react";
 import { ThemedCard } from "@/ui/enhanced-components.jsx";
 import { CardHeader, CardTitle, CardContent } from "@/ui/card.jsx";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { format, addDays } from "date-fns";
 
-export default function CashflowForecast({ transactions = [], bills = [] }) {
+/**
+ * Cashflow forecast chart component
+ * @param {Object} props - Component props
+ * @param {Array<Object>} [props.transactions=[]] - Transaction data
+ * @param {Array<Object>} [props.bills=[]] - Upcoming bills
+ * @returns {JSX.Element} Forecast chart
+ */
+function CashflowForecast({ transactions = [], bills = [] }) {
+  /**
+   * Calculate daily balance projections for next 30 days
+   */
   const data = useMemo(() => {
     const today = new Date();
     const days = Array.from({ length: 30 }).map((_, i) => addDays(today, i));
@@ -42,3 +57,5 @@ export default function CashflowForecast({ transactions = [], bills = [] }) {
     </ThemedCard>
   );
 }
+
+export default React.memo(CashflowForecast);

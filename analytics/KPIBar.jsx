@@ -1,13 +1,36 @@
+/**
+ * @fileoverview KPI bar component displaying key financial metrics
+ * @description Shows net worth, monthly income, and debt-to-income ratio in a compact grid
+ */
 
 import React from "react";
 import { ThemedCard } from "@/ui/enhanced-components.jsx";
 
-export default function KPIBar({ metrics }) {
+/**
+ * KPI bar component with three key metrics
+ * @param {Object} props - Component props
+ * @param {Object} props.metrics - Financial metrics object
+ * @param {number} props.metrics.netWorth - Total net worth
+ * @param {number} props.metrics.monthlyIncome - Monthly income amount
+ * @param {number} props.metrics.debtToIncomeRatio - Debt to income ratio
+ * @returns {JSX.Element} KPI metrics display
+ */
+function KPIBar({ metrics }) {
+  /**
+   * KPI items configuration
+   * @type {Array<{label: string, value: any, cls: string}>}
+   */
   const items = [
     { label: "Net Worth", value: metrics?.netWorth || 0, cls: "text-success" },
     { label: "Monthly Income", value: metrics?.monthlyIncome || 0, cls: "text-income" },
     { label: "Debt/Income %", value: (metrics?.debtToIncomeRatio || 0).toFixed(1) + "%", cls: "text-warning" },
   ];
+  
+  /**
+   * Format number as USD currency
+   * @param {number} n - Number to format
+   * @returns {string} Formatted currency string
+   */
   const formatCurrency = (n) => {
     try { return new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" }).format(n || 0); } catch { return `$${Number(n || 0).toFixed(2)}`; }
   };
@@ -26,3 +49,5 @@ export default function KPIBar({ metrics }) {
     </ThemedCard>
   );
 }
+
+export default React.memo(KPIBar);

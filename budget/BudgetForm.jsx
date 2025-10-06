@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Budget form component for creating and editing monthly budget limits
+ * @description Provides a form interface for setting budget limits per category with autosave
+ * functionality and validation
+ */
+
 import React, { useState } from 'react';
 import { Button } from '@/ui/button.jsx';
 import { Input } from '@/ui/input.jsx';
@@ -7,6 +13,10 @@ import { DollarSign, Save, Check } from 'lucide-react';
 import { format } from 'date-fns';
 import { useAutosave } from '@/utils/formEnhancement';
 
+/**
+ * Budget category options with display labels
+ * @type {Array<{value: string, label: string}>}
+ */
 const categoryOptions = [
     { value: "food_dining", label: "Food & Dining" },
     { value: "groceries", label: "Groceries" },
@@ -22,7 +32,15 @@ const categoryOptions = [
     { value: "other_expense", label: "Other" }
 ];
 
-export default function BudgetForm({ budget, onSubmit, onCancel }) {
+/**
+ * Budget form component with autosave functionality
+ * @param {Object} props - Component props
+ * @param {Object|null} props.budget - Existing budget to edit (null for new)
+ * @param {Function} props.onSubmit - Form submission handler
+ * @param {Function} props.onCancel - Cancel handler
+ * @returns {JSX.Element} Budget form
+ */
+function BudgetForm({ budget, onSubmit, onCancel }) {
     const now = new Date();
     const [formData, setFormData] = useState(budget || {
         category: '',
@@ -31,17 +49,27 @@ export default function BudgetForm({ budget, onSubmit, onCancel }) {
         month: now.getMonth() + 1
     });
 
+    /**
+     * Save budget data with validation
+     */
     const handleSave = () => {
         if (formData.category && formData.monthly_limit) {
             onSubmit({ ...formData, monthly_limit: parseFloat(formData.monthly_limit) });
         }
     };
 
+    /**
+     * Autosave hook - saves after 3 seconds of inactivity (edit mode only)
+     */
     const { isSaving, lastSaved } = useAutosave(handleSave, {
-        delay: 3000, // Autosave after 3 seconds of inactivity
-        enabled: budget !== null, // Only autosave when editing existing budget
+        delay: 3000,
+        enabled: budget !== null,
     });
 
+    /**
+     * Handle form submission
+     * @param {React.FormEvent} e - Form event
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         handleSave();
@@ -117,3 +145,5 @@ export default function BudgetForm({ budget, onSubmit, onCancel }) {
         </form>
     );
 }
+
+export default React.memo(BudgetForm);

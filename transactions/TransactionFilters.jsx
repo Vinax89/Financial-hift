@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Transaction filters component for filtering by type, category, and date range
+ * @description Provides filter controls with preset date ranges and clear functionality
+ */
 
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
@@ -7,6 +11,10 @@ import { Calendar } from "@/ui/calendar.jsx";
 import { Filter, Calendar as CalendarIcon, X } from "lucide-react";
 import { format, startOfMonth, endOfMonth, subMonths } from "date-fns";
 
+/**
+ * Preset date range options
+ * @type {Array<{label: string, range: {from: Date, to: Date}}>}
+ */
 const dateRanges = [
     { label: "This Month", range: { from: startOfMonth(new Date()), to: endOfMonth(new Date()) } },
     { label: "Last Month", range: { from: startOfMonth(subMonths(new Date(), 1)), to: endOfMonth(subMonths(new Date(), 1)) } },
@@ -14,11 +22,22 @@ const dateRanges = [
     { label: "Last 90 Days", range: { from: new Date(new Date().setDate(new Date().getDate() - 90)), to: new Date() } },
 ];
 
-export default function TransactionFilters({ onFilterChange }) {
+/**
+ * Transaction filters component
+ * @param {Object} props - Component props
+ * @param {Function} props.onFilterChange - Filter change callback
+ * @returns {JSX.Element} Filter controls
+ */
+function TransactionFilters({ onFilterChange }) {
     const [type, setType] = useState('all');
     const [category, setCategory] = useState('all');
     const [dateRange, setDateRange] = useState(null);
 
+    /**
+     * Handle filter value changes
+     * @param {string} filterType - Type of filter being changed
+     * @param {*} value - New filter value
+     */
     const handleFilter = (filterType, value) => {
         let newFilters = { type, category, dateRange };
         if (filterType === 'type') {
@@ -36,6 +55,9 @@ export default function TransactionFilters({ onFilterChange }) {
         onFilterChange(newFilters);
     };
 
+    /**
+     * Clear all filters
+     */
     const clearFilters = () => {
         setType('all');
         setCategory('all');
@@ -106,3 +128,5 @@ export default function TransactionFilters({ onFilterChange }) {
         </div>
     );
 }
+
+export default React.memo(TransactionFilters);

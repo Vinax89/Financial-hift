@@ -1,18 +1,35 @@
+/**
+ * @fileoverview Weekly income chart displaying gross and net pay from shifts
+ * @description Bar chart showing last 8 weeks of income with gradient fills
+ */
 
 import React, { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Skeleton } from '@/ui/skeleton.jsx';
 import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfISOWeek, parseISO } from 'date-fns';
-import { getChartTheme } from './ChartTheme'; // Assuming this file exists and provides getChartTheme
+import { getChartTheme } from './ChartTheme';
 
+/**
+ * Format amount as USD currency
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
-export default function IncomeChart({ shifts, isLoading }) {
+/**
+ * Weekly income chart component
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.shifts - Shift data with income
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element} Income bar chart
+ */
+function IncomeChart({ shifts, isLoading }) {
     const { theme } = useTheme();
-
-    // The barColors memo is removed as theme colors are now derived from getChartTheme
     
+    /**
+     * Calculate weekly income totals from shifts (last 8 weeks)
+     */
     const weeklyIncomeData = useMemo(() => {
         if (!shifts || shifts.length === 0) return [];
 
@@ -26,7 +43,9 @@ export default function IncomeChart({ shifts, isLoading }) {
                 acc[weekStart].gross_pay += shift.gross_pay || 0;
                 acc[weekStart].net_pay += shift.net_pay || 0;
             } catch (e) {
-                console.error("Invalid date for shift:", shift);
+                if (import.meta.env.DEV) {
+                    console.error("Invalid date for shift:", shift);
+                }
             }
             return acc;
         }, {});
@@ -100,3 +119,5 @@ export default function IncomeChart({ shifts, isLoading }) {
         </div>
     );
 }
+
+export default React.memo(IncomeChart);

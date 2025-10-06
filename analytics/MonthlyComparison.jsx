@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Monthly comparison chart showing income vs expenses over 6 months
+ * @description Line chart displaying income, expenses, and net income trends
+ */
 
 import React, { useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -6,13 +10,27 @@ import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfMonth, endOfMonth, subMonths, parseISO } from 'date-fns';
 import { getChartTheme } from './ChartTheme';
 
+/**
+ * Format amount as USD currency
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
-export default function MonthlyComparison({ transactions, shifts, isLoading }) {
+/**
+ * Monthly comparison chart component
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.transactions - Transaction data
+ * @param {Array<Object>} props.shifts - Shift income data
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element} Monthly comparison chart
+ */
+function MonthlyComparison({ transactions, shifts, isLoading }) {
     const { theme } = useTheme();
-
-    // The lineColors useMemo is removed as its functionality is now handled by getChartTheme
     
+    /**
+     * Calculate monthly income and expenses for last 6 months
+     */
     const monthlyData = useMemo(() => {
         if (!transactions || !shifts) return [];
 
@@ -110,3 +128,5 @@ export default function MonthlyComparison({ transactions, shifts, isLoading }) {
         </div>
     );
 }
+
+export default React.memo(MonthlyComparison);

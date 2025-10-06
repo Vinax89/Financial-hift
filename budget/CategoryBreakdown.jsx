@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Category breakdown component displaying budget progress by category
+ * @description Shows spending vs budget limits for each category with visual progress bars
+ * and edit/delete controls
+ */
+
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { ThemedProgress } from '../ui/enhanced-components';
@@ -5,8 +11,17 @@ import { Button } from '@/ui/button.jsx';
 import { Edit, Trash2 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 
+/**
+ * Format amount as USD currency
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
+/**
+ * Category display labels mapping
+ * @type {Object.<string, string>}
+ */
 const categoryLabels = {
     food_dining: "Food & Dining",
     groceries: "Groceries",
@@ -22,7 +37,19 @@ const categoryLabels = {
     other_expense: "Other"
 };
 
-export default function CategoryBreakdown({ budgets, transactions, onEdit, onDelete }) {
+/**
+ * Category breakdown component showing budget progress
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.budgets - Budget limits by category
+ * @param {Array<Object>} props.transactions - All transactions
+ * @param {Function} props.onEdit - Edit budget handler
+ * @param {Function} props.onDelete - Delete budget handler
+ * @returns {JSX.Element} Category breakdown display
+ */
+function CategoryBreakdown({ budgets, transactions, onEdit, onDelete }) {
+    /**
+     * Calculate spending and progress for each budget category
+     */
     const categoryData = useMemo(() => {
         const now = new Date();
         const monthStart = startOfMonth(now);
@@ -85,3 +112,5 @@ export default function CategoryBreakdown({ budgets, transactions, onEdit, onDel
         </Card>
     );
 }
+
+export default React.memo(CategoryBreakdown);
