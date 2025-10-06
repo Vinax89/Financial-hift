@@ -6,6 +6,8 @@
   idx.extensions = [
     "svelte.svelte-vscode"
     "vue.volar"
+    "Continue.continue"
+    "Codeium.codeium"
   ];
   idx.previews = {
     previews = {
@@ -13,6 +15,7 @@
         command = [
           "npm"
           "run"
+
           "dev"
           "--"
           "--port"
