@@ -5,12 +5,19 @@ import { ReactQueryProvider } from "@/providers/ReactQueryProvider.jsx"
 import { ErrorBoundary } from "@/shared/ErrorBoundary.jsx"
 import { useEffect } from 'react'
 import { initializePerformanceMonitoring } from '@/utils/monitoring'
+import { initializeAccessibility } from '@/utils/accessibility'
 
 function App() {
-  // Initialize performance monitoring on app mount
+  // Initialize performance monitoring and accessibility on app mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      // Initialize performance tracking
       initializePerformanceMonitoring();
+      
+      // Initialize accessibility features (WCAG 2.1 AA compliance)
+      initializeAccessibility();
+      
+      console.log('✅ Performance monitoring and accessibility initialized');
     }
   }, []);
 

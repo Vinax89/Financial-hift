@@ -19,20 +19,35 @@ const RiskBadge = ({ level }) => {
 }
 
 export default function BurnoutAnalyzer({ shifts }) {
+    // BUG-001 FIX: Use full date comparison instead of just day of month
     const calculateConsecutiveDays = (weekShifts) => {
         if (weekShifts.length === 0) return 0;
-        const shiftDates = [...new Set(weekShifts.map(shift => new Date(shift.start_datetime).getDate()))].sort((a, b) => a - b);
+        
+        // Get unique dates (YYYY-MM-DD format) and sort chronologically
+        const shiftDates = [...new Set(
+            weekShifts.map(shift => new Date(shift.start_datetime).toISOString().split('T')[0])
+        )].sort();
+        
         if (shiftDates.length === 0) return 0;
-        let maxConsecutive = 0, currentConsecutive = 0;
-        for (let i = 0; i < shiftDates.length; i++) {
-            if (i > 0 && shiftDates[i] === shiftDates[i-1] + 1) {
+        
+        let maxConsecutive = 0, currentConsecutive = 1;
+        
+        for (let i = 1; i < shiftDates.length; i++) {
+            const prevDate = new Date(shiftDates[i - 1]);
+            const currentDate = new Date(shiftDates[i]);
+            const diffDays = Math.round((currentDate - prevDate) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) {
+                // Consecutive day
                 currentConsecutive++;
             } else {
+                // Non-consecutive, reset counter
+                maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
                 currentConsecutive = 1;
             }
-            maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
         }
-        return maxConsecutive;
+        
+        return Math.max(maxConsecutive, currentConsecutive);
     };
 
     const burnoutMetrics = useMemo(() => {

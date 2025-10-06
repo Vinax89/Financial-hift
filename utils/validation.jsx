@@ -64,7 +64,7 @@ export const validateTransaction = (transaction) => {
     };
 };
 
-export const validateShift = (shift) => {
+export const validateShift = (shift, existingShifts = []) => {
     const errors = {};
     
     if (!shift.title?.trim()) {
@@ -86,6 +86,31 @@ export const validateShift = (shift) => {
     const hours = shift.scheduled_hours || 0;
     if (hours < 0 || hours > 24) {
         errors.scheduled_hours = 'Hours must be between 0 and 24';
+    }
+    
+    // BUG-002 FIX: Check for shift overlaps
+    if (existingShifts && existingShifts.length > 0) {
+        const startTime = new Date(shift.start_datetime).getTime();
+        const endTime = new Date(shift.end_datetime).getTime();
+        
+        const overlappingShift = existingShifts.find(existingShift => {
+            // Skip comparing with itself
+            if (shift.id && existingShift.id === shift.id) return false;
+            
+            const existingStart = new Date(existingShift.start_datetime).getTime();
+            const existingEnd = new Date(existingShift.end_datetime).getTime();
+            
+            // Check if times overlap
+            return (
+                (startTime >= existingStart && startTime < existingEnd) ||
+                (endTime > existingStart && endTime <= existingEnd) ||
+                (startTime <= existingStart && endTime >= existingEnd)
+            );
+        });
+        
+        if (overlappingShift) {
+            errors.overlap = `Shift overlaps with existing shift: ${overlappingShift.title}`;
+        }
     }
     
     return {

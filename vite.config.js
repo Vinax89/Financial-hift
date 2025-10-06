@@ -21,4 +21,36 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    // Enable code splitting
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks for better caching
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'radix-ui': Object.keys(require('./package.json').dependencies).filter(
+            key => key.startsWith('@radix-ui')
+          ),
+          'charts': ['recharts'],
+          'utils': ['date-fns', 'zod', 'clsx', 'tailwind-merge'],
+        },
+      },
+    },
+    // Increase chunk size warning limit for better split
+    chunkSizeWarningLimit: 1000,
+    // Enable source maps for production debugging
+    sourcemap: true,
+    // Minify for production
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console.logs in production
+        drop_debugger: true,
+      },
+    },
+  },
+  // Performance optimizations
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' },
+  },
 }) 
