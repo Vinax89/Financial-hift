@@ -76,7 +76,7 @@ const TagInput = React.memo(({ tags = [], onChange, suggestions = [] }) => {
 
 TagInput.displayName = 'TagInput';
 
-export default function FastShiftForm({ shift, onSubmit, onCancel }) {
+export default function FastShiftForm({ shift, onSubmit, onCancel, allShifts = [] }) {
     const [formData, setFormData] = useState(() => ({
         title: shift?.title || '',
         start_datetime: shift?.start_datetime ? shift.start_datetime.slice(0, 16) : '',
@@ -130,12 +130,17 @@ export default function FastShiftForm({ shift, onSubmit, onCancel }) {
         });
     }, []);
 
-    // Memoized validation
+    // Memoized validation with overlap checking
     const validatedData = useMemo(() => {
-        const result = validateShift(formData);
+        // Filter out current shift when editing to avoid self-overlap detection
+        const otherShifts = shift 
+            ? allShifts.filter(s => s.id !== shift.id)
+            : allShifts;
+        
+        const result = validateShift(formData, otherShifts);
         setValidation(result);
         return result;
-    }, [formData]);
+    }, [formData, allShifts, shift]);
 
     const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
@@ -235,13 +240,24 @@ export default function FastShiftForm({ shift, onSubmit, onCancel }) {
                         type="datetime-local"
                         value={formData.end_datetime}
                         onChange={(e) => handleFieldChange('end_datetime', e.target.value)}
-                        error={validation.errors.end_datetime}
+                        error={validation.errors.end_datetime || validation.errors.overlap}
                     />
                     {validation.errors.end_datetime && (
                         <p className="text-sm text-destructive">{validation.errors.end_datetime}</p>
                     )}
                 </div>
             </div>
+
+            {/* Overlap Warning */}
+            {validation.errors.overlap && (
+                <div className="flex items-start gap-3 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+                    <AlertTriangle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
+                    <div>
+                        <p className="text-sm font-medium text-destructive">Shift Overlap Detected</p>
+                        <p className="text-sm text-destructive/80 mt-1">{validation.errors.overlap}</p>
+                    </div>
+                </div>
+            )}
 
             {/* Hours */}
             <div className="grid md:grid-cols-3 gap-6">

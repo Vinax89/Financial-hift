@@ -1,6 +1,25 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { Transaction } from '@/api/entities';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Transaction } from                <AnimatePresence>
+                {showForm && (
+                    <FloatingElement>
+                        <FocusTrapWrapper onEscape={() => setShowForm(false)}>
+                            <ThemedCard elevated>
+                                <CardHeader>
+                                    <CardTitle className="text-xl">{editingTransaction ? 'Edit Transaction' : 'Add New Transaction'}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <TransactionForm
+                                        transaction={editingTransaction}
+                                        onSubmit={handleFormSubmit}
+                                        onCancel={() => setShowForm(false)}
+                                    />
+                                </CardContent>
+                            </ThemedCard>
+                        </FocusTrapWrapper>
+                    </FloatingElement>
+                )}
+                </AnimatePresence>
 import TransactionList from '@/transactions/TransactionList.jsx';
 import TransactionForm from '@/transactions/TransactionForm.jsx';
 import TransactionFilters from '@/transactions/TransactionFilters.jsx';
@@ -10,6 +29,8 @@ import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { CreditCard, Plus } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
+import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 
 export default function TransactionsPage() {
     const [transactions, setTransactions] = useState([]);
@@ -49,6 +70,20 @@ export default function TransactionsPage() {
         await Transaction.delete(id);
         await loadTransactions();
     };
+
+    // Keyboard shortcuts
+    const filterRef = useRef(null);
+    usePageShortcuts({
+        onCreate: () => {
+            setEditingTransaction(null);
+            setShowForm(true);
+        },
+        onSearch: () => {
+            // Focus on filter/search input if available
+            filterRef.current?.focus();
+        },
+        onRefresh: loadTransactions,
+    });
 
     const filteredTransactions = transactions.filter(t => {
         if (!t) return false;

@@ -6,6 +6,7 @@ import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Clock, Calculator, Settings, Upload, Plus, Briefcase } from 'lucide-react';
 import { Button } from '@/ui/button.jsx';
 import { Badge } from '@/ui/badge.jsx';
+import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 
 // Import existing components
 import { Shift } from '@/api/entities';
@@ -330,21 +331,24 @@ export default function WorkHubPage() {
                             <AnimatePresence>
                             {showShiftForm && (
                                 <FloatingElement>
-                                    <ThemedCard elevated>
-                                        <CardHeader>
-                                            <CardTitle className="text-xl">{editingShift ? 'Edit Shift' : 'Log New Shift'}</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <ShiftForm
-                                                shift={editingShift}
-                                                onSubmit={handleShiftSubmit}
-                                                onCancel={() => {
-                                                    setShowShiftForm(false);
-                                                    setEditingShift(null);
-                                                }}
-                                            />
-                                        </CardContent>
-                                    </ThemedCard>
+                                    <FocusTrapWrapper onEscape={() => setShowShiftForm(false)}>
+                                        <ThemedCard elevated>
+                                            <CardHeader>
+                                                <CardTitle className="text-xl">{editingShift ? 'Edit Shift' : 'Log New Shift'}</CardTitle>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <ShiftForm
+                                                    shift={editingShift}
+                                                    allShifts={shifts}
+                                                    onSubmit={handleShiftSubmit}
+                                                    onCancel={() => {
+                                                        setShowShiftForm(false);
+                                                        setEditingShift(null);
+                                                    }}
+                                                />
+                                            </CardContent>
+                                        </ThemedCard>
+                                    </FocusTrapWrapper>
                                 </FloatingElement>
                             )}
                             </AnimatePresence>

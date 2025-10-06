@@ -6,6 +6,7 @@ import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Target, BarChart3, FileText, Plus, TrendingUp } from 'lucide-react';
 import { Button } from '@/ui/button.jsx';
 import { Badge } from '@/ui/badge.jsx';
+import { ErrorBoundary } from '@/shared/ErrorBoundary';
 
 // Import entities
 import { Goal } from '@/api/entities';
@@ -211,14 +212,16 @@ export default function FinancialPlanningPage() {
                                             <CardTitle>{editingGoal ? 'Edit Goal' : 'Create New Goal'}</CardTitle>
                                         </CardHeader>
                                         <CardContent>
-                                            <GoalForm
-                                                goal={editingGoal}
-                                                onSubmit={handleGoalSubmit}
-                                                onCancel={() => {
-                                                    setShowGoalForm(false);
-                                                    setEditingGoal(null);
-                                                }}
-                                            />
+                                            <ErrorBoundary>
+                                                <GoalForm
+                                                    goal={editingGoal}
+                                                    onSubmit={handleGoalSubmit}
+                                                    onCancel={() => {
+                                                        setShowGoalForm(false);
+                                                        setEditingGoal(null);
+                                                    }}
+                                                />
+                                            </ErrorBoundary>
                                         </CardContent>
                                     </ThemedCard>
                                 </FloatingElement>

@@ -10,6 +10,8 @@ import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Plus, Clock } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
+import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 
 export default function ShiftsPage() {
     const [shifts, setShifts] = useState([]);
@@ -49,6 +51,20 @@ export default function ShiftsPage() {
         await loadShifts();
     };
 
+    // Keyboard shortcuts
+    usePageShortcuts({
+        onCreate: () => {
+            setEditingShift(null);
+            setShowForm(true);
+        },
+        onRefresh: loadShifts,
+        onHelp: () => {
+            // Help will be shown automatically by the KeyboardShortcuts class
+            const event = new KeyboardEvent('keydown', { key: '?' });
+            document.dispatchEvent(event);
+        },
+    });
+
     return (
         <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
@@ -81,18 +97,21 @@ export default function ShiftsPage() {
                 <AnimatePresence>
                 {showForm && (
                     <FloatingElement>
-                        <ThemedCard elevated>
-                             <CardHeader>
-                                <CardTitle className="text-xl">{editingShift ? 'Edit Shift' : 'Log New Shift'}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ShiftForm
-                                    shift={editingShift}
-                                    onSubmit={handleFormSubmit}
-                                    onCancel={() => setShowForm(false)}
-                                />
-                            </CardContent>
-                        </ThemedCard>
+                        <FocusTrapWrapper onEscape={() => setShowForm(false)}>
+                            <ThemedCard elevated>
+                                <CardHeader>
+                                    <CardTitle className="text-xl">{editingShift ? 'Edit Shift' : 'Log New Shift'}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ShiftForm
+                                        shift={editingShift}
+                                        allShifts={shifts}
+                                        onSubmit={handleFormSubmit}
+                                        onCancel={() => setShowForm(false)}
+                                    />
+                                </CardContent>
+                            </ThemedCard>
+                        </FocusTrapWrapper>
                     </FloatingElement>
                 )}
                 </AnimatePresence>

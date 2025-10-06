@@ -3,8 +3,9 @@ import { Button } from '@/ui/button.jsx';
 import { Input } from '@/ui/input.jsx';
 import { Label } from '@/ui/label.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
-import { DollarSign } from 'lucide-react';
+import { DollarSign, Save, Check } from 'lucide-react';
 import { format } from 'date-fns';
+import { useAutosave } from '@/utils/formEnhancement';
 
 const categoryOptions = [
     { value: "food_dining", label: "Food & Dining" },
@@ -30,9 +31,20 @@ export default function BudgetForm({ budget, onSubmit, onCancel }) {
         month: now.getMonth() + 1
     });
 
+    const handleSave = () => {
+        if (formData.category && formData.monthly_limit) {
+            onSubmit({ ...formData, monthly_limit: parseFloat(formData.monthly_limit) });
+        }
+    };
+
+    const { isSaving, lastSaved } = useAutosave(handleSave, {
+        delay: 3000, // Autosave after 3 seconds of inactivity
+        enabled: budget !== null, // Only autosave when editing existing budget
+    });
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit({ ...formData, monthly_limit: parseFloat(formData.monthly_limit) });
+        handleSave();
     };
 
     return (
@@ -82,9 +94,25 @@ export default function BudgetForm({ budget, onSubmit, onCancel }) {
                  </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-4">
-                <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
-                <Button type="submit">{budget ? 'Update Budget' : 'Set Budget'}</Button>
+            <div className="flex justify-between items-center pt-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    {isSaving && (
+                        <>
+                            <Save className="h-4 w-4 animate-pulse" />
+                            <span>Saving...</span>
+                        </>
+                    )}
+                    {!isSaving && lastSaved && (
+                        <>
+                            <Check className="h-4 w-4 text-green-500" />
+                            <span>Saved {new Date(lastSaved).toLocaleTimeString()}</span>
+                        </>
+                    )}
+                </div>
+                <div className="flex gap-3">
+                    <Button type="button" variant="outline" onClick={onCancel}>Cancel</Button>
+                    <Button type="submit">{budget ? 'Update Budget' : 'Set Budget'}</Button>
+                </div>
             </div>
         </form>
     );

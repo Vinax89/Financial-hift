@@ -6,6 +6,7 @@ import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Landmark, CreditCard, Calculator, Plus, TrendingDown } from 'lucide-react';
 import { Button } from '@/ui/button.jsx';
 import { Badge } from '@/ui/badge.jsx';
+import { ErrorBoundary } from '@/shared/ErrorBoundary';
 
 // Import entities
 import { DebtAccount } from '@/api/entities';
@@ -285,14 +286,16 @@ export default function DebtControlPage() {
                                             <CardTitle>{editingDebt ? 'Edit Debt Account' : 'Add New Debt Account'}</CardTitle>
                                         </CardHeader>
                                         <CardContent>
-                                            <DebtForm
-                                                debt={editingDebt}
-                                                onSubmit={handleDebtSubmit}
-                                                onCancel={() => {
-                                                    setShowDebtForm(false);
-                                                    setEditingDebt(null);
-                                                }}
-                                            />
+                                            <ErrorBoundary>
+                                                <DebtForm
+                                                    debt={editingDebt}
+                                                    onSubmit={handleDebtSubmit}
+                                                    onCancel={() => {
+                                                        setShowDebtForm(false);
+                                                        setEditingDebt(null);
+                                                    }}
+                                                />
+                                            </ErrorBoundary>
                                         </CardContent>
                                     </ThemedCard>
                                 </FloatingElement>

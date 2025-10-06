@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { Badge } from "@/ui/badge.jsx";
 import { ArrowUpCircle, ArrowDownCircle, Clock } from "lucide-react";
 import { format } from "date-fns";
 import { Skeleton } from "@/ui/skeleton.jsx";
+import VirtualizedList from "@/optimized/VirtualizedList";
 
 const categoryColors = {
     food_dining: "bg-red-100 text-red-800",
@@ -24,13 +25,55 @@ const categoryColors = {
     other_expense: "bg-gray-100 text-gray-800"
 };
 
-export default function RecentTransactions({ transactions, isLoading }) {
+export default function RecentTransactions({ transactions = [], isLoading }) {
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
         }).format(Math.abs(amount));
     };
+
+    // Transaction row component for virtualization
+    const TransactionRow = useMemo(() => {
+        return ({ transaction }) => (
+            <div className="flex items-center justify-between p-4 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
+                <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-full ${
+                        transaction.type === 'income' 
+                            ? 'bg-emerald-100' 
+                            : 'bg-rose-100'
+                    }`}>
+                        {transaction.type === 'income' ? (
+                            <ArrowUpCircle className="h-4 w-4 text-emerald-600" />
+                        ) : (
+                            <ArrowDownCircle className="h-4 w-4 text-rose-600" />
+                        )}
+                    </div>
+                    <div>
+                        <p className="font-medium text-slate-900">{transaction.title}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                            <Badge 
+                                variant="secondary"
+                                className={categoryColors[transaction.category]}
+                            >
+                                {transaction.category.replace(/_/g, ' ')}
+                            </Badge>
+                            <span className="text-xs text-slate-500">
+                                {format(new Date(transaction.date), "MMM d")}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div className={`font-bold ${
+                    transaction.type === 'income' 
+                        ? 'text-emerald-600' 
+                        : 'text-slate-900'
+                }`}>
+                    {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
+                </div>
+            </div>
+        );
+    }, []);
 
     return (
         <Card className="border-0 shadow-lg shadow-slate-200/50 bg-white/80 backdrop-blur-sm">
@@ -57,46 +100,15 @@ export default function RecentTransactions({ transactions, isLoading }) {
                         ))}
                     </div>
                 ) : transactions.length > 0 ? (
-                    <div className="space-y-3">
-                        {transactions.map((transaction) => (
-                            <div key={transaction.id} className="flex items-center justify-between p-4 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
-                                <div className="flex items-center gap-3">
-                                    <div className={`p-2 rounded-full ${
-                                        transaction.type === 'income' 
-                                            ? 'bg-emerald-100' 
-                                            : 'bg-rose-100'
-                                    }`}>
-                                        {transaction.type === 'income' ? (
-                                            <ArrowUpCircle className="h-4 w-4 text-emerald-600" />
-                                        ) : (
-                                            <ArrowDownCircle className="h-4 w-4 text-rose-600" />
-                                        )}
-                                    </div>
-                                    <div>
-                                        <p className="font-medium text-slate-900">{transaction.title}</p>
-                                        <div className="flex items-center gap-2 mt-1">
-                                            <Badge 
-                                                variant="secondary"
-                                                className={categoryColors[transaction.category]}
-                                            >
-                                                {transaction.category.replace(/_/g, ' ')}
-                                            </Badge>
-                                            <span className="text-xs text-slate-500">
-                                                {format(new Date(transaction.date), "MMM d")}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={`font-bold ${
-                                    transaction.type === 'income' 
-                                        ? 'text-emerald-600' 
-                                        : 'text-slate-900'
-                                }`}>
-                                    {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <VirtualizedList
+                        items={transactions}
+                        itemHeight={88}
+                        height={440}
+                        renderItem={(transaction) => (
+                            <TransactionRow key={transaction.id} transaction={transaction} />
+                        )}
+                        className="space-y-3"
+                    />
                 ) : (
                     <div className="text-center py-8 text-slate-500">
                         <Clock className="h-12 w-12 mx-auto mb-4 text-slate-300" />

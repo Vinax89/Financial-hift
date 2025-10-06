@@ -3,6 +3,8 @@ import { Input } from '@/ui/input.jsx';
 import { Label } from '@/ui/label.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
+import { Save, Check } from 'lucide-react';
+import { useAutosave } from '@/utils/formEnhancement';
 
 const defaultDebt = {
     name: '',
@@ -39,15 +41,26 @@ export default function DebtForm({ debt, onSubmit, onCancel }) {
         setFormState((prev) => ({ ...prev, [field]: value }));
     };
 
+    const handleSave = () => {
+        if (formState.name && formState.balance) {
+            onSubmit?.({
+                name: formState.name.trim(),
+                balance: toNumber(formState.balance),
+                interest_rate: toNumber(formState.interest_rate),
+                minimum_payment: toNumber(formState.minimum_payment),
+                status: formState.status
+            });
+        }
+    };
+
+    const { isSaving, lastSaved } = useAutosave(handleSave, {
+        delay: 3000,
+        enabled: debt !== null && debt !== undefined,
+    });
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        onSubmit?.({
-            name: formState.name.trim(),
-            balance: toNumber(formState.balance),
-            interest_rate: toNumber(formState.interest_rate),
-            minimum_payment: toNumber(formState.minimum_payment),
-            status: formState.status
-        });
+        handleSave();
     };
 
     return (
@@ -115,11 +128,27 @@ export default function DebtForm({ debt, onSubmit, onCancel }) {
                     </SelectContent>
                 </Select>
             </div>
-            <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => onCancel?.()}>
-                    Cancel
-                </Button>
-                <Button type="submit">{debt ? 'Update Debt' : 'Add Debt'}</Button>
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    {isSaving && (
+                        <>
+                            <Save className="h-4 w-4 animate-pulse" />
+                            <span>Saving...</span>
+                        </>
+                    )}
+                    {!isSaving && lastSaved && (
+                        <>
+                            <Check className="h-4 w-4 text-green-500" />
+                            <span>Saved {new Date(lastSaved).toLocaleTimeString()}</span>
+                        </>
+                    )}
+                </div>
+                <div className="flex gap-2">
+                    <Button type="button" variant="outline" onClick={() => onCancel?.()}>
+                        Cancel
+                    </Button>
+                    <Button type="submit">{debt ? 'Update Debt' : 'Add Debt'}</Button>
+                </div>
             </div>
         </form>
     );

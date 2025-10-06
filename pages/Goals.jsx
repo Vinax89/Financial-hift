@@ -8,6 +8,7 @@ import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-componen
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { LoadingWrapper, CardLoading } from '@/ui/loading.jsx';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { ErrorBoundary } from '@/shared/ErrorBoundary';
 import { Plus, Target } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 
@@ -86,11 +87,13 @@ export default function GoalsPage() {
                                 <CardTitle>{editingGoal ? 'Edit Goal' : 'Create New Goal'}</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <GoalForm
-                                    goal={editingGoal}
-                                    onSubmit={handleFormSubmit}
-                                    onCancel={() => setShowForm(false)}
-                                />
+                                <ErrorBoundary>
+                                    <GoalForm
+                                        goal={editingGoal}
+                                        onSubmit={handleFormSubmit}
+                                        onCancel={() => setShowForm(false)}
+                                    />
+                                </ErrorBoundary>
                             </CardContent>
                         </ThemedCard>
                     </FloatingElement>

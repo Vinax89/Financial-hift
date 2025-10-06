@@ -11,6 +11,9 @@ import { LoadingWrapper, CardLoading } from '@/ui/loading.jsx';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Plus, Wallet } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
+import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
+import { ErrorBoundary } from '@/shared/ErrorBoundary';
 
 export default function BudgetPage() {
     const [budgets, setBudgets] = useState([]);
@@ -55,6 +58,15 @@ export default function BudgetPage() {
         await loadData();
     };
 
+    // Keyboard shortcuts
+    usePageShortcuts({
+        onCreate: () => {
+            setEditingBudget(null);
+            setShowForm(true);
+        },
+        onRefresh: loadData,
+    });
+
     return (
         <div className="min-h-screen bg-background p-4 md:p-8">
             <div className="max-w-7xl mx-auto space-y-8">
@@ -81,18 +93,22 @@ export default function BudgetPage() {
                 <AnimatePresence>
                 {showForm && (
                     <FloatingElement>
-                        <ThemedCard elevated>
-                            <CardHeader>
-                                <CardTitle>{editingBudget ? 'Edit Budget' : 'Set New Budget Limit'}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <BudgetForm
-                                    budget={editingBudget}
-                                    onSubmit={handleFormSubmit}
-                                    onCancel={() => setShowForm(false)}
-                                />
-                            </CardContent>
-                        </ThemedCard>
+                        <FocusTrapWrapper onEscape={() => setShowForm(false)}>
+                            <ThemedCard elevated>
+                                <CardHeader>
+                                    <CardTitle>{editingBudget ? 'Edit Budget' : 'Set New Budget Limit'}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ErrorBoundary>
+                                        <BudgetForm
+                                            budget={editingBudget}
+                                            onSubmit={handleFormSubmit}
+                                            onCancel={() => setShowForm(false)}
+                                        />
+                                    </ErrorBoundary>
+                                </CardContent>
+                            </ThemedCard>
+                        </FocusTrapWrapper>
                     </FloatingElement>
                 )}
                 </AnimatePresence>

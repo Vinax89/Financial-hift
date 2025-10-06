@@ -4,7 +4,9 @@ import { Label } from '@/ui/label.jsx';
 import { Textarea } from '@/ui/textarea.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
+import { Save, Check } from 'lucide-react';
 import { format } from 'date-fns';
+import { useAutosave } from '@/utils/formEnhancement';
 
 const defaultGoal = {
     title: '',
@@ -54,16 +56,27 @@ export default function GoalForm({ goal, onSubmit, onCancel }) {
         setFormState((prev) => ({ ...prev, [field]: value }));
     };
 
+    const handleSave = () => {
+        if (formState.title && formState.target_amount) {
+            onSubmit?.({
+                title: formState.title.trim(),
+                description: formState.description.trim(),
+                target_amount: coerceNumber(formState.target_amount),
+                current_amount: coerceNumber(formState.current_amount),
+                deadline: formState.deadline ? new Date(formState.deadline).toISOString() : null,
+                status: formState.status
+            });
+        }
+    };
+
+    const { isSaving, lastSaved } = useAutosave(handleSave, {
+        delay: 3000,
+        enabled: goal !== null && goal !== undefined,
+    });
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        onSubmit?.({
-            title: formState.title.trim(),
-            description: formState.description.trim(),
-            target_amount: coerceNumber(formState.target_amount),
-            current_amount: coerceNumber(formState.current_amount),
-            deadline: formState.deadline ? new Date(formState.deadline).toISOString() : null,
-            status: formState.status
-        });
+        handleSave();
     };
 
     return (
@@ -139,11 +152,27 @@ export default function GoalForm({ goal, onSubmit, onCancel }) {
                     </Select>
                 </div>
             </div>
-            <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => onCancel?.()}>
-                    Cancel
-                </Button>
-                <Button type="submit">{goal ? 'Update Goal' : 'Create Goal'}</Button>
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    {isSaving && (
+                        <>
+                            <Save className="h-4 w-4 animate-pulse" />
+                            <span>Saving...</span>
+                        </>
+                    )}
+                    {!isSaving && lastSaved && (
+                        <>
+                            <Check className="h-4 w-4 text-green-500" />
+                            <span>Saved {new Date(lastSaved).toLocaleTimeString()}</span>
+                        </>
+                    )}
+                </div>
+                <div className="flex gap-2">
+                    <Button type="button" variant="outline" onClick={() => onCancel?.()}>
+                        Cancel
+                    </Button>
+                    <Button type="submit">{goal ? 'Update Goal' : 'Create Goal'}</Button>
+                </div>
             </div>
         </form>
     );
