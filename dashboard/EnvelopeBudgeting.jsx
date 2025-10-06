@@ -25,6 +25,23 @@ const CATEGORY_COLORS = {
     // "Entertainment": "bg-yellow-100 text-yellow-800",
 };
 
+/**
+ * Envelope Budgeting Component
+ * Implements zero-based budgeting where income is allocated to spending categories
+ * Features:
+ * - Manual allocation to categories
+ * - Auto-allocation based on spending patterns
+ * - AI-powered optimization suggestions
+ * - Visual progress tracking
+ * - Input validation (min: $0, max: $1,000,000)
+ * 
+ * @param {Object} props
+ * @param {Array<Object>} props.budgets - Array of budget objects
+ * @param {Array<Object>} props.transactions - Array of transaction objects
+ * @param {number} props.income - Total monthly income
+ * @param {Function} props.refreshData - Callback to refresh data
+ * @returns {JSX.Element} Envelope budgeting interface
+ */
 function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
     const [envelopes, setEnvelopes] = useLocalStorage('envelope-allocations', {});
     const [isOptimizing, setIsOptimizing] = useState(false);
@@ -118,12 +135,62 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
         }
     }, [envelopeCategories, income, totalAllocated, remainingToAllocate, toast]); // Removed AgentTask, agentSDK from deps
 
+    /**
+     * Handle allocation with validation
+     * Prevents negative values, very large numbers, and invalid input
+     */
     const handleAllocate = useCallback((category, amount) => {
+        // Parse and validate the input
+        const parsedAmount = parseFloat(amount);
+        
+        // Empty input - allow it (represents 0)
+        if (amount === '' || amount === null || amount === undefined) {
+            setEnvelopes(prev => ({
+                ...prev,
+                [category]: 0
+            }));
+            return;
+        }
+        
+        // Validate: must be a valid number
+        if (isNaN(parsedAmount)) {
+            toast({
+                title: "Invalid Amount",
+                description: "Please enter a valid number.",
+                variant: "destructive",
+            });
+            return;
+        }
+        
+        // Validate: must be non-negative
+        if (parsedAmount < 0) {
+            toast({
+                title: "Invalid Amount",
+                description: "Allocation amount cannot be negative.",
+                variant: "destructive",
+            });
+            return;
+        }
+        
+        // Validate: must not exceed reasonable limit (e.g., $1 million)
+        const MAX_ALLOCATION = 1000000;
+        if (parsedAmount > MAX_ALLOCATION) {
+            toast({
+                title: "Amount Too Large",
+                description: `Maximum allocation is ${formatCurrency(MAX_ALLOCATION)}.`,
+                variant: "destructive",
+            });
+            return;
+        }
+        
+        // Round to 2 decimal places for currency
+        const roundedAmount = Math.round(parsedAmount * 100) / 100;
+        
         setEnvelopes(prev => ({
             ...prev,
-            [category]: parseFloat(amount) || 0
+            [category]: roundedAmount
         }));
-    }, [setEnvelopes]);
+    }, [setEnvelopes, toast]);
 
     const autoAllocate = useCallback(() => {
         if (!income || income <= 0) {
@@ -264,6 +331,9 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
                                                 onChange={(e) => handleAllocate(envelope.category, e.target.value)}
                                                 className="w-28 text-right text-base font-medium"
                                                 step="0.01"
+                                                min="0"
+                                                max="1000000"
+                                                aria-label={`Allocate budget for ${envelope.category}`}
                                             />
                                         </div>
                                     </div>

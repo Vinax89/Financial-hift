@@ -8,6 +8,13 @@ import { format, endOfWeek, eachWeekOfInterval, subWeeks, startOfWeek } from 'da
 import { ThemedCard } from '../ui/enhanced-components';
 import { ChartLoading } from '../ui/loading';
 
+/**
+ * Risk Badge Component
+ * Displays burnout risk level with appropriate color coding
+ * @param {Object} props
+ * @param {'Low'|'Moderate'|'High'|'Extreme'} props.level - Risk level
+ * @returns {JSX.Element}
+ */
 const RiskBadge = ({ level }) => {
     const config = {
         'Low': 'success',
@@ -18,36 +25,62 @@ const RiskBadge = ({ level }) => {
     return <Badge variant={config[level] || 'default'}>{level}</Badge>;
 }
 
+/**
+ * Burnout Risk Analyzer Component
+ * Analyzes work patterns to assess burnout risk based on:
+ * - Weekly hours worked
+ * - Number of night shifts
+ * - Consecutive days worked
+ * - Number of shifts per week
+ * 
+ * @param {Object} props
+ * @param {Array<Object>} props.shifts - Array of shift objects with start_datetime, actual_hours, tags
+ * @returns {JSX.Element} Burnout analysis dashboard with risk level and recommendations
+ */
 export default function BurnoutAnalyzer({ shifts }) {
-    // BUG-001 FIX: Use full date comparison instead of just day of month
+    /**
+     * Calculate maximum consecutive days worked
+     * @param {Array} weekShifts - Array of shift objects with start_datetime
+     * @returns {number} Maximum number of consecutive days worked
+     */
     const calculateConsecutiveDays = (weekShifts) => {
         if (weekShifts.length === 0) return 0;
         
-        // Get unique dates (YYYY-MM-DD format) and sort chronologically
+        // Extract unique dates in YYYY-MM-DD format and sort chronologically
         const shiftDates = [...new Set(
-            weekShifts.map(shift => new Date(shift.start_datetime).toISOString().split('T')[0])
+            weekShifts.map(shift => {
+                const date = new Date(shift.start_datetime);
+                // Ensure valid date
+                if (isNaN(date.getTime())) return null;
+                return date.toISOString().split('T')[0];
+            }).filter(Boolean) // Remove null values
         )].sort();
         
         if (shiftDates.length === 0) return 0;
+        if (shiftDates.length === 1) return 1;
         
-        let maxConsecutive = 0, currentConsecutive = 1;
+        let maxConsecutive = 1;
+        let currentConsecutive = 1;
         
         for (let i = 1; i < shiftDates.length; i++) {
             const prevDate = new Date(shiftDates[i - 1]);
             const currentDate = new Date(shiftDates[i]);
-            const diffDays = Math.round((currentDate - prevDate) / (1000 * 60 * 60 * 24));
+            
+            // Calculate difference in days (using UTC to avoid DST issues)
+            const diffMs = currentDate.getTime() - prevDate.getTime();
+            const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
             
             if (diffDays === 1) {
                 // Consecutive day
                 currentConsecutive++;
+                maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
             } else {
                 // Non-consecutive, reset counter
-                maxConsecutive = Math.max(maxConsecutive, currentConsecutive);
                 currentConsecutive = 1;
             }
         }
         
-        return Math.max(maxConsecutive, currentConsecutive);
+        return maxConsecutive;
     };
 
     const burnoutMetrics = useMemo(() => {

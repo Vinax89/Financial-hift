@@ -10,7 +10,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
-    setupFiles: './src/test/setup.js',
+    setupFiles: './__tests__/setup.js',
     css: true,
     testTimeout: 10000,
     mockReset: true,

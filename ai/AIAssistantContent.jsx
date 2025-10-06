@@ -14,6 +14,8 @@ import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { useToast } from '@/ui/use-toast.jsx';
 import { useFinancialData } from '@/hooks/useFinancialData.jsx';
 import { InvokeLLM } from '@/api/integrations';
+import { logError, sanitizeError } from '@/utils/errorLogging';
+import { useRateLimit, formatRetryTime } from '@/utils/rateLimiting';
 
 const QUICK_PROMPTS = [
   "Analyze my spending from last month.",
@@ -40,6 +42,20 @@ export default function AIAssistantContent() {
 
   const { toast } = useToast();
   const { transactions, shifts, bills, goals } = useFinancialData();
+  
+  // Rate limiting: 5 AI chat requests per minute
+  const chatRateLimit = useRateLimit({
+    maxRequests: 5,
+    windowMs: 60000,
+    identifier: 'ai-chat'
+  });
+  
+  // Rate limiting: 10 agent tasks per minute
+  const agentRateLimit = useRateLimit({
+    maxRequests: 10,
+    windowMs: 60000,
+    identifier: 'agent-tasks'
+  });
 
   // Load agent tasks
   const loadAgentTasks = useCallback(async () => {
@@ -48,9 +64,11 @@ export default function AIAssistantContent() {
       const tasks = await AgentTask.list('-created_date', 50);
       setAgentTasks(tasks);
     } catch (error) {
+      const sanitized = sanitizeError(error);
+      logError(error, { component: 'AIAssistantContent', action: 'load_agent_tasks' });
       toast({
         title: 'Failed to load agent tasks',
-        description: error.message,
+        description: sanitized.userMessage,
         variant: 'destructive'
       });
     }
@@ -73,6 +91,19 @@ export default function AIAssistantContent() {
   // AI Advisor message handler
   const handleSendMessage = async (message = input) => {
     if (!message.trim() || isLoading) return;
+
+    // Check rate limit
+    if (!chatRateLimit.canMakeRequest()) {
+      const retryAfter = chatRateLimit.getRetryAfter();
+      const remaining = chatRateLimit.getRemainingRequests();
+      
+      toast({
+        title: 'Rate Limit Reached',
+        description: `Please wait ${formatRetryTime(retryAfter)} before sending another message. (${remaining}/5 requests remaining)`,
+        variant: 'destructive'
+      });
+      return;
+    }
 
     const userMessage = { role: 'user', content: message };
     setMessages(prev => [...prev, userMessage]);
@@ -99,6 +130,9 @@ export default function AIAssistantContent() {
       };
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
+      const sanitized = sanitizeError(error);
+      logError(error, { component: 'AIAssistantContent', action: 'ai_chat', prompt: message });
+      
       const errorMessage = {
         role: 'assistant',
         content: 'I encountered an error while processing your request. Please try again later.'
@@ -106,7 +140,7 @@ export default function AIAssistantContent() {
       setMessages(prev => [...prev, errorMessage]);
       toast({
         title: 'Failed to get AI response',
-        description: error.message,
+        description: sanitized.userMessage,
         variant: 'destructive'
       });
     }
@@ -116,6 +150,19 @@ export default function AIAssistantContent() {
   // Agent task handler
   const handleRunAgent = async () => {
     if (!agentInput.trim() || agentLoading) return;
+
+    // Check rate limit
+    if (!agentRateLimit.canMakeRequest()) {
+      const retryAfter = agentRateLimit.getRetryAfter();
+      const remaining = agentRateLimit.getRemainingRequests();
+      
+      toast({
+        title: 'Rate Limit Reached',
+        description: `Please wait ${formatRetryTime(retryAfter)} before creating another agent task. (${remaining}/10 requests remaining)`,
+        variant: 'destructive'
+      });
+      return;
+    }
 
     setAgentLoading(true);
     try {
@@ -139,14 +186,16 @@ export default function AIAssistantContent() {
           });
           await loadAgentTasks();
         } catch (error) {
-          console.error('Failed to update task status:', error);
+          logError(error, { component: 'AIAssistantContent', action: 'update_agent_task', taskId: task.id });
         }
       }, 3000);
 
     } catch (error) {
+      const sanitized = sanitizeError(error);
+      logError(error, { component: 'AIAssistantContent', action: 'create_agent_task', agent: selectedAgent });
       toast({
         title: 'Failed to create agent task',
-        description: error.message,
+        description: sanitized.userMessage,
         variant: 'destructive'
       });
     }

@@ -7,12 +7,40 @@ import { InvokeLLM } from '@/api/integrations';
 import { Sparkles, Brain, TrendingUp, AlertTriangle, Loader2, MessageSquare } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { formatCurrency } from '../utils/calculations';
+import { logError, sanitizeError } from '@/utils/errorLogging';
+import { useRateLimit, formatRetryTime } from '@/utils/rateLimiting';
 
+/**
+ * AI Financial Advisor Panel
+ * Provides AI-powered financial analysis and recommendations
+ * Features:
+ * - Financial health assessment
+ * - Debt payoff strategy generation
+ * - Savings optimization
+ * - Shift work financial advice
+ * - Custom financial Q&A
+ * - Rate limiting: 5 requests per minute
+ * - Secure error handling with no data leakage
+ * 
+ * @param {Object} props
+ * @param {Array<Object>} props.transactions - User's transaction history
+ * @param {Array<Object>} props.debts - User's debt accounts
+ * @param {Array<Object>} props.goals - User's financial goals
+ * @param {Object} props.metrics - Financial metrics (income, expenses, savings rate, etc.)
+ * @returns {JSX.Element} AI advisor interface with service cards
+ */
 export default function AIAdvisorPanel({ transactions, debts, goals, metrics }) {
     const [activeService, setActiveService] = useState(null);
     const [results, setResults] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [customQuestion, setCustomQuestion] = useState('');
+    
+    // Rate limiting: 5 AI requests per minute
+    const { canMakeRequest, getRemainingRequests, getRetryAfter } = useRateLimit({
+        maxRequests: 5,
+        windowMs: 60000,
+        identifier: 'ai-advisor'
+    });
 
     const aiServices = [
         {
@@ -54,6 +82,17 @@ export default function AIAdvisorPanel({ transactions, debts, goals, metrics }) 
 
     const handleServiceClick = async (serviceId) => {
         if (isLoading) return;
+
+        // Check rate limit
+        if (!canMakeRequest()) {
+            const retryAfter = getRetryAfter();
+            const remaining = getRemainingRequests();
+            setResults(prev => ({ 
+                ...prev, 
+                [serviceId]: `⚠️ **Rate Limit Reached**\n\nYou've reached the limit of 5 AI requests per minute. Please wait ${formatRetryTime(retryAfter)} before trying again.\n\nRemaining requests: ${remaining}/5` 
+            }));
+            return;
+        }
 
         setActiveService(serviceId);
         setIsLoading(true);
@@ -166,11 +205,23 @@ export default function AIAdvisorPanel({ transactions, debts, goals, metrics }) 
             const response = await InvokeLLM({ prompt });
             setResults(prev => ({ ...prev, [serviceId]: response }));
         } catch (error) {
+            // Sanitize error for user display - don't expose sensitive details
+            const sanitized = sanitizeError(error, {
+                fallbackMessage: 'Unable to generate AI advice at this time.'
+            });
+            
+            // Log full error details securely (development only)
+            logError(error, {
+                component: 'AIAdvisorPanel',
+                service: serviceId,
+                action: 'invoke_llm'
+            });
+            
+            // Show user-friendly message only
             setResults(prev => ({ 
                 ...prev, 
-                [serviceId]: 'Sorry, there was an error generating advice. Please try again.' 
+                [serviceId]: `Sorry, ${sanitized.userMessage} Please try again later.` 
             }));
-            console.error('AI Advisor error:', error);
         } finally {
             setIsLoading(false);
         }

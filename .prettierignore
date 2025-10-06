@@ -1,0 +1,13 @@
+node_modules
+dist
+build
+.vite
+coverage
+*.min.js
+package-lock.json
+.husky
+__tests__/coverage
+*.log
+.env
+.env.local
+.DS_Store
