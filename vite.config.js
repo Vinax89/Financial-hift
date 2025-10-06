@@ -1,62 +1,102 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
+/**
+ * @fileoverview Vite configuration for Financial $hift application
+ * @description Optimized build configuration with code splitting, minification,
+ * and performance enhancements for production deployment
+ */
 
-// Fix for ES module: __dirname is not available in ES modules
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-// https://vite.dev/config/
+// ES Module compatibility: __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+/**
+ * Vite configuration
+ * @see https://vite.dev/config/
+ */
 export default defineConfig({
   plugins: [react()],
+  
   server: {
-    allowedHosts: true
+    // Allow connections from any host (useful for Docker/VM development)
+    host: true,
+    port: 5173,
+    strictPort: false,
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '.'),
     },
-    extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
+    extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
   },
+  
   optimizeDeps: {
     esbuildOptions: {
+      // Treat .js files as JSX for proper parsing
       loader: {
         '.js': 'jsx',
       },
     },
   },
+  
   build: {
-    // Enable code splitting
+    // Optimize bundle size with strategic code splitting
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vendor chunks for better caching
+          // Core React libraries (changes infrequently, cache-friendly)
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'radix-ui': Object.keys(require('./package.json').dependencies).filter(
-            key => key.startsWith('@radix-ui')
-          ),
+          
+          // Radix UI components (large dependency group)
+          'radix-ui': [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-label',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-select',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-tooltip',
+          ],
+          
+          // Chart library (used primarily in analytics)
           'charts': ['recharts'],
+          
+          // Utility libraries (date handling, validation, styling)
           'utils': ['date-fns', 'zod', 'clsx', 'tailwind-merge'],
         },
       },
     },
-    // Increase chunk size warning limit for better split
+    
+    // Chunk size configuration
     chunkSizeWarningLimit: 1000,
-    // Enable source maps for production debugging
+    
+    // Enable source maps for production debugging (disable if concerned about size)
     sourcemap: true,
-    // Minify for production
+    
+    // Minification with Terser
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console.logs in production
-        drop_debugger: true,
+        drop_console: true,   // Remove console.logs in production
+        drop_debugger: true,  // Remove debugger statements
+        pure_funcs: ['console.log', 'console.info'], // Remove specific console methods
       },
     },
   },
-  // Performance optimizations
+  
+  // ESBuild performance optimizations
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
   },
-}) 
+}); 

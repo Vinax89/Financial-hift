@@ -1,5 +1,19 @@
+/**
+ * @fileoverview LocalStorage hook with SSR support and sync across tabs
+ * @description Provides persistent state management using localStorage
+ * with automatic JSON serialization and cross-tab synchronization
+ */
+
 import { useState, useEffect } from 'react';
 
+/**
+ * Persist state to localStorage with cross-tab sync
+ * @param {string} key - LocalStorage key
+ * @param {*} initialValue - Initial value if key doesn't exist
+ * @returns {[*, Function]} Tuple of [value, setValue]
+ * @example
+ * const [theme, setTheme] = useLocalStorage('theme', 'dark');
+ */
 export function useLocalStorage(key, initialValue) {
     const [storedValue, setStoredValue] = useState(() => {
         try {
@@ -15,7 +29,9 @@ export function useLocalStorage(key, initialValue) {
                 return item;
             }
         } catch (error) {
-            console.warn(`Error reading localStorage key "${key}":`, error);
+            if (import.meta.env.DEV) {
+                console.warn(`Error reading localStorage key "${key}":`, error);
+            }
             return initialValue;
         }
     });
@@ -27,7 +43,9 @@ export function useLocalStorage(key, initialValue) {
                 window.localStorage.setItem(key, JSON.stringify(value));
             }
         } catch (error) {
-            console.warn(`Error setting localStorage key "${key}":`, error);
+            if (import.meta.env.DEV) {
+                console.warn(`Error setting localStorage key "${key}":`, error);
+            }
         }
     };
 
@@ -43,7 +61,9 @@ export function useLocalStorage(key, initialValue) {
                         setStoredValue(e.newValue);
                     }
                 } catch (error) {
-                    console.warn(`Error parsing localStorage key "${key}":`, error);
+                    if (import.meta.env.DEV) {
+                        console.warn(`Error parsing localStorage key "${key}":`, error);
+                    }
                 }
             }
         };

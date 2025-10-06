@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Comprehensive financial data management hook
+ * @description Provides unified interface for fetching, caching, and managing
+ * all financial entities with retry logic, offline support, and chaos testing
+ */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Transaction } from '@/api/entities';
@@ -24,6 +29,26 @@ const ENTITIES = {
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const STORAGE_PREFIX = 'apex-finance:snapshot:';
 
+/**
+ * Unified hook for managing all financial data
+ * @returns {Object} Financial data and control methods
+ * @property {Array} transactions - All transactions
+ * @property {Array} shifts - All shifts
+ * @property {Array} goals - All goals
+ * @property {Array} debts - All debt accounts
+ * @property {Array} budgets - All budgets
+ * @property {Array} bills - All bills
+ * @property {Array} investments - All investments
+ * @property {Object} loading - Loading states per entity
+ * @property {boolean} isLoading - Overall loading state
+ * @property {Object} errors - Error states per entity
+ * @property {boolean} hasErrors - Whether any errors exist
+ * @property {Function} loadAllData - Load all entities
+ * @property {Function} refreshData - Refresh specific or all entities
+ * @property {Function} clearError - Clear error for specific entity
+ * @property {boolean} dataLoaded - Whether initial load complete
+ * @property {Object} cacheInfo - Cache metadata
+ */
 export function useFinancialData() {
     const [data, setData] = useState(() => 
         Object.keys(ENTITIES).reduce((acc, key) => ({ ...acc, [key]: [] }), {})

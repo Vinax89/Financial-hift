@@ -1,7 +1,26 @@
-/** @type {import('tailwindcss').Config} */
+/**
+ * @fileoverview Tailwind CSS configuration for Financial $hift
+ * @description Custom theme with shadcn/ui design tokens, dark mode support,
+ * and extended color palette for charts and sidebar components
+ * @type {import('tailwindcss').Config}
+ */
+
 module.exports = {
     darkMode: ["class"],
-    content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+    content: [
+      "./index.html",
+      "./*.{js,jsx}",
+      "./dashboard/**/*.{js,jsx}",
+      "./analytics/**/*.{js,jsx}",
+      "./budget/**/*.{js,jsx}",
+      "./calendar/**/*.{js,jsx}",
+      "./debt/**/*.{js,jsx}",
+      "./goals/**/*.{js,jsx}",
+      "./transactions/**/*.{js,jsx}",
+      "./ui/**/*.{js,jsx}",
+      "./components/**/*.{js,jsx}",
+      "./shared/**/*.{js,jsx}",
+    ],
   theme: {
   	extend: {
   		borderRadius: {

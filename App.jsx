@@ -1,12 +1,23 @@
-import './App.css'
-import Pages from "@/pages/index.jsx"
-import { Toaster } from "@/ui/toaster.jsx"
-import { ReactQueryProvider } from "@/providers/ReactQueryProvider.jsx"
-import ErrorBoundary from "@/ui/ErrorBoundary.jsx"
-import { useEffect } from 'react'
-import { initializePerformanceMonitoring } from '@/utils/monitoring'
-import { initializeAccessibility } from '@/utils/accessibility'
+/**
+ * @fileoverview Root application component for Financial $hift
+ * @description Main app wrapper with performance monitoring, accessibility features,
+ * error boundaries, and React Query provider integration
+ */
 
+import './App.css';
+import Pages from '@/pages/index.jsx';
+import { Toaster } from '@/ui/toaster.jsx';
+import { ReactQueryProvider } from '@/providers/ReactQueryProvider.jsx';
+import ErrorBoundary from '@/ui/ErrorBoundary.jsx';
+import { useEffect } from 'react';
+import { initializePerformanceMonitoring } from '@/utils/monitoring';
+import { initializeAccessibility } from '@/utils/accessibility';
+
+/**
+ * Root application component
+ * @component
+ * @returns {JSX.Element} The application root with all providers and monitoring
+ */
 function App() {
   // Initialize performance monitoring and accessibility on app mount
   useEffect(() => {
@@ -17,7 +28,10 @@ function App() {
       // Initialize accessibility features (WCAG 2.1 AA compliance)
       initializeAccessibility();
       
-      console.log('✅ Performance monitoring and accessibility initialized');
+      // Only log in development
+      if (import.meta.env.DEV) {
+        console.log('✅ Performance monitoring and accessibility initialized');
+      }
     }
   }, []);
 
@@ -28,7 +42,7 @@ function App() {
         <Toaster />
       </ReactQueryProvider>
     </ErrorBoundary>
-  )
+  );
 }
 
-export default App 
+export default App; 

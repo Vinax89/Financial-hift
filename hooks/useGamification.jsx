@@ -1,3 +1,16 @@
+/**
+ * @fileoverview Gamification system hook for Financial $hift
+ * @description Manages XP, levels, badges, and achievement tracking
+ * to encourage use                await awardBadge('LEVEL_25');
+            }
+        } catch (error) {
+            if (import.meta.env.DEV) {
+                console.error('Failed to award XP:', error);
+            }
+        }
+    }, [gameState, toast, awardBadge]);gement and financial progress
+ */
+
 import { useState, useEffect, useCallback } from 'react';
 import { Gamification } from '@/api/entities';
 import { User } from '@/api/entities';
@@ -22,6 +35,36 @@ const BADGES = {
     PLANNER: { name: 'Planner', description: 'Ran debt payoff scenarios' }
 };
 
+/**
+ * Gamification hook for XP, levels, and badges
+ * @returns {Object} Gamification state and methods
+ * @property {Object|null} gameState - Current game state (xp, level, badges)
+ * @property {boolean} isLoading - Whether game state is loading
+ * @property {Function} awardXp - Award XP to user
+ * @property {Function} awardBadge - Award badge to user
+ * @property {Function} trackAction - Track action and award appropriate XP/badges
+ * @property {Function} getProgress - Get level progress information
+ * @property {Object} allBadges - All available badges
+ * @property {number} xpPerLevel - XP required per level
+ */
+const useGamification = () => {
+    const [gameState, setGameState] = useState(null);
+
+/**
+ * Gamification hook for XP, levels, and badges
+ * @returns {Object} Gamification state and methods
+ * @property {Object|null} gameState - Current game state (xp, level, badges)
+ * @property {boolean} isLoading - Whether game state is loading
+ * @property {Function} awardXp - Award XP to user
+ * @property {Function} awardBadge - Award badge to user
+ * @property {Function} trackAction - Track action and award appropriate XP/badges
+ * @property {Function} getProgress - Get level progress information
+ * @property {Object} allBadges - All available badges
+ * @property {number} xpPerLevel - XP required per level
+ * @example
+ * const { trackAction, getProgress } = useGamification();
+ * await trackAction('transaction_added');
+ */
 const useGamification = () => {
     const [gameState, setGameState] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -50,7 +93,9 @@ const useGamification = () => {
                 setGameState(created);
             }
         } catch (error) {
-            console.error('Failed to fetch game state:', error);
+            if (import.meta.env.DEV) {
+                console.error('Failed to fetch game state:', error);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -82,7 +127,16 @@ const useGamification = () => {
                 description: `You've earned the "${badge.name}" badge: ${badge.description}`,
             });
         } catch (error) {
-            console.error('Failed to award badge:', error);
+            if (import.meta.env.DEV) {
+                console.error('Failed to award badge:', error);
+            }
+        }
+    }, [gameState, toast]);
+            });
+        } catch (error) {
+            if (import.meta.env.DEV) {
+                console.error('Failed to award badge:', error);
+            }
         }
     }, [gameState, toast]);
 

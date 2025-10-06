@@ -1,8 +1,30 @@
+/**
+ * @fileoverview Authentication guard component for Financial $hift
+ * @description Protects routes by checking user authentication status,
+ * displays loading and error states appropriately
+ */
+
 import React, { useState, useEffect } from 'react';
 import { User } from '@/api/entities';
-import { Card, CardContent } from "@/ui/card.jsx";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Card, CardContent } from '@/ui/card.jsx';
+import { Loader2, AlertCircle } from 'lucide-react';
 
+/**
+ * Authentication state type definition
+ * @typedef {Object} AuthState
+ * @property {boolean} isLoading - Whether auth check is in progress
+ * @property {boolean} isAuthenticated - Whether user is authenticated
+ * @property {Object|null} user - User object if authenticated
+ * @property {string|null} error - Error message if auth failed
+ */
+
+/**
+ * Authentication Guard Component
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Protected content to render when authenticated
+ * @returns {JSX.Element} Loading state, error state, or protected children
+ */
 export default function AuthGuard({ children }) {
     const [authState, setAuthState] = useState({ 
         isLoading: true, 
