@@ -2,13 +2,22 @@
 export const sanitizeInput = (input) => {
     if (typeof input !== 'string') return input;
     
-    return input
-        .replace(/[<>]/g, '') // Remove potential HTML tags
-        .replace(/javascript:/gi, '') // Remove javascript protocols
-        .replace(/data:/gi, '') // Remove data protocols
-        .replace(/vbscript:/gi, '') // Remove vbscript protocols
-        .replace(/on\w+=/gi, '') // Remove event handlers
-        .trim();
+    let sanitized = input.replace(/[<>]/g, ''); // Remove potential HTML tags
+
+    // Remove javascript: protocols (repeat for full sanitization)
+    let prev;
+    do {
+        prev = sanitized;
+        sanitized = sanitized.replace(/javascript:/gi, '');
+    } while (sanitized !== prev);
+
+    // Remove event handlers (repeat for full sanitization)
+    do {
+        prev = sanitized;
+        sanitized = sanitized.replace(/on\w+=/gi, '');
+    } while (sanitized !== prev);
+
+    return sanitized.trim();
 };
 
 export const validateEmail = (email) => {
