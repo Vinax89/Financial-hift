@@ -3,12 +3,12 @@
  * @description Optimized build configuration with code splitting, minification,
  * and performance enhancements for production deployment
  */
-
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { readFileSync } from 'fs';
 
 // ES Module compatibility: __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -50,25 +50,9 @@ export default defineConfig({
         manualChunks: {
           // Core React libraries (changes infrequently, cache-friendly)
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          
-          // Radix UI components (large dependency group)
-          'radix-ui': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-avatar',
-            '@radix-ui/react-checkbox',
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-label',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-progress',
-            '@radix-ui/react-select',
-            '@radix-ui/react-slider',
-            '@radix-ui/react-switch',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-tooltip',
-          ],
-          
+          'radix-ui': Object.keys(JSON.parse(readFileSync('./package.json', 'utf-8')).dependencies).filter(
+            key => key.startsWith('@radix-ui')
+          ),
           // Chart library (used primarily in analytics)
           'charts': ['recharts'],
           
@@ -99,4 +83,4 @@ export default defineConfig({
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
   },
-}); 
+})
