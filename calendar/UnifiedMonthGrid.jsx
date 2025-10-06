@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Unified month grid component for calendar display
+ * @description Feature-rich calendar grid with event density, net chips, and interactive day sheets
+ */
+
 import React from "react";
 import { Badge } from "@/ui/badge.jsx";
 import { Button } from "@/ui/button.jsx";
@@ -6,7 +11,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { format, isSameDay } from "date-fns";
 import { Plus, Check, MoreHorizontal, DollarSign } from "lucide-react";
 
-// Visual tags for event types (uses app theme utility classes already used elsewhere)
+/**
+ * Event type color styles
+ * @type {Object.<string, string>}
+ */
 const TYPE_STYLES = {
   shift: "bg-income",
   bill: "bg-expense",
@@ -18,11 +26,21 @@ const TYPE_STYLES = {
   expense: "bg-expense",
 };
 
+/**
+ * Generate day key for date
+ * @param {Date} date - Date to convert
+ * @returns {string} Day key in yyyy-MM-dd format
+ */
 function dayKey(date) {
   return format(date, "yyyy-MM-dd");
 }
 
-// Normalize week items to objects { date: Date, inMonth: boolean }
+/**
+ * Normalize week day item to consistent format
+ * @param {Date|Object} item - Day item to normalize
+ * @param {number} currentMonthIndex - Current month index
+ * @returns {{date: Date, inMonth: boolean}} Normalized day object
+ */
 function normalizeDay(item, currentMonthIndex) {
   if (item && item.date instanceof Date) {
     return { date: item.date, inMonth: typeof item.inMonth === "boolean" ? item.inMonth : item.date.getMonth() === currentMonthIndex };
@@ -35,6 +53,11 @@ function normalizeDay(item, currentMonthIndex) {
   return { date: d, inMonth: d.getMonth() === currentMonthIndex };
 }
 
+/**
+ * Single day cell component with events and net chip
+ * @param {Object} props - Component props
+ * @returns {JSX.Element} Day cell
+ */
 const DayCell = React.memo(function DayCell({
   date,
   inMonth,
@@ -152,6 +175,14 @@ const DayCell = React.memo(function DayCell({
   );
 });
 
+/**
+ * Event row component for day sheet
+ * @param {Object} props - Component props
+ * @param {Object} props.ev - Event data
+ * @param {Function} props.onAction - Action handler
+ * @param {boolean} props.isHighlighted - Whether event is highlighted
+ * @returns {JSX.Element} Event row
+ */
 function EventRow({ ev, onAction, isHighlighted }) {
   return (
     <div
@@ -201,7 +232,20 @@ function EventRow({ ev, onAction, isHighlighted }) {
   );
 }
 
-export default function UnifiedMonthGrid({
+/**
+ * Unified month grid component with interactive calendar
+ * @param {Object} props - Component props
+ * @param {Array<Array>} props.weeks - Calendar weeks structure
+ * @param {Array<Object>} [props.events=[]] - Calendar events
+ * @param {Map} [props.eventsByDate] - Pre-mapped events by date
+ * @param {boolean} [props.showNetChips] - Show net chips
+ * @param {boolean} [props.compactMode] - Compact cell mode
+ * @param {boolean} [props.highlightToday] - Highlight today
+ * @param {Function} props.onQuickAdd - Quick add handler
+ * @param {Function} props.onEventAction - Event action handler
+ * @returns {JSX.Element} Calendar grid with day sheets
+ */
+function UnifiedMonthGrid({
   weeks,
   events = [],
   eventsByDate = null,
@@ -358,3 +402,5 @@ export default function UnifiedMonthGrid({
     </div>
   );
 }
+
+export default React.memo(UnifiedMonthGrid);

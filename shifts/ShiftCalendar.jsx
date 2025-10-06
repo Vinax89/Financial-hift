@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Shift calendar component displaying monthly shift schedule
+ * @description Calendar grid view showing shifts by day with click-to-edit functionality
+ */
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
@@ -6,12 +11,26 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, getDay,
 import { Skeleton } from '@/ui/skeleton.jsx';
 import { cn } from '@/lib/utils';
 
+/**
+ * Week day abbreviations
+ * @type {string[]}
+ */
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+/**
+ * Format datetime as time string
+ * @param {string|Date} datetime - Datetime to format
+ * @returns {string} Formatted time
+ */
 const formatTime = (datetime) => {
     return format(new Date(datetime), 'HH:mm');
 };
 
+/**
+ * Format amount as USD currency (no decimals)
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -21,13 +40,27 @@ const formatCurrency = (amount) => {
     }).format(amount);
 };
 
-export default function ShiftCalendar({ shifts, onEdit, onSelectDate, isLoading }) {
+/**
+ * Shift calendar component showing monthly schedule
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.shifts - List of shifts
+ * @param {Function} props.onEdit - Edit shift handler
+ * @param {Function} props.onSelectDate - Date selection handler
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element} Calendar grid
+ */
+function ShiftCalendar({ shifts, onEdit, onSelectDate, isLoading }) {
     const currentDate = new Date();
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(currentDate);
     const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
     const firstDayOfMonth = getDay(monthStart);
 
+    /**
+     * Get all shifts for a specific day
+     * @param {Date} day - Day to check
+     * @returns {Array<Object>} Shifts on that day
+     */
     const getDayShifts = (day) => {
         return shifts.filter(shift => 
             isSameDay(new Date(shift.start_datetime), day)
@@ -117,3 +150,5 @@ export default function ShiftCalendar({ shifts, onEdit, onSelectDate, isLoading 
         </Card>
     );
 }
+
+export default React.memo(ShiftCalendar);

@@ -1,16 +1,24 @@
+/**
+ * @fileoverview BNPL (Buy Now Pay Later) summary component
+ * @description Displays summary cards for active BNPL plans, total owed, and next payments
+ */
 
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { formatCurrency } from '../utils/calculations';
 import { Skeleton } from '@/ui/skeleton.jsx';
 
-// Note: Lucide icons (CreditCard, Calendar, DollarSign, AlertTriangle) and date-fns 'format'
-// have been removed from imports as per the provided outline's import section.
-// This means the summary cards will no longer display icons, and date formatting
-// will use native JavaScript Date methods. The 'Due This Week' card has been removed
-// due to the corresponding icon import being omitted.
-
-export default function BNPLSummary({ plans, isLoading }) {
+/**
+ * BNPL summary component with statistics cards
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.plans - BNPL payment plans
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element} Summary cards grid
+ */
+function BNPLSummary({ plans, isLoading }) {
+    /**
+     * Calculate BNPL summary statistics
+     */
     const summary = useMemo(() => {
         const activePlans = plans.filter(p => p.status === 'active');
         const totalOwed = activePlans.reduce((sum, p) => sum + (p.installment_amount * p.remaining_installments), 0);
@@ -42,8 +50,6 @@ export default function BNPLSummary({ plans, isLoading }) {
 
     const { summaryCards } = summary;
 
-    // To stabilize layout and eliminate "bobbing", the loading state renders
-    // a structure identical to the non-loading state, but with skeleton components.
     if (isLoading) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -55,6 +61,11 @@ export default function BNPLSummary({ plans, isLoading }) {
         );
     }
 
+    /**
+     * Get color class for value based on card title
+     * @param {string} title - Card title
+     * @returns {string} Tailwind color class
+     */
     const valueColor = (title) => {
         if (title === "Total Owed") return "text-destructive";
         if (title === "Active Plans") return "text-primary";
@@ -83,8 +94,10 @@ export default function BNPLSummary({ plans, isLoading }) {
     );
 }
 
-// StatCardSkeleton now renders a full Card component to maintain layout stability
-// and match the structure of the actual summary cards.
+/**
+ * Skeleton for BNPL summary card during loading
+ * @returns {JSX.Element} Card skeleton
+ */
 function StatCardSkeleton() {
     return (
         <Card className="border-0 shadow-lg bg-card backdrop-blur-sm">
@@ -101,4 +114,4 @@ function StatCardSkeleton() {
     );
 }
 
-// The placeholder function StatCard has been removed as it was not provided with an implementation.
+export default React.memo(BNPLSummary);

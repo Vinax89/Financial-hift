@@ -1,9 +1,20 @@
+/**
+ * @fileoverview Calendar export menu component for CSV and ICS formats
+ * @description Provides export functionality for calendar events
+ */
+
 import React from "react";
 import { Button } from "@/ui/button.jsx";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu.jsx";
 import { Download } from "lucide-react";
 import { format } from "date-fns";
 
+/**
+ * Download a file to the user's computer
+ * @param {string} filename - Filename for download
+ * @param {string} text - File content
+ * @param {string} [mime] - MIME type
+ */
 function download(filename, text, mime = "text/plain;charset=utf-8") {
   const blob = new Blob([text], { type: mime });
   const url = URL.createObjectURL(blob);
@@ -16,6 +27,11 @@ function download(filename, text, mime = "text/plain;charset=utf-8") {
   URL.revokeObjectURL(url);
 }
 
+/**
+ * Convert events to CSV format
+ * @param {Array<Object>} events - Calendar events
+ * @returns {string} CSV string
+ */
 function toCsv(events) {
   const headers = ["date", "type", "title", "amount", "subtitle"];
   const rows = (events || []).map((e) => [
@@ -28,7 +44,18 @@ function toCsv(events) {
   return [headers.join(","), ...rows.map((r) => r.map((v) => `"${v}"`).join(","))].join("\n");
 }
 
+/**
+ * Pad number for ICS date format
+ * @param {number} n - Number to pad
+ * @returns {string} Padded string
+ */
 function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+/**
+ * Convert date to ICS format (YYYYMMDD)
+ * @param {Date} d - Date to convert
+ * @returns {string} ICS date string
+ */
 function toICSDate(d) {
   return (
     d.getUTCFullYear().toString() +
@@ -37,6 +64,12 @@ function toICSDate(d) {
   );
 }
 
+/**
+ * Convert events to ICS (iCalendar) format
+ * @param {Array<Object>} events - Calendar events
+ * @param {string} [calName] - Calendar name
+ * @returns {string} ICS string
+ */
 function toIcs(events, calName = "Unified Calendar") {
   const lines = [
     "BEGIN:VCALENDAR",
@@ -63,11 +96,26 @@ function toIcs(events, calName = "Unified Calendar") {
   return lines.join("\r\n");
 }
 
-export default function ExportMenu({ events = [], monthDate }) {
+/**
+ * Export menu component for calendar data
+ * @param {Object} props - Component props
+ * @param {Array<Object>} [props.events=[]] - Calendar events to export
+ * @param {Date} props.monthDate - Current month date
+ * @returns {JSX.Element} Export dropdown menu
+ */
+function ExportMenu({ events = [], monthDate }) {
   const monthLabel = monthDate ? format(monthDate, "yyyy-MM") : "export";
+  
+  /**
+   * Handle CSV export
+   */
   const handleCsv = React.useCallback(() => {
     download(`calendar-${monthLabel}.csv`, toCsv(events), "text/csv;charset=utf-8");
   }, [events, monthLabel]);
+  
+  /**
+   * Handle ICS export
+   */
   const handleIcs = React.useCallback(() => {
     download(`calendar-${monthLabel}.ics`, toIcs(events, `Calendar ${monthLabel}`), "text/calendar;charset=utf-8");
   }, [events, monthLabel]);
@@ -87,3 +135,5 @@ export default function ExportMenu({ events = [], monthDate }) {
     </DropdownMenu>
   );
 }
+
+export default React.memo(ExportMenu);

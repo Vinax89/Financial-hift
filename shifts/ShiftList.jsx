@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Shift list component displaying shifts in a virtualized table
+ * @description Shows shift details including date, duration, and pay with edit/delete actions
+ */
 
 import React, { useMemo } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/ui/table.jsx";
@@ -8,8 +12,19 @@ import { TableLoading } from '@/ui/loading.jsx';
 import { EmptyState } from '../ui/empty-state';
 import { VirtualizedList } from '../optimized/VirtualizedList';
 
+/**
+ * Format amount as USD currency
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount || 0);
 
+/**
+ * Shift cell displaying title and location
+ * @param {Object} props - Component props
+ * @param {Object} props.shift - Shift data
+ * @returns {JSX.Element} Shift cell
+ */
 const ShiftCell = ({ shift }) => (
     <div className="flex items-center gap-3 min-w-0">
         <Clock className="h-4 w-4 text-muted-foreground flex-shrink-0" />
@@ -20,11 +35,23 @@ const ShiftCell = ({ shift }) => (
     </div>
 );
 
+/**
+ * Duration cell displaying hours worked
+ * @param {Object} props - Component props
+ * @param {Object} props.shift - Shift data
+ * @returns {JSX.Element} Duration cell
+ */
 const DurationCell = ({ shift }) => {
     const hours = shift.actual_hours || shift.scheduled_hours || 0;
     return <span className="font-mono text-right block">{hours.toFixed(2)} hrs</span>;
 };
 
+/**
+ * Date and time cell for shift start
+ * @param {Object} props - Component props
+ * @param {Object} props.shift - Shift data
+ * @returns {JSX.Element} Date/time cell
+ */
 const DateTimeCell = ({ shift }) => {
     try {
         const start = parseISO(shift.start_datetime);
@@ -39,6 +66,14 @@ const DateTimeCell = ({ shift }) => {
     }
 };
 
+/**
+ * Single shift row with actions
+ * @param {Object} props - Component props
+ * @param {Object} props.shift - Shift data
+ * @param {Function} props.onEdit - Edit handler
+ * @param {Function} props.onDelete - Delete handler
+ * @returns {JSX.Element} Shift table row
+ */
 const ShiftRow = ({ shift, onEdit, onDelete }) => (
     <TableRow className="hover:bg-muted/50 h-[60px]">
         <TableCell className="py-3 w-[40%] min-w-[200px]"><ShiftCell shift={shift} /></TableCell>
@@ -62,7 +97,16 @@ const ShiftRow = ({ shift, onEdit, onDelete }) => (
 
 const MemoizedShiftRow = React.memo(ShiftRow);
 
-export default function ShiftList({ shifts, onEdit, onDelete, isLoading }) {
+/**
+ * Shift list component with virtualization
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.shifts - List of shifts
+ * @param {Function} props.onEdit - Edit shift handler
+ * @param {Function} props.onDelete - Delete shift handler
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element} Virtualized shift table
+ */
+function ShiftList({ shifts, onEdit, onDelete, isLoading }) {
 
     if (isLoading) {
         return <TableLoading rows={8} columns={5} />;
@@ -115,3 +159,5 @@ export default function ShiftList({ shifts, onEdit, onDelete, isLoading }) {
         </div>
     );
 }
+
+export default React.memo(ShiftList);

@@ -1,3 +1,7 @@
+/**
+ * @fileoverview BNPL plan form component for creating and editing plans
+ * @description Comprehensive form for managing Buy Now Pay Later payment plans
+ */
 
 import React, { useState } from "react";
 import { Button } from "@/ui/button.jsx";
@@ -9,6 +13,10 @@ import { Textarea } from "@/ui/textarea.jsx";
 import { X, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 
+/**
+ * BNPL provider options
+ * @type {Array<{value: string, label: string}>}
+ */
 const providers = [
     { value: "klarna", label: "Klarna" },
     { value: "afterpay", label: "Afterpay" },
@@ -19,12 +27,20 @@ const providers = [
     { value: "other", label: "Other" }
 ];
 
+/**
+ * Payment frequency options
+ * @type {Array<{value: string, label: string}>}
+ */
 const frequencies = [
     { value: "weekly", label: "Weekly" },
     { value: "biweekly", label: "Every 2 weeks" },
     { value: "monthly", label: "Monthly" }
 ];
 
+/**
+ * Plan status options
+ * @type {Array<{value: string, label: string}>}
+ */
 const statuses = [
     { value: "active", label: "Active" },
     { value: "paid", label: "Paid Off" },
@@ -32,7 +48,15 @@ const statuses = [
     { value: "cancelled", label: "Cancelled" }
 ];
 
-export default function BNPLPlanForm({ plan, onSubmit, onCancel }) {
+/**
+ * BNPL plan form component
+ * @param {Object} props - Component props
+ * @param {Object|null} props.plan - Existing plan to edit (null for new)
+ * @param {Function} props.onSubmit - Form submission handler
+ * @param {Function} props.onCancel - Cancel handler
+ * @returns {JSX.Element} Plan form
+ */
+function BNPLPlanForm({ plan, onSubmit, onCancel }) {
     const [formData, setFormData] = useState(plan || {
         provider: "",
         merchant: "",
@@ -47,6 +71,10 @@ export default function BNPLPlanForm({ plan, onSubmit, onCancel }) {
         notes: ""
     });
 
+    /**
+     * Handle form submission with data parsing
+     * @param {React.FormEvent} e - Form event
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit({
@@ -244,3 +272,5 @@ export default function BNPLPlanForm({ plan, onSubmit, onCancel }) {
         </motion.div>
     );
 }
+
+export default React.memo(BNPLPlanForm);

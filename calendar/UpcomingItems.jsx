@@ -1,9 +1,19 @@
+/**
+ * @fileoverview Upcoming items component showing next shifts, bills, and BNPL payments
+ * @description Dashboard widget displaying chronologically upcoming financial events
+ */
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Badge } from '@/ui/badge.jsx';
 import { Briefcase, Receipt, Zap, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 
+/**
+ * Format amount as USD currency
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -11,6 +21,16 @@ const formatCurrency = (amount) => {
     }).format(amount);
 };
 
+/**
+ * Individual upcoming item row
+ * @param {Object} props - Component props
+ * @param {React.Element} props.icon - Icon element
+ * @param {string} props.title - Item title
+ * @param {string} props.date - Formatted date string
+ * @param {string} props.amount - Formatted amount
+ * @param {string} props.amountColor - Tailwind color class
+ * @returns {JSX.Element} Item row
+ */
 const Item = ({ icon, title, date, amount, amountColor }) => (
     <div className="flex items-center justify-between py-2 border-b border-slate-100 last:border-b-0">
         <div className="flex items-center gap-3">
@@ -28,7 +48,15 @@ const Item = ({ icon, title, date, amount, amountColor }) => (
     </div>
 );
 
-export default function UpcomingItems({ shifts, bills, bnplPlans }) {
+/**
+ * Upcoming items widget component
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.shifts - Upcoming shifts
+ * @param {Array<Object>} props.bills - Upcoming bills
+ * @param {Array<Object>} props.bnplPlans - BNPL payment plans
+ * @returns {JSX.Element} Upcoming items card
+ */
+function UpcomingItems({ shifts, bills, bnplPlans }) {
     const upcomingBnpl = bnplPlans
         .filter(plan => new Date(plan.next_due_date) > new Date())
         .slice(0, 3);
@@ -99,3 +127,5 @@ export default function UpcomingItems({ shifts, bills, bnplPlans }) {
         </Card>
     );
 }
+
+export default React.memo(UpcomingItems);

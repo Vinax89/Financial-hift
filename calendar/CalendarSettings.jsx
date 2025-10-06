@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Calendar settings popover component
+ * @description Provides settings controls for calendar display options
+ */
+
 import React from "react";
 import { Button } from "@/ui/button.jsx";
 import { Switch } from "@/ui/switch.jsx";
@@ -5,8 +10,20 @@ import { Label } from "@/ui/label.jsx";
 import { Popover, PopoverTrigger, PopoverContent } from "@/ui/popover.jsx";
 import { SlidersHorizontal } from "lucide-react";
 
-export default function CalendarSettings({ value, onChange }) {
+/**
+ * Calendar settings component
+ * @param {Object} props - Component props
+ * @param {Object} props.value - Current settings values
+ * @param {Function} props.onChange - Settings change handler
+ * @returns {JSX.Element} Settings popover
+ */
+function CalendarSettings({ value, onChange }) {
   const v = value || { showNetChips: true, compactMode: false, highlightToday: true };
+  /**
+   * Update a specific setting
+   * @param {string} key - Setting key
+   * @param {any} val - New value
+   */
   const set = (key, val) => onChange({ ...v, [key]: val });
 
   return (
@@ -45,3 +62,5 @@ export default function CalendarSettings({ value, onChange }) {
     </Popover>
   );
 }
+
+export default React.memo(CalendarSettings);

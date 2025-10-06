@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Pay estimator component for calculating shift earnings
+ * @description Interactive calculator for estimating gross and net pay with differentials and premiums
+ */
+
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
@@ -7,7 +12,14 @@ import { Checkbox } from '@/ui/checkbox.jsx';
 import { Calculator, X, DollarSign, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function PayEstimator({ shiftRules, onCancel }) {
+/**
+ * Pay estimator component with differentials and overtime calculation
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.shiftRules - Shift rules with base rates
+ * @param {Function} props.onCancel - Close handler
+ * @returns {JSX.Element} Pay estimator calculator
+ */
+function PayEstimator({ shiftRules, onCancel }) {
     const [estimateData, setEstimateData] = useState({
         hours: '8',
         tags: [],
@@ -16,6 +28,10 @@ export default function PayEstimator({ shiftRules, onCancel }) {
 
     const [estimate, setEstimate] = useState({ gross: 0, net: 0 });
 
+    /**
+     * Available shift differentials and premiums
+     * @type {Array<{id: string, label: string, multiplier?: number, amount?: number}>}
+     */
     const availableTags = [
         { id: "night", label: "Night Shift", multiplier: 1.1 },
         { id: "weekend", label: "Weekend", multiplier: 1.05 },
@@ -25,6 +41,9 @@ export default function PayEstimator({ shiftRules, onCancel }) {
         { id: "hazard", label: "Hazard Pay", amount: 3 }
     ];
 
+    /**
+     * Calculate gross and net pay based on hours, rate, and differentials
+     */
     const calculateEstimate = useCallback(() => {
         const hours = parseFloat(estimateData.hours) || 0;
         const baseRate = parseFloat(estimateData.base_rate) || 0;
@@ -57,6 +76,10 @@ export default function PayEstimator({ shiftRules, onCancel }) {
         calculateEstimate();
     }, [calculateEstimate]);
 
+    /**
+     * Toggle shift differential/premium tag
+     * @param {string} tagId - Tag identifier
+     */
     const handleTagToggle = (tagId) => {
         const newTags = estimateData.tags.includes(tagId)
             ? estimateData.tags.filter(t => t !== tagId)
@@ -178,3 +201,5 @@ export default function PayEstimator({ shiftRules, onCancel }) {
         </motion.div>
     );
 }
+
+export default React.memo(PayEstimator);

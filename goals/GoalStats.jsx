@@ -1,7 +1,17 @@
+/**
+ * @fileoverview Goal statistics component displaying aggregate goal metrics
+ * @description Shows total active goals, invested capital, and remaining funding with progress
+ */
+
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Skeleton } from '@/ui/skeleton.jsx';
 
+/**
+ * Format value as USD currency (rounded)
+ * @param {number} value - Value to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (value) => {
     if (typeof value !== 'number' || Number.isNaN(value)) {
         return '$0';
@@ -13,7 +23,17 @@ const formatCurrency = (value) => {
     }).format(value);
 };
 
-export default function GoalStats({ goals = [], isLoading }) {
+/**
+ * Goal statistics component
+ * @param {Object} props - Component props
+ * @param {Array<Object>} [props.goals=[]] - List of goals
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element} Goal statistics cards
+ */
+function GoalStats({ goals = [], isLoading }) {
+    /**
+     * Calculate aggregate statistics from goals
+     */
     const stats = useMemo(() => {
         const safeGoals = Array.isArray(goals) ? goals : [];
         const totals = safeGoals.reduce(
@@ -94,3 +114,5 @@ export default function GoalStats({ goals = [], isLoading }) {
         </div>
     );
 }
+
+export default React.memo(GoalStats);

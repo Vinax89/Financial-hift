@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Shift import component for CSV file uploads
+ * @description Drag-and-drop CSV importer with bulk shift creation
+ */
 
 import React, { useState } from 'react';
 import { Upload, FileText, CheckCircle, Loader2, X } from 'lucide-react';
@@ -7,22 +11,38 @@ import { Card, CardContent } from '@/ui/card.jsx';
 import { Shift } from '@/api/entities';
 import { toast } from 'sonner';
 
-export default function ShiftImport() {
+/**
+ * Shift import component with CSV parsing
+ * @returns {JSX.Element} Import interface with drag-and-drop
+ */
+function ShiftImport() {
     const [files, setFiles] = useState([]);
     const [isParsing, setIsParsing] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isDragOver, setIsDragOver] = useState(false);
 
+    /**
+     * Handle drag over event
+     * @param {React.DragEvent} e - Drag event
+     */
     const handleDragOver = (e) => {
         e.preventDefault();
         setIsDragOver(true);
     };
 
+    /**
+     * Handle drag leave event
+     * @param {React.DragEvent} e - Drag event
+     */
     const handleDragLeave = (e) => {
         e.preventDefault();
         setIsDragOver(false);
     };
 
+    /**
+     * Handle file drop event
+     * @param {React.DragEvent} e - Drop event
+     */
     const handleDrop = (e) => {
         e.preventDefault();
         setIsDragOver(false);
@@ -35,6 +55,10 @@ export default function ShiftImport() {
         }
     };
 
+    /**
+     * Handle file input change
+     * @param {React.ChangeEvent} e - Input change event
+     */
     const handleFileInput = (e) => {
         const selectedFiles = Array.from(e.target.files);
         const csvFiles = selectedFiles.filter(file => file.type === 'text/csv' || file.name.endsWith('.csv'));
@@ -43,6 +67,9 @@ export default function ShiftImport() {
         }
     };
 
+    /**
+     * Parse CSV and import shifts to database
+     */
     const parseAndImport = async () => {
         if (files.length === 0) return;
 
@@ -81,7 +108,9 @@ export default function ShiftImport() {
                     });
                 } catch (err) {
                     errorCount++;
-                    console.error(`Failed to parse row ${i+1}:`, err);
+                    if (import.meta.env.DEV) {
+                        console.error(`Failed to parse row ${i+1}:`, err);
+                    }
                     toast.error(`Import Error on row ${i + 2}`, { description: err.message });
                 }
             }
@@ -183,3 +212,5 @@ export default function ShiftImport() {
         </Card>
     );
 }
+
+export default React.memo(ShiftImport);

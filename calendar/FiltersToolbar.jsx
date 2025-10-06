@@ -1,9 +1,25 @@
+/**
+ * @fileoverview Filters toolbar component for calendar event visibility
+ * @description Switch controls for toggling different calendar event types
+ */
+
 import React from "react";
 import { Switch } from "@/ui/switch.jsx";
 import { Label } from "@/ui/label.jsx";
 import { Card } from "@/ui/card.jsx";
 
+/**
+ * Filters toolbar component
+ * @param {Object} props - Component props
+ * @param {Object} props.filters - Current filter state
+ * @param {Function} props.onChange - Filter change handler
+ * @returns {JSX.Element} Filter switches grid
+ */
 function FiltersToolbarInner({ filters, onChange }) {
+  /**
+   * Toggle a specific filter
+   * @param {string} key - Filter key to toggle
+   */
   const toggle = React.useCallback((key) => {
     onChange({ ...filters, [key]: !filters[key] });
   }, [filters, onChange]);

@@ -1,13 +1,25 @@
+/**
+ * @fileoverview Shift statistics component showing weekly and monthly totals
+ * @description Displays hours and pay statistics for current week and month
+ */
 
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Skeleton } from '@/ui/skeleton.jsx';
 import { DollarSign, Clock, TrendingUp, Calendar } from 'lucide-react';
-import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO, isWithinInterval } from 'date-fns'; // Added isWithinInterval
-import { formatCurrency } from '../utils/calculations'; // Moved formatCurrency to a utility file
+import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO, isWithinInterval } from 'date-fns';
+import { formatCurrency } from '../utils/calculations';
 
-// StatCard component now only responsible for rendering the actual card content
-// It no longer handles its own loading state, that is managed by the parent ShiftStats
+/**
+ * Individual stat card component
+ * @param {Object} props - Component props
+ * @param {string} props.title - Card title
+ * @param {string} props.value - Value to display
+ * @param {React.Component} props.icon - Icon component
+ * @param {string} props.color - Icon color class
+ * @param {string} props.bgColor - Background color class
+ * @returns {JSX.Element} Stat card
+ */
 const StatCard = ({ title, value, icon: Icon, color, bgColor }) => (
     <Card className="border-border/30 bg-card/50">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -24,7 +36,10 @@ const StatCard = ({ title, value, icon: Icon, color, bgColor }) => (
     </Card>
 );
 
-// New StatCardSkeleton component to show loading state and prevent layout shifts
+/**
+ * Stat card skeleton for loading state
+ * @returns {JSX.Element} Loading skeleton
+ */
 function StatCardSkeleton() {
     return (
         <Card className="border-border/30 bg-card/50"> {/* Wrap in Card to maintain consistent layout */}
@@ -75,13 +90,19 @@ export default function ShiftStats({ shifts, isLoading }) {
                     monthlyPay += pay;
                 }
             } catch (e) {
-                console.error("Could not parse shift date:", shift.start_datetime);
+                if (import.meta.env.DEV) {
+                    console.error("Could not parse shift date:", shift.start_datetime);
+                }
             }
         });
 
         return { weeklyHours, weeklyPay, monthlyHours, monthlyPay };
     }, [shifts]);
 
+    /**
+     * Stat cards configuration
+     * @type {Array<Object>}
+     */
     const statCards = [
         { title: "Hours This Week", value: `${stats.weeklyHours.toFixed(1)} hrs`, icon: Clock, color: "text-primary", bgColor: "bg-blue-100 dark:bg-blue-900/20" },
         { title: "Pay This Week (Net)", value: formatCurrency(stats.weeklyPay), icon: DollarSign, color: "text-success", bgColor: "bg-emerald-100 dark:bg-emerald-900/20" },
@@ -110,3 +131,5 @@ export default function ShiftStats({ shifts, isLoading }) {
         </CardContent>
     );
 }
+
+export default React.memo(ShiftStats);

@@ -1,8 +1,18 @@
+/**
+ * @fileoverview Debt simulator component showing snowball payoff projection
+ * @description Calculates and displays debt payoff timeline using snowball method
+ */
+
 import React, { useMemo } from 'react';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Progress } from '@/ui/progress.jsx';
 import { Separator } from '@/ui/separator.jsx';
 
+/**
+ * Format value as USD currency (no decimals)
+ * @param {number|string} value - Value to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (value) => {
     const amount = typeof value === 'number' ? value : parseFloat(value);
     if (!Number.isFinite(amount)) {
@@ -15,6 +25,11 @@ const formatCurrency = (value) => {
     }).format(amount);
 };
 
+/**
+ * Calculate snowball debt payoff projection
+ * @param {Array<Object>} debts - List of debts
+ * @returns {Array<{name: string, months: number}>} Payoff projections
+ */
 const snowballProjection = (debts) => {
     const sorted = [...debts].sort(
         (a, b) => (Number(a.balance) || 0) - (Number(b.balance) || 0)
@@ -34,7 +49,16 @@ const snowballProjection = (debts) => {
     return projections;
 };
 
-export default function DebtSimulator({ debts = [] }) {
+/**
+ * Debt simulator component with snowball projection
+ * @param {Object} props - Component props
+ * @param {Array<Object>} [props.debts=[]] - List of debts
+ * @returns {JSX.Element} Debt projection display
+ */
+function DebtSimulator({ debts = [] }) {
+    /**
+     * Calculate debt summary and projections
+     */
     const summary = useMemo(() => {
         const safeDebts = Array.isArray(debts) ? debts : [];
         const totals = safeDebts.reduce(
@@ -102,3 +126,5 @@ export default function DebtSimulator({ debts = [] }) {
         </div>
     );
 }
+
+export default React.memo(DebtSimulator);

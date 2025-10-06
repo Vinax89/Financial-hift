@@ -1,8 +1,18 @@
+/**
+ * @fileoverview Safe-to-spend forecast component showing discretionary income
+ * @description Displays projected net income, fixed bills, and safe-to-spend amount
+ */
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Wallet, TrendingUp, TrendingDown, ShieldCheck } from 'lucide-react';
 import { Skeleton } from '@/ui/skeleton.jsx';
 
+/**
+ * Format amount as USD currency
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -10,7 +20,14 @@ const formatCurrency = (amount) => {
     }).format(amount);
 };
 
-export default function SafeToSpend({ netCashflow, forecasts }) {
+/**
+ * Safe-to-spend forecast component
+ * @param {Object} props - Component props
+ * @param {number} props.netCashflow - Current month's net cashflow
+ * @param {Array<Object>} props.forecasts - Cashflow forecasts
+ * @returns {JSX.Element} Safe-to-spend card
+ */
+function SafeToSpend({ netCashflow, forecasts }) {
     const latestForecast = forecasts[0];
 
     return (
@@ -74,3 +91,5 @@ export default function SafeToSpend({ netCashflow, forecasts }) {
         </Card>
     );
 }
+
+export default React.memo(SafeToSpend);

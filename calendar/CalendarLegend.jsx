@@ -1,6 +1,19 @@
+/**
+ * @fileoverview Calendar legend component displaying event type colors
+ * @description Shows color-coded legend for calendar event types
+ */
+
 import React from "react";
 
-export default function CalendarLegend() {
+/**
+ * Calendar legend component
+ * @returns {JSX.Element} Color legend display
+ */
+function CalendarLegend() {
+  /**
+   * Legend items with colors
+   * @type {Array<{label: string, className: string}>}
+   */
   const items = [
     { label: "Shift", className: "bg-income" },
     { label: "Bill", className: "bg-expense" },
@@ -21,3 +34,5 @@ export default function CalendarLegend() {
     </div>
   );
 }
+
+export default React.memo(CalendarLegend);

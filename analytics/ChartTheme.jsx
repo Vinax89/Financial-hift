@@ -1,6 +1,15 @@
+/**
+ * @fileoverview Chart theme utility for consistent chart styling across themes
+ * @description Provides theme-aware color palettes for Recharts components
+ */
+
 import { useTheme } from "../theme/ThemeProvider";
 
-// Pure helper for charts palette (no hooks inside)
+/**
+ * Get chart color palette for a given theme
+ * @param {string} theme - Theme name ('light', 'dark', or 'oled')
+ * @returns {Object} Chart theme configuration with colors
+ */
 export function getChartTheme(theme) {
   const palettes = {
     light: {

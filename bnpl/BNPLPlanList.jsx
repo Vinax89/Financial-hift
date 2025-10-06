@@ -1,3 +1,7 @@
+/**
+ * @fileoverview BNPL plan list component displaying all payment plans
+ * @description Animated list showing BNPL plans with progress, status badges, and actions
+ */
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
@@ -10,6 +14,10 @@ import { Skeleton } from "@/ui/skeleton.jsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCurrency } from "@/utils/calculations";
 
+/**
+ * Provider-specific color schemes
+ * @type {Object.<string, string>}
+ */
 const providerColors = {
     klarna: "bg-pink-100 text-pink-800 dark:bg-pink-900/20 dark:text-pink-400",
     afterpay: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400",
@@ -20,6 +28,10 @@ const providerColors = {
     other: "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400"
 };
 
+/**
+ * Status-specific color schemes
+ * @type {Object.<string, string>}
+ */
 const statusColors = {
     active: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400",
     paid: "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400",
@@ -27,7 +39,22 @@ const statusColors = {
     cancelled: "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400"
 };
 
-export default function BNPLPlanList({ plans, onEdit, onMarkPaid, onDelete, isLoading }) {
+/**
+ * BNPL plan list component with animations
+ * @param {Object} props - Component props
+ * @param {Array<Object>} props.plans - BNPL payment plans
+ * @param {Function} props.onEdit - Edit plan handler
+ * @param {Function} props.onMarkPaid - Mark payment as paid handler
+ * @param {Function} props.onDelete - Delete plan handler
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element} Animated plan list
+ */
+function BNPLPlanList({ plans, onEdit, onMarkPaid, onDelete, isLoading }) {
+    /**
+     * Check if a payment is overdue
+     * @param {string|Date} dueDate - Due date to check
+     * @returns {boolean} True if overdue
+     */
     const isOverdue = (dueDate) => {
         return new Date(dueDate) < new Date() && new Date(dueDate).toDateString() !== new Date().toDateString();
     };
@@ -189,3 +216,5 @@ export default function BNPLPlanList({ plans, onEdit, onMarkPaid, onDelete, isLo
         </Card>
     );
 }
+
+export default React.memo(BNPLPlanList);

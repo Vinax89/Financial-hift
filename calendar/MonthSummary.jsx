@@ -1,14 +1,35 @@
+/**
+ * @fileoverview Month summary component displaying financial totals by category
+ * @description Shows aggregated totals for bills, subscriptions, debts, BNPL, payments, and shifts
+ */
+
 import React from "react";
 import { Card } from "@/ui/card.jsx";
 import { format } from "date-fns";
 
+/**
+ * Sum amounts for events of a specific type
+ * @param {Array<Object>} events - Calendar events
+ * @param {string} type - Event type to sum
+ * @returns {number} Total amount
+ */
 function sumByType(events, type) {
   return (events || [])
     .filter((e) => e.type === type && typeof e.amount === "number")
     .reduce((s, e) => s + e.amount, 0);
 }
 
-export default function MonthSummary({ monthDate, events }) {
+/**
+ * Month summary component
+ * @param {Object} props - Component props
+ * @param {Date} props.monthDate - Month to display
+ * @param {Array<Object>} props.events - Calendar events
+ * @returns {JSX.Element} Month summary card
+ */
+function MonthSummary({ monthDate, events }) {
+  /**
+   * Calculate totals by event type
+   */
   const totals = React.useMemo(() => {
     return {
       bills: sumByType(events, "bill"),
@@ -20,6 +41,11 @@ export default function MonthSummary({ monthDate, events }) {
     };
   }, [events]);
 
+  /**
+   * Format number as USD currency
+   * @param {number} n - Number to format
+   * @returns {string} Formatted currency string
+   */
   const currency = (n) => {
     try {
       return new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" }).format(n || 0);
@@ -58,3 +84,5 @@ export default function MonthSummary({ monthDate, events }) {
     </Card>
   );
 }
+
+export default React.memo(MonthSummary);
