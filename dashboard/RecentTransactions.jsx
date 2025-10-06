@@ -1,4 +1,10 @@
-import React, { useMemo } from "react";
+/**
+ * @fileoverview Recent transactions display component
+ * @description Shows recent transactions with virtualization for performance,
+ * category badges, and transaction type indicators
+ */
+
+import React, { useMemo, memo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { Badge } from "@/ui/badge.jsx";
 import { ArrowUpCircle, ArrowDownCircle, Clock } from "lucide-react";
@@ -6,6 +12,10 @@ import { format } from "date-fns";
 import { Skeleton } from "@/ui/skeleton.jsx";
 import VirtualizedList from "@/optimized/VirtualizedList";
 
+/**
+ * Category color mappings for transaction badges
+ * @constant
+ */
 const categoryColors = {
     food_dining: "bg-red-100 text-red-800",
     transportation: "bg-orange-100 text-orange-800",
@@ -25,7 +35,15 @@ const categoryColors = {
     other_expense: "bg-gray-100 text-gray-800"
 };
 
-export default function RecentTransactions({ transactions = [], isLoading }) {
+/**
+ * Recent Transactions Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.transactions - List of recent transactions
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element}
+ */
+function RecentTransactions({ transactions = [], isLoading }) {
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -119,3 +137,5 @@ export default function RecentTransactions({ transactions = [], isLoading }) {
         </Card>
     );
 }
+
+export default memo(RecentTransactions);

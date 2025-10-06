@@ -1,14 +1,7 @@
 /**
  * @fileoverview Gamification system hook for Financial $hift
  * @description Manages XP, levels, badges, and achievement tracking
- * to encourage use                await awardBadge('LEVEL_25');
-            }
-        } catch (error) {
-            if (import.meta.env.DEV) {
-                console.error('Failed to award XP:', error);
-            }
-        }
-    }, [gameState, toast, awardBadge]);gement and financial progress
+ * to encourage user engagement and financial progress
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -34,21 +27,6 @@ const BADGES = {
     OPTIMIZER: { name: 'Optimizer', description: 'Optimized your envelope budget' },
     PLANNER: { name: 'Planner', description: 'Ran debt payoff scenarios' }
 };
-
-/**
- * Gamification hook for XP, levels, and badges
- * @returns {Object} Gamification state and methods
- * @property {Object|null} gameState - Current game state (xp, level, badges)
- * @property {boolean} isLoading - Whether game state is loading
- * @property {Function} awardXp - Award XP to user
- * @property {Function} awardBadge - Award badge to user
- * @property {Function} trackAction - Track action and award appropriate XP/badges
- * @property {Function} getProgress - Get level progress information
- * @property {Object} allBadges - All available badges
- * @property {number} xpPerLevel - XP required per level
- */
-const useGamification = () => {
-    const [gameState, setGameState] = useState(null);
 
 /**
  * Gamification hook for XP, levels, and badges
@@ -168,20 +146,22 @@ const useGamification = () => {
 
             // Check for level-based badges
             if (newLevel >= 5 && !gameState.badges.includes('LEVEL_5')) {
-                awardBadge('LEVEL_5');
+                await awardBadge('LEVEL_5');
             }
             if (newLevel >= 10 && !gameState.badges.includes('LEVEL_10')) {
-                awardBadge('LEVEL_10');
+                await awardBadge('LEVEL_10');
             }
             if (newLevel >= 25 && !gameState.badges.includes('LEVEL_25')) {
-                awardBadge('LEVEL_25');
+                await awardBadge('LEVEL_25');
             }
         } catch (error) {
-            console.error('Failed to award XP:', error);
+            if (import.meta.env.DEV) {
+                console.error('Failed to award XP:', error);
+            }
         }
     }, [gameState, toast, awardBadge]);
 
-    // Helper functions to award XP for specific actions
+    // Helper function to award XP for specific actions
     const trackAction = useCallback(async (action, data = {}) => {
         switch (action) {
             case 'transaction_added':

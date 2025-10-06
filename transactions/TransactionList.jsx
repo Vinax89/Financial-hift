@@ -1,5 +1,10 @@
+/**
+ * @fileoverview Virtualized transaction list with filtering and actions
+ * @description Displays transactions in a performant virtualized list with
+ * edit/delete actions, type-based styling, and empty states
+ */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/ui/table.jsx";
 import { Badge } from "@/ui/badge.jsx";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu.jsx";
@@ -9,15 +14,30 @@ import { TableLoading } from '@/ui/loading.jsx';
 import { EmptyState } from '../ui/empty-state';
 import { VirtualizedList } from '../optimized/VirtualizedList';
 
+/**
+ * Format currency value for display
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount || 0);
 
-// Remove unused category keyed styles that rarely matched.
-// We'll colorize by transaction type for clear semantics.
+/**
+ * Badge styling by transaction type
+ * @constant {Object.<string, string>}
+ */
 const TYPE_BADGE_CLASS = {
   income: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
   expense: 'bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300',
 };
 
+/**
+ * Transaction row component with edit/delete actions
+ * @param {Object} props
+ * @param {Object} props.transaction - Transaction data
+ * @param {Function} props.onEdit - Edit handler
+ * @param {Function} props.onDelete - Delete handler
+ * @returns {JSX.Element}
+ */
 const TransactionRow = ({ transaction, onEdit, onDelete }) => {
     const isIncome = transaction.type === 'income';
 
@@ -57,7 +77,17 @@ const TransactionRow = ({ transaction, onEdit, onDelete }) => {
 
 const MemoizedTransactionRow = React.memo(TransactionRow);
 
-export default function TransactionList({ transactions, onEdit, onDelete, isLoading }) {
+/**
+ * Transaction List Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.transactions - List of transactions to display
+ * @param {Function} props.onEdit - Edit transaction handler
+ * @param {Function} props.onDelete - Delete transaction handler
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element}
+ */
+function TransactionList({ transactions, onEdit, onDelete, isLoading }) {
     
     if (isLoading) {
         return <TableLoading rows={10} columns={4} />;
@@ -99,3 +129,5 @@ export default function TransactionList({ transactions, onEdit, onDelete, isLoad
         </div>
     );
 }
+
+export default memo(TransactionList);

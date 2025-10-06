@@ -1,11 +1,23 @@
-import React from 'react';
+/**
+ * @fileoverview Gamification progress display center
+ * @description Shows user level, XP progress, earned badges, and achievements
+ * to encourage continued engagement with financial management tasks
+ */
+
+import React, { memo } from 'react';
 import useGamification from '../hooks/useGamification';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Progress } from '@/ui/progress.jsx';
 import { Award, Star } from 'lucide-react';
 import { Skeleton } from '@/ui/skeleton.jsx';
 
-export default function GamificationCenter() {
+/**
+ * Gamification Center Component
+ * @component
+ * @description Displays gamification progress including level, XP, and badges
+ * @returns {JSX.Element}
+ */
+function GamificationCenter() {
     const { gameState, isLoading, allBadges, xpPerLevel } = useGamification();
 
     if (isLoading || !gameState) {
@@ -62,3 +74,5 @@ export default function GamificationCenter() {
         </Card>
     );
 }
+
+export default memo(GamificationCenter);

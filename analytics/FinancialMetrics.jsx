@@ -1,12 +1,30 @@
+/**
+ * @fileoverview Financial metrics dashboard cards
+ * @description Displays key financial health indicators including income, spending,
+ * savings rate, debt-to-income ratio, goals progress, and emergency fund status
+ */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Skeleton } from '@/ui/skeleton.jsx';
 import { DollarSign, Percent, TrendingUp, TrendingDown, PiggyBank, CreditCard } from 'lucide-react';
 
+/**
+ * Format currency value for display
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
-export default function FinancialMetrics({ data = {}, isLoading = false }) {
+/**
+ * Financial Metrics Component
+ * @component
+ * @param {Object} props
+ * @param {Object} [props.data={}] - Financial data (transactions, shifts, debts, goals)
+ * @param {boolean} [props.isLoading=false] - Loading state
+ * @returns {JSX.Element}
+ */
+function FinancialMetrics({ data = {}, isLoading = false }) {
     // Ensure we have safe defaults for all data properties
     const {
         transactions = [],
@@ -73,7 +91,7 @@ export default function FinancialMetrics({ data = {}, isLoading = false }) {
                 emergencyFund: Math.min(emergencyFundPercentage, 100)
             };
         } catch (error) {
-            console.error('Error calculating financial metrics:', error);
+            if (import.meta.env.DEV) console.error('Error calculating financial metrics:', error);
             return { 
                 totalIncome: 0, 
                 totalSpending: 0, 
@@ -173,3 +191,5 @@ export default function FinancialMetrics({ data = {}, isLoading = false }) {
         </div>
     );
 }
+
+export default memo(FinancialMetrics);

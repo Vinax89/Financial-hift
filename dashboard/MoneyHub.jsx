@@ -1,4 +1,15 @@
-import React, { useMemo } from 'react';
+/**
+ * @fileoverview Main financial dashboard hub component
+ * @description Displays comprehensive overview of user's financial status including
+ * income, expenses, goals, bills, and upcoming shifts with real-time calculations
+                     </div>
+                </Card>
+            </div>
+        </div>
+    );
+}
+
+export default memo(MoneyHub);port React, { useMemo, memo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Progress } from '@/ui/progress.jsx';
@@ -10,7 +21,20 @@ import {
 import { formatCurrency, formatPercentage } from '../utils/calculations';
 import { format, isThisMonth, startOfMonth, endOfMonth } from 'date-fns';
 
-export default function MoneyHub({ metrics, transactions, shifts, goals, debts, bills, refreshData }) {
+/**
+ * Money Hub Dashboard Component
+ * @component
+ * @param {Object} props
+ * @param {Object} props.metrics - Financial metrics (netWorth, etc.)
+ * @param {Array} props.transactions - List of transactions
+ * @param {Array} props.shifts - List of work shifts
+ * @param {Array} props.goals - List of financial goals
+ * @param {Array} props.debts - List of debt accounts
+ * @param {Array} props.bills - List of bills
+ * @param {Function} props.refreshData - Callback to refresh data
+ * @returns {JSX.Element}
+ */
+function MoneyHub({ metrics, transactions, shifts, goals, debts, bills, refreshData }) {
     const monthlyData = useMemo(() => {
         const now = new Date();
         const monthStart = startOfMonth(now);

@@ -1,11 +1,24 @@
-import React, { useMemo } from 'react';
+/**
+ * @fileoverview Debt payoff countdown and scenario planner
+ * @description Shows debt freedom timeline with different payment scenarios
+ * using avalanche method (highest APR first) and calculates interest savings
+ */
+
+import React, { useMemo, memo } from 'react';
 import { Progress } from '@/ui/progress.jsx';
 import { Badge } from '@/ui/badge.jsx';
 import { Calendar, Target, Zap } from 'lucide-react';
 import { formatCurrency, calculateDebtPayoff } from '../utils/calculations';
 import { format, addMonths } from 'date-fns';
 
-export default function DebtCountdown({ debts }) {
+/**
+ * Debt Countdown Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.debts - List of debt accounts with balances and APR
+ * @returns {JSX.Element}
+ */
+function DebtCountdown({ debts }) {
     const debtAnalysis = useMemo(() => {
         if (!debts || debts.length === 0) return null;
         
@@ -140,3 +153,5 @@ export default function DebtCountdown({ debts }) {
         </div>
     );
 }
+
+export default memo(DebtCountdown);

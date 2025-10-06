@@ -1,4 +1,10 @@
-import React, { useState, useMemo } from 'react';
+/**
+ * @fileoverview Paycheck projection calculator for shift workers
+ * @description Projects gross/net pay based on shift count, hours, overtime,
+ * and tax calculations with comparison to historical averages
+ */
+
+import React, { useState, useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Input } from '@/ui/input.jsx';
@@ -7,6 +13,15 @@ import { X, Calculator, Plus, Minus, DollarSign } from 'lucide-react';
 import { formatCurrency, calculateTaxes } from '../utils/calculations';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
+/**
+ * Paycheck Projector Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.shifts - Historical shift data
+ * @param {Array} props.recentTransactions - Recent transaction history
+ * @param {Function} props.onClose - Close modal handler
+ * @returns {JSX.Element}
+ */
 const PaycheckProjector = ({ shifts, recentTransactions, onClose }) => {
     const [shiftRules] = useLocalStorage('shift-rules', [{
         name: 'Default Rule',
@@ -185,4 +200,4 @@ const PaycheckProjector = ({ shifts, recentTransactions, onClose }) => {
     );
 };
 
-export default PaycheckProjector;
+export default memo(PaycheckProjector);

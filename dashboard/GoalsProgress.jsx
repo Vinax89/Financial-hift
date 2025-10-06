@@ -1,11 +1,24 @@
-import React from "react";
+/**
+ * @fileoverview Goals progress display component
+ * @description Shows active savings goals with progress bars, target dates, and amounts
+ */
+
+import React, { memo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { Progress } from "@/ui/progress.jsx";
 import { Target, Calendar } from "lucide-react";
 import { format } from "date-fns";
 import { Skeleton } from "@/ui/skeleton.jsx";
 
-export default function GoalsProgress({ goals, isLoading }) {
+/**
+ * Goals Progress Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.goals - List of user's financial goals
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element}
+ */
+function GoalsProgress({ goals, isLoading }) {
     const activeGoals = goals.filter(g => g.status === 'active').slice(0, 4);
 
     const formatCurrency = (amount) => {
@@ -72,3 +85,5 @@ export default function GoalsProgress({ goals, isLoading }) {
         </Card>
     );
 }
+
+export default memo(GoalsProgress);

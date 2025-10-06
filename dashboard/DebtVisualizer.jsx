@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Debt visualization with pie charts and payoff strategies
+ * @description Interactive debt breakdown showing avalanche/snowball strategies,
+ * interest calculations, and visual distribution with theme support
+ */
 
 import React, { useMemo, useState } from 'react';
 import { CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
@@ -10,9 +15,18 @@ import { ThemedCard } from '../ui/enhanced-components';
 import { useTheme } from '../theme/ThemeProvider';
 import { ChartLoading } from '../ui/loading';
 
+/** @constant {string[]} Debt color palette for light theme */
 const DEBT_COLORS_LIGHT = ['#ef4444', '#f97316', '#eab308', '#22c588', '#3b82f6', '#8b5cf6', '#ec4899'];
+/** @constant {string[]} Debt color palette for dark theme */
 const DEBT_COLORS_DARK = ['#f87171', '#fb923c', '#facc15', '#4ade80', '#60a5fa', '#a78bfa', '#f472b6'];
 
+/**
+ * Custom tooltip for pie chart
+ * @param {Object} props
+ * @param {boolean} props.active - Whether tooltip is active
+ * @param {Array} props.payload - Chart data payload
+ * @returns {JSX.Element|null}
+ */
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
         const data = payload[0].payload;
@@ -37,6 +51,13 @@ const CustomTooltip = ({ active, payload }) => {
     return null;
 };
 
+/**
+ * Debt Visualizer Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.debts - List of debt accounts with balances and APR
+ * @returns {JSX.Element}
+ */
 function DebtVisualizer({ debts }) {
     const { isDark } = useTheme();
     const [viewMode, setViewMode] = useState('pie');

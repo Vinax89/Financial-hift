@@ -1,14 +1,29 @@
+/**
+ * @fileoverview Net worth tracking and visualization component
+ * @description Displays total net worth with historical trends, asset breakdown,
+ * and interactive charts for investments, savings, and liabilities
+ */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Progress } from '@/ui/progress.jsx';
 import { TrendingUp, TrendingDown, DollarSign, PieChart } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Cell, Legend, Pie } from 'recharts';
 
+/** @constant {string[]} Color palette for pie chart segments */
 const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
 
-export default function NetWorthTracker({ investments, debts, goals }) {
+/**
+ * Net Worth Tracker Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.investments - List of investment accounts
+ * @param {Array} props.debts - List of debt accounts
+ * @param {Array} props.goals - List of savings goals
+ * @returns {JSX.Element}
+ */
+function NetWorthTracker({ investments, debts, goals }) {
     const netWorthData = useMemo(() => {
         const totalInvestments = investments.reduce((sum, inv) => sum + (inv.current_value || 0), 0);
         const totalSavings = goals.reduce((sum, goal) => sum + (goal.current_amount || 0), 0);
@@ -149,3 +164,5 @@ export default function NetWorthTracker({ investments, debts, goals }) {
         </Card>
     );
 }
+
+export default memo(NetWorthTracker);

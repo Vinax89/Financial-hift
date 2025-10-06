@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react';
+/**
+ * @fileoverview Goal creation and editing form with autosave
+ * @description Form for managing financial goals with validation, autosave,
+ * and support for target amounts, deadlines, and status tracking
+ */
+
+import React, { useEffect, useState, memo } from 'react';
 import { Input } from '@/ui/input.jsx';
 import { Label } from '@/ui/label.jsx';
 import { Textarea } from '@/ui/textarea.jsx';
@@ -8,6 +14,10 @@ import { Save, Check } from 'lucide-react';
 import { format } from 'date-fns';
 import { useAutosave } from '@/utils/formEnhancement';
 
+/**
+ * Default goal form state
+ * @constant {Object}
+ */
 const defaultGoal = {
     title: '',
     description: '',
@@ -17,12 +27,26 @@ const defaultGoal = {
     status: 'active'
 };
 
+/**
+ * Safely coerce value to number
+ * @param {*} value - Value to convert
+ * @returns {number} Parsed number or 0
+ */
 const coerceNumber = (value) => {
     const parsed = parseFloat(value);
     return Number.isFinite(parsed) ? parsed : 0;
 };
 
-export default function GoalForm({ goal, onSubmit, onCancel }) {
+/**
+ * Goal Form Component
+ * @component
+ * @param {Object} props
+ * @param {Object} [props.goal] - Existing goal to edit (null for new)
+ * @param {Function} props.onSubmit - Form submission handler
+ * @param {Function} props.onCancel - Cancel handler
+ * @returns {JSX.Element}
+ */
+function GoalForm({ goal, onSubmit, onCancel }) {
     const [formState, setFormState] = useState(defaultGoal);
 
     useEffect(() => {
@@ -177,3 +201,5 @@ export default function GoalForm({ goal, onSubmit, onCancel }) {
         </form>
     );
 }
+
+export default memo(GoalForm);

@@ -1,12 +1,24 @@
-import React from 'react';
+/**
+ * @fileoverview Monthly cashflow calendar view
+ * @description Displays income and expenses on a calendar grid with
+ * theme-aware styling and today highlighting
+ */
+
+import React, { memo } from 'react';
 import { Card, CardContent } from '@/ui/card.jsx';
 import { Skeleton } from '@/ui/skeleton.jsx';
 import { format, isToday, getDay } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useTheme } from '../theme/ThemeProvider';
 
+/** @constant {string[]} Week day abbreviations */
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+/**
+ * Format currency value for calendar display
+ * @param {number} amount - Amount to format
+ * @returns {string|null} Formatted currency or null if zero
+ */
 const formatCurrency = (amount) => {
     if (amount === 0) return null;
     return new Intl.NumberFormat('en-US', {
@@ -17,7 +29,16 @@ const formatCurrency = (amount) => {
     }).format(amount);
 };
 
-export default function CashflowCalendar({ calendarData, currentDate, isLoading }) {
+/**
+ * Cashflow Calendar Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.calendarData - Calendar data with daily income/expense totals
+ * @param {Date} props.currentDate - Current month being displayed
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element}
+ */
+function CashflowCalendar({ calendarData, currentDate, isLoading }) {
     const { theme } = useTheme();
     
     // Handle cases where calendarData might be empty or not yet loaded
@@ -94,3 +115,5 @@ export default function CashflowCalendar({ calendarData, currentDate, isLoading 
         </Card>
     );
 }
+
+export default memo(CashflowCalendar);

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Performance-optimized main dashboard hub
+ * @description Enhanced MoneyHub with React.memo optimizations, memoized calculations,
+ * and themed components for better performance with large datasets
+ */
 
 import React, { useMemo } from 'react';
 import { CardHeader, CardTitle, CardContent } from '@/ui/card.jsx';
@@ -9,6 +14,16 @@ import { ThemedCard, ThemedProgress } from '../ui/enhanced-components';
 import { format, addDays, startOfToday } from 'date-fns';
 import { EmptyState } from '../ui/empty-state';
 
+/**
+ * Memoized metric card component
+ * @param {Object} props
+ * @param {string} props.title - Card title
+ * @param {string} props.value - Formatted value to display
+ * @param {string} props.subtitle - Subtitle text
+ * @param {React.Component} props.icon - Icon component
+ * @param {string} props.colorClass - Tailwind color class
+ * @returns {JSX.Element}
+ */
 const MetricCard = React.memo(({ title, value, subtitle, icon: Icon, colorClass }) => (
     <ThemedCard>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -25,6 +40,13 @@ const MetricCard = React.memo(({ title, value, subtitle, icon: Icon, colorClass 
 ));
 MetricCard.displayName = 'MetricCard';
 
+/**
+ * Memoized upcoming item component (shift or bill)
+ * @param {Object} props
+ * @param {Object} props.item - Item data (shift or bill)
+ * @param {string} props.type - Item type ('shift' or 'bill')
+ * @returns {JSX.Element}
+ */
 const UpcomingItem = React.memo(({ item, type }) => {
     const isShift = type === 'shift';
     const dueDate = isShift ? new Date(item.start_datetime) : new Date(new Date().getFullYear(), new Date().getMonth(), item.due_date);
@@ -45,6 +67,12 @@ const UpcomingItem = React.memo(({ item, type }) => {
 });
 UpcomingItem.displayName = 'UpcomingItem';
 
+/**
+ * Memoized goal progress component
+ * @param {Object} props
+ * @param {Object} props.goal - Goal object with current and target amounts
+ * @returns {JSX.Element}
+ */
 const GoalProgress = React.memo(({ goal }) => {
     const progress = goal.target_amount > 0 ? (goal.current_amount / goal.target_amount) * 100 : 0;
     const isCompleted = progress >= 100;
@@ -68,6 +96,18 @@ const GoalProgress = React.memo(({ goal }) => {
 });
 GoalProgress.displayName = 'GoalProgress';
 
+/**
+ * Optimized Money Hub Component
+ * @component
+ * @description Performance-optimized dashboard with memoized sub-components
+ * @param {Object} props
+ * @param {Array} props.transactions - Transaction history
+ * @param {Array} props.shifts - Work shifts with pay data
+ * @param {Array} props.goals - Financial goals
+ * @param {Array} props.bills - Bill obligations
+ * @param {Object} props.metrics - Optional pre-calculated metrics
+ * @returns {JSX.Element}
+ */
 const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: externalMetrics }) => {
     const internalMetrics = useFinancialMetrics(transactions || [], shifts || [], [], [], goals || []);
     const metrics = externalMetrics || internalMetrics;

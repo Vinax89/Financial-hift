@@ -1,9 +1,19 @@
-import React, { useMemo } from 'react';
+/**
+ * @fileoverview Upcoming due items display component
+ * @description Shows upcoming bills and debt payments sorted by due date
+ */
+
+import React, { useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Badge } from '@/ui/badge.jsx';
 import { ScrollArea } from '@/ui/scroll-area.jsx';
 import { format } from 'date-fns';
 
+/**
+ * Format date value for display
+ * @param {Date|string} value - Date value to format
+ * @returns {string} Formatted date string (MMM d) or fallback
+ */
 const formatDate = (value) => {
     if (!value) return '—';
     try {
@@ -13,6 +23,11 @@ const formatDate = (value) => {
     }
 };
 
+/**
+ * Format currency value for display
+ * @param {number|string} value - Numeric value to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (value) => {
     const amount = typeof value === 'number' ? value : parseFloat(value);
     if (!Number.isFinite(amount)) {
@@ -25,7 +40,15 @@ const formatCurrency = (value) => {
     }).format(amount);
 };
 
-export default function UpcomingDue({ bills = [], debts = [] }) {
+/**
+ * Upcoming Due Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.bills - List of upcoming bills
+ * @param {Array} props.debts - List of debt accounts with payment dates
+ * @returns {JSX.Element}
+ */
+function UpcomingDue({ bills = [], debts = [] }) {
     const items = useMemo(() => {
         const upcomingBills = (Array.isArray(bills) ? bills : []).map((bill) => ({
             id: `bill-${bill.id || bill.name}`,
@@ -82,3 +105,5 @@ export default function UpcomingDue({ bills = [], debts = [] }) {
         </Card>
     );
 }
+
+export default memo(UpcomingDue);

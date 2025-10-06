@@ -1,12 +1,31 @@
-import React, { useMemo } from 'react';
+/**
+ * @fileoverview Budget overview with progress tracking
+ * @description Displays current month's budget vs spending with progress bar,
+ * remaining budget, and visual breakdown of financial metrics
+ */
+
+import React, { useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { ThemedProgress } from '../ui/enhanced-components';
 import { DollarSign, TrendingDown, PiggyBank } from 'lucide-react';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 
+/**
+ * Format currency value for display
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
-export default function BudgetOverview({ budgets, transactions }) {
+/**
+ * Budget Overview Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.budgets - List of budget records
+ * @param {Array} props.transactions - List of transactions for current month
+ * @returns {JSX.Element}
+ */
+function BudgetOverview({ budgets, transactions }) {
     const { totalBudget, totalSpent, remaining, progress } = useMemo(() => {
         const now = new Date();
         const monthStart = startOfMonth(now);
@@ -67,3 +86,5 @@ export default function BudgetOverview({ budgets, transactions }) {
         </Card>
     );
 }
+
+export default memo(BudgetOverview);

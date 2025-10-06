@@ -1,4 +1,10 @@
-import React, { useState } from "react";
+/**
+ * @fileoverview Transaction creation and editing form
+ * @description Full-featured form with validation, sanitization, animations,
+ * and dynamic category selection based on transaction type
+ */
+
+import React, { useState, memo } from "react";
 import { Button } from "@/ui/button.jsx";
 import { Input } from "@/ui/input.jsx";
 import { Textarea } from "@/ui/textarea.jsx";
@@ -13,6 +19,10 @@ import { motion } from "framer-motion";
 import { validateTransaction, sanitizeInput } from "@/utils/validation";
 import { useToast } from "@/ui/toast.jsx";
 
+/**
+ * Transaction categories organized by type
+ * @constant {Object}
+ */
 const transactionCategories = {
     income: [
         { value: "salary", label: "Salary" },
@@ -38,6 +48,10 @@ const transactionCategories = {
     ]
 };
 
+/**
+ * Available account types
+ * @constant {Array}
+ */
 const accounts = [
     { value: "checking", label: "Checking Account" },
     { value: "savings", label: "Savings Account" },
@@ -46,7 +60,16 @@ const accounts = [
     { value: "investment", label: "Investment Account" }
 ];
 
-export default function TransactionForm({ transaction, onSubmit, onCancel }) {
+/**
+ * Transaction Form Component
+ * @component
+ * @param {Object} props
+ * @param {Object} [props.transaction] - Existing transaction to edit (null for new)
+ * @param {Function} props.onSubmit - Form submission handler
+ * @param {Function} props.onCancel - Cancel handler
+ * @returns {JSX.Element}
+ */
+function TransactionForm({ transaction, onSubmit, onCancel }) {
     const [formData, setFormData] = useState(transaction || {
         title: "",
         amount: "",
@@ -86,7 +109,7 @@ export default function TransactionForm({ transaction, onSubmit, onCancel }) {
             );
         } catch (error) {
             toast.error("Error", "Failed to save transaction. Please try again.");
-            console.error(error);
+            if (import.meta.env.DEV) console.error(error);
         } finally {
             setIsSubmitting(false);
         }
@@ -306,3 +329,5 @@ export default function TransactionForm({ transaction, onSubmit, onCancel }) {
         </motion.div>
     );
 }
+
+export default memo(TransactionForm);

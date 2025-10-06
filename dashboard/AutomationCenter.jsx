@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+/**
+ * @fileoverview Autonomous agent orchestration center
+ * @description Triggers and monitors multi-agent workflows with health checks,
+ * chaos mode testing, and real-time activity tracking with markdown results
+ */
+
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { AgentTask } from '@/api/entities';
 import { Button } from '@/ui/button.jsx';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
@@ -13,6 +19,10 @@ import { Loading, LoadingWrapper } from '@/ui/loading.jsx';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
+/**
+ * Agent icon mappings for UI display
+ * @constant {Object.<string, React.Component>}
+ */
 const AGENT_ICONS = {
     financial_orchestrator: Layers,
     data_parser: Bug,
@@ -24,7 +34,13 @@ const AGENT_ICONS = {
     learning_optimizer: TrendingUp
 };
 
-export default function AutomationCenter() {
+/**
+ * Automation Center Component
+ * @component
+ * @description Manages autonomous AI agent workflows with chaos engineering support
+ * @returns {JSX.Element}
+ */
+function AutomationCenter() {
     const [tasks, setTasks] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isTriggering, setIsTriggering] = useState(false);
@@ -368,3 +384,5 @@ export default function AutomationCenter() {
         </div>
     );
 }
+
+export default memo(AutomationCenter);

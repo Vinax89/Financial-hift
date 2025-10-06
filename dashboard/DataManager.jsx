@@ -1,4 +1,10 @@
-import React, { useRef, useState } from 'react';
+/**
+ * @fileoverview Data import/export and AI-powered cleaning manager
+ * @description Manages data operations including JSON/CSV import via Data Parser agent,
+ * snapshot exports, and automated data cleaning via Error Corrector agent
+ */
+
+import React, { useRef, useState, memo } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,11 +22,21 @@ import { CardHeader, CardTitle, CardContent } from '@/ui/card.jsx';
 import { agentSDK } from '@/agents';
 import { AgentTask } from '@/api/entities';
 
+/**
+ * Entity mappings for export operations
+ * @constant {Object}
+ */
 const ENTITIES_FOR_EXPORT = {
     Transaction: useFinancialData.transactions, Shift: useFinancialData.shifts, Goal: useFinancialData.goals, DebtAccount: useFinancialData.debts, Budget: useFinancialData.budgets, Bill: useFinancialData.bills, Investment: useFinancialData.investments
 };
 
-export default function DataManager() {
+/**
+ * Data Manager Component
+ * @component
+ * @description Handles data import/export and AI-powered data cleaning operations
+ * @returns {JSX.Element}
+ */
+function DataManager() {
     const { toast } = useToast();
     const fileInputRef = useRef(null);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -41,7 +57,7 @@ export default function DataManager() {
             }
             // ... (rest of existing export logic)
         } catch (error) {
-            console.error("Export failed:", error);
+            if (import.meta.env.DEV) console.error("Export failed:", error);
             toast({ title: "Export Failed", description: "Could not export your data.", variant: "destructive" });
         } finally {
             setIsProcessing(false);
@@ -153,3 +169,5 @@ export default function DataManager() {
         </ThemedCard>
     );
 }
+
+export default memo(DataManager);

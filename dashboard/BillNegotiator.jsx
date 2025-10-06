@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+/**
+ * @fileoverview AI-powered bill negotiation script generator
+ * @description Generates personalized negotiation scripts for lowering bills
+ * using LLM integration with markdown formatting
+ */
+
+import React, { useState, memo } from 'react';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Input } from '@/ui/input.jsx';
@@ -10,7 +16,14 @@ import ReactMarkdown from 'react-markdown';
 import { useToast } from '@/ui/use-toast.jsx';
 import { ThemedCard } from '../ui/enhanced-components';
 
-export default function BillNegotiator({ bills }) {
+/**
+ * Bill Negotiator Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.bills - List of bills (unused currently)
+ * @returns {JSX.Element}
+ */
+function BillNegotiator({ bills }) {
     const { toast } = useToast();
     const [formData, setFormData] = useState({
         provider: '',
@@ -51,7 +64,7 @@ export default function BillNegotiator({ bills }) {
             setScript(response);
         } catch (error) {
             toast({ title: "Error", description: "Failed to generate script.", variant: "destructive"});
-            console.error(error);
+            if (import.meta.env.DEV) console.error(error);
         }
         setIsLoading(false);
     };
@@ -103,3 +116,5 @@ export default function BillNegotiator({ bills }) {
         </ThemedCard>
     );
 }
+
+export default memo(BillNegotiator);

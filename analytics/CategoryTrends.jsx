@@ -1,9 +1,21 @@
+/**
+ * @fileoverview Category expense trends bar chart
+ * @description Displays expense breakdown by category using a theme-aware
+ * bar chart with distinct colors per category
+ */
 
 import React, { useMemo } from "react";
 import { ThemedCard } from "@/ui/enhanced-components.jsx";
 import { CardHeader, CardTitle, CardContent } from "@/ui/card.jsx";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from "recharts";
 
+/**
+ * Category Trends Component
+ * @component
+ * @param {Object} props
+ * @param {Array} [props.transactions=[]] - Transaction history
+ * @returns {JSX.Element}
+ */
 const CategoryTrends = React.memo(function CategoryTrends({ transactions = [] }) {
   const monthly = useMemo(() => {
     const map = {};

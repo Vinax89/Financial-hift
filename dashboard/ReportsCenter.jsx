@@ -1,4 +1,10 @@
-import React from 'react';
+/**
+ * @fileoverview Financial reports center with charts and analysis
+ * @description Displays income vs expense trends and spending by category
+ * using bar charts and pie charts for last 6 months
+ */
+
+import React, { memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
 import { BarChart3, TrendingUp, TrendingDown, PieChart as PieIcon } from 'lucide-react';
@@ -6,8 +12,14 @@ import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, Resp
 import { formatCurrency } from '../utils/calculations';
 import { startOfMonth, subMonths, format } from 'date-fns';
 
+/** @constant {string[]} Category color palette */
 const COLORS = ['#10b981', '#3b82f6', '#ef4444', '#f97316', '#8b5cf6', '#eab308'];
 
+/**
+ * Get monthly transaction data for last 6 months
+ * @param {Array} transactions - Transaction list
+ * @returns {Array} Monthly aggregated data
+ */
 const getMonthlyData = (transactions) => {
     const months = {};
     for (let i = 5; i >= 0; i--) {
@@ -27,6 +39,11 @@ const getMonthlyData = (transactions) => {
     return Object.values(months);
 };
 
+/**
+ * Get category spending data for current month
+ * @param {Array} transactions - Transaction list
+ * @returns {Array} Category spending breakdown
+ */
 const getCategoryData = (transactions) => {
     const categories = {};
     const currentMonthStart = startOfMonth(new Date());
@@ -38,8 +55,17 @@ const getCategoryData = (transactions) => {
     return Object.entries(categories).map(([name, value]) => ({ name: name.replace('_', ' '), value }));
 };
 
-
-export default function ReportsCenter({ transactions, debts, goals, investments }) {
+/**
+ * Reports Center Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.transactions - Transaction history
+ * @param {Array} props.debts - Debt accounts (unused currently)
+ * @param {Array} props.goals - Financial goals (unused currently)
+ * @param {Array} props.investments - Investment portfolio (unused currently)
+ * @returns {JSX.Element}
+ */
+function ReportsCenter({ transactions, debts, goals, investments }) {
     const monthlyData = getMonthlyData(transactions);
     const categoryData = getCategoryData(transactions);
 
@@ -84,3 +110,5 @@ export default function ReportsCenter({ transactions, debts, goals, investments 
         </Card>
     );
 }
+
+export default memo(ReportsCenter);

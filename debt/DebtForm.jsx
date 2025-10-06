@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react';
+/**
+ * @fileoverview Debt account creation and editing form with autosave
+ * @description Form for managing debt accounts with validation, autosave,
+ * and support for balance, interest rate, and minimum payment tracking
+ */
+
+import React, { useEffect, useState, memo } from 'react';
 import { Input } from '@/ui/input.jsx';
 import { Label } from '@/ui/label.jsx';
 import { Button } from '@/ui/button.jsx';
@@ -6,6 +12,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Save, Check } from 'lucide-react';
 import { useAutosave } from '@/utils/formEnhancement';
 
+/**
+ * Default debt form state
+ * @constant {Object}
+ */
 const defaultDebt = {
     name: '',
     balance: '',
@@ -14,12 +24,26 @@ const defaultDebt = {
     status: 'active'
 };
 
+/**
+ * Safely convert value to number
+ * @param {*} value - Value to convert
+ * @returns {number} Parsed number or 0
+ */
 const toNumber = (value) => {
     const parsed = parseFloat(value);
     return Number.isFinite(parsed) ? parsed : 0;
 };
 
-export default function DebtForm({ debt, onSubmit, onCancel }) {
+/**
+ * Debt Form Component
+ * @component
+ * @param {Object} props
+ * @param {Object} [props.debt] - Existing debt to edit (null for new)
+ * @param {Function} props.onSubmit - Form submission handler
+ * @param {Function} props.onCancel - Cancel handler
+ * @returns {JSX.Element}
+ */
+function DebtForm({ debt, onSubmit, onCancel}) {
     const [formState, setFormState] = useState(defaultDebt);
 
     useEffect(() => {
@@ -153,3 +177,5 @@ export default function DebtForm({ debt, onSubmit, onCancel }) {
         </form>
     );
 }
+
+export default memo(DebtForm);

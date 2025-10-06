@@ -1,4 +1,10 @@
-import React, { useMemo, useState } from 'react';
+/**
+ * @fileoverview Investment scenario simulator with growth projections
+ * @description Calculates future investment value with different growth rates
+ * (conservative/moderate/aggressive) over a specified time horizon
+ */
+
+import React, { useMemo, useState, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Label } from '@/ui/label.jsx';
@@ -6,13 +12,26 @@ import { Input } from '@/ui/input.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
 import { Progress } from '@/ui/progress.jsx';
 
+/**
+ * Growth rate presets for different risk levels
+ * @constant {Object.<string, number>}
+ */
 const growthPresets = {
     conservative: 0.02,
     moderate: 0.05,
     aggressive: 0.08
 };
 
-export default function ScenarioSimulator({ startingBalance = 5000, monthlyContribution = 500, horizon = 5 }) {
+/**
+ * Scenario Simulator Component
+ * @component
+ * @param {Object} props
+ * @param {number} [props.startingBalance=5000] - Initial investment amount
+ * @param {number} [props.monthlyContribution=500] - Monthly contribution amount
+ * @param {number} [props.horizon=5] - Time horizon in years
+ * @returns {JSX.Element}
+ */
+function ScenarioSimulator({ startingBalance = 5000, monthlyContribution = 500, horizon = 5 }) {
     const [preset, setPreset] = useState('moderate');
     const [customRate, setCustomRate] = useState(growthPresets[preset]);
 
@@ -106,3 +125,5 @@ export default function ScenarioSimulator({ startingBalance = 5000, monthlyContr
         </Card>
     );
 }
+
+export default memo(ScenarioSimulator);

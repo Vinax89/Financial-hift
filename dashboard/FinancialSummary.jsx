@@ -1,9 +1,26 @@
-import React from "react";
+/**
+ * @fileoverview Financial summary cards component
+ * @description Displays key financial metrics in a grid of cards with
+ * icons, colors, and loading states
+ */
+
+import React, { memo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { TrendingUp, TrendingDown, DollarSign, Target } from "lucide-react";
 import { Skeleton } from "@/ui/skeleton.jsx";
 
-export default function FinancialSummary({ monthlyIncome, monthlyExpenses, netIncome, totalGoals, isLoading }) {
+/**
+ * Financial Summary Cards Component
+ * @component
+ * @param {Object} props
+ * @param {number} props.monthlyIncome - Total income for current month
+ * @param {number} props.monthlyExpenses - Total expenses for current month
+ * @param {number} props.netIncome - Net income (income - expenses)
+ * @param {number} props.totalGoals - Number of active financial goals
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element}
+ */
+function FinancialSummary({ monthlyIncome, monthlyExpenses, netIncome, totalGoals, isLoading }) {
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -72,3 +89,5 @@ export default function FinancialSummary({ monthlyIncome, monthlyExpenses, netIn
         </div>
     );
 }
+
+export default memo(FinancialSummary);

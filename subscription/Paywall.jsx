@@ -1,4 +1,10 @@
-import React from "react";
+/**
+ * @fileoverview Subscription paywall component
+ * @description Displays available subscription plans with trial options,
+ * feature lists, and upgrade prompts for locked features
+ */
+
+import React, { memo } from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/ui/card.jsx";
 import { Button } from "@/ui/button.jsx";
 import { Badge } from "@/ui/badge.jsx";
@@ -11,7 +17,16 @@ import useSubscription from "./useSubscription";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-export default function Paywall({ featureKey = "pro_feature", title = "Unlock Pro Features", description = "Upgrade to access this feature." }) {
+/**
+ * Paywall Component
+ * @component
+ * @param {Object} props
+ * @param {string} [props.featureKey="pro_feature"] - Feature identifier for tracking
+ * @param {string} [props.title="Unlock Pro Features"] - Paywall title
+ * @param {string} [props.description="Upgrade to access this feature."] - Description text
+ * @returns {JSX.Element}
+ */
+function Paywall({ featureKey = "pro_feature", title = "Unlock Pro Features", description = "Upgrade to access this feature." }) {
   const [plans, setPlans] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const { user } = useSubscription();
@@ -113,3 +128,5 @@ export default function Paywall({ featureKey = "pro_feature", title = "Unlock Pr
     </div>
   );
 }
+
+export default memo(Paywall);

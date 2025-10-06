@@ -1,4 +1,10 @@
-import React, { useMemo } from 'react';
+/**
+ * @fileoverview Bill obligations manager with urgency tracking
+ * @description Manages monthly bills with status indicators (critical/due soon/upcoming),
+ * auto-pay tracking, and quick pay actions based on due dates
+ */
+
+import React, { useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Badge } from '@/ui/badge.jsx';
@@ -7,7 +13,15 @@ import { AlertTriangle, CheckCircle, Clock, DollarSign, Calendar } from 'lucide-
 import { formatCurrency } from '../utils/calculations';
 import { format, addMonths } from 'date-fns';
 
-export default function ObligationsManager({ bills, refreshData }) {
+/**
+ * Obligations Manager Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.bills - List of bills with due dates and amounts
+ * @param {Function} props.refreshData - Callback to refresh data
+ * @returns {JSX.Element}
+ */
+function ObligationsManager({ bills, refreshData }) {
     const obligationData = useMemo(() => {
         const now = new Date();
         const currentMonth = now.getMonth();
@@ -210,3 +224,5 @@ export default function ObligationsManager({ bills, refreshData }) {
         </div>
     );
 }
+
+export default memo(ObligationsManager);

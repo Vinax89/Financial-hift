@@ -1,13 +1,27 @@
+/**
+ * @fileoverview Spending trends pie chart with category breakdown
+ * @description Displays current month's spending by category using a pie chart
+ * with theme-aware colors and percentage breakdown legend
+ */
 
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { Skeleton } from '@/ui/skeleton.jsx';
 import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
-import { getChartTheme } from './ChartTheme'; // Added import
+import { getChartTheme } from './ChartTheme';
 
+/**
+ * Format currency value for display
+ * @param {number} amount - Amount to format
+ * @returns {string} Formatted currency string
+ */
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
+/**
+ * User-friendly category labels
+ * @constant {Object.<string, string>}
+ */
 const categoryLabels = {
     food_dining: "Food & Dining",
     groceries: "Groceries", 
@@ -23,7 +37,15 @@ const categoryLabels = {
     other_expense: "Other"
 };
 
-export default function SpendingTrends({ transactions, isLoading }) {
+/**
+ * Spending Trends Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.transactions - Transaction history
+ * @param {boolean} props.isLoading - Loading state
+ * @returns {JSX.Element}
+ */
+function SpendingTrends({ transactions, isLoading }) {
     const { theme } = useTheme();
     // Memoize the chart theme palette based on the current theme
     const palette = useMemo(() => getChartTheme(theme), [theme]);
@@ -133,3 +155,5 @@ export default function SpendingTrends({ transactions, isLoading }) {
         </div>
     );
 }
+
+export default memo(SpendingTrends);

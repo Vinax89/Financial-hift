@@ -1,4 +1,10 @@
-import React, { useState, useMemo } from 'react';
+/**
+ * @fileoverview Investment portfolio tracker and manager
+ * @description Manages investment portfolio with CRUD operations, tracks gains/losses,
+ * calculates total value and performance metrics across all accounts
+ */
+
+import React, { useState, useMemo, memo } from 'react';
 import { Investment } from '@/api/entities';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
@@ -11,9 +17,19 @@ import { Plus, Edit, Trash2, TrendingUp, DollarSign, MoreHorizontal, X } from 'l
 import { formatCurrency } from '../utils/calculations';
 import { AnimatePresence, motion } from 'framer-motion';
 
+/** @constant {string[]} Available investment types */
 const investmentTypes = ["stock", "bond", "mutual_fund", "etf", "crypto", "real_estate", "other"];
+/** @constant {string[]} Available account types */
 const accountTypes = ["taxable", "401k", "ira_traditional", "ira_roth", "hsa", "other"];
 
+/**
+ * Investment Form Component
+ * @param {Object} props
+ * @param {Object} props.investment - Existing investment to edit (null for new)
+ * @param {Function} props.onSubmit - Submit handler
+ * @param {Function} props.onCancel - Cancel handler
+ * @returns {JSX.Element}
+ */
 const InvestmentForm = ({ investment, onSubmit, onCancel }) => {
     const [formData, setFormData] = useState(investment || {
         symbol: '', name: '', type: 'stock', shares: '', purchase_price: '', current_price: '', account_type: 'taxable', purchase_date: new Date().toISOString().split('T')[0]
@@ -86,7 +102,15 @@ const InvestmentForm = ({ investment, onSubmit, onCancel }) => {
     );
 };
 
-export default function InvestmentTracker({ investments, refreshData }) {
+/**
+ * Investment Tracker Component
+ * @component
+ * @param {Object} props
+ * @param {Array} props.investments - List of investment holdings
+ * @param {Function} props.refreshData - Callback to refresh data after changes
+ * @returns {JSX.Element}
+ */
+function InvestmentTracker({ investments, refreshData }) {
     const { toast } = useToast();
     const [showForm, setShowForm] = useState(false);
     const [editingInvestment, setEditingInvestment] = useState(null);
@@ -201,3 +225,5 @@ export default function InvestmentTracker({ investments, refreshData }) {
         </Card>
     );
 }
+
+export default memo(InvestmentTracker);
