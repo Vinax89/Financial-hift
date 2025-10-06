@@ -573,7 +573,7 @@ export default function Dashboard() {
                                     <ErrorBoundary fallback={<ComponentFallback name="Scenario Simulator" type="card" />}>
                                         <Suspense fallback={<ComponentFallback name="Scenario Simulator" type="card" />}>
                                             <ScenarioSimulator debts={debts} />
-                                        </ense>
+                                        </Suspense>
                                     </ErrorBoundary>
                                 </div>
                             </div>
