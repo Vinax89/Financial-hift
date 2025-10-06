@@ -6,7 +6,6 @@ import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { Target, BarChart3, FileText, Plus, TrendingUp } from 'lucide-react';
 import { Button } from '@/ui/button.jsx';
 import { Badge } from '@/ui/badge.jsx';
-import { ErrorBoundary } from '@/shared/ErrorBoundary';
 
 // Import entities
 import { Goal } from '@/api/entities';

@@ -43,9 +43,9 @@ import { ThemeToggle } from "@/theme/ThemeToggle.jsx";
 import { BackgroundPattern } from "@/ui/theme-aware-animations.jsx";
 import useGamification from "@/hooks/useGamification.jsx";
 import { User as UserEntity } from "@/api/entities";
-import CommandPalette from "./components/shared/CommandPalette";
-import NotificationsCenter from "./components/shared/NotificationsCenter.js";
-import PrivacyToggle from "./components/shared/PrivacyToggle.jsx";
+import CommandPalette from "@/shared/CommandPalette.jsx";
+import NotificationsCenter from "@/shared/NotificationsCenter.jsx";
+import PrivacyToggle from "@/shared/PrivacyToggle.jsx";
 
 const navigationItems = [
     {
@@ -576,4 +576,3 @@ export default function Layout({ children, currentPageName }) {
         </ThemeProvider>
     );
 }
-

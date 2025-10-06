@@ -1,25 +1,5 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Transaction } from                <AnimatePresence>
-                {showForm && (
-                    <FloatingElement>
-                        <FocusTrapWrapper onEscape={() => setShowForm(false)}>
-                            <ThemedCard elevated>
-                                <CardHeader>
-                                    <CardTitle className="text-xl">{editingTransaction ? 'Edit Transaction' : 'Add New Transaction'}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <TransactionForm
-                                        transaction={editingTransaction}
-                                        onSubmit={handleFormSubmit}
-                                        onCancel={() => setShowForm(false)}
-                                    />
-                                </CardContent>
-                            </ThemedCard>
-                        </FocusTrapWrapper>
-                    </FloatingElement>
-                )}
-                </AnimatePresence>
 import TransactionList from '@/transactions/TransactionList.jsx';
 import TransactionForm from '@/transactions/TransactionForm.jsx';
 import TransactionFilters from '@/transactions/TransactionFilters.jsx';
@@ -31,6 +11,7 @@ import { CreditCard, Plus } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
+import { Transaction } from '@/api/entities';
 
 export default function TransactionsPage() {
     const [transactions, setTransactions] = useState([]);
@@ -120,19 +101,21 @@ export default function TransactionsPage() {
                 
                 <AnimatePresence>
                 {showForm && (
-                    <FloatingElement className="mb-8">
-                        <ThemedCard elevated>
-                            <CardHeader>
-                                <CardTitle>{editingTransaction ? 'Edit Transaction' : 'Create New Transaction'}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <TransactionForm
-                                    transaction={editingTransaction}
-                                    onSubmit={handleFormSubmit}
-                                    onCancel={() => setShowForm(false)}
-                                />
-                            </CardContent>
-                        </ThemedCard>
+                    <FloatingElement>
+                        <FocusTrapWrapper onEscape={() => setShowForm(false)}>
+                            <ThemedCard elevated>
+                                <CardHeader>
+                                    <CardTitle className="text-xl">{editingTransaction ? 'Edit Transaction' : 'Add New Transaction'}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <TransactionForm
+                                        transaction={editingTransaction}
+                                        onSubmit={handleFormSubmit}
+                                        onCancel={() => setShowForm(false)}
+                                    />
+                                </CardContent>
+                            </ThemedCard>
+                        </FocusTrapWrapper>
                     </FloatingElement>
                 )}
                 </AnimatePresence>

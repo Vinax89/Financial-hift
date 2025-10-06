@@ -18,8 +18,8 @@ import { User } from "@/api/entities";
 import UpcomingDue from "@/dashboard/UpcomingDue";
 import { generateReminders } from "@/api/functions";
 import { emailUpcomingBills } from "@/api/functions";
-import PrivacyToggle from "@/components/shared/PrivacyToggle.jsx";
-import { useIdlePrefetch } from "../components/hooks/useIdlePrefetch";
+import PrivacyToggle from "@/shared/PrivacyToggle.jsx";
+import { useIdlePrefetch } from "@/hooks/useIdlePrefetch.jsx";
 // Replace the OnboardingModal import to avoid extension-specific path issues
 import OnboardingModal from "@/onboarding/OnboardingModal";
 
@@ -573,7 +573,7 @@ export default function Dashboard() {
                                     <ErrorBoundary fallback={<ComponentFallback name="Scenario Simulator" type="card" />}>
                                         <Suspense fallback={<ComponentFallback name="Scenario Simulator" type="card" />}>
                                             <ScenarioSimulator debts={debts} />
-                                        </Suspense>
+                                        </ense>
                                     </ErrorBoundary>
                                 </div>
                             </div>
