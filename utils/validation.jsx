@@ -5,6 +5,8 @@ export const sanitizeInput = (input) => {
     return input
         .replace(/[<>]/g, '') // Remove potential HTML tags
         .replace(/javascript:/gi, '') // Remove javascript protocols
+        .replace(/data:/gi, '') // Remove data protocols
+        .replace(/vbscript:/gi, '') // Remove vbscript protocols
         .replace(/on\w+=/gi, '') // Remove event handlers
         .trim();
 };
