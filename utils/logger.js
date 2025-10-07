@@ -4,6 +4,8 @@
  * hooks for production error tracking services (Sentry, LogRocket, etc.)
  */
 
+import { captureException, captureMessage, addBreadcrumb } from './sentry.js';
+
 /**
  * Check if running in development mode
  * @returns {boolean}
@@ -53,8 +55,16 @@ export const logWarn = (message, data) => {
   if (isDev()) {
     console.warn(`[WARN] ${message}`, data !== undefined ? data : '');
   } else {
-    // TODO: Send to error tracking service (Sentry, LogRocket, Bugsnag)
-    // Example: Sentry.captureMessage(message, { level: 'warning', extra: data });
+    // Send to Sentry in production
+    captureMessage(message, 'warning');
+    if (data) {
+      addBreadcrumb({
+        category: 'warning',
+        message,
+        data,
+        level: 'warning',
+      });
+    }
   }
 };
 
@@ -68,8 +78,12 @@ export const logError = (message, error) => {
   if (isDev()) {
     console.error(`[ERROR] ${message}`, error || '');
   } else {
-    // TODO: Send to error tracking service (Sentry, LogRocket, Bugsnag)
-    // Example: Sentry.captureException(error, { tags: { message } });
+    // Send to Sentry in production
+    if (error instanceof Error) {
+      captureException(error, { message });
+    } else {
+      captureMessage(`${message}: ${JSON.stringify(error)}`, 'error');
+    }
   }
 };
 

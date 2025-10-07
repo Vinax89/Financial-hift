@@ -56,7 +56,7 @@ function StatCardSkeleton() {
     );
 }
 
-export default function ShiftStats({ shifts, isLoading }) {
+function ShiftStats({ shifts, isLoading }) {
     const stats = useMemo(() => {
         if (!shifts || shifts.length === 0) {
             return { weeklyHours: 0, weeklyPay: 0, monthlyHours: 0, monthlyPay: 0 };

@@ -1,5 +1,6 @@
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import { useTransactions, useCreateTransaction, useUpdateTransaction, useDeleteTransaction } from '@/hooks/useEntityQueries.jsx';
 import TransactionList from '@/transactions/TransactionList.jsx';
 import TransactionForm from '@/transactions/TransactionForm.jsx';
 import TransactionFilters from '@/transactions/TransactionFilters.jsx';
@@ -11,44 +12,37 @@ import { CreditCard, Plus } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
-import { Transaction } from '@/api/entities';
 import { useToast } from '@/ui/use-toast.jsx';
 
 export default function TransactionsPage() {
-    const [transactions, setTransactions] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // React Query hooks - automatic caching and background refetching
+    const { data: transactions = [], isLoading: loading } = useTransactions();
+    
+    // Mutation hooks with optimistic updates
+    const createTransaction = useCreateTransaction();
+    const updateTransaction = useUpdateTransaction();
+    const deleteTransaction = useDeleteTransaction();
+    
     const [showForm, setShowForm] = useState(false);
     const [editingTransaction, setEditingTransaction] = useState(null);
     const [filters, setFilters] = useState({});
     const { toast } = useToast();
 
-    const loadTransactions = useCallback(async () => {
-        setLoading(true);
-        const data = await Transaction.list('-date', 1000);
-        setTransactions(data);
-        setLoading(false);
-    }, []);
-
-    useEffect(() => {
-        loadTransactions();
-    }, [loadTransactions]);
-
     const handleFormSubmit = async (data) => {
         try {
             if (editingTransaction) {
-                await Transaction.update(editingTransaction.id, data);
+                await updateTransaction.mutateAsync({ id: editingTransaction.id, data });
                 toast({
                     title: 'Transaction updated',
                     description: 'Your transaction has been updated successfully.',
                 });
             } else {
-                await Transaction.create(data);
+                await createTransaction.mutateAsync(data);
                 toast({
                     title: 'Transaction created',
                     description: 'Your new transaction has been recorded successfully.',
                 });
             }
-            await loadTransactions();
             setShowForm(false);
             setEditingTransaction(null);
         } catch (error) {
@@ -67,12 +61,11 @@ export default function TransactionsPage() {
 
     const handleDelete = async (id) => {
         try {
-            await Transaction.delete(id);
+            await deleteTransaction.mutateAsync(id);
             toast({
                 title: 'Transaction deleted',
                 description: 'Your transaction has been deleted successfully.',
             });
-            await loadTransactions();
         } catch (error) {
             toast({
                 title: 'Error',
@@ -93,7 +86,10 @@ export default function TransactionsPage() {
             // Focus on filter/search input if available
             filterRef.current?.focus();
         },
-        onRefresh: loadTransactions,
+        onRefresh: () => {
+            // React Query will handle refetching automatically
+            // No manual refresh needed - data is always fresh
+        },
     });
 
     const filteredTransactions = transactions.filter(t => {
