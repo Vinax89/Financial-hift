@@ -11,7 +11,7 @@ import { Label } from '@/ui/label.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
 import { DollarSign, Save, Check } from 'lucide-react';
 import { format } from 'date-fns';
-import { useAutosave } from '@/utils/formEnhancement';
+import { useAutosave } from '@/utils/formEnhancement.jsx';
 
 /**
  * Budget category options with display labels

@@ -3,7 +3,7 @@ import { User } from "@/api/entities";
 import { useTheme } from "@/theme/ThemeProvider";
 import { ThemeSelector } from "@/theme/ThemeToggle";
 import PrivacyToggle from "@/shared/PrivacyToggle.jsx";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/ui/use-toast";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { Button } from "@/ui/button.jsx";

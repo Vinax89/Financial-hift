@@ -10,7 +10,7 @@ import { Label } from '@/ui/label.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
 import { Save, Check } from 'lucide-react';
-import { useAutosave } from '@/utils/formEnhancement';
+import { useAutosave } from '@/utils/formEnhancement.jsx';
 
 /**
  * Default debt form state

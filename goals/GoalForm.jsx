@@ -12,7 +12,7 @@ import { Button } from '@/ui/button.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
 import { Save, Check } from 'lucide-react';
 import { format } from 'date-fns';
-import { useAutosave } from '@/utils/formEnhancement';
+import { useAutosave } from '@/utils/formEnhancement.jsx';
 
 /**
  * Default goal form state
