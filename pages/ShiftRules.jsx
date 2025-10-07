@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { logError } from '@/utils/logger.js';
 import { Button } from '@/ui/button.jsx';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Badge } from '@/ui/badge.jsx';
@@ -32,7 +33,7 @@ export default function ShiftRulesPage() {
             const rules = await ShiftRule.list('-updated_date');
             setShiftRules(Array.isArray(rules) ? rules : []);
         } catch (error) {
-            console.error('Failed to load shift rules:', error);
+            logError('Failed to load shift rules', error);
             toast({
                 title: 'Failed to load shift rules',
                 description: error.message,

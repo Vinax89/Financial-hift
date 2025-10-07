@@ -4,7 +4,8 @@
  * calculates total value and performance metrics across all accounts
  */
 
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo } from 'react';
+import { logError } from '@/utils/logger.js';
 import { Investment } from '@/api/entities';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
@@ -138,7 +139,7 @@ function InvestmentTracker({ investments, refreshData }) {
             refreshData();
         } catch (error) {
             toast({ title: "Error", description: "Could not save investment.", variant: "destructive" });
-            console.error(error);
+            logError('Investment operation failed', error);
         }
     };
 

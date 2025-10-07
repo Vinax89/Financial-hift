@@ -8,6 +8,7 @@ import React, { useState, memo } from 'react';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Input } from '@/ui/input.jsx';
+import { logError } from '@/utils/logger.js';
 import { Textarea } from '@/ui/textarea.jsx';
 import { Label } from '@/ui/label.jsx';
 import { InvokeLLM } from '@/api/integrations';
@@ -64,7 +65,7 @@ function BillNegotiator({ bills }) {
             setScript(response);
         } catch (error) {
             toast({ title: "Error", description: "Failed to generate script.", variant: "destructive"});
-            if (import.meta.env.DEV) console.error(error);
+            if (import.meta.env.DEV) logError('Failed to generate negotiation script', error);
         }
         setIsLoading(false);
     };

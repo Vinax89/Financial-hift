@@ -7,6 +7,7 @@ import { Textarea } from '@/ui/textarea.jsx';
 import MessageBubble from '@/agents/MessageBubble.jsx';
 import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
+import { logError } from '@/utils/logger.js';
 
 const QUICK_PROMPTS = [
   "Analyze my spending from last month.",
@@ -34,7 +35,7 @@ export default function AIAdvisorPage() {
                     setMessages(conv.messages);
                 }
             } catch (error) {
-                console.error("Failed to initialize conversation", error);
+                logError('Failed to initialize conversation', error);
             }
             setIsLoading(false);
         };

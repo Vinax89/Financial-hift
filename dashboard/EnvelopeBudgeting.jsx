@@ -1,5 +1,6 @@
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
+import { logError } from '@/utils/logger.js';
 import { CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card.jsx';
 import { Button } from '@/ui/button.jsx';
 import { Input } from '@/ui/input.jsx';
@@ -123,7 +124,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
             });
 
         } catch (error) {
-            console.error('AI optimization failed:', error);
+            logError('AI optimization failed', error);
             setOptimizationSuggestion('Error: Could not generate suggestions.');
             toast({ 
                 title: 'Optimization Failed', 

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { logInfo } from '@/utils/logger.js';
 import ReceiptScanner from '@/scanning/ReceiptScanner.jsx';
 import { useFinancialData } from '@/hooks/useFinancialData.jsx';
 import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
@@ -11,11 +12,11 @@ export default function ScannerPage() {
     const { refreshData } = useFinancialData();
 
     const handleTransactionAdded = (transaction) => {
-        console.log('New transaction from scan:', transaction);
+        logInfo('New transaction from scan', { transaction });
     };
 
     const handleBillAdded = (bill) => {
-        console.log('New bill from scan:', bill);
+        logInfo('New bill from scan', { bill });
     };
 
     return (

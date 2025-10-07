@@ -5,6 +5,7 @@
  */
 
 import React, { useRef, useState, memo } from 'react';
+import { logError } from '@/utils/logger.js';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,7 +58,7 @@ function DataManager() {
             }
             // ... (rest of existing export logic)
         } catch (error) {
-            if (import.meta.env.DEV) console.error("Export failed:", error);
+            if (import.meta.env.DEV) logError('Export failed', error);
             toast({ title: "Export Failed", description: "Could not export your data.", variant: "destructive" });
         } finally {
             setIsProcessing(false);

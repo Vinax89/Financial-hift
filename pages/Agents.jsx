@@ -8,6 +8,7 @@ import { Separator } from '@/ui/separator.jsx';
 import { Bot, Plus, Send, RefreshCw, Layers, ShieldCheck, Bug, GitBranch, MessageSquare, AlertCircle, Brain, TrendingUp, Terminal, Zap } from 'lucide-react';
 import { useToast } from '@/ui/use-toast.jsx';
 import { agentSDK } from '@/agents';
+import { logError } from '@/utils/logger.js';
 import MessageBubble from '@/agents/MessageBubble.jsx';
 
 const AGENT_CONFIGS = {
@@ -115,7 +116,7 @@ export default function AgentsPage() {
                 await createNewConversation();
             }
         } catch (error) {
-            console.error('Failed to load conversations:', error);
+            logError('Failed to load conversations', error);
             toast({
                 title: 'Connection Issue',
                 description: 'Failed to connect to agent. Creating new session...',
@@ -151,7 +152,7 @@ export default function AgentsPage() {
             setMessages(welcomeResponse.messages || []);
             
         } catch (error) {
-            console.error('Failed to create conversation:', error);
+            logError('Failed to create conversation', error);
             toast({
                 title: 'Error',
                 description: 'Failed to create new conversation',
@@ -181,7 +182,7 @@ export default function AgentsPage() {
             setActiveConversation(updatedConversation);
 
         } catch (error) {
-            console.error('Failed to send message:', error);
+            logError('Failed to send message', error);
             toast({
                 title: 'Message Failed',
                 description: 'Failed to send message. Please try again.',

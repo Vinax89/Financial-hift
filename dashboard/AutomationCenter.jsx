@@ -13,6 +13,7 @@ import { Bot, Play, RefreshCw, Layers, ShieldCheck, Bug, GitBranch, MessageSquar
 import { ThemedCard } from '../ui/enhanced-components';
 import { ScrollArea } from '@/ui/scroll-area.jsx';
 import { useToast } from '@/ui/use-toast.jsx';
+import { logError } from '@/utils/logger.js';
 import { agentSDK } from '@/agents';
 import ReactMarkdown from 'react-markdown';
 import { Loading, LoadingWrapper } from '@/ui/loading.jsx';
@@ -66,7 +67,7 @@ function AutomationCenter() {
             setTasks(Array.isArray(agentTasks) ? agentTasks : []);
             setLastRefresh(Date.now());
         } catch (error) {
-            console.error('Failed to load agent tasks:', error);
+            logError('Failed to load agent tasks', error);
             setError(error.message);
             
             // In chaos mode, show different error messages
@@ -155,7 +156,7 @@ function AutomationCenter() {
             await loadTasks();
 
         } catch (error) {
-            console.error('Health check failed:', error);
+            logError('Health check failed', error);
             
             const errorTitle = chaosMode 
                 ? 'Health check failed due to chaos conditions' 

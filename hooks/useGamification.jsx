@@ -73,7 +73,7 @@ const useGamification = () => {
             }
         } catch (error) {
             if (import.meta.env.DEV) {
-                console.error('Failed to fetch game state:', error);
+                logError('Failed to fetch game state', error);
             }
         } finally {
             setIsLoading(false);
@@ -107,7 +107,7 @@ const useGamification = () => {
             });
         } catch (error) {
             if (import.meta.env.DEV) {
-                console.error('Failed to award badge:', error);
+                logError('Failed to award badge', error);
             }
         }
     }, [gameState, toast]);
@@ -157,7 +157,7 @@ const useGamification = () => {
             }
         } catch (error) {
             if (import.meta.env.DEV) {
-                console.error('Failed to award XP:', error);
+                logError('Failed to award XP', error);
             }
         }
     }, [gameState, toast, awardBadge]);

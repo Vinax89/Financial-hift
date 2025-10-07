@@ -31,7 +31,7 @@ export function useLocalStorage(key, initialValue) {
             }
         } catch (error) {
             if (import.meta.env.DEV) {
-                console.warn(`Error reading localStorage key "${key}":`, error);
+                logWarn(`Error reading localStorage key "${key}"`, { error });
             }
             return initialValue;
         }
@@ -45,7 +45,7 @@ export function useLocalStorage(key, initialValue) {
             }
         } catch (error) {
             if (import.meta.env.DEV) {
-                console.warn(`Error setting localStorage key "${key}":`, error);
+                logWarn(`Error setting localStorage key "${key}"`, { error });
             }
         }
     };
@@ -63,7 +63,7 @@ export function useLocalStorage(key, initialValue) {
                     }
                 } catch (error) {
                     if (import.meta.env.DEV) {
-                        console.warn(`Error parsing localStorage key "${key}":`, error);
+                        logWarn(`Error parsing localStorage key "${key}"`, { error });
                     }
                 }
             }

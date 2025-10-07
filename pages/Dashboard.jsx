@@ -8,6 +8,7 @@ import { ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { useTheme } from '@/theme/ThemeProvider.jsx';
 import { ThemeToggle } from '@/theme/ThemeToggle.jsx';
+import { logError } from '@/utils/logger.js';
 import { useToast } from '@/ui/use-toast.jsx';
 import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
 import { useLocalStorage } from '@/hooks/useLocalStorage.jsx';
@@ -255,7 +256,7 @@ export default function Dashboard() {
                 description: "Your financial report has been successfully downloaded.",
             });
         } catch (error) {
-            console.error("Failed to generate PDF report:", error);
+            logError('Failed to generate PDF report', error);
             toast({
                 title: "PDF Export Failed",
                 description: "There was an error generating your financial report. Please try again.",
