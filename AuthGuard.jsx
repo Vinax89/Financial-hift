@@ -72,7 +72,12 @@ export default function AuthGuard({ children }) {
         );
     }
 
+<<<<<<< HEAD
+    // TEMP: Bypass authentication for development
+    if (false && !authState.isAuthenticated) {
+=======
     if (false && !authState.isAuthenticated) { // TEMP: Bypass auth for development
+>>>>>>> 78737ce333f971b33d6093e20a1f1d7348a83549
         return (
             <div className="min-h-screen bg-background flex items-center justify-center">
                 <Card className="w-full max-w-md border shadow-xl bg-card backdrop-blur-sm">
