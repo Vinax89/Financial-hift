@@ -12,6 +12,7 @@ import { AnimatePresence } from 'framer-motion';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 import { Transaction } from '@/api/entities';
+import { useToast } from '@/ui/use-toast.jsx';
 
 export default function TransactionsPage() {
     const [transactions, setTransactions] = useState([]);
@@ -19,6 +20,7 @@ export default function TransactionsPage() {
     const [showForm, setShowForm] = useState(false);
     const [editingTransaction, setEditingTransaction] = useState(null);
     const [filters, setFilters] = useState({});
+    const { toast } = useToast();
 
     const loadTransactions = useCallback(async () => {
         setLoading(true);
@@ -32,14 +34,30 @@ export default function TransactionsPage() {
     }, [loadTransactions]);
 
     const handleFormSubmit = async (data) => {
-        if (editingTransaction) {
-            await Transaction.update(editingTransaction.id, data);
-        } else {
-            await Transaction.create(data);
+        try {
+            if (editingTransaction) {
+                await Transaction.update(editingTransaction.id, data);
+                toast({
+                    title: 'Transaction updated',
+                    description: 'Your transaction has been updated successfully.',
+                });
+            } else {
+                await Transaction.create(data);
+                toast({
+                    title: 'Transaction created',
+                    description: 'Your new transaction has been recorded successfully.',
+                });
+            }
+            await loadTransactions();
+            setShowForm(false);
+            setEditingTransaction(null);
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to save transaction. Please try again.',
+                variant: 'destructive',
+            });
         }
-        await loadTransactions();
-        setShowForm(false);
-        setEditingTransaction(null);
     };
 
     const handleEdit = (transaction) => {
@@ -48,8 +66,20 @@ export default function TransactionsPage() {
     };
 
     const handleDelete = async (id) => {
-        await Transaction.delete(id);
-        await loadTransactions();
+        try {
+            await Transaction.delete(id);
+            toast({
+                title: 'Transaction deleted',
+                description: 'Your transaction has been deleted successfully.',
+            });
+            await loadTransactions();
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to delete transaction. Please try again.',
+                variant: 'destructive',
+            });
+        }
     };
 
     // Keyboard shortcuts

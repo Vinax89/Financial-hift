@@ -25,6 +25,29 @@ export const QueryKeys = {
   INVESTMENTS: 'investments',
 };
 
+/**
+ * Standardized cache configuration for React Query
+ * - staleTime: How long data is considered fresh (no refetch needed)
+ * - gcTime: How long unused data stays in cache before garbage collection
+ */
+export const CACHE_CONFIG = {
+  // Financial data - Refresh frequently (user-driven data)
+  FINANCIAL: {
+    staleTime: 5 * 60 * 1000,   // 5 minutes
+    gcTime: 10 * 60 * 1000,      // 10 minutes
+  },
+  // Settings/Config - Less frequent changes
+  SETTINGS: {
+    staleTime: 15 * 60 * 1000,   // 15 minutes
+    gcTime: 30 * 60 * 1000,      // 30 minutes
+  },
+  // Rarely changing data (shift rules, etc.)
+  STATIC: {
+    staleTime: 30 * 60 * 1000,   // 30 minutes
+    gcTime: 60 * 60 * 1000,      // 1 hour
+  },
+};
+
 // ============================================================================
 // TRANSACTION HOOKS
 // ============================================================================
@@ -385,8 +408,8 @@ export const useShiftRules = () => {
   return useQuery({
     queryKey: [QueryKeys.SHIFT_RULES],
     queryFn: () => ShiftRule.list('-updated_date'),
-    staleTime: CacheStrategies.SHIFT_RULES.ttl,
-    gcTime: 60 * 60 * 1000, // Keep for 1 hour
+    staleTime: CACHE_CONFIG.STATIC.staleTime,
+    gcTime: CACHE_CONFIG.STATIC.gcTime,
   });
 };
 
@@ -474,8 +497,8 @@ export const useBudgets = (sortBy = '-created_date', limit = 100) => {
   return useQuery({
     queryKey: [QueryKeys.BUDGETS, sortBy, limit],
     queryFn: () => Budget.list(sortBy, limit),
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 15 * 60 * 1000,
+    staleTime: CACHE_CONFIG.FINANCIAL.staleTime,
+    gcTime: CACHE_CONFIG.FINANCIAL.gcTime,
   });
 };
 
@@ -582,8 +605,8 @@ export const useDebts = (sortBy = '-created_date', limit = 100) => {
   return useQuery({
     queryKey: [QueryKeys.DEBTS, sortBy, limit],
     queryFn: () => DebtAccount.list(sortBy, limit),
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 15 * 60 * 1000,
+    staleTime: CACHE_CONFIG.FINANCIAL.staleTime,
+    gcTime: CACHE_CONFIG.FINANCIAL.gcTime,
   });
 };
 
@@ -690,8 +713,8 @@ export const useGoals = (sortBy = '-created_date', limit = 100) => {
   return useQuery({
     queryKey: [QueryKeys.GOALS, sortBy, limit],
     queryFn: () => Goal.list(sortBy, limit),
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 15 * 60 * 1000,
+    staleTime: CACHE_CONFIG.FINANCIAL.staleTime,
+    gcTime: CACHE_CONFIG.FINANCIAL.gcTime,
   });
 };
 
@@ -798,8 +821,8 @@ export const useBills = (sortBy = '-due_date', limit = 100) => {
   return useQuery({
     queryKey: [QueryKeys.BILLS, sortBy, limit],
     queryFn: () => Bill.list(sortBy, limit),
-    staleTime: 10 * 60 * 1000, // 10 minutes
-    gcTime: 15 * 60 * 1000,
+    staleTime: CACHE_CONFIG.FINANCIAL.staleTime,
+    gcTime: CACHE_CONFIG.FINANCIAL.gcTime,
   });
 };
 

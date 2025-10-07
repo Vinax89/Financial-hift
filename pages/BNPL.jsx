@@ -10,12 +10,14 @@ import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Plus, Zap } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
+import { useToast } from '@/ui/use-toast.jsx';
 
 export default function BNPLPage() {
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [editingPlan, setEditingPlan] = useState(null);
+    const { toast } = useToast();
 
     const loadPlans = async () => {
         setLoading(true);
@@ -29,14 +31,30 @@ export default function BNPLPage() {
     }, []);
 
     const handleFormSubmit = async (data) => {
-        if (editingPlan) {
-            await BNPLPlan.update(editingPlan.id, data);
-        } else {
-            await BNPLPlan.create(data);
+        try {
+            if (editingPlan) {
+                await BNPLPlan.update(editingPlan.id, data);
+                toast({
+                    title: 'BNPL plan updated',
+                    description: 'Your installment plan has been updated successfully.',
+                });
+            } else {
+                await BNPLPlan.create(data);
+                toast({
+                    title: 'BNPL plan created',
+                    description: 'Your new installment plan has been created successfully.',
+                });
+            }
+            await loadPlans();
+            setShowForm(false);
+            setEditingPlan(null);
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to save BNPL plan. Please try again.',
+                variant: 'destructive',
+            });
         }
-        await loadPlans();
-        setShowForm(false);
-        setEditingPlan(null);
     };
 
     const handleEdit = (plan) => {
@@ -45,8 +63,20 @@ export default function BNPLPage() {
     };
 
     const handleDelete = async (id) => {
-        await BNPLPlan.delete(id);
-        await loadPlans();
+        try {
+            await BNPLPlan.delete(id);
+            toast({
+                title: 'BNPL plan deleted',
+                description: 'Your installment plan has been deleted successfully.',
+            });
+            await loadPlans();
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to delete BNPL plan. Please try again.',
+                variant: 'destructive',
+            });
+        }
     };
 
     return (

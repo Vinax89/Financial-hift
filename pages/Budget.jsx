@@ -13,6 +13,7 @@ import { AnimatePresence } from 'framer-motion';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 import { ErrorBoundary } from '@/shared/ErrorBoundary';
+import { useToast } from '@/ui/use-toast.jsx';
 
 export default function BudgetPage() {
     // React Query hooks - automatic caching and background refetching
@@ -24,6 +25,8 @@ export default function BudgetPage() {
     const updateBudget = useUpdateBudget();
     const deleteBudget = useDeleteBudget();
     
+    const { toast } = useToast();
+    
     // Combined loading state
     const loading = loadingBudgets || loadingTransactions;
     
@@ -31,13 +34,29 @@ export default function BudgetPage() {
     const [editingBudget, setEditingBudget] = useState(null);
 
     const handleFormSubmit = async (data) => {
-        if (editingBudget) {
-            await updateBudget.mutateAsync({ id: editingBudget.id, data });
-        } else {
-            await createBudget.mutateAsync(data);
+        try {
+            if (editingBudget) {
+                await updateBudget.mutateAsync({ id: editingBudget.id, data });
+                toast({
+                    title: 'Budget updated',
+                    description: 'Your budget limit has been updated successfully.',
+                });
+            } else {
+                await createBudget.mutateAsync(data);
+                toast({
+                    title: 'Budget created',
+                    description: 'Your new budget limit has been set successfully.',
+                });
+            }
+            setShowForm(false);
+            setEditingBudget(null);
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to save budget. Please try again.',
+                variant: 'destructive',
+            });
         }
-        setShowForm(false);
-        setEditingBudget(null);
     };
 
     const handleEdit = (budget) => {
@@ -46,7 +65,19 @@ export default function BudgetPage() {
     };
 
     const handleDelete = async (id) => {
-        await deleteBudget.mutateAsync(id);
+        try {
+            await deleteBudget.mutateAsync(id);
+            toast({
+                title: 'Budget deleted',
+                description: 'Your budget limit has been removed successfully.',
+            });
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to delete budget. Please try again.',
+                variant: 'destructive',
+            });
+        }
     };
 
     // Keyboard shortcuts
