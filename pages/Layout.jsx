@@ -1,6 +1,7 @@
 
 
-import React, { Suspense } from "react";
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { logWarn, logInfo } from '@/utils/logger.js';
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import {
@@ -196,7 +197,7 @@ function LayoutContent({ children, currentPageName }) {
                     setTheme(savedTheme);
                     // If different from server-stored, sync to user profile (best-effort)
                     if (userTheme && userTheme !== savedTheme) {
-                        try { await UserEntity.updateMyUserData({ theme_preference: savedTheme }); } catch (error) { /* console.error("Failed to update user theme preference on server:", error); */ }
+                        try { await UserEntity.updateMyUserData({ theme_preference: savedTheme }); } catch (error) { logWarn('Failed to update user theme preference on server', { error }); }
                     }
                 } else if (userTheme) {
                     // Fall back to user's stored preference
@@ -217,7 +218,7 @@ function LayoutContent({ children, currentPageName }) {
                     }
                 }
             } catch (error) {
-                console.log('User not authenticated or error loading user', error);
+                logInfo('User not authenticated or error loading user', { error });
                 setUser(null);
                 if (typeof document !== "undefined") {
                     document.documentElement.dataset.reducedMotion = "false";

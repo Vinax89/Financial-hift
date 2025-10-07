@@ -4,6 +4,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { logError, logWarn } from '@/utils/logger.js';
 
 let workerInstance = null;
 let workerCallbacks = new Map();
@@ -37,10 +38,10 @@ function getWorkerInstance() {
       });
 
       workerInstance.addEventListener('error', (error) => {
-        console.error('Worker error:', error);
+        logError('Worker error', error);
       });
     } catch (error) {
-      console.warn('Web Worker not supported or failed to initialize:', error);
+      logWarn('Web Worker not supported or failed to initialize', { error });
       workerInstance = null;
     }
   }
@@ -110,7 +111,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('CALCULATE_BUDGET_STATUS', { budgets, transactions });
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error, type: 'budgetStatus' });
       return fallbackCalculateBudgetStatus(budgets, transactions);
     }
   }, []);
@@ -122,7 +123,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('CALCULATE_DEBT_PAYOFF', { debts, monthlyPayment });
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error, type: 'payoffSchedule' });
       return { schedule: [], monthsToPayoff: 0 };
     }
   }, []);
@@ -146,7 +147,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('CALCULATE_ANALYTICS', transactions);
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error, type: 'analytics' });
       return fallbackCalculateAnalytics(transactions);
     }
   }, []);
