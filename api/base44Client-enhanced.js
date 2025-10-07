@@ -1,11 +1,11 @@
-// Enhanced API Client with Caching Layer
+﻿// Enhanced API Client with Caching Layer
 import { createClient } from '@base44/sdk';
 import { cachedFetch, CacheStrategy, setupOfflineDetection } from '@/utils/caching';
 
 // Create base client
 export const base44 = createClient({
   appId: "68ad259cad06f653d7d2b9ee", 
-  requiresAuth: true
+  requiresAuth: false // TEMP: Disabled for development
 });
 
 // Initialize offline detection

@@ -1,0 +1,6 @@
+﻿    const instance = shortcutsRef.current;
+
+    // Enable the shortcuts instance
+    instance.enable();
+
+    // Register all shortcuts
