@@ -1,5 +1,6 @@
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import { useTransactions, useCreateTransaction, useUpdateTransaction, useDeleteTransaction } from '@/hooks/useEntityQueries.jsx';
 import TransactionList from '@/transactions/TransactionList.jsx';
 import TransactionForm from '@/transactions/TransactionForm.jsx';
 import TransactionFilters from '@/transactions/TransactionFilters.jsx';
@@ -11,35 +12,46 @@ import { CreditCard, Plus } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
-import { Transaction } from '@/api/entities';
+import { useToast } from '@/ui/use-toast.jsx';
 
 export default function TransactionsPage() {
-    const [transactions, setTransactions] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // React Query hooks - automatic caching and background refetching
+    const { data: transactions = [], isLoading: loading } = useTransactions();
+    
+    // Mutation hooks with optimistic updates
+    const createTransaction = useCreateTransaction();
+    const updateTransaction = useUpdateTransaction();
+    const deleteTransaction = useDeleteTransaction();
+    
     const [showForm, setShowForm] = useState(false);
     const [editingTransaction, setEditingTransaction] = useState(null);
     const [filters, setFilters] = useState({});
-
-    const loadTransactions = useCallback(async () => {
-        setLoading(true);
-        const data = await Transaction.list('-date', 1000);
-        setTransactions(data);
-        setLoading(false);
-    }, []);
-
-    useEffect(() => {
-        loadTransactions();
-    }, [loadTransactions]);
+    const { toast } = useToast();
 
     const handleFormSubmit = async (data) => {
-        if (editingTransaction) {
-            await Transaction.update(editingTransaction.id, data);
-        } else {
-            await Transaction.create(data);
+        try {
+            if (editingTransaction) {
+                await updateTransaction.mutateAsync({ id: editingTransaction.id, data });
+                toast({
+                    title: 'Transaction updated',
+                    description: 'Your transaction has been updated successfully.',
+                });
+            } else {
+                await createTransaction.mutateAsync(data);
+                toast({
+                    title: 'Transaction created',
+                    description: 'Your new transaction has been recorded successfully.',
+                });
+            }
+            setShowForm(false);
+            setEditingTransaction(null);
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to save transaction. Please try again.',
+                variant: 'destructive',
+            });
         }
-        await loadTransactions();
-        setShowForm(false);
-        setEditingTransaction(null);
     };
 
     const handleEdit = (transaction) => {
@@ -48,8 +60,19 @@ export default function TransactionsPage() {
     };
 
     const handleDelete = async (id) => {
-        await Transaction.delete(id);
-        await loadTransactions();
+        try {
+            await deleteTransaction.mutateAsync(id);
+            toast({
+                title: 'Transaction deleted',
+                description: 'Your transaction has been deleted successfully.',
+            });
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to delete transaction. Please try again.',
+                variant: 'destructive',
+            });
+        }
     };
 
     // Keyboard shortcuts
@@ -63,7 +86,10 @@ export default function TransactionsPage() {
             // Focus on filter/search input if available
             filterRef.current?.focus();
         },
-        onRefresh: loadTransactions,
+        onRefresh: () => {
+            // React Query will handle refetching automatically
+            // No manual refresh needed - data is always fresh
+        },
     });
 
     const filteredTransactions = transactions.filter(t => {

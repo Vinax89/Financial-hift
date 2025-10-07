@@ -11,6 +11,7 @@ import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { ErrorBoundary } from '@/shared/ErrorBoundary';
 import { Plus, Target } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
+import { useToast } from '@/ui/use-toast.jsx';
 
 export default function GoalsPage() {
     // React Query hooks - automatic caching and background refetching
@@ -21,17 +22,34 @@ export default function GoalsPage() {
     const updateGoal = useUpdateGoal();
     const deleteGoal = useDeleteGoal();
     
+    const { toast } = useToast();
     const [showForm, setShowForm] = useState(false);
     const [editingGoal, setEditingGoal] = useState(null);
 
     const handleFormSubmit = async (data) => {
-        if (editingGoal) {
-            await updateGoal.mutateAsync({ id: editingGoal.id, data });
-        } else {
-            await createGoal.mutateAsync(data);
+        try {
+            if (editingGoal) {
+                await updateGoal.mutateAsync({ id: editingGoal.id, data });
+                toast({
+                    title: 'Goal updated',
+                    description: 'Your goal has been updated successfully.',
+                });
+            } else {
+                await createGoal.mutateAsync(data);
+                toast({
+                    title: 'Goal created',
+                    description: 'Your new goal has been created successfully.',
+                });
+            }
+            setShowForm(false);
+            setEditingGoal(null);
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to save goal. Please try again.',
+                variant: 'destructive',
+            });
         }
-        setShowForm(false);
-        setEditingGoal(null);
     };
 
     const handleEdit = (goal) => {
@@ -40,7 +58,19 @@ export default function GoalsPage() {
     };
 
     const handleDelete = async (id) => {
-        await deleteGoal.mutateAsync(id);
+        try {
+            await deleteGoal.mutateAsync(id);
+            toast({
+                title: 'Goal deleted',
+                description: 'Your goal has been deleted successfully.',
+            });
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to delete goal. Please try again.',
+                variant: 'destructive',
+            });
+        }
     };
 
     return (

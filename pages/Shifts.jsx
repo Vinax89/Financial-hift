@@ -12,12 +12,14 @@ import { AnimatePresence } from 'framer-motion';
 import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
+import { useToast } from '@/ui/use-toast.jsx';
 
 export default function ShiftsPage() {
     const [shifts, setShifts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [editingShift, setEditingShift] = useState(null);
+    const { toast } = useToast();
 
     const loadShifts = useCallback(async () => {
         setLoading(true);
@@ -31,14 +33,30 @@ export default function ShiftsPage() {
     }, [loadShifts]);
 
     const handleFormSubmit = async (data) => {
-        if (editingShift) {
-            await Shift.update(editingShift.id, data);
-        } else {
-            await Shift.create(data);
+        try {
+            if (editingShift) {
+                await Shift.update(editingShift.id, data);
+                toast({
+                    title: 'Shift updated',
+                    description: 'Your shift has been updated successfully.',
+                });
+            } else {
+                await Shift.create(data);
+                toast({
+                    title: 'Shift created',
+                    description: 'Your new shift has been recorded successfully.',
+                });
+            }
+            await loadShifts();
+            setShowForm(false);
+            setEditingShift(null);
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to save shift. Please try again.',
+                variant: 'destructive',
+            });
         }
-        await loadShifts();
-        setShowForm(false);
-        setEditingShift(null);
     };
 
     const handleEdit = (shift) => {
@@ -47,8 +65,20 @@ export default function ShiftsPage() {
     };
 
     const handleDelete = async (id) => {
-        await Shift.delete(id);
-        await loadShifts();
+        try {
+            await Shift.delete(id);
+            toast({
+                title: 'Shift deleted',
+                description: 'Your shift has been deleted successfully.',
+            });
+            await loadShifts();
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: error?.message || 'Failed to delete shift. Please try again.',
+                variant: 'destructive',
+            });
+        }
     };
 
     // Keyboard shortcuts
