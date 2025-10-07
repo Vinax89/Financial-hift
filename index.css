@@ -2,6 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================
+   HARDWARE ACCELERATION & PERFORMANCE
+   ======================================== */
+
+/* Enable hardware acceleration for smooth animations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Force GPU acceleration on body and root */
+body {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+#root {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* Smooth page transitions with View Transitions API */
+@supports (view-transition-name: none) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.2s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Optimize repaints by promoting layers */
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.will-change-scroll {
+  will-change: scroll-position;
+}
+
+/* Hardware accelerated scrolling */
+html {
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+}
+
+/* Optimize images and media for GPU */
+img, video, canvas, iframe {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Force GPU layer for frequently animated elements */
+button, a, [role="button"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize table rendering */
+table {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Optimize list scrolling */
+ul, ol {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prevent text selection lag on interactive elements */
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -154,5 +237,59 @@ button:focus-visible {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* ========================================
+   SMOOTH TRANSITIONS & ANIMATIONS
+   ======================================== */
+
+@layer utilities {
+  /* Fast page transitions */
+  .page-transition {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  /* Smooth hover effects */
+  .hover-lift {
+    @apply transition-transform duration-200 ease-out hover:scale-[1.02] hover:-translate-y-0.5;
+  }
+
+  /* Loading state animation */
+  .skeleton {
+    @apply animate-pulse bg-gradient-to-r from-muted via-muted-foreground/10 to-muted bg-[length:200%_100%];
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Smooth fade-in */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Optimize rendering performance */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 }

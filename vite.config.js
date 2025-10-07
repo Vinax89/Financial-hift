@@ -26,6 +26,14 @@ export default defineConfig({
     host: true,
     port: 5173,
     strictPort: false,
+    // Optimize HMR (Hot Module Replacement)
+    hmr: {
+      overlay: true,
+    },
+    // Enable compression for faster transfers
+    fs: {
+      strict: false,
+    },
   },
   resolve: {
     alias: {
@@ -33,54 +41,110 @@ export default defineConfig({
     },
     extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
   },
-  
+
   optimizeDeps: {
+    // Pre-bundle dependencies for faster page loads
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      '@tanstack/react-query',
+      'date-fns',
+      'recharts',
+      'lucide-react',
+    ],
     esbuildOptions: {
       // Treat .js files as JSX for proper parsing
       loader: {
         '.js': 'jsx',
       },
+      target: 'es2020', // Modern JS for faster parsing
     },
-  },
-  
-  build: {
+    // Force optimization on every start (removes stale cache)
+    force: false,
+  },  build: {
+    // Target modern browsers for smaller bundle sizes
+    target: 'es2020',
+    
+    // Optimize CSS code splitting
+    cssCodeSplit: true,
+    
     // Optimize bundle size with strategic code splitting
     rollupOptions: {
       output: {
-        manualChunks: {
+        // Aggressive code splitting for better caching
+        manualChunks: (id) => {
           // Core React libraries (changes infrequently, cache-friendly)
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'radix-ui': Object.keys(JSON.parse(readFileSync('./package.json', 'utf-8')).dependencies).filter(
-            key => key.startsWith('@radix-ui')
-          ),
-          // Chart library (used primarily in analytics)
-          'charts': ['recharts'],
-          
-          // Utility libraries (date handling, validation, styling)
-          'utils': ['date-fns', 'zod', 'clsx', 'tailwind-merge'],
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'react-vendor';
+          }
+          if (id.includes('node_modules/react-router-dom')) {
+            return 'router';
+          }
+          // React Query (used everywhere)
+          if (id.includes('@tanstack/react-query')) {
+            return 'react-query';
+          }
+          // Radix UI components
+          if (id.includes('@radix-ui')) {
+            return 'radix-ui';
+          }
+          // Chart libraries (heavy, lazy loaded)
+          if (id.includes('recharts') || id.includes('d3-')) {
+            return 'charts';
+          }
+          // Lucide icons
+          if (id.includes('lucide-react')) {
+            return 'icons';
+          }
+          // Utility libraries
+          if (id.includes('date-fns') || id.includes('zod') || id.includes('clsx') || id.includes('tailwind-merge')) {
+            return 'utils';
+          }
+          // Base44 SDK
+          if (id.includes('@base44')) {
+            return 'base44-sdk';
+          }
+          // Split pages into separate chunks
+          if (id.includes('/pages/') && !id.includes('node_modules')) {
+            const pageName = id.split('/pages/')[1].split('.')[0];
+            return `page-${pageName}`;
+          }
         },
+        // Optimize chunk file names for better caching
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
-    
+
     // Chunk size configuration
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 800,
+
+    // Disable source maps in production for faster builds
+    sourcemap: false,
+
+    // Use esbuild for faster minification (10x faster than terser)
+    minify: 'esbuild',
     
-    // Enable source maps for production debugging (disable if concerned about size)
-    sourcemap: true,
+    // Optimize asset inlining
+    assetsInlineLimit: 4096, // Inline assets smaller than 4KB
     
-    // Minification with Terser
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,   // Remove console.logs in production
-        drop_debugger: true,  // Remove debugger statements
-        pure_funcs: ['console.log', 'console.info'], // Remove specific console methods
-      },
-    },
+    // Report compressed size (disable for faster builds)
+    reportCompressedSize: false,
   },
   
   // ESBuild performance optimizations
   esbuild: {
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
+    // Remove console logs and debugger in production
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+  },
+
+  // Performance optimizations
+  performance: {
+    // Warn on large chunks
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
   },
 })

@@ -1,31 +1,43 @@
-import Layout from "@/pages/Layout.jsx";
-import Transactions from "@/pages/Transactions.jsx";
-import FileUpload from "@/pages/FileUpload.jsx";
-import BNPL from "@/pages/BNPL.jsx";
-import Shifts from "@/pages/Shifts.jsx";
-import Calendar from "@/pages/Calendar.jsx";
-import DebtPlanner from "@/pages/DebtPlanner.jsx";
-import AIAdvisor from "@/pages/AIAdvisor.jsx";
-import Budget from "@/pages/Budget.jsx";
-import Goals from "@/pages/Goals.jsx";
-import Paycheck from "@/pages/Paycheck.jsx";
-import Analytics from "@/pages/Analytics.jsx";
-import Reports from "@/pages/Reports.jsx";
-import ShiftRules from "@/pages/ShiftRules.jsx";
-import Agents from "@/pages/Agents.jsx";
-import Scanner from "@/pages/Scanner.jsx";
-import WorkHub from "@/pages/WorkHub.jsx";
-import DebtControl from "@/pages/DebtControl.jsx";
-import FinancialPlanning from "@/pages/FinancialPlanning.jsx";
-import AIAssistant from "@/pages/AIAssistant.jsx";
-import Settings from "@/pages/Settings.jsx";
-import MoneyManager from "@/pages/MoneyManager.jsx";
-import UnifiedCalendar from "@/pages/UnifiedCalendar.jsx";
-import Dashboard from "@/pages/Dashboard.jsx";
-import Diagnostics from "@/pages/Diagnostics.jsx";
-import Pricing from "@/pages/Pricing.jsx";
+import React, { Suspense } from 'react';
 import { createPageUrl } from "@/utils";
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
+
+// Eager load Layout and Transactions (landing page)
+import Layout from "@/pages/Layout.jsx";
+import Transactions from "@/pages/Transactions.jsx";
+
+// Lazy load all other pages for code splitting
+const FileUpload = React.lazy(() => import("@/pages/FileUpload.jsx"));
+const BNPL = React.lazy(() => import("@/pages/BNPL.jsx"));
+const Shifts = React.lazy(() => import("@/pages/Shifts.jsx"));
+const Calendar = React.lazy(() => import("@/pages/Calendar.jsx"));
+const DebtPlanner = React.lazy(() => import("@/pages/DebtPlanner.jsx"));
+const AIAdvisor = React.lazy(() => import("@/pages/AIAdvisor.jsx"));
+const Budget = React.lazy(() => import("@/pages/Budget.jsx"));
+const Goals = React.lazy(() => import("@/pages/Goals.jsx"));
+const Paycheck = React.lazy(() => import("@/pages/Paycheck.jsx"));
+const Analytics = React.lazy(() => import("@/pages/Analytics.jsx"));
+const Reports = React.lazy(() => import("@/pages/Reports.jsx"));
+const ShiftRules = React.lazy(() => import("@/pages/ShiftRules.jsx"));
+const Agents = React.lazy(() => import("@/pages/Agents.jsx"));
+const Scanner = React.lazy(() => import("@/pages/Scanner.jsx"));
+const WorkHub = React.lazy(() => import("@/pages/WorkHub.jsx"));
+const DebtControl = React.lazy(() => import("@/pages/DebtControl.jsx"));
+const FinancialPlanning = React.lazy(() => import("@/pages/FinancialPlanning.jsx"));
+const AIAssistant = React.lazy(() => import("@/pages/AIAssistant.jsx"));
+const Settings = React.lazy(() => import("@/pages/Settings.jsx"));
+const MoneyManager = React.lazy(() => import("@/pages/MoneyManager.jsx"));
+const UnifiedCalendar = React.lazy(() => import("@/pages/UnifiedCalendar.jsx"));
+const Dashboard = React.lazy(() => import("@/pages/Dashboard.jsx"));
+const Diagnostics = React.lazy(() => import("@/pages/Diagnostics.jsx"));
+const Pricing = React.lazy(() => import("@/pages/Pricing.jsx"));
+
+// Loading component for page transitions
+const PageLoader = () => (
+    <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+);
 
 const PAGES = {
     Transactions: Transactions,
@@ -86,31 +98,31 @@ function _getCurrentPage(url) {
 function PagesContent() {
     const location = useLocation();
     const currentPage = _getCurrentPage(location.pathname);
-    
+
     return (
         <Layout currentPageName={currentPage}>
-             <Routes>
-                 <Route path="/" element={<Transactions />} />
-                 {Object.entries(PAGES).map(([pageName, Component]) => (
-                     <Route
-                         key={pageName}
-                         path={createPageUrl(pageName)}
-                         element={<Component />}
-                     />
-                 ))}
-                {Object.keys(PAGES).map((pageName) => (
-                    <Route
-                        key={`${pageName}-legacy`}
-                        path={`/${pageName}`}
-                        element={<Navigate to={createPageUrl(pageName)} replace />}
-                    />
-                ))}
-             </Routes>
+            <Suspense fallback={<PageLoader />}>
+                <Routes>
+                    <Route path="/" element={<Transactions />} />
+                    {Object.entries(PAGES).map(([pageName, Component]) => (
+                        <Route
+                            key={pageName}
+                            path={createPageUrl(pageName)}
+                            element={<Component />}
+                        />
+                    ))}
+                    {Object.keys(PAGES).map((pageName) => (
+                        <Route
+                            key={`${pageName}-legacy`}
+                            path={`/${pageName}`}
+                            element={<Navigate to={createPageUrl(pageName)} replace />}
+                        />
+                    ))}
+                </Routes>
+            </Suspense>
         </Layout>
     );
-}
-
-export default function Pages() {
+}export default function Pages() {
     return (
         <Router>
             <PagesContent />
