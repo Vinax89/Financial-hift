@@ -57,13 +57,9 @@ export default function AuthGuard({ children }) {
                 });
             } catch (error) {
                 // Handle authentication errors gracefully
-                console.warn('Authentication check failed:', error);
-                setAuthState({
-                    isLoading: false,
-                    isAuthenticated: false,
-                    user: null,
-                    error: error.message
-                });
+                } catch (error) {
+                logWarn('Authentication check failed', error);
+                setIsAuthenticated(false);
             }
         };
         

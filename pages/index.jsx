@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { createPageUrl } from "@/utils";
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
+import { useIdlePrefetch } from '@/hooks/usePrefetch.jsx';
 
 // Eager load Layout and Transactions (landing page)
 import Layout from "@/pages/Layout.jsx";
@@ -98,6 +99,9 @@ function _getCurrentPage(url) {
 function PagesContent() {
     const location = useLocation();
     const currentPage = _getCurrentPage(location.pathname);
+    
+    // ✅ Intelligent idle-time prefetching (now inside Router context)
+    useIdlePrefetch();
 
     return (
         <Layout currentPageName={currentPage}>

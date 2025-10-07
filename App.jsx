@@ -10,7 +10,8 @@ import { ErrorBoundary } from "@/shared/ErrorBoundary.jsx"
 import { useEffect } from 'react';
 import { initializePerformanceMonitoring } from '@/utils/monitoring.js';
 import { initializeAccessibility } from '@/utils/accessibility.js';
-import { useIdlePrefetch, useDNSPrefetch, usePreconnect } from '@/hooks/usePrefetch.jsx';
+import { logInfo } from '@/utils/logger.js';
+import { useDNSPrefetch, usePreconnect } from '@/hooks/usePrefetch.jsx';
 
 /**
  * Root application component
@@ -31,26 +32,19 @@ function App() {
       document.body.style.transform = 'translateZ(0)';
       document.body.style.backfaceVisibility = 'hidden';
 
-      // Only log in development
-      if (import.meta.env.DEV) {
-        console.log('✅ Performance monitoring and accessibility initialized');
-        console.log('⚡ Hardware acceleration enabled');
-        console.log('🔄 Intelligent prefetching active');
-      }
+            // Log initialization in development
+      logInfo('Performance monitoring and accessibility initialized');
     }
   }, []);
 
-  // Intelligent idle-time prefetching
-  useIdlePrefetch();
-
-  // DNS prefetch for external domains
+  // DNS prefetch for external domains (doesn't need Router context)
   useDNSPrefetch([
     'https://base44.com',
     'https://fonts.googleapis.com',
     'https://fonts.gstatic.com',
   ]);
 
-  // Preconnect to critical origins
+  // Preconnect to critical origins (doesn't need Router context)
   usePreconnect([
     'https://base44.com',
   ]);
