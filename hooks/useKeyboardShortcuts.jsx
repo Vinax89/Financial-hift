@@ -53,6 +53,9 @@ export function useKeyboardShortcuts(shortcuts = {}, enabled = true) {
 
     const instance = shortcutsRef.current;
 
+    // Enable the shortcuts instance
+    instance.enable();
+
     // Register all shortcuts
     Object.entries(shortcuts).forEach(([combo, config]) => {
       const { action, description = '', preventDefault = false } = 
@@ -63,7 +66,7 @@ export function useKeyboardShortcuts(shortcuts = {}, enabled = true) {
 
     // Cleanup on unmount
     return () => {
-      instance.cleanup();
+      instance.disable();
     };
   }, [shortcuts, enabled]);
 

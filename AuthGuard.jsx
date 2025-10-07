@@ -5,7 +5,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { User } from '@/api/entities';
+// TEMP: Commented out to prevent SDK initialization redirect in development
+// import { User } from '@/api/entities';
 import { Card, CardContent } from '@/ui/card.jsx';
 import { Loader2, AlertCircle } from 'lucide-react';
 
@@ -34,6 +35,17 @@ export default function AuthGuard({ children }) {
     });
 
     useEffect(() => {
+        // TEMP: Skip auth check in development mode
+        // Since we're bypassing authentication with `if (false && ...)` below,
+        // we don't need to call User.me() which would trigger SDK initialization
+        setAuthState({
+            isLoading: false,
+            isAuthenticated: true, // Fake authenticated state for development
+            user: { id: 'dev-user', email: 'dev@example.com' },
+            error: null
+        });
+        
+        /* ORIGINAL AUTH CHECK - Commented out for development
         const checkAuth = async () => {
             try {
                 const user = await User.me();
@@ -54,11 +66,10 @@ export default function AuthGuard({ children }) {
                 });
             }
         };
-
+        
         checkAuth();
-    }, []);
-
-    if (authState.isLoading) {
+        */
+    }, []);    if (authState.isLoading) {
         return (
             <div className="min-h-screen bg-background flex items-center justify-center">
                 <Card className="w-full max-w-md border shadow-xl bg-card backdrop-blur-sm">
@@ -72,12 +83,8 @@ export default function AuthGuard({ children }) {
         );
     }
 
-<<<<<<< HEAD
     // TEMP: Bypass authentication for development
     if (false && !authState.isAuthenticated) {
-=======
-    if (false && !authState.isAuthenticated) { // TEMP: Bypass auth for development
->>>>>>> 78737ce333f971b33d6093e20a1f1d7348a83549
         return (
             <div className="min-h-screen bg-background flex items-center justify-center">
                 <Card className="w-full max-w-md border shadow-xl bg-card backdrop-blur-sm">
