@@ -147,3 +147,105 @@ export const ShortcutPresets = {
       description: 'Go to shifts',
     },
   }),
+
+  // Modal shortcuts
+  modal: (callbacks) => ({
+    'escape': {
+      action: callbacks.close,
+      description: 'Close modal',
+    },
+    'ctrl+enter': {
+      action: callbacks.submit,
+      description: 'Submit',
+      preventDefault: true,
+    },
+  }),
+
+  // Dashboard shortcuts
+  dashboard: (callbacks) => ({
+    'ctrl+k': {
+      action: callbacks.commandPalette,
+      description: 'Open command palette',
+      preventDefault: true,
+    },
+    '?': {
+      action: callbacks.help,
+      description: 'Show keyboard shortcuts',
+    },
+  }),
+};
+
+/**
+ * Hook for common page shortcuts (create, search, refresh, help)
+ */
+export function usePageShortcuts({
+  onCreate,
+  onSearch,
+  onRefresh,
+  onHelp,
+  enabled = true,
+}) {
+  const shortcuts = {};
+
+  if (onCreate) {
+    shortcuts['ctrl+n'] = {
+      action: onCreate,
+      description: 'Create new item',
+    };
+  }
+
+  if (onSearch) {
+    shortcuts['ctrl+k'] = {
+      action: onSearch,
+      description: 'Search',
+      preventDefault: true,
+    };
+  }
+
+  if (onRefresh) {
+    shortcuts['ctrl+r'] = {
+      action: onRefresh,
+      description: 'Refresh',
+      preventDefault: true,
+    };
+  }
+
+  if (onHelp) {
+    shortcuts['?'] = {
+      action: onHelp,
+      description: 'Show keyboard shortcuts help',
+    };
+  }
+
+  useKeyboardShortcuts(shortcuts, enabled);
+}
+
+/**
+ * Hook for form shortcuts (save, cancel)
+ */
+export function useFormShortcuts({
+  onSave,
+  onCancel,
+  enabled = true,
+}) {
+  const shortcuts = {};
+
+  if (onSave) {
+    shortcuts['ctrl+s'] = {
+      action: onSave,
+      description: 'Save form',
+      preventDefault: true,
+    };
+  }
+
+  if (onCancel) {
+    shortcuts['escape'] = {
+      action: onCancel,
+      description: 'Cancel',
+    };
+  }
+
+  useKeyboardShortcuts(shortcuts, enabled);
+}
+
+export default useKeyboardShortcuts;
