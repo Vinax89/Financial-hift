@@ -6,7 +6,6 @@
 import './App.css';
 import Pages from '@/pages/index.jsx';
 import { Toaster } from '@/ui/toaster.jsx';
-import { ReactQueryProvider } from '@/providers/ReactQueryProvider.jsx';
 import { ErrorBoundary } from "@/shared/ErrorBoundary.jsx"
 import { useEffect } from 'react';
 import { initializePerformanceMonitoring } from '@/utils/monitoring.js';
@@ -36,10 +35,8 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <ReactQueryProvider>
-        <Pages />
-        <Toaster />
-      </ReactQueryProvider>
+      <Pages />
+      <Toaster />
     </ErrorBoundary>
   );
 }
