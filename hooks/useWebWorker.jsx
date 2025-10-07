@@ -110,7 +110,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('CALCULATE_BUDGET_STATUS', { budgets, transactions });
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error });
       return fallbackCalculateBudgetStatus(budgets, transactions);
     }
   }, []);
@@ -122,7 +122,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('CALCULATE_DEBT_PAYOFF', { debts, monthlyPayment });
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error });
       return { schedule: [], monthsToPayoff: 0 };
     }
   }, []);
@@ -134,7 +134,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('CALCULATE_CASHFLOW_FORECAST', data);
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error });
       return [];
     }
   }, []);
@@ -146,7 +146,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('CALCULATE_ANALYTICS', transactions);
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error });
       return fallbackCalculateAnalytics(transactions);
     }
   }, []);
@@ -158,7 +158,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('FILTER_TRANSACTIONS', { transactions, filters });
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error });
       return fallbackFilterTransactions(transactions, filters);
     }
   }, []);
@@ -170,7 +170,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('SORT_LARGE_DATASET', { items, sortBy, direction });
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error });
       return items.sort((a, b) => {
         return direction === 'asc' 
           ? (a[sortBy] > b[sortBy] ? 1 : -1)
@@ -186,7 +186,7 @@ export function useWebWorker() {
     try {
       return await calculateInWorker('AGGREGATE_BY_CATEGORY', transactions);
     } catch (error) {
-      console.warn('Worker calculation failed, using main thread:', error);
+      logWarn('Worker calculation failed, using main thread', { error });
       return [];
     }
   }, []);
