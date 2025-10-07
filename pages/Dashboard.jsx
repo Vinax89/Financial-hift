@@ -1,4 +1,4 @@
-
+﻿
 import React, { useEffect, useMemo, Suspense, useCallback } from 'react';
 import { useTransactions, useShifts, useGoals, useDebts, useBudgets, useBills, useInvestments } from '@/hooks/useEntityQueries.jsx';
 import { Loading, ShimmerBox, CardLoading, ChartLoading } from '@/ui/loading.jsx';
@@ -512,7 +512,7 @@ export default function Dashboard() {
                                                 transactions={transactions} 
                                                 budgets={budgets} 
                                                 income={metrics.monthlyIncome || 0}
-                                                refreshData={refreshData}
+                                                refreshData={handleRefresh}
                                             />
                                         </Suspense>
                                     </ErrorBoundary>
@@ -534,7 +534,7 @@ export default function Dashboard() {
                                 <div className="mb-4">
                                     <h3 className="text-lg font-semibold">Paycheck / Income Viability</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Income Viability = Gross Income − (Debt Burden + Tax Burden + Cost of Living)
+                                        Income Viability = Gross Income âˆ’ (Debt Burden + Tax Burden + Cost of Living)
                                     </p>
                                 </div>
                                 <Suspense fallback={<CardLoading />}>
@@ -569,7 +569,7 @@ export default function Dashboard() {
                                         transactions={transactions} 
                                         budgets={budgets} 
                                         income={metrics.monthlyIncome || 0}
-                                        refreshData={refreshData}
+                                        refreshData={handleRefresh}
                                     />
                                 </Suspense>
                             </ErrorBoundary>

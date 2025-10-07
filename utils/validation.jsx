@@ -120,7 +120,7 @@ export const validateShift = (shift, existingShifts = []) => {
         });
         
         if (overlappingShift) {
-            errors.overlap = Shift overlaps with existing shift: ${overlappingShift.title};
+            errors.overlap = `Shift overlaps with existing shift: ${overlappingShift.title}`;
         }
     }
     

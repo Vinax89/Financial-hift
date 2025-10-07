@@ -16,7 +16,7 @@ import { base44 } from './base44Client';
  * @param {string} zipCode - ZIP code to lookup
  * @returns {Promise<Object>} Tax and cost of living information
  */
-export const getTaxAndCostOfLiving = base44??.functions??.getTaxAndCostOfLiving || (async () => { throw new Error('Base44 SDK not initialized'); });
+export const getTaxAndCostOfLiving = base44?.functions?.getTaxAndCostOfLiving || (async () => { throw new Error('Base44 SDK not initialized'); });
 
 /**
  * Compute total tax burden for given income and location
@@ -25,21 +25,21 @@ export const getTaxAndCostOfLiving = base44??.functions??.getTaxAndCostOfLiving 
  * @param {string} zipCode - ZIP code for local taxes
  * @returns {Promise<Object>} Tax breakdown (federal, state, local)
  */
-export const computeTaxBurden = base44??.functions??.computeTaxBurden || (async () => { throw new Error('Base44 SDK not initialized'); });
+export const computeTaxBurden = base44?.functions?.computeTaxBurden || (async () => { throw new Error('Base44 SDK not initialized'); });
 
 /**
  * Refresh tax database with latest rates
  * @type {Function}
  * @returns {Promise<void>}
  */
-export const refreshTaxDatabase = base44??.functions??.refreshTaxDatabase || (async () => { throw new Error('Base44 SDK not initialized'); });
+export const refreshTaxDatabase = base44?.functions?.refreshTaxDatabase || (async () => { throw new Error('Base44 SDK not initialized'); });
 
 /**
  * Update cost of living data
  * @type {Function}
  * @returns {Promise<void>}
  */
-export const updateCostOfLiving = base44??.functions??.updateCostOfLiving || (async () => { throw new Error('Base44 SDK not initialized'); });
+export const updateCostOfLiving = base44?.functions?.updateCostOfLiving || (async () => { throw new Error('Base44 SDK not initialized'); });
 
 // ============================================================================
 // Report & Notification Functions
@@ -51,19 +51,19 @@ export const updateCostOfLiving = base44??.functions??.updateCostOfLiving || (as
  * @param {Object} params - Report parameters
  * @returns {Promise<Object>} Financial report data
  */
-export const generateFinancialReport = base44??.functions??.generateFinancialReport || (async () => { throw new Error('Base44 SDK not initialized'); });
+export const generateFinancialReport = base44?.functions?.generateFinancialReport || (async () => { throw new Error('Base44 SDK not initialized'); });
 
 /**
  * Generate smart reminders for bills and goals
  * @type {Function}
  * @returns {Promise<Array>} Array of reminder objects
  */
-export const generateReminders = base44??.functions??.generateReminders || (async () => { throw new Error('Base44 SDK not initialized'); });
+export const generateReminders = base44?.functions?.generateReminders || (async () => { throw new Error('Base44 SDK not initialized'); });
 
 /**
  * Send email notifications for upcoming bills
  * @type {Function}
  * @returns {Promise<void>}
  */
-export const emailUpcomingBills = base44??.functions??.emailUpcomingBills || (async () => { throw new Error('Base44 SDK not initialized'); });
+export const emailUpcomingBills = base44?.functions?.emailUpcomingBills || (async () => { throw new Error('Base44 SDK not initialized'); });
 
