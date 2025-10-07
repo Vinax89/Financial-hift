@@ -1,4 +1,4 @@
-﻿/**
+/**
  * React Hook for Keyboard Shortcuts
  * 
  * Provides keyboard shortcuts integration with the KeyboardShortcuts utility.
@@ -56,6 +56,9 @@ export function useKeyboardShortcuts(shortcuts = {}, enabled = true) {
     // Enable the shortcuts instance
     instance.enable();
 
+    // Enable the shortcuts instance
+    instance.enable();
+
     // Register all shortcuts
     Object.entries(shortcuts).forEach(([combo, config]) => {
       const { action, description = '', preventDefault = false } = 
@@ -66,6 +69,7 @@ export function useKeyboardShortcuts(shortcuts = {}, enabled = true) {
 
     // Cleanup on unmount
     return () => {
+      instance.disable();
       instance.disable();
     };
   }, [shortcuts, enabled]);

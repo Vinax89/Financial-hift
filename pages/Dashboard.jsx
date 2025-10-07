@@ -291,38 +291,21 @@ export default function Dashboard() {
             const key = (e && typeof e.key === 'string') ? e.key.toLowerCase() : '';
             if (key === 'r' && !e.metaKey && !e.ctrlKey && !e.altKey) {
                 e.preventDefault?.();
-                if (e.shiftKey) {
-                    loadAllData(true);
-                    toast({
-                        title: "Forced Data Refresh",
-                        description: "All financial data is being reloaded from source.",
-                    });
-                } else {
-                    handleRefresh();
-                }
+                handleRefresh();
             }
         };
         window.addEventListener('keydown', onKeyDown);
         return () => window.removeEventListener('keydown', onKeyDown);
-    }, [handleRefresh, loadAllData, toast]);
+    }, [handleRefresh, toast]);
 
     // Listen for global refresh events from Command Palette
     React.useEffect(() => {
         const handler = (e) => {
-            const forced = !!(e && e.detail && e.detail.forced);
-            if (forced) {
-                loadAllData(true);
-                toast({
-                    title: "Forced Data Refresh (Global)",
-                    description: "All financial data is being reloaded from source via global command.",
-                });
-            } else {
-                handleRefresh();
-            }
+            handleRefresh();
         };
         window.addEventListener("dashboard:refresh", handler);
         return () => window.removeEventListener("dashboard:refresh", handler);
-    }, [handleRefresh, loadAllData, toast]);
+    }, [handleRefresh, toast]);
 
     // Warm up heavy lazy components when idle after initial data load
     useIdlePrefetch([

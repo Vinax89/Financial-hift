@@ -239,3 +239,40 @@ export const validateData = (schema, data) => {
         };
     }
 };
+
+
+/**
+ * Generic data validation function using Zod schemas
+ * @param {import('zod').ZodSchema} schema - Zod schema to validate against
+ * @param {any} data - Data to validate
+ * @returns {{success: boolean, data?: any, errors?: Record<string, string>}} Validation result
+ */
+export const validateData = (schema, data) => {
+    try {
+        const result = schema.safeParse(data);
+        
+        if (!result.success) {
+            // Convert Zod errors to field-level error object
+            const errors = {};
+            result.error.issues.forEach((issue) => {
+                const field = issue.path.join('.');
+                errors[field] = issue.message;
+            });
+            
+            return {
+                success: false,
+                errors,
+            };
+        }
+        
+        return {
+            success: true,
+            data: result.data,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            errors: { _form: error.message || 'Validation failed' },
+        };
+    }
+};
