@@ -7,8 +7,6 @@
 import React, { useState, useEffect } from 'react';
 // TEMP: Commented out to prevent SDK initialization redirect in development
 // import { User } from '@/api/entities';
-// TEMP: Commented out to prevent SDK initialization redirect in development
-// import { User } from '@/api/entities';
 import { Card, CardContent } from '@/ui/card.jsx';
 import { Loader2, AlertCircle } from 'lucide-react';
 
@@ -38,18 +36,7 @@ export default function AuthGuard({ children }) {
 
     useEffect(() => {
         // TEMP: Skip auth check in development mode
-        // Since we're bypassing authentication with `if (false && ...)` below,
-        // we don't need to call User.me() which would trigger SDK initialization
-        setAuthState({
-            isLoading: false,
-            isAuthenticated: true, // Fake authenticated state for development
-            user: { id: 'dev-user', email: 'dev@example.com' },
-            error: null
-        });
-        
-        /* ORIGINAL AUTH CHECK - Commented out for development
-        // TEMP: Skip auth check in development mode
-        // Since we're bypassing authentication with `if (false && ...)` below,
+        // Since we're bypassing authentication with if (false && ...) below,
         // we don't need to call User.me() which would trigger SDK initialization
         setAuthState({
             isLoading: false,
@@ -80,7 +67,6 @@ export default function AuthGuard({ children }) {
             }
         };
         
-        
         checkAuth();
         */
     }, []);
@@ -99,8 +85,6 @@ export default function AuthGuard({ children }) {
         );
     }
 
-    // TEMP: Bypass authentication for development
-    if (false && !authState.isAuthenticated) {
     // TEMP: Bypass authentication for development
     if (false && !authState.isAuthenticated) {
         return (

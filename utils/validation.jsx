@@ -1,4 +1,4 @@
-// Comprehensive input validation and security utilities
+﻿// Comprehensive input validation and security utilities
 export const sanitizeInput = (input) => {
     if (typeof input !== 'string') return input;
     
@@ -120,7 +120,7 @@ export const validateShift = (shift, existingShifts = []) => {
         });
         
         if (overlappingShift) {
-            errors.overlap = `Shift overlaps with existing shift: ${overlappingShift.title}`;
+            errors.overlap = Shift overlaps with existing shift: ${overlappingShift.title};
         }
     }
     
@@ -204,42 +204,6 @@ export class RateLimiter {
         return true;
     }
 }
-/**
- * Generic data validation function using Zod schemas
- * @param {import('zod').ZodSchema} schema - Zod schema to validate against
- * @param {any} data - Data to validate
- * @returns {{success: boolean, data?: any, errors?: Record<string, string>}} Validation result
- */
-export const validateData = (schema, data) => {
-    try {
-        const result = schema.safeParse(data);
-        
-        if (!result.success) {
-            // Convert Zod errors to field-level error object
-            const errors = {};
-            result.error.issues.forEach((issue) => {
-                const field = issue.path.join('.');
-                errors[field] = issue.message;
-            });
-            
-            return {
-                success: false,
-                errors,
-            };
-        }
-        
-        return {
-            success: true,
-            data: result.data,
-        };
-    } catch (error) {
-        return {
-            success: false,
-            errors: { _form: error.message || 'Validation failed' },
-        };
-    }
-};
-
 
 /**
  * Generic data validation function using Zod schemas
