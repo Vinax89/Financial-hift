@@ -15,6 +15,7 @@ import { Investment } from '@/api/entities';
 import { useLocalStorage } from './useLocalStorage';
 import { retryWithBackoff } from '@/utils/api';
 import { perfLog, perfEnabled } from '@/utils/perf';
+import { logError, logWarn } from '@/utils/logger.js';
 
 const ENTITIES = {
     transactions: Transaction,
@@ -69,7 +70,7 @@ export function useFinancialData() {
     const isLoadingAllRef = useRef(false); // New ref for tracking overall loading
 
     const handleError = useCallback((entityType, error) => {
-        console.error(`Error loading ${entityType}:`, error);
+        logError(`Error loading ${entityType}`, error);
         setErrors(prev => ({ ...prev, [entityType]: error.message }));
         setLoading(prev => ({ ...prev, [entityType]: false }));
     }, []);
@@ -156,7 +157,7 @@ export function useFinancialData() {
                     window.localStorage.setItem(STORAGE_PREFIX + entityType, JSON.stringify(safeResult));
                 }
             } catch (storageError) {
-                console.warn(`Failed to save ${entityType} to local storage:`, storageError);
+                logWarn(`Failed to save ${entityType} to local storage`, { error: storageError });
             }
             
             cache[entityType] = { 

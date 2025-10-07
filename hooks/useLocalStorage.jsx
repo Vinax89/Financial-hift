@@ -4,7 +4,8 @@
  * with automatic JSON serialization and cross-tab synchronization
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { logWarn } from '@/utils/logger.js';
 
 /**
  * Persist state to localStorage with cross-tab sync
