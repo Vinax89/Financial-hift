@@ -2,6 +2,7 @@
  * @fileoverview Vite configuration for Financial $hift application
  * @description Optimized build configuration with code splitting, minification,
  * and performance enhancements for production deployment
+ * Enhanced with bundle analysis and tree shaking optimization
  */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -9,6 +10,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { readFileSync } from 'fs';
+import { visualizer } from 'rollup-plugin-visualizer';
+import viteCompression from 'vite-plugin-compression';
 
 // ES Module compatibility: __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -19,7 +22,38 @@ const __dirname = dirname(__filename);
  * @see https://vite.dev/config/
  */
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    
+    // Bundle size analyzer - generates stats.html after build
+    visualizer({
+      filename: 'stats.html', // Generate in root for easier access
+      open: false, // Set to true to auto-open after build
+      gzipSize: true,
+      brotliSize: true,
+      template: 'treemap',
+    }),
+    
+    // Gzip compression - reduces bundle size by ~70%
+    viteCompression({
+      verbose: true, // Log compression results
+      filter: /\.(js|mjs|json|css|html)$/i, // Compress JS, CSS, HTML files
+      threshold: 1024, // Compress files larger than 1KB
+      algorithm: 'gzip',
+      ext: '.gz',
+      deleteOriginFile: false, // Keep original files
+    }),
+    
+    // Brotli compression - better compression than gzip
+    viteCompression({
+      verbose: true, // Log compression results
+      filter: /\.(js|mjs|json|css|html)$/i, // Compress JS, CSS, HTML files
+      threshold: 1024, // Compress files larger than 1KB
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      deleteOriginFile: false, // Keep original files
+    }),
+  ],
   
   server: {
     // Allow connections from any host (useful for Docker/VM development)
@@ -53,16 +87,24 @@ export default defineConfig({
       'recharts',
       'lucide-react',
     ],
+    // Exclude large or problematic dependencies
+    exclude: ['fsevents'],
     esbuildOptions: {
       // Treat .js files as JSX for proper parsing
       loader: {
         '.js': 'jsx',
       },
       target: 'es2020', // Modern JS for faster parsing
+      // Tree shaking configuration
+      treeShaking: true,
+      // Enable pure annotations for better tree shaking
+      pure: ['console.log', 'console.debug'],
     },
     // Force optimization on every start (removes stale cache)
     force: false,
-  },  build: {
+  },
+  
+  build: {
     // Target modern browsers for smaller bundle sizes
     target: 'es2020',
     

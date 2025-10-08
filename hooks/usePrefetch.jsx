@@ -82,7 +82,7 @@ export function usePrefetchRoute(route, options = {}) {
         case '/debt-planner':
           queryClient.prefetchQuery({
             queryKey: [QueryKeys.DEBTS],
-            queryFn: () => entities.Debt.list(),
+            queryFn: () => entities.DebtAccount.list(),
             staleTime: 60 * 1000,
           });
           break;
