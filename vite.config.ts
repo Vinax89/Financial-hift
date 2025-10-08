@@ -9,7 +9,6 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { readFileSync } from 'fs';
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
 
@@ -181,5 +180,12 @@ export default defineConfig({
     logOverride: { 'this-is-undefined-in-esm': 'silent' },
     // Remove console logs and debugger in production
     drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
-  }
+  },
+
+  // Performance optimizations
+  performance: {
+    // Warn on large chunks
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+  },
 })
