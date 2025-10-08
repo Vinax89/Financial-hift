@@ -492,34 +492,40 @@ function wrapEntity<T extends BaseEntity>(entity: EntityCRUD<T>, entityName: str
  *   { description: 'Lunch', amount: 15, category: 'food', type: 'expense', date: '2025-10-08' }
  * ]);
  */
-export async function batchCreate<T extends BaseEntity>(
-  entity: EntityCRUD<T>,
+export async function batchCreate<TEntity extends BaseEntity>(
+  entity: EntityCRUD<TEntity>,
   entityName: string,
-  items: Array<Omit<T, keyof BaseEntity>>
-): Promise<T[]> {
-  return globalBatcher.add<Omit<T, keyof BaseEntity>, T[]>(
-    `${entityName}/create`,
-    items,
-    async (batch: Omit<T, keyof BaseEntity>[]): Promise<T[]> => {
-      // Process in chunks to avoid overwhelming the API
-      const results: T[] = [];
-      const chunkSize = 5;
+  items: Array<Omit<TEntity, keyof BaseEntity>>
+): Promise<TEntity[]> {
+  // Add all items to the batcher individually and collect promises
+  const promises = items.map(item =>
+    globalBatcher.add<Omit<TEntity, keyof BaseEntity>, TEntity>(
+      `${entityName}/create`,
+      item,
+      // Processor function processes the batched items
+      async (batch: Array<Omit<TEntity, keyof BaseEntity>>): Promise<TEntity[]> => {
+        // Process in chunks to avoid overwhelming the API
+        const results: TEntity[] = [];
+        const chunkSize = 5;
 
-      for (let i = 0; i < batch.length; i += chunkSize) {
-        const chunk = batch.slice(i, i + chunkSize);
-        const chunkResults = await Promise.all(
-          chunk.map(item => 
-            globalRateLimiter.execute(
-              () => retryWithBackoff(() => entity.create(item))
+        for (let i = 0; i < batch.length; i += chunkSize) {
+          const chunk = batch.slice(i, i + chunkSize);
+          const chunkResults = await Promise.all(
+            chunk.map(batchItem => 
+              globalRateLimiter.execute(
+                () => retryWithBackoff(() => entity.create(batchItem))
+              )
             )
-          )
-        );
-        results.push(...chunkResults);
-      }
+          );
+          results.push(...chunkResults);
+        }
 
-      return results;
-    }
+        return results;
+      }
+    )
   );
+
+  return Promise.all(promises);
 }
 
 /**
@@ -536,33 +542,39 @@ export async function batchCreate<T extends BaseEntity>(
  *   { id: '456', data: { category: 'dining' } }
  * ]);
  */
-export async function batchUpdate<T extends BaseEntity>(
-  entity: EntityCRUD<T>,
+export async function batchUpdate<TEntity extends BaseEntity>(
+  entity: EntityCRUD<TEntity>,
   entityName: string,
-  updates: BatchUpdateItem<T>[]
-): Promise<T[]> {
-  return globalBatcher.add<BatchUpdateItem<T>, T[]>(
-    `${entityName}/update`,
-    updates,
-    async (batch: BatchUpdateItem<T>[]): Promise<T[]> => {
-      const results: T[] = [];
-      const chunkSize = 5;
+  updates: BatchUpdateItem<TEntity>[]
+): Promise<TEntity[]> {
+  // Add all updates to the batcher individually and collect promises
+  const promises = updates.map(update =>
+    globalBatcher.add<BatchUpdateItem<TEntity>, TEntity>(
+      `${entityName}/update`,
+      update,
+      // Processor function processes the batched updates
+      async (batch: Array<BatchUpdateItem<TEntity>>): Promise<TEntity[]> => {
+        const results: TEntity[] = [];
+        const chunkSize = 5;
 
-      for (let i = 0; i < batch.length; i += chunkSize) {
-        const chunk = batch.slice(i, i + chunkSize);
-        const chunkResults = await Promise.all(
-          chunk.map(({ id, data }) =>
-            globalRateLimiter.execute(
-              () => retryWithBackoff(() => entity.update(id, data))
+        for (let i = 0; i < batch.length; i += chunkSize) {
+          const chunk = batch.slice(i, i + chunkSize);
+          const chunkResults = await Promise.all(
+            chunk.map(({ id, data }) =>
+              globalRateLimiter.execute(
+                () => retryWithBackoff(() => entity.update(id, data))
+              )
             )
-          )
-        );
-        results.push(...chunkResults);
-      }
+          );
+          results.push(...chunkResults);
+        }
 
-      return results;
-    }
+        return results;
+      }
+    )
   );
+
+  return Promise.all(promises);
 }
 
 /**
@@ -581,28 +593,34 @@ export async function batchDelete<T extends BaseEntity>(
   entityName: string,
   ids: string[]
 ): Promise<void[]> {
-  return globalBatcher.add<string, void[]>(
-    `${entityName}/delete`,
-    ids,
-    async (batch: string[]): Promise<void[]> => {
-      const results: void[] = [];
-      const chunkSize = 5;
+  // Add all delete IDs to the batcher individually and collect promises
+  const promises = ids.map(id =>
+    globalBatcher.add<string, void>(
+      `${entityName}/delete`,
+      id,
+      // Processor function processes the batched IDs
+      async (batch: string[]): Promise<void[]> => {
+        const results: void[] = [];
+        const chunkSize = 5;
 
-      for (let i = 0; i < batch.length; i += chunkSize) {
-        const chunk = batch.slice(i, i + chunkSize);
-        const chunkResults = await Promise.all(
-          chunk.map(id =>
-            globalRateLimiter.execute(
-              () => retryWithBackoff(() => entity.delete(id))
+        for (let i = 0; i < batch.length; i += chunkSize) {
+          const chunk = batch.slice(i, i + chunkSize);
+          const chunkResults = await Promise.all(
+            chunk.map(batchId =>
+              globalRateLimiter.execute(
+                () => retryWithBackoff(() => entity.delete(batchId))
+              )
             )
-          )
-        );
-        results.push(...chunkResults);
-      }
+          );
+          results.push(...chunkResults);
+        }
 
-      return results;
-    }
+        return results;
+      }
+    )
   );
+
+  return Promise.all(promises);
 }
 
 // ============================================================================
