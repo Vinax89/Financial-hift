@@ -7,6 +7,7 @@ import TransactionFilters from '@/transactions/TransactionFilters.jsx';
 import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
 import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
+import { ShimmerEffect } from '@/loading/LoadingStates.jsx';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { CreditCard, Plus } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
@@ -155,7 +156,7 @@ export default function TransactionsPage() {
                             <TransactionFilters onFilterChange={setFilters} />
                             <LoadingWrapper
                                 isLoading={loading}
-                                fallback={<TableLoading rows={10} />}
+                                fallback={<ShimmerEffect variant="table" className="min-h-[400px]" />}
                             >
                                 <TransactionList transactions={filteredTransactions} onEdit={handleEdit} onDelete={handleDelete} />
                             </LoadingWrapper>
