@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import { logWarn, logInfo } from '@/utils/logger.js';
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
