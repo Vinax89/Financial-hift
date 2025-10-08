@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { Badge } from "@/ui/badge.jsx";
 import { ArrowUpCircle, ArrowDownCircle, Clock } from "lucide-react";
 import { format } from "date-fns";
-import { Skeleton } from "@/ui/skeleton.jsx";
+import { TransactionSkeleton } from "@/shared/SkeletonLoaders";
 import VirtualizedList from "@/optimized/VirtualizedList";
 
 /**
@@ -103,20 +103,7 @@ function RecentTransactions({ transactions = [], isLoading }) {
             </CardHeader>
             <CardContent>
                 {isLoading ? (
-                    <div className="space-y-4">
-                        {Array(5).fill(0).map((_, i) => (
-                            <div key={i} className="flex items-center justify-between p-4 rounded-lg border">
-                                <div className="flex items-center gap-3">
-                                    <Skeleton className="h-10 w-10 rounded-full" />
-                                    <div>
-                                        <Skeleton className="h-4 w-32" />
-                                        <Skeleton className="h-3 w-24 mt-1" />
-                                    </div>
-                                </div>
-                                <Skeleton className="h-4 w-16" />
-                            </div>
-                        ))}
-                    </div>
+                    <TransactionSkeleton count={5} />
                 ) : transactions.length > 0 ? (
                     <VirtualizedList
                         items={transactions}

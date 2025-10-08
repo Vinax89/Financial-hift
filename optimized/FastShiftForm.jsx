@@ -10,6 +10,7 @@ import { Clock, MapPin, DollarSign, Calendar, Tag, AlertTriangle } from 'lucide-
 import { formatCurrency } from '../utils/calculations';
 import { validateShift } from '../utils/validation';
 import { format } from 'date-fns';
+import { ErrorMessage, FieldError, InlineError } from '@/shared/ErrorMessage';
 
 // Memoized tag input component
 const TagInput = React.memo(({ tags = [], onChange, suggestions = [] }) => {
@@ -176,10 +177,7 @@ export default function FastShiftForm({ shift, onSubmit, onCancel, allShifts = [
                     {shift ? 'Edit Shift' : 'Add New Shift'}
                 </h3>
                 {!validatedData.isValid && (
-                    <div className="flex items-center gap-2 text-sm text-destructive">
-                        <AlertTriangle className="h-4 w-4" />
-                        Please fix errors below
-                    </div>
+                    <InlineError message="Please fix errors below" />
                 )}
             </div>
 
@@ -194,9 +192,7 @@ export default function FastShiftForm({ shift, onSubmit, onCancel, allShifts = [
                         placeholder="e.g., RN - ICU Day Shift"
                         error={validation.errors.title}
                     />
-                    {validation.errors.title && (
-                        <p className="text-sm text-destructive">{validation.errors.title}</p>
-                    )}
+                    <FieldError error={validation.errors.title} />
                 </div>
 
                 <div className="space-y-2">
@@ -228,9 +224,7 @@ export default function FastShiftForm({ shift, onSubmit, onCancel, allShifts = [
                         onChange={(e) => handleFieldChange('start_datetime', e.target.value)}
                         error={validation.errors.start_datetime}
                     />
-                    {validation.errors.start_datetime && (
-                        <p className="text-sm text-destructive">{validation.errors.start_datetime}</p>
-                    )}
+                    <FieldError error={validation.errors.start_datetime} />
                 </div>
 
                 <div className="space-y-2">
@@ -242,21 +236,17 @@ export default function FastShiftForm({ shift, onSubmit, onCancel, allShifts = [
                         onChange={(e) => handleFieldChange('end_datetime', e.target.value)}
                         error={validation.errors.end_datetime || validation.errors.overlap}
                     />
-                    {validation.errors.end_datetime && (
-                        <p className="text-sm text-destructive">{validation.errors.end_datetime}</p>
-                    )}
+                    <FieldError error={validation.errors.end_datetime} />
                 </div>
             </div>
 
             {/* Overlap Warning */}
             {validation.errors.overlap && (
-                <div className="flex items-start gap-3 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-                    <AlertTriangle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
-                    <div>
-                        <p className="text-sm font-medium text-destructive">Shift Overlap Detected</p>
-                        <p className="text-sm text-destructive/80 mt-1">{validation.errors.overlap}</p>
-                    </div>
-                </div>
+                <ErrorMessage
+                    title="Shift Overlap Detected"
+                    message={validation.errors.overlap}
+                    severity="warning"
+                />
             )}
 
             {/* Hours */}

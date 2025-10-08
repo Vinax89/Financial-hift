@@ -5,7 +5,7 @@
 
 import React, { useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { ChartSkeleton } from '@/shared/SkeletonLoaders';
 import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfMonth, endOfMonth, subMonths, parseISO } from 'date-fns';
 import { getChartTheme } from './ChartTheme';
@@ -79,7 +79,7 @@ function MonthlyComparison({ transactions, shifts, isLoading }) {
     }, [transactions, shifts]);
 
     if (isLoading) {
-        return <Skeleton className="h-[350px] w-full rounded-xl" />;
+        return <ChartSkeleton />;
     }
 
     const palette = getChartTheme(theme);

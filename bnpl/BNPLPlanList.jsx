@@ -10,7 +10,7 @@ import { Badge } from "@/ui/badge.jsx";
 import { Progress } from "@/ui/progress.jsx";
 import { Calendar, Edit, Trash2, CheckCircle2, CreditCard } from "lucide-react";
 import { format } from "date-fns";
-import { Skeleton } from "@/ui/skeleton.jsx";
+import { ListSkeleton } from "@/shared/SkeletonLoaders";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatCurrency } from "@/utils/calculations";
 
@@ -69,24 +69,7 @@ function BNPLPlanList({ plans, onEdit, onMarkPaid, onDelete, isLoading }) {
             </CardHeader>
             <CardContent>
                 {isLoading ? (
-                    <div className="space-y-4">
-                        {Array(3).fill(0).map((_, i) => (
-                            <div key={i} className="p-4 rounded-lg border border-border">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="flex items-center gap-3">
-                                        <Skeleton className="h-10 w-10 rounded-full" />
-                                        <div>
-                                            <Skeleton className="h-4 w-32" />
-                                            <Skeleton className="h-3 w-24 mt-1" />
-                                        </div>
-                                    </div>
-                                    <Skeleton className="h-6 w-16" />
-                                </div>
-                                <Skeleton className="h-2 w-full mb-2" />
-                                <Skeleton className="h-3 w-24" />
-                            </div>
-                        ))}
-                    </div>
+                    <ListSkeleton items={3} showAvatar={true} />
                 ) : (
                     <div className="space-y-4">
                         <AnimatePresence>

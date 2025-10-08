@@ -6,7 +6,7 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { formatCurrency } from '../utils/calculations';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { DashboardCardSkeleton } from '@/shared/SkeletonLoaders';
 
 /**
  * BNPL summary component with statistics cards
@@ -53,10 +53,10 @@ function BNPLSummary({ plans, isLoading }) {
     if (isLoading) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCardSkeleton />
-                <StatCardSkeleton />
-                <StatCardSkeleton />
-                <StatCardSkeleton />
+                <DashboardCardSkeleton />
+                <DashboardCardSkeleton />
+                <DashboardCardSkeleton />
+                <DashboardCardSkeleton />
             </div>
         );
     }

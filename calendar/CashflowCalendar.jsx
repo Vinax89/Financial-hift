@@ -6,7 +6,7 @@
 
 import React, { memo } from 'react';
 import { Card, CardContent } from '@/ui/card.jsx';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { CardSkeleton } from '@/shared/SkeletonLoaders';
 import { format, isToday, getDay } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useTheme } from '../theme/ThemeProvider';
@@ -43,20 +43,7 @@ function CashflowCalendar({ calendarData, currentDate, isLoading }) {
     
     // Handle cases where calendarData might be empty or not yet loaded
     if (isLoading) {
-        return (
-            <Card className="border bg-card">
-                <CardContent className="p-4 md:p-6">
-                    <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-muted-foreground mb-2">
-                        {weekDays.map(day => <div key={day}>{day}</div>)}
-                    </div>
-                    <div className="grid grid-cols-7 gap-2">
-                        {Array.from({ length: 35 }).map((_, i) => (
-                            <Skeleton key={i} className="h-24 md:h-28 rounded-lg" />
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-        );
+        return <CardSkeleton />;
     }
     
     const firstDayOfMonth = (calendarData && calendarData.length > 0)

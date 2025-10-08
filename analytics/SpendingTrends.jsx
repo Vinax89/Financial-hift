@@ -6,7 +6,7 @@
 
 import React, { useMemo, memo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { ChartSkeleton } from '@/shared/SkeletonLoaders';
 import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 import { getChartTheme } from './ChartTheme';
@@ -91,7 +91,7 @@ function SpendingTrends({ transactions, isLoading }) {
     }, [transactions]); // Updated dependency array as PIE_COLORS and theme are no longer used for data calculation
     
     if (isLoading) {
-        return <Skeleton className="h-[300px] w-full" />;
+        return <ChartSkeleton />;
     }
 
     return (

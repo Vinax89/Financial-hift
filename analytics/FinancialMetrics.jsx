@@ -179,7 +179,7 @@ function FinancialMetrics({ data = {}, isLoading = false }) {
                     </CardHeader>
                     <CardContent>
                         {isLoading ? (
-                            <Skeleton className="h-8 w-24 bg-muted" />
+                            <div className="h-8 w-24 bg-muted animate-pulse rounded" />
                         ) : (
                             <div className={`text-2xl font-bold ${card.color}`}>
                                 {card.value}
