@@ -4,6 +4,8 @@
  * Includes token bucket rate limiter, request deduplication, batching, and retry strategies
  */
 
+/// <reference types="vite/client" />
+
 // ============================================================================
 // Type Definitions
 // ============================================================================
