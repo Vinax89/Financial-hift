@@ -181,11 +181,4 @@ export default defineConfig({
     // Remove console logs and debugger in production
     drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
   },
-
-  // Performance optimizations
-  performance: {
-    // Warn on large chunks
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000,
-  },
 })
