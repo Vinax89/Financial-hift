@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, Suspense, useCallback } from 'react';
 import { useTransactions, useShifts, useGoals, useDebts, useBudgets, useBills, useInvestments } from '@/hooks/useEntityQueries.jsx';
 import { Loading, ShimmerBox, CardLoading, ChartLoading } from '@/ui/loading.jsx';
+import { ShimmerEffect, SkeletonCard } from '@/loading/LoadingStates.jsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
 import { RefreshCw, LayoutGrid, FileText, Landmark, Wallet, BrainCircuit, Bot, Bug, Download, BellRing, Mail } from 'lucide-react';
 import { ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
@@ -45,9 +46,9 @@ const CashflowSankey = React.lazy(() => import('@/analytics/CashflowSankey.jsx')
 
 const ComponentFallback = ({ name, type = 'card' }) => {
     if (type === 'chart') {
-        return <ChartLoading />;
+        return <ShimmerEffect variant="card" className="h-[400px]" />;
     }
-    return <CardLoading />;
+    return <SkeletonCard count={1} />;
 };
 
 export default function Dashboard() {

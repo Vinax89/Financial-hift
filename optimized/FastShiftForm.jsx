@@ -15,7 +15,7 @@ import { ErrorMessage, InlineError } from '@/shared/ErrorMessage.jsx';
 // Simple field error component
 const FieldError = ({ error, className }) => {
     if (!error) return null;
-    return <p className={`text-xs text-destructive mt-1 ${className || ''}}>{error}</p>;
+    return <p className={`text-xs text-destructive mt-1 ${className || ''}`}>{error}</p>;
 };
 
 // Memoized tag input component

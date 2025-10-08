@@ -1,13 +1,12 @@
 
 import React, { Suspense } from "react";
-import StressTester from "@/dev/StressTester.jsx"; // Keep for potential type inference or if used elsewhere, though not directly in this file anymore
 import { GlassContainer } from "@/ui/enhanced-components.jsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs.jsx";
 import PerfInspector from "@/dev/PerfInspector.jsx";
 import NetworkMonitor from "@/dev/NetworkMonitor.jsx";
 import { Button } from "@/ui/button.jsx";
 
-// Replace direct import usage with lazy import
+// Lazy import only - no static import to enable proper code splitting
 const StressTesterLazy = React.lazy(() => import("@/dev/StressTester.jsx"));
 
 export default function Diagnostics() {

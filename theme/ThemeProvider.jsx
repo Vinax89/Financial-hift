@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const THEME_STORAGE_KEY = "apex-finance:theme";
 
@@ -97,12 +98,16 @@ function injectBaseThemeVarsOnce() {
   document.head.appendChild(style);
 }
 
-// Enhance: apply Tailwind dark class + data-theme + OLED vars
+// Enhance: apply Tailwind dark class + data-theme + OLED vars with smooth transitions
 function applyRootClassesAndVars(actualTheme) {
   if (typeof document === "undefined") return;
 
   const root = document.documentElement;
   const shouldDark = actualTheme === "dark" || actualTheme === "oled";
+  
+  // Add smooth transition for theme changes
+  root.style.transition = "background-color 0.3s ease, color 0.3s ease";
+  
   root.classList.toggle("dark", shouldDark);
   root.setAttribute("data-theme", actualTheme);
 
