@@ -5,7 +5,7 @@
 
 import React, { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { ChartSkeleton } from '@/shared/SkeletonLoaders';
 import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfISOWeek, parseISO } from 'date-fns';
 import { getChartTheme } from './ChartTheme';
@@ -61,7 +61,7 @@ function IncomeChart({ shifts, isLoading }) {
     }, [shifts]);
 
     if (isLoading) {
-        return <Skeleton className="h-[300px] w-full rounded-xl" />;
+        return <ChartSkeleton />;
     }
 
     const palette = getChartTheme(theme);

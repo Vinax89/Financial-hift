@@ -5,7 +5,7 @@
 
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { DashboardCardSkeleton } from '@/shared/SkeletonLoaders';
 
 /**
  * Format value as USD currency (rounded)
@@ -68,16 +68,9 @@ function GoalStats({ goals = [], isLoading }) {
     if (isLoading) {
         return (
             <div className="grid md:grid-cols-3 gap-4">
-                {Array.from({ length: 3 }).map((_, index) => (
-                    <Card key={index} className="border-dashed">
-                        <CardHeader>
-                            <Skeleton className="h-4 w-24" />
-                        </CardHeader>
-                        <CardContent>
-                            <Skeleton className="h-6 w-20" />
-                        </CardContent>
-                    </Card>
-                ))}
+                <DashboardCardSkeleton />
+                <DashboardCardSkeleton />
+                <DashboardCardSkeleton />
             </div>
         );
     }

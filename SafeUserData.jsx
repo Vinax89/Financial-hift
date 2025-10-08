@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User } from '@/api/entities';
+import { ErrorMessage } from '@/shared/ErrorMessage';
+import { ContentSkeleton } from '@/shared/SkeletonLoaders';
 
 export function useSafeUser() {
     const [user, setUser] = useState(null);
@@ -33,16 +35,21 @@ export function withSafeUserData(WrappedComponent) {
         
         if (isLoading) {
             return (
-                <div className="flex items-center justify-center p-8">
-                    <div className="text-slate-600">Loading user data...</div>
+                <div className="p-8">
+                    <ContentSkeleton />
                 </div>
             );
         }
 
         if (error && !user) {
             return (
-                <div className="flex items-center justify-center p-8">
-                    <div className="text-slate-600">Unable to load user data. Please refresh the page.</div>
+                <div className="p-8">
+                    <ErrorMessage
+                        title="Unable to Load User Data"
+                        message="We couldn't fetch your user information. Please try refreshing the page."
+                        severity="error"
+                        onRetry={() => window.location.reload()}
+                    />
                 </div>
             );
         }

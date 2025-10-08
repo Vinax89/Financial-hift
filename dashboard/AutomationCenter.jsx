@@ -19,6 +19,7 @@ import ReactMarkdown from 'react-markdown';
 import { Loading, LoadingWrapper } from '@/ui/loading.jsx';
 import { ErrorBoundary } from '../shared/ErrorBoundary';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { InlineError, ErrorMessage } from '@/shared/ErrorMessage';
 
 /**
  * Agent icon mappings for UI display
@@ -231,12 +232,9 @@ function AutomationCenter() {
                         )}
                         
                         {task.status === 'failed' && (
-                            <div className="flex items-center gap-2 p-2 bg-red-50 dark:bg-red-950/20 rounded-lg border border-red-200 dark:border-red-800">
-                                <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
-                                <span className="text-sm text-red-700 dark:text-red-300">
-                                    {isChaosTask ? 'Task failed due to chaos conditions' : 'Task failed to complete'}
-                                </span>
-                            </div>
+                            <InlineError 
+                                message={isChaosTask ? 'Task failed due to chaos conditions' : 'Task failed to complete'}
+                            />
                         )}
                     </div>
                     
@@ -333,13 +331,11 @@ function AutomationCenter() {
                 <CardContent>
                     <ScrollArea className="h-[600px] -mx-4 px-4">
                         <ErrorBoundary fallback={
-                            <div className="text-center py-16">
-                                <AlertCircle className="h-16 w-16 mx-auto mb-4 text-destructive/50" />
-                                <h3 className="text-lg font-semibold mb-2">Component Error</h3>
-                                <p className="text-muted-foreground">
-                                    Failed to render agent activity. This could be due to chaos conditions.
-                                </p>
-                            </div>
+                            <ErrorMessage
+                                title="Component Error"
+                                message="Failed to render agent activity. This could be due to chaos conditions."
+                                severity="error"
+                            />
                         }>
                             <LoadingWrapper 
                                 isLoading={isLoading} 

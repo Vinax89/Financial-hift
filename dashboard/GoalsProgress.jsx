@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { Progress } from "@/ui/progress.jsx";
 import { Target, Calendar } from "lucide-react";
 import { format } from "date-fns";
-import { Skeleton } from "@/ui/skeleton.jsx";
+import { ListSkeleton } from "@/shared/SkeletonLoaders";
 
 /**
  * Goals Progress Component
@@ -38,15 +38,7 @@ function GoalsProgress({ goals, isLoading }) {
             </CardHeader>
             <CardContent>
                 {isLoading ? (
-                    <div className="space-y-4">
-                        {Array(3).fill(0).map((_, i) => (
-                            <div key={i} className="space-y-2">
-                                <Skeleton className="h-4 w-32" />
-                                <Skeleton className="h-2 w-full" />
-                                <Skeleton className="h-3 w-24" />
-                            </div>
-                        ))}
-                    </div>
+                    <ListSkeleton items={3} />
                 ) : activeGoals.length > 0 ? (
                     <div className="space-y-6">
                         {activeGoals.map((goal) => {

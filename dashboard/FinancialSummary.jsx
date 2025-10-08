@@ -8,6 +8,7 @@ import React, { memo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
 import { TrendingUp, TrendingDown, DollarSign, Target } from "lucide-react";
 import { Skeleton } from "@/ui/skeleton.jsx";
+import { DashboardCardSkeleton } from "@/shared/SkeletonLoaders";
 
 /**
  * Financial Summary Cards Component

@@ -1,49 +1,52 @@
+/**
+ * @fileoverview Application routing with optimized code splitting
+ * @description Uses lazy loading with retry logic and intelligent prefetching
+ */
+
 import React, { Suspense } from 'react';
 import { createPageUrl } from "@/utils";
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { useIdlePrefetch } from '@/hooks/usePrefetch.jsx';
+import { lazyLoadWithRetry } from '@/utils/lazyLoad';
+import { RouteLoader, SkeletonRouteLoader } from '@/components/ui/RouteLoader';
 
-// Eager load Layout and Transactions (landing page)
+// Eager load Layout and Transactions (landing page - critical path)
 import Layout from "@/pages/Layout.jsx";
 import Transactions from "@/pages/Transactions.jsx";
 
-// Eager load auth pages (no auth guard)
+// Eager load auth pages (no auth guard - shown before app loads)
 import Login from "@/pages/Login.jsx";
 import Signup from "@/pages/Signup.jsx";
 import ForgotPassword from "@/pages/ForgotPassword.jsx";
 
-// Lazy load all other pages for code splitting
-const FileUpload = React.lazy(() => import("@/pages/FileUpload.jsx"));
-const BNPL = React.lazy(() => import("@/pages/BNPL.jsx"));
-const Shifts = React.lazy(() => import("@/pages/Shifts.jsx"));
-const Calendar = React.lazy(() => import("@/pages/Calendar.jsx"));
-const DebtPlanner = React.lazy(() => import("@/pages/DebtPlanner.jsx"));
-const AIAdvisor = React.lazy(() => import("@/pages/AIAdvisor.jsx"));
-const Budget = React.lazy(() => import("@/pages/Budget.jsx"));
-const Goals = React.lazy(() => import("@/pages/Goals.jsx"));
-const Paycheck = React.lazy(() => import("@/pages/Paycheck.jsx"));
-const Analytics = React.lazy(() => import("@/pages/Analytics.jsx"));
-const Reports = React.lazy(() => import("@/pages/Reports.jsx"));
-const ShiftRules = React.lazy(() => import("@/pages/ShiftRules.jsx"));
-const Agents = React.lazy(() => import("@/pages/Agents.jsx"));
-const Scanner = React.lazy(() => import("@/pages/Scanner.jsx"));
-const WorkHub = React.lazy(() => import("@/pages/WorkHub.jsx"));
-const DebtControl = React.lazy(() => import("@/pages/DebtControl.jsx"));
-const FinancialPlanning = React.lazy(() => import("@/pages/FinancialPlanning.jsx"));
-const AIAssistant = React.lazy(() => import("@/pages/AIAssistant.jsx"));
-const Settings = React.lazy(() => import("@/pages/Settings.jsx"));
-const MoneyManager = React.lazy(() => import("@/pages/MoneyManager.jsx"));
-const UnifiedCalendar = React.lazy(() => import("@/pages/UnifiedCalendar.jsx"));
-const Dashboard = React.lazy(() => import("@/pages/Dashboard.jsx"));
-const Diagnostics = React.lazy(() => import("@/pages/Diagnostics.jsx"));
-const Pricing = React.lazy(() => import("@/pages/Pricing.jsx"));
+// Lazy load all other pages with retry logic for better reliability
+const FileUpload = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/FileUpload.jsx")));
+const BNPL = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/BNPL.jsx")));
+const Shifts = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Shifts.jsx")));
+const Calendar = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Calendar.jsx")));
+const DebtPlanner = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/DebtPlanner.jsx")));
+const AIAdvisor = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/AIAdvisor.jsx")));
+const Budget = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Budget.jsx")));
+const Goals = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Goals.jsx")));
+const Paycheck = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Paycheck.jsx")));
+const Analytics = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Analytics.jsx")));
+const Reports = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Reports.jsx")));
+const ShiftRules = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/ShiftRules.jsx")));
+const Agents = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Agents.jsx")));
+const Scanner = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Scanner.jsx")));
+const WorkHub = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/WorkHub.jsx")));
+const DebtControl = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/DebtControl.jsx")));
+const FinancialPlanning = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/FinancialPlanning.jsx")));
+const AIAssistant = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/AIAssistant.jsx")));
+const Settings = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Settings.jsx")));
+const MoneyManager = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/MoneyManager.jsx")));
+const UnifiedCalendar = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/UnifiedCalendar.jsx")));
+const Dashboard = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Dashboard.jsx")));
+const Diagnostics = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Diagnostics.jsx")));
+const Pricing = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Pricing.jsx")));
 
 // Loading component for page transitions
-const PageLoader = () => (
-    <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-    </div>
-);
+const PageLoader = () => <RouteLoader message="Loading page..." />;
 
 const PAGES = {
     Transactions: Transactions,
