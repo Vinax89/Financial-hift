@@ -10,7 +10,13 @@ import { Clock, MapPin, DollarSign, Calendar, Tag, AlertTriangle } from 'lucide-
 import { formatCurrency } from '../utils/calculations';
 import { validateShift } from '../utils/validation';
 import { format } from 'date-fns';
-import { ErrorMessage, FieldError, InlineError } from '@/shared/ErrorMessage';
+import { ErrorMessage, InlineError } from '@/shared/ErrorMessage.jsx';
+
+// Simple field error component
+const FieldError = ({ error, className }) => {
+    if (!error) return null;
+    return <p className={`text-xs text-destructive mt-1 ${className || ''}`}>{error}</p>;
+};
 
 // Memoized tag input component
 const TagInput = React.memo(({ tags = [], onChange, suggestions = [] }) => {

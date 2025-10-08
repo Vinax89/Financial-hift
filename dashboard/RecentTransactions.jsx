@@ -1,7 +1,7 @@
 /**
  * @fileoverview Recent transactions display component
  * @description Shows recent transactions with virtualization for performance,
- * category badges, and transaction type indicators
+ * category badges, transaction type indicators, and scroll position restoration
  */
 
 import React, { useMemo, memo } from "react";
@@ -10,7 +10,7 @@ import { Badge } from "@/ui/badge.jsx";
 import { ArrowUpCircle, ArrowDownCircle, Clock } from "lucide-react";
 import { format } from "date-fns";
 import { TransactionSkeleton } from "@/shared/SkeletonLoaders";
-import VirtualizedList from "@/optimized/VirtualizedList";
+import { VirtualList } from "@/utils/virtualScroll.js";
 
 /**
  * Category color mappings for transaction badges
@@ -105,10 +105,11 @@ function RecentTransactions({ transactions = [], isLoading }) {
                 {isLoading ? (
                     <TransactionSkeleton count={5} />
                 ) : transactions.length > 0 ? (
-                    <VirtualizedList
+                    <VirtualList
                         items={transactions}
                         itemHeight={88}
                         height={440}
+                        listId="recent-transactions"
                         renderItem={(transaction) => (
                             <TransactionRow key={transaction.id} transaction={transaction} />
                         )}
