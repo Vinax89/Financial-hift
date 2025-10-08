@@ -39,3 +39,6 @@ lerna-debug.log*
 # Misc
 .eslintcache
 *.tsbuildinfo
+
+*storybook.log
+storybook-static
