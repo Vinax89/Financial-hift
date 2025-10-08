@@ -378,36 +378,37 @@ function sortLargeDataset(data) {
  * Aggregate transactions by category
  */
 function aggregateByCategory(transactions) {
-  const aggregated = {};
+  const aggregated = new Map();
   
   transactions.forEach(t => {
     const category = t.category || 'Uncategorized';
     const amount = parseFloat(t.amount) || 0;
     
-    if (!aggregated[category]) {
-      aggregated[category] = {
+    if (!aggregated.has(category)) {
+      aggregated.set(category, {
         category,
         income: 0,
         expenses: 0,
         net: 0,
         count: 0,
         transactions: [],
-      };
+      });
     }
     
-    aggregated[category].count++;
-    aggregated[category].transactions.push(t);
+    const aggObj = aggregated.get(category);
+    aggObj.count++;
+    aggObj.transactions.push(t);
     
     if (amount > 0) {
-      aggregated[category].income += amount;
+      aggObj.income += amount;
     } else {
-      aggregated[category].expenses += Math.abs(amount);
+      aggObj.expenses += Math.abs(amount);
     }
     
-    aggregated[category].net = aggregated[category].income - aggregated[category].expenses;
+    aggObj.net = aggObj.income - aggObj.expenses;
   });
   
-  return Object.values(aggregated);
+  return Array.from(aggregated.values());
 }
 
 // Signal that worker is ready
