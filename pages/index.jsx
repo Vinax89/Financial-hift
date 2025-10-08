@@ -45,6 +45,9 @@ const Dashboard = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Dashb
 const Diagnostics = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Diagnostics.jsx")));
 const Pricing = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Pricing.jsx")));
 
+// Dev tools (only in development)
+const PerformanceDashboard = React.lazy(() => lazyLoadWithRetry(() => import("@/dev/PerformanceDashboard.jsx")));
+
 // Loading component for page transitions
 const PageLoader = () => <RouteLoader message="Loading page..." />;
 
@@ -130,6 +133,10 @@ function PagesContent() {
             <Suspense fallback={<PageLoader />}>
                 <Routes>
                     <Route path="/" element={<Transactions />} />
+                    {/* Dev tools route (development only) */}
+                    {import.meta.env.DEV && (
+                        <Route path="/dev/performance" element={<PerformanceDashboard />} />
+                    )}
                     {Object.entries(PAGES).map(([pageName, Component]) => (
                         <Route
                             key={pageName}
