@@ -18,21 +18,11 @@ import tsparser from '@typescript-eslint/parser';
  * ESLint flat configuration
  * @see https://eslint.org/docs/latest/use/configure/
  */
-<<<<<<< HEAD
 export default [
   // Ignore build output
   { 
     ignores: ['dist', 'coverage', 'node_modules', '*.config.js', '*.config.ts'],
-  },
-=======
-export default [// Ignore build output
-{ 
-  ignores: ['dist', 'coverage', 'node_modules', '*.config.js'],
-}, // Main configuration for JS/JSX files
-{
-  files: ['**/*.{js,jsx}'],
->>>>>>> 5a48d79609c91f130ac1bd8182eca494c665ca58
-  
+  },  
   languageOptions: {
     ecmaVersion: 'latest',
     globals: {
@@ -67,7 +57,6 @@ export default [// Ignore build output
     // React Hooks rules
     ...reactHooks.configs.recommended.rules,
     
-<<<<<<< HEAD
     rules: {
       // Base JavaScript rules
       ...js.configs.recommended.rules,
@@ -92,24 +81,7 @@ export default [// Ignore build output
         'warn',
         { allowConstantExport: true },
       ],
-    },
-=======
-    // Custom overrides
-    'react/jsx-no-target-blank': 'off',
-    'react/prop-types': 'off', // Using JSDoc for prop documentation
-    'no-unused-vars': ['warn', { 
-      argsIgnorePattern: '^_',
-      varsIgnorePattern: '^_',
-    }],
-    
-    // React Refresh (HMR)
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
->>>>>>> 5a48d79609c91f130ac1bd8182eca494c665ca58
-  },
-<<<<<<< HEAD
+    },  },
 
   // TypeScript configuration
   {
@@ -178,6 +150,3 @@ export default [// Ignore build output
     },
   },
 ];
-=======
-}, ...storybook.configs["flat/recommended"]];
->>>>>>> 5a48d79609c91f130ac1bd8182eca494c665ca58

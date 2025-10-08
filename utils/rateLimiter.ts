@@ -615,7 +615,7 @@ export const globalBatcher = new RequestBatcher({
 /**
  * Monitor rate limiter status in development
  */
-if (import.meta.env.DEV) {
+if ((import.meta as any).env?.DEV) {
   setInterval(() => {
     const status = globalRateLimiter.getStatus();
     if (status.queueLength > 5) {
@@ -623,3 +623,4 @@ if (import.meta.env.DEV) {
     }
   }, 5000);
 }
+

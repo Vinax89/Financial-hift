@@ -230,7 +230,7 @@ setInterval(() => {
  * @returns Formatted currency string
  */
 export const formatCurrency = (amount: number, options: CurrencyOptions = {}): string => {
-  const defaultOptions: Intl.NumberFormatOptions = {
+  const defaultOptions = {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 0,
@@ -238,7 +238,7 @@ export const formatCurrency = (amount: number, options: CurrencyOptions = {}): s
     ...options
   };
   
-  return new Intl.NumberFormat('en-US', defaultOptions).format(amount || 0);
+  return new Intl.NumberFormat('en-US', defaultOptions as Intl.NumberFormatOptions).format(amount || 0);
 };
 
 /**
@@ -595,3 +595,5 @@ export const calculateGoalProjection = (
       : 0
   };
 };
+
+

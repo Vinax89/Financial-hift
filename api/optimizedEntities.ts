@@ -323,7 +323,7 @@ export interface Subscription extends BaseEntity {
  */
 export interface EntityCRUD<T extends BaseEntity> {
   /** Entity name */
-  name: string;
+  name?: string;
   
   /** List all items with optional filters */
   list: (filters?: Record<string, unknown>) => Promise<T[]>;
@@ -396,10 +396,10 @@ export interface APIError extends Error {
  * @returns {WrappedEntity<T>} Wrapped entity with rate limiting
  * 
  * @example
- * const Transaction = wrapEntity(base44.entities.Transaction);
+ * const Transaction = wrapEntity(base44.entities.Transaction as any, 'Transaction');
  * const transactions = await Transaction.list();
  */
-function wrapEntity<T extends BaseEntity>(entity: EntityCRUD<T>): WrappedEntity<T> {
+function wrapEntity<T extends BaseEntity>(entity: EntityCRUD<T>, entityName: string): WrappedEntity<T> {
   const wrapped = {} as WrappedEntity<T>;
 
   // Wrap common CRUD methods
@@ -408,7 +408,7 @@ function wrapEntity<T extends BaseEntity>(entity: EntityCRUD<T>): WrappedEntity<
   methods.forEach(method => {
     if (typeof entity[method] === 'function') {
       (wrapped as any)[method] = async (...args: any[]): Promise<any> => {
-        const url = `${entity.name}/${String(method)}/${JSON.stringify(args)}`;
+        const url = `${entityName}/${String(method)}/${JSON.stringify(args)}`;
         
         // Use deduplicator for GET operations (list, get, query)
         if (['list', 'get', 'query'].includes(String(method))) {
@@ -488,14 +488,9 @@ function wrapEntity<T extends BaseEntity>(entity: EntityCRUD<T>): WrappedEntity<
  *   { description: 'Lunch', amount: 15, category: 'food', type: 'expense', date: '2025-10-08' }
  * ]);
  */
-export async function batchCreate<T extends BaseEntity>(
-  entity: EntityCRUD<T>,
-  items: Array<Omit<T, keyof BaseEntity>>
+export async function batchCreate<T extends BaseEntity>(entity: EntityCRUD<T>, entityName: string, items: Array<Omit<T, keyof BaseEntity>>
 ): Promise<T[]> {
-  return globalBatcher.add(
-    `${entity.name}/create`,
-    items,
-    async (batch: Array<Omit<T, keyof BaseEntity>>): Promise<T[]> => {
+  return globalBatcher.add(`${entityName}/create`, items, async (batches: Omit<T, keyof BaseEntity>[][]): Promise<T[]> => {
       // Process in chunks to avoid overwhelming the API
       const results: T[] = [];
       const chunkSize = 5;
@@ -530,14 +525,9 @@ export async function batchCreate<T extends BaseEntity>(
  *   { id: '456', data: { category: 'dining' } }
  * ]);
  */
-export async function batchUpdate<T extends BaseEntity>(
-  entity: EntityCRUD<T>,
-  updates: BatchUpdateItem<T>[]
+export async function batchUpdate<T extends BaseEntity>(entity: EntityCRUD<T>, entityName: string, updates: BatchUpdateItem<T>[]
 ): Promise<T[]> {
-  return globalBatcher.add(
-    `${entity.name}/update`,
-    updates,
-    async (batch: BatchUpdateItem<T>[]): Promise<T[]> => {
+  return globalBatcher.add(`${entityName}/update`, updates, async (batch: BatchUpdateItem<T>[]): Promise<T[]> => {
       const results: T[] = [];
       const chunkSize = 5;
 
@@ -568,14 +558,9 @@ export async function batchUpdate<T extends BaseEntity>(
  * @example
  * await batchDelete(Transaction, ['123', '456', '789']);
  */
-export async function batchDelete<T extends BaseEntity>(
-  entity: EntityCRUD<T>,
-  ids: string[]
+export async function batchDelete<T extends BaseEntity>(entity: EntityCRUD<T>, entityName: string, ids: string[]
 ): Promise<void[]> {
-  return globalBatcher.add(
-    `${entity.name}/delete`,
-    ids,
-    async (batch: string[]): Promise<void[]> => {
+  return globalBatcher.add(`${entityName}/delete`, ids, async (batch: string[]): Promise<void[]> => {
       const results: void[] = [];
       const chunkSize = 5;
 
@@ -644,35 +629,35 @@ export function getRateLimiterStats(): RateLimiterStatsResponse {
 // ============================================================================
 
 // Financial Entities
-export const Transaction: WrappedEntity<Transaction> = wrapEntity(base44.entities.Transaction);
-export const Budget: WrappedEntity<Budget> = wrapEntity(base44.entities.Budget);
-export const Goal: WrappedEntity<Goal> = wrapEntity(base44.entities.Goal);
-export const BNPLPlan: WrappedEntity<BNPLPlan> = wrapEntity(base44.entities.BNPLPlan);
-export const Bill: WrappedEntity<Bill> = wrapEntity(base44.entities.Bill);
-export const DebtAccount: WrappedEntity<DebtAccount> = wrapEntity(base44.entities.DebtAccount);
-export const Investment: WrappedEntity<Investment> = wrapEntity(base44.entities.Investment);
+export const Transaction: WrappedEntity<Transaction> = wrapEntity(base44.entities.Transaction as any, 'Transaction');
+export const Budget: WrappedEntity<Budget> = wrapEntity(base44.entities.Budget as any, 'Budget');
+export const Goal: WrappedEntity<Goal> = wrapEntity(base44.entities.Goal as any, 'Goal');
+export const BNPLPlan: WrappedEntity<BNPLPlan> = wrapEntity(base44.entities.BNPLPlan as any, 'BNPLPlan');
+export const Bill: WrappedEntity<Bill> = wrapEntity(base44.entities.Bill as any, 'Bill');
+export const DebtAccount: WrappedEntity<DebtAccount> = wrapEntity(base44.entities.DebtAccount as any, 'DebtAccount');
+export const Investment: WrappedEntity<Investment> = wrapEntity(base44.entities.Investment as any, 'Investment');
 
 // Shift Worker Entities
-export const PaycheckSettings: WrappedEntity<PaycheckSettings> = wrapEntity(base44.entities.PaycheckSettings);
-export const ShiftRule: WrappedEntity<ShiftRule> = wrapEntity(base44.entities.ShiftRule);
-export const Shift: WrappedEntity<Shift> = wrapEntity(base44.entities.Shift);
-export const ForecastSnapshot: WrappedEntity<ForecastSnapshot> = wrapEntity(base44.entities.ForecastSnapshot);
+export const PaycheckSettings: WrappedEntity<PaycheckSettings> = wrapEntity(base44.entities.PaycheckSettings as any, 'PaycheckSettings');
+export const ShiftRule: WrappedEntity<ShiftRule> = wrapEntity(base44.entities.ShiftRule as any, 'ShiftRule');
+export const Shift: WrappedEntity<Shift> = wrapEntity(base44.entities.Shift as any, 'Shift');
+export const ForecastSnapshot: WrappedEntity<ForecastSnapshot> = wrapEntity(base44.entities.ForecastSnapshot as any, 'ForecastSnapshot');
 
 // Gamification & AI Entities
-export const Gamification: WrappedEntity<Gamification> = wrapEntity(base44.entities.Gamification);
-export const AgentTask: WrappedEntity<AgentTask> = wrapEntity(base44.entities.AgentTask);
-export const Notification: WrappedEntity<Notification> = wrapEntity(base44.entities.Notification);
-export const AutomationRule: WrappedEntity<AutomationRule> = wrapEntity(base44.entities.AutomationRule);
+export const Gamification: WrappedEntity<Gamification> = wrapEntity(base44.entities.Gamification as any, 'Gamification');
+export const AgentTask: WrappedEntity<AgentTask> = wrapEntity(base44.entities.AgentTask as any, 'AgentTask');
+export const Notification: WrappedEntity<Notification> = wrapEntity(base44.entities.Notification as any, 'Notification');
+export const AutomationRule: WrappedEntity<AutomationRule> = wrapEntity(base44.entities.AutomationRule as any, 'AutomationRule');
 
 // Tax & Location Entities
-export const FederalTaxConfig: WrappedEntity<FederalTaxConfig> = wrapEntity(base44.entities.FederalTaxConfig);
-export const StateTaxConfig: WrappedEntity<StateTaxConfig> = wrapEntity(base44.entities.StateTaxConfig);
-export const ZipJurisdiction: WrappedEntity<ZipJurisdiction> = wrapEntity(base44.entities.ZipJurisdiction);
-export const CostOfLiving: WrappedEntity<CostOfLiving> = wrapEntity(base44.entities.CostOfLiving);
+export const FederalTaxConfig: WrappedEntity<FederalTaxConfig> = wrapEntity(base44.entities.FederalTaxConfig as any, 'FederalTaxConfig');
+export const StateTaxConfig: WrappedEntity<StateTaxConfig> = wrapEntity(base44.entities.StateTaxConfig as any, 'StateTaxConfig');
+export const ZipJurisdiction: WrappedEntity<ZipJurisdiction> = wrapEntity(base44.entities.ZipJurisdiction as any, 'ZipJurisdiction');
+export const CostOfLiving: WrappedEntity<CostOfLiving> = wrapEntity(base44.entities.CostOfLiving as any, 'CostOfLiving');
 
 // Subscription Entities
-export const Plan: WrappedEntity<Plan> = wrapEntity(base44.entities.Plan);
-export const Subscription: WrappedEntity<Subscription> = wrapEntity(base44.entities.Subscription);
+export const Plan: WrappedEntity<Plan> = wrapEntity(base44.entities.Plan as any, 'Plan');
+export const Subscription: WrappedEntity<Subscription> = wrapEntity(base44.entities.Subscription as any, 'Subscription');
 
 // Authentication (no wrapping needed)
 export const User = base44.auth;
@@ -685,7 +670,7 @@ export { base44 };
 // ============================================================================
 
 // Log stats in development
-if (import.meta.env.DEV) {
+if ((import.meta as any).env?.DEV) {
   setInterval(() => {
     const stats = getRateLimiterStats();
     if (stats.rateLimiter.queueLength > 0 || stats.deduplicator.pendingRequests > 0) {
@@ -693,3 +678,20 @@ if (import.meta.env.DEV) {
     }
   }, 10000); // Every 10 seconds
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
