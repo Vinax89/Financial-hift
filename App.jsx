@@ -1,13 +1,14 @@
 /**
  * @fileoverview Root application component for Financial $hift
  * @description Main app wrapper with performance monitoring, accessibility features,
- * error boundaries, and React Query provider integration
+ * error boundaries, optimized code splitting, and React Query provider integration
  */
 import './App.css';
+import { Suspense, useEffect } from 'react';
 import Pages from '@/pages/index.jsx';
 import { Toaster } from '@/ui/toaster.jsx';
-import { ErrorBoundary } from "@/shared/ErrorBoundary.jsx"
-import { useEffect } from 'react';
+import { ErrorBoundary } from "@/shared/ErrorBoundary.jsx";
+import { FullPageLoader } from '@/components/ui/RouteLoader';
 import { initializePerformanceMonitoring } from '@/utils/monitoring.js';
 import { initializeAccessibility } from '@/utils/accessibility.js';
 import { logInfo } from '@/utils/logger.js';
@@ -51,7 +52,9 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <Pages />
+      <Suspense fallback={<FullPageLoader appName="Financial $hift" />}>
+        <Pages />
+      </Suspense>
       <Toaster />
     </ErrorBoundary>
   );
