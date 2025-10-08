@@ -8,14 +8,20 @@ import { useState, useEffect, useCallback } from 'react';
 import { logWarn } from '@/utils/logger.js';
 
 /**
- * Persist state to localStorage with cross-tab sync
+ * Persist state to localStorage with optimized cross-tab sync
  * @param {string} key - LocalStorage key
  * @param {*} initialValue - Initial value if key doesn't exist
+ * @param {Object} options - Configuration options
+ * @param {boolean} options.syncTabs - Enable cross-tab sync (default: true)
+ * @param {number} options.syncDebounce - Debounce sync events in ms (default: 100)
  * @returns {[*, Function]} Tuple of [value, setValue]
  * @example
  * const [theme, setTheme] = useLocalStorage('theme', 'dark');
+ * const [data, setData] = useLocalStorage('data', {}, { syncDebounce: 500 });
  */
-export function useLocalStorage(key, initialValue) {
+export function useLocalStorage(key, initialValue, options = {}) {
+    const { syncTabs = true, syncDebounce = 100 } = options;
+    
     const [storedValue, setStoredValue] = useState(() => {
         try {
             if (typeof window === 'undefined') {
@@ -37,7 +43,7 @@ export function useLocalStorage(key, initialValue) {
         }
     });
 
-    const setValue = (value) => {
+    const setValue = useCallback((value) => {
         try {
             setStoredValue(value);
             if (typeof window !== 'undefined') {
@@ -48,15 +54,37 @@ export function useLocalStorage(key, initialValue) {
                 logWarn(`Error setting localStorage key "${key}"`, { error });
             }
         }
-    };
+    }, [key]);
 
     useEffect(() => {
+        if (!syncTabs || typeof window === 'undefined') return;
+
+        let debounceTimer = null;
+        
         const handleStorageChange = (e) => {
-            if (e.key === key) {
+            // Only handle changes to this specific key from other tabs
+            if (e.key !== key) return;
+            
+            // Debounce rapid changes to prevent excessive updates
+            if (debounceTimer) clearTimeout(debounceTimer);
+            
+            debounceTimer = setTimeout(() => {
                 try {
-                    if (e.newValue === null) return;
+                    if (e.newValue === null) {
+                        setStoredValue(initialValue);
+                        return;
+                    }
+                    
                     try {
-                        setStoredValue(JSON.parse(e.newValue));
+                        const parsed = JSON.parse(e.newValue);
+                        
+                        // Only update if value actually changed
+                        setStoredValue(prev => {
+                            if (JSON.stringify(prev) === JSON.stringify(parsed)) {
+                                return prev; // No change, prevent re-render
+                            }
+                            return parsed;
+                        });
                     } catch {
                         // Fallback to raw value if not JSON
                         setStoredValue(e.newValue);
@@ -66,14 +94,16 @@ export function useLocalStorage(key, initialValue) {
                         logWarn(`Error parsing localStorage key "${key}"`, { error });
                     }
                 }
-            }
+            }, syncDebounce);
         };
 
-        if (typeof window !== 'undefined') {
-            window.addEventListener('storage', handleStorageChange);
-            return () => window.removeEventListener('storage', handleStorageChange);
-        }
-    }, [key]);
+        window.addEventListener('storage', handleStorageChange);
+        
+        return () => {
+            if (debounceTimer) clearTimeout(debounceTimer);
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, [key, initialValue, syncTabs, syncDebounce]);
 
     return [storedValue, setValue];
 }

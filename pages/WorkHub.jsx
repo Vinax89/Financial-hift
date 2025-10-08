@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
 import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
@@ -8,9 +8,8 @@ import { Button } from '@/ui/button.jsx';
 import { Badge } from '@/ui/badge.jsx';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 
-// Import existing components
-import { Shift } from '@/api/entities';
-import { ShiftRule } from '@/api/entities';
+// Import OPTIMIZED entities with rate limiting
+import { Shift, ShiftRule, invalidateCache } from '@/api/optimizedEntities.js';
 import ShiftForm from '@/shifts/ShiftForm.jsx';
 import ShiftList from '@/shifts/ShiftList.jsx';
 import ShiftStats from '@/shifts/ShiftStats.jsx';
@@ -34,43 +33,76 @@ export default function WorkHubPage() {
     const [editingShift, setEditingShift] = useState(null);
     const [editingRule, setEditingRule] = useState(null);
     const { toast } = useToast();
+    
+    // Track if initial load is complete to prevent duplicate loads
+    const initialLoadComplete = useRef(false);
+    const loadingRef = useRef({ shifts: false, rules: false });
 
-    // Load shifts
-    const loadShifts = useCallback(async () => {
+    // Load shifts with deduplication
+    const loadShifts = useCallback(async (force = false) => {
+        // Prevent duplicate simultaneous loads
+        if (loadingRef.current.shifts && !force) {
+            return;
+        }
+
+        loadingRef.current.shifts = true;
         setLoading(prev => ({ ...prev, shifts: true }));
+        
         try {
             const data = await Shift.list('-start_datetime', 500);
             setShifts(data);
         } catch (error) {
-            toast({
-                title: 'Failed to load shifts',
-                description: error.message,
-                variant: 'destructive'
-            });
+            // Only show toast for non-rate-limit errors
+            if (error.status !== 429) {
+                toast({
+                    title: 'Failed to load shifts',
+                    description: error.message,
+                    variant: 'destructive'
+                });
+            }
+        } finally {
+            setLoading(prev => ({ ...prev, shifts: false }));
+            loadingRef.current.shifts = false;
         }
-        setLoading(prev => ({ ...prev, shifts: false }));
     }, [toast]);
 
-    // Load shift rules
-    const loadShiftRules = useCallback(async () => {
+    // Load shift rules with deduplication
+    const loadShiftRules = useCallback(async (force = false) => {
+        // Prevent duplicate simultaneous loads
+        if (loadingRef.current.rules && !force) {
+            return;
+        }
+
+        loadingRef.current.rules = true;
         setLoading(prev => ({ ...prev, rules: true }));
+        
         try {
             const rules = await ShiftRule.list('-updated_date');
             setShiftRules(Array.isArray(rules) ? rules : []);
         } catch (error) {
-            toast({
-                title: 'Failed to load shift rules',
-                description: error.message,
-                variant: 'destructive'
-            });
+            // Only show toast for non-rate-limit errors
+            if (error.status !== 429) {
+                toast({
+                    title: 'Failed to load shift rules',
+                    description: error.message,
+                    variant: 'destructive'
+                });
+            }
+        } finally {
+            setLoading(prev => ({ ...prev, rules: false }));
+            loadingRef.current.rules = false;
         }
-        setLoading(prev => ({ ...prev, rules: false }));
     }, [toast]);
 
+    // Load data only once on mount
     useEffect(() => {
-        loadShifts();
-        loadShiftRules();
-    }, [loadShifts, loadShiftRules]);
+        if (!initialLoadComplete.current) {
+            initialLoadComplete.current = true;
+            
+            // Load sequentially instead of parallel to reduce load
+            loadShifts().then(() => loadShiftRules());
+        }
+    }, []); // Empty deps - only run once
 
     // Shift handlers
     const handleShiftSubmit = async (data) => {
@@ -84,7 +116,10 @@ export default function WorkHubPage() {
             }
             setShowShiftForm(false);
             setEditingShift(null);
-            await loadShifts();
+            
+            // Invalidate cache and reload
+            invalidateCache('Shift');
+            await loadShifts(true); // Force reload
         } catch (error) {
             toast({
                 title: 'Failed to save shift',
@@ -103,7 +138,10 @@ export default function WorkHubPage() {
         try {
             await Shift.delete(id);
             toast({ title: 'Shift deleted successfully' });
-            await loadShifts();
+            
+            // Invalidate cache and reload
+            invalidateCache('Shift');
+            await loadShifts(true); // Force reload
         } catch (error) {
             toast({
                 title: 'Failed to delete shift',
@@ -125,7 +163,10 @@ export default function WorkHubPage() {
             }
             setShowRuleForm(false);
             setEditingRule(null);
-            await loadShiftRules();
+            
+            // Invalidate cache and reload
+            invalidateCache('ShiftRule');
+            await loadShiftRules(true); // Force reload
         } catch (error) {
             toast({
                 title: 'Failed to save shift rule',
@@ -147,7 +188,10 @@ export default function WorkHubPage() {
         try {
             await ShiftRule.delete(rule.id);
             toast({ title: 'Shift rule deleted successfully' });
-            await loadShiftRules();
+            
+            // Invalidate cache and reload
+            invalidateCache('ShiftRule');
+            await loadShiftRules(true); // Force reload
         } catch (error) {
             toast({
                 title: 'Failed to delete shift rule',
@@ -164,7 +208,10 @@ export default function WorkHubPage() {
                 title: `Rule ${rule.active ? 'deactivated' : 'activated'}`,
                 description: `${rule.name} is now ${rule.active ? 'inactive' : 'active'}.`
             });
-            await loadShiftRules();
+            
+            // Invalidate cache and reload
+            invalidateCache('ShiftRule');
+            await loadShiftRules(true); // Force reload
         } catch (error) {
             toast({
                 title: 'Failed to update rule',
