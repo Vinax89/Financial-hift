@@ -1,14 +1,16 @@
 ﻿/**
  * @fileoverview Authentication guard component for Financial $hift
  * @description Protects routes by checking user authentication status,
- * displays loading and error states appropriately
+ * displays loading and error states appropriately, redirects to login when needed
  */
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 // TEMP: Commented out to prevent SDK initialization redirect in development
 // import { User } from '@/api/entities';
 import { Card, CardContent } from '@/ui/card.jsx';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { logWarn, logInfo } from '@/utils/logger.js';
 
 /**
  * Authentication state type definition
@@ -33,40 +35,71 @@ export default function AuthGuard({ children }) {
         user: null,
         error: null 
     });
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Check if auth is enabled via environment variable
+    const AUTH_ENABLED = import.meta.env.VITE_ENABLE_AUTH === 'true';
 
     useEffect(() => {
-        // TEMP: Skip auth check in development mode
-        // Since we're bypassing authentication with if (false && ...) below,
-        // we don't need to call User.me() which would trigger SDK initialization
-        setAuthState({
-            isLoading: false,
-            isAuthenticated: true, // Fake authenticated state for development
-            user: { id: 'dev-user', email: 'dev@example.com' },
-            error: null
-        });
-        
-        /* ORIGINAL AUTH CHECK - Commented out for development
         const checkAuth = async () => {
-            try {
-                const user = await User.me();
+            // If auth is disabled in dev, skip check
+            if (!AUTH_ENABLED) {
+                logInfo('Authentication disabled in development mode');
                 setAuthState({
                     isLoading: false,
-                    isAuthenticated: true,
-                    user,
+                    isAuthenticated: true, // Fake authenticated state
+                    user: { id: 'dev-user', email: 'dev@example.com', name: 'Dev User' },
                     error: null
                 });
+                return;
+            }
+
+            // TODO: Implement Base44 SDK authentication when ready
+            try {
+                // const user = await User.me();
+                // setAuthState({
+                //     isLoading: false,
+                //     isAuthenticated: true,
+                //     user,
+                //     error: null
+                // });
+                
+                // TEMPORARY: Mock auth check
+                logInfo('Checking authentication status');
+                
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Mock: Check if user has token (you'd check localStorage, cookies, etc.)
+                const hasToken = localStorage.getItem('auth_token');
+                
+                if (hasToken) {
+                    setAuthState({
+                        isLoading: false,
+                        isAuthenticated: true,
+                        user: { id: 'mock-user', email: 'user@example.com', name: 'Mock User' },
+                        error: null
+                    });
+                } else {
+                    throw new Error('No authentication token found');
+                }
+                
             } catch (error) {
-                // Handle authentication errors gracefully
-                } catch (error) {
                 logWarn('Authentication check failed', error);
-                setIsAuthenticated(false);
+                setAuthState({
+                    isLoading: false,
+                    isAuthenticated: false,
+                    user: null,
+                    error: error?.message || 'Authentication failed'
+                });
             }
         };
         
         checkAuth();
-        */
-    }, []);
+    }, [AUTH_ENABLED]);
 
+    // Show loading state while checking auth
     if (authState.isLoading) {
         return (
             <div className="min-h-screen bg-background flex items-center justify-center">
@@ -81,25 +114,14 @@ export default function AuthGuard({ children }) {
         );
     }
 
-    // TEMP: Bypass authentication for development
-    if (false && !authState.isAuthenticated) {
-        return (
-            <div className="min-h-screen bg-background flex items-center justify-center">
-                <Card className="w-full max-w-md border shadow-xl bg-card backdrop-blur-sm">
-                    <CardContent className="p-8 text-center">
-                        <AlertCircle className="h-8 w-8 mx-auto mb-4 text-amber-600 dark:text-amber-400" />
-                        <h2 className="text-lg font-semibold text-foreground mb-2">Authentication Required</h2>
-                        <p className="text-muted-foreground mb-4">Please log in to access your financial dashboard.</p>
-                        {authState.error && (
-                            <p className="text-sm text-destructive bg-destructive/10 p-2 rounded">
-                                Error: {authState.error}
-                            </p>
-                        )}
-                    </CardContent>
-                </Card>
-            </div>
-        );
+    // Redirect to login if not authenticated
+    if (!authState.isAuthenticated) {
+        logInfo('User not authenticated, redirecting to login', { from: location.pathname });
+        // Save the intended destination to redirect after login
+        navigate('/login', { state: { from: location.pathname } });
+        return null;
     }
 
+    // User is authenticated, render protected content
     return children;
 }

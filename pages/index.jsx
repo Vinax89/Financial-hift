@@ -7,6 +7,11 @@ import { useIdlePrefetch } from '@/hooks/usePrefetch.jsx';
 import Layout from "@/pages/Layout.jsx";
 import Transactions from "@/pages/Transactions.jsx";
 
+// Eager load auth pages (no auth guard)
+import Login from "@/pages/Login.jsx";
+import Signup from "@/pages/Signup.jsx";
+import ForgotPassword from "@/pages/ForgotPassword.jsx";
+
 // Lazy load all other pages for code splitting
 const FileUpload = React.lazy(() => import("@/pages/FileUpload.jsx"));
 const BNPL = React.lazy(() => import("@/pages/BNPL.jsx"));
@@ -103,6 +108,20 @@ function PagesContent() {
     // ✅ Intelligent idle-time prefetching (now inside Router context)
     useIdlePrefetch();
 
+    // Public routes (no auth required)
+    const isPublicRoute = ['/login', '/signup', '/forgot-password'].includes(location.pathname);
+
+    if (isPublicRoute) {
+        return (
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+            </Routes>
+        );
+    }
+
+    // Protected routes (require auth)
     return (
         <Layout currentPageName={currentPage}>
             <Suspense fallback={<PageLoader />}>
