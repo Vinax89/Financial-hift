@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @fileoverview Vitest setup file
  * @description Global test configuration and utilities
  */
@@ -19,8 +19,8 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
+    addListener: vi.fn(), // Deprecated
+    removeListener: vi.fn(), // Deprecated
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
@@ -32,7 +32,9 @@ global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
   observe() {}
-  takeRecords() { return []; }
+  takeRecords() {
+    return [];
+  }
   unobserve() {}
 };
 
@@ -62,14 +64,17 @@ const sessionStorageMock = {
 };
 global.sessionStorage = sessionStorageMock;
 
-// Mock console methods
+// Mock console methods for cleaner test output
 global.console = {
   ...console,
-  error: vi.fn(),
-  warn: vi.fn(),
+  error: vi.fn(), // Suppress error logs in tests
+  warn: vi.fn(),  // Suppress warning logs in tests
 };
 
-// Mock fetch
+// Mock fetch for API tests
 global.fetch = vi.fn();
+
+// Custom matchers can be added here
+// expect.extend({ ... });
 
 export { localStorageMock, sessionStorageMock };

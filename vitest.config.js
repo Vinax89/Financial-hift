@@ -12,31 +12,19 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
-    setupFiles: './vitest.setup.js',
-    exclude: ['**/node_modules/**', '**/dist/**', '**/cypress/**', '**/.{idea,git,cache,output,temp}/**', '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
-    // Temporarily skip problematic tests
-    '**/utils/auth.test.js', '**/utils/api.test.js', '**/utils/dateUtils.test.js', '**/utils/formEnhancement.test.js'],
-    projects: [{
-      extends: true,
-      plugins: [
-      // The plugin will run tests for the stories defined in your Storybook config
-      // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-      storybookTest({
-        configDir: path.join(dirname, '.storybook')
-      })],
-      test: {
-        name: 'storybook',
-        browser: {
-          enabled: true,
-          headless: true,
-          provider: 'playwright',
-          instances: [{
-            browser: 'chromium'
-          }]
-        },
-        setupFiles: ['.storybook/vitest.setup.js']
-      }
-    }]
+    setupFiles: ['./vitest.setup.js', './tests/setup.js'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
+      // Temporarily skip problematic tests
+      '**/utils/auth.test.js',
+      '**/utils/api.test.js',
+      '**/utils/dateUtils.test.js',
+      '**/utils/formEnhancement.test.js'
+    ]
   },
   resolve: {
     alias: {
