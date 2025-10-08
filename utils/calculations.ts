@@ -1,7 +1,17 @@
 /**
  * @fileoverview Core financial calculation utilities with optimized algorithms
  * @description Comprehensive financial calculations including shift pay, debt payoff,
- * tax calculations, budget variance, and goal projections with memoization
+ * tax calculations, budget variance, and goal projectionexport const formatCurrency = (amount: number, options: CurrencyOptions = {}): string => {
+  const defaultOptions: Intl.NumberFormatOptions = {
+    style: 'currency' as const,
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+    ...options
+  };
+  
+  return new Intl.NumberFormat('en-US', defaultOptions).format(amount);
+};ization
  */
 
 import { format, addMonths, differenceInDays, parseISO } from 'date-fns';
