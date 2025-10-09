@@ -122,11 +122,13 @@ export function useKeyboardShortcutsHelp(): () => void {
     }
   }, []);
 
+import { logDebug } from '@/utils/logger';
+
   return () => {
     if (shortcutsRef.current) {
       // Get all shortcuts and display them
       const shortcuts = shortcutsRef.current.getAll();
-      console.log('Available keyboard shortcuts:', shortcuts);
+      logDebug('Available keyboard shortcuts', shortcuts);
       // TODO: Implement help panel UI
     }
   };

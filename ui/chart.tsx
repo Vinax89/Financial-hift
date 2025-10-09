@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Chart components using Recharts library
  * @description Wrapper components for Recharts with theme support and custom styling
@@ -63,13 +62,6 @@ function useChart() {
  *   </LineChart>
  * </ChartContainer>
  */
-interface ChartContainerProps {
-  id?: string;
-  className?: string;
-  children: React.ReactNode;
-  config: any;
-}
-
 const ChartContainer = React.forwardRef(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId()
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
@@ -95,12 +87,46 @@ const ChartContainer = React.forwardRef(({ id, className, children, config, ...p
 ChartContainer.displayName = "Chart"
 
 /**
+ * Sanitize CSS color value to prevent XSS injection
+ * @param {string} color - Color value to sanitize
+ * @returns {string} Sanitized color value
+ */
+const sanitizeColorValue = (color) => {
+  if (!color || typeof color !== 'string') return '';
+  
+  // Only allow safe CSS color formats:
+  // - Hex colors: #fff, #ffffff, #ffffffff
+  // - RGB/RGBA: rgb(255,255,255), rgba(255,255,255,0.5)
+  // - HSL/HSLA: hsl(0,0%,100%), hsla(0,0%,100%,0.5)
+  // - Named colors: red, blue, transparent, etc.
+  // - CSS variables: var(--color-name)
+  const safeColorPattern = /^(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)|var\([^)]+\)|[a-z]+)$/;
+  
+  return safeColorPattern.test(color.trim()) ? color.trim() : '';
+};
+
+/**
+ * Sanitize CSS selector to prevent injection
+ * @param {string} selector - CSS selector key to sanitize
+ * @returns {string} Sanitized selector
+ */
+const sanitizeCSSKey = (key) => {
+  if (!key || typeof key !== 'string') return '';
+  
+  // Only allow alphanumeric, hyphens, and underscores
+  return key.replace(/[^a-zA-Z0-9_-]/g, '');
+};
+
+/**
  * Dynamic CSS variables for chart colors
  * @component
  * @param {Object} props - Component props
  * @param {string} props.id - Chart ID
  * @param {ChartConfig} props.config - Chart configuration
  * @returns {JSX.Element|null} Style element with CSS variables
+ * 
+ * @security Input validation applied to all color values and CSS keys
+ * to prevent XSS injection attacks. Only safe CSS color formats are allowed.
  */
 const ChartStyle = ({
   id,
@@ -112,22 +138,32 @@ const ChartStyle = ({
     return null
   }
 
+  // Sanitize chart ID to prevent CSS injection
+  const sanitizedId = sanitizeCSSKey(id);
+
   return (
     (<style
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
-          .map(([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
-${colorConfig
-.map(([key, itemConfig]) => {
-const color =
-  itemConfig.theme?.[theme] ||
-  itemConfig.color
-return color ? `  --color-${key}: ${color};` : null
-})
-.join("\n")}
-}
-`)
+          .map(([theme, prefix]) => {
+            const themeStyles = colorConfig
+              .map(([key, itemConfig]) => {
+                const rawColor = itemConfig.theme?.[theme] || itemConfig.color;
+                const sanitizedColor = sanitizeColorValue(rawColor);
+                const sanitizedKey = sanitizeCSSKey(key);
+                
+                return sanitizedColor && sanitizedKey
+                  ? `  --color-${sanitizedKey}: ${sanitizedColor};`
+                  : null;
+              })
+              .filter(Boolean)
+              .join("\n");
+            
+            return themeStyles 
+              ? `${prefix} [data-chart=${sanitizedId}] {\n${themeStyles}\n}`
+              : null;
+          })
+          .filter(Boolean)
           .join("\n"),
       }} />)
   );
@@ -222,7 +258,7 @@ const ChartTooltipContent = React.forwardRef((
       )}>
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
-        {payload.map((item: any, index: number) => {
+        {payload.map((item, index) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
           const indicatorColor = color || item.payload.fill || item.color
@@ -319,7 +355,7 @@ const ChartLegendContent = React.forwardRef((
         verticalAlign === "top" ? "pb-3" : "pt-3",
         className
       )}>
-      {payload.map((item: any) => {
+      {payload.map((item) => {
         const key = `${nameKey || item.dataKey || "value"}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
 

@@ -248,10 +248,12 @@ export function getRateLimiterStats() {
 
 // Log stats in development
 if (import.meta.env.DEV) {
-  setInterval(() => {
-    const stats = getRateLimiterStats();
-    if (stats.rateLimiter.queueLength > 0 || stats.deduplicator.pendingRequests > 0) {
-      console.log('📊 API Stats:', stats);
-    }
-  }, 10000); // Every 10 seconds
+  import('@/utils/logger').then(({ logDebug }) => {
+    setInterval(() => {
+      const stats = getRateLimiterStats();
+      if (stats.rateLimiter.queueLength > 0 || stats.deduplicator.pendingRequests > 0) {
+        logDebug('📊 API Stats', stats);
+      }
+    }, 10000); // Every 10 seconds
+  });
 }

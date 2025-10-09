@@ -1,7 +1,29 @@
-// @ts-nocheck
 /**
  * @fileoverview Google Analytics 4 integration utility
- * @description Provides analytics tracking for user actions, page views, and events
+ * @description Provides comprehensive analytics tracking for user actions, page views,
+ * custom events, and e-commerce transactions. Integrates with Google Tag Manager (gtag.js)
+ * for production analytics while logging to console in development.
+ * 
+ * @module utils/analytics
+ * 
+ * @example
+ * ```typescript
+ * // Initialize in main.jsx
+ * import { initAnalytics } from '@/utils/analytics';
+ * initAnalytics();
+ * 
+ * // Track page views
+ * import { trackPageView } from '@/utils/analytics';
+ * trackPageView('/dashboard', 'Dashboard');
+ * 
+ * // Track custom events
+ * import { trackEvent } from '@/utils/analytics';
+ * trackEvent('button_click', { button_name: 'add_transaction' });
+ * 
+ * // Track user actions
+ * import { trackAction } from '@/utils/analytics';
+ * trackAction('transaction', 'create', 'expense_added', 50.00);
+ * ```
  */
 
 // Extend Window interface for gtag
@@ -42,17 +64,33 @@ interface Transaction {
   items?: TransactionItem[];
 }
 
+import { logDebug } from './logger';
+
 /**
  * Initialize Google Analytics 4
- * Call this in main.jsx or App.jsx
+ * 
+ * @description Loads the GA4 tracking script, initializes the dataLayer,
+ * and configures the tracking ID from environment variables. Should be called
+ * once during application startup (main.jsx or App.jsx).
+ * 
+ * @remarks
+ * Requires VITE_GA_TRACKING_ID environment variable to be set.
+ * In development, logs to console instead of sending to GA.
+ * 
+ * @example
+ * ```typescript
+ * // In main.jsx
+ * import { initAnalytics } from '@/utils/analytics';
+ * initAnalytics();
+ * ```
+ * 
+ * @public
  */
 export function initAnalytics(): void {
   const trackingId = import.meta.env.VITE_GA_TRACKING_ID;
 
   if (!trackingId) {
-    if (import.meta.env.DEV) {
-      console.log('[Analytics] GA4 Tracking ID not configured');
-    }
+    logDebug('[Analytics] GA4 Tracking ID not configured');
     return;
   }
 
@@ -74,13 +112,28 @@ export function initAnalytics(): void {
     send_page_view: false // We'll manually track page views
   } as GtagConfig);
 
-  if (import.meta.env.DEV) {
-    console.log('[Analytics] GA4 initialized:', trackingId);
-  }
+  logDebug('[Analytics] GA4 initialized', { trackingId });
 }
 
 /**
- * Track a page view
+ * Track a page view in Google Analytics
+ * 
+ * @description Records a page view event with the specified path and title.
+ * Use this when navigating between routes or updating page content dynamically.
+ * 
+ * @param pagePath - The URL path of the page (e.g., '/dashboard', '/transactions')
+ * @param pageTitle - Optional page title (defaults to document.title)
+ * 
+ * @example
+ * ```typescript
+ * // Track route change
+ * trackPageView('/dashboard', 'Dashboard');
+ * 
+ * // Track with automatic title
+ * trackPageView('/settings');
+ * ```
+ * 
+ * @public
  */
 export function trackPageView(pagePath: string, pageTitle: string = ''): void {
   if (typeof window.gtag !== 'undefined') {
@@ -89,22 +142,38 @@ export function trackPageView(pagePath: string, pageTitle: string = ''): void {
       page_title: pageTitle || document.title
     });
 
-    if (import.meta.env.DEV) {
-      console.log('[Analytics] Page view:', pagePath);
-    }
+    logDebug('[Analytics] Page view', { pagePath, pageTitle });
   }
 }
 
 /**
- * Track a custom event
+ * Track a custom event in Google Analytics
+ * 
+ * @description Records a custom event with optional parameters.
+ * Use for tracking user interactions, feature usage, or custom actions.
+ * 
+ * @param eventName - Name of the event (e.g., 'button_click', 'form_submit')
+ * @param eventParams - Optional event parameters with custom data
+ * 
+ * @example
+ * ```typescript
+ * // Simple event
+ * trackEvent('button_click');
+ * 
+ * // Event with parameters
+ * trackEvent('transaction_created', {
+ *   category: 'groceries',
+ *   amount: 50.00,
+ *   payment_method: 'credit_card'
+ * });
+ * ```
+ * 
+ * @public
  */
 export function trackEvent(eventName: string, eventParams: EventParams = {}): void {
   if (typeof window.gtag !== 'undefined') {
     window.gtag('event', eventName, eventParams);
-
-    if (import.meta.env.DEV) {
-      console.log('[Analytics] Event:', eventName, eventParams);
-    }
+    logDebug('[Analytics] Event', { eventName, eventParams });
   }
 }
 
@@ -178,9 +247,7 @@ export function setUserProperties(properties: EventParams): void {
   if (typeof window.gtag !== 'undefined') {
     window.gtag('set', 'user_properties', properties);
 
-    if (import.meta.env.DEV) {
-      console.log('[Analytics] User properties set:', properties);
-    }
+    logDebug('[Analytics] User properties set', properties);
   }
 }
 
