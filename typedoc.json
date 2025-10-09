@@ -5,7 +5,9 @@
     "./hooks",
     "./utils",
     "./providers",
-    "./types"
+    "./types",
+    "./bnpl",
+    "./calendar"
   ],
   "entryPointStrategy": "expand",
   "out": "./docs",

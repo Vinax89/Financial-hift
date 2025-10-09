@@ -1,7 +1,13 @@
 // @ts-nocheck
 /**
- * @fileoverview BNPL plan form component for creating and editing plans
- * @description Comprehensive form for managing Buy Now Pay Later payment plans
+ * BNPL Plan Form Component
+ * 
+ * @remarks
+ * Provides a comprehensive form interface for creating and editing Buy Now Pay Later
+ * payment plans. Handles form state management, validation, and type conversion
+ * between string inputs and numeric data types.
+ * 
+ * @packageDocumentation
  */
 
 import React, { useState } from "react";
@@ -16,8 +22,11 @@ import { X, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 
 /**
- * BNPL provider options
- * @type {Array<{value: string, label: string}>}
+ * Available BNPL service provider options
+ * 
+ * @remarks
+ * List of supported Buy Now Pay Later providers that users can select from.
+ * Each provider has a value (for internal use) and a label (for display).
  */
 const providers = [
     { value: "klarna", label: "Klarna" },
@@ -30,8 +39,11 @@ const providers = [
 ];
 
 /**
- * Payment frequency options
- * @type {Array<{value: string, label: string}>}
+ * Payment frequency options for installment schedules
+ * 
+ * @remarks
+ * Defines how often payments are due for the BNPL plan.
+ * Common frequencies include weekly, biweekly, and monthly schedules.
  */
 const frequencies = [
     { value: "weekly", label: "Weekly" },
@@ -41,7 +53,11 @@ const frequencies = [
 
 /**
  * Plan status options
- * @type {Array<{value: string, label: string}>}
+ * 
+ * @remarks
+ * Tracks the current state of a BNPL plan throughout its lifecycle.
+ * Status changes from 'active' to either 'paid' (successfully completed)
+ * or 'overdue'/'cancelled' (payment issues).
  */
 const statuses = [
     { value: "active", label: "Active" },
@@ -51,15 +67,42 @@ const statuses = [
 ];
 
 /**
- * BNPL plan form component
- * @param {Object} props - Component props
- * @param {Object|null} props.plan - Existing plan to edit (null for new)
- * @param {Function} props.onSubmit - Form submission handler
- * @param {Function} props.onCancel - Cancel handler
- * @returns {JSX.Element} Plan form
+ * BNPL Plan Form Component
+ * 
+ * @remarks
+ * This component renders a comprehensive form for creating new or editing existing
+ * Buy Now Pay Later payment plans. It manages form state, handles type conversions
+ * between string inputs and numeric data, and provides validation feedback.
+ * 
+ * Features:
+ * - Provider selection (Klarna, Afterpay, Affirm, etc.)
+ * - Payment amount and installment configuration
+ * - Payment schedule and frequency settings
+ * - Status tracking (active, paid, overdue, cancelled)
+ * - Notes and additional information
+ * 
+ * @param props - Component properties
+ * @returns React component for BNPL plan management
+ * 
+ * @example
+ * ```tsx
+ * // Creating a new plan
+ * <BNPLPlanForm
+ *   plan={null}
+ *   onSubmit={async (data) => await savePlan(data)}
+ *   onCancel={() => setShowForm(false)}
+ * />
+ * 
+ * // Editing an existing plan
+ * <BNPLPlanForm
+ *   plan={existingPlan}
+ *   onSubmit={async (data) => await updatePlan(data)}
+ *   onCancel={() => setShowForm(false)}
+ * />
+ * ```
+ * 
+ * @public
  */
-
-
 function BNPLPlanForm({ plan, onSubmit, onCancel }: BNPLPlanFormProps) {
     const [formData, setFormData] = useState<BNPLPlanFormData>(plan || {
         provider: "",
@@ -76,8 +119,16 @@ function BNPLPlanForm({ plan, onSubmit, onCancel }: BNPLPlanFormProps) {
     });
 
     /**
-     * Handle form submission with data parsing
-     * @param {React.FormEvent} e - Form event
+     * Handles form submission with data type conversion
+     * 
+     * @remarks
+     * Prevents default form submission, converts string input values to appropriate
+     * numeric types, and invokes the onSubmit callback with the processed data.
+     * String inputs are parsed to floats for currency amounts and integers for counts.
+     * 
+     * @param e - React form event
+     * 
+     * @internal
      */
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
