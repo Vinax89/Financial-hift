@@ -1,7 +1,24 @@
+/**
+ * @fileoverview Styled input component with form integration support
+ * @description Accessible input field with consistent styling, ref forwarding for form libraries
+ */
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Styled input component with ref forwarding
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {string} [props.type='text'] - Input type attribute
+ * @param {React.Ref} ref - Forwarded ref for form integration
+ * @returns {JSX.Element} Rendered input
+ * @example
+ * <Input type="email" placeholder="Enter email" />
+ * <Input type="password" className="w-full" />
+ */
 const Input = React.forwardRef(({ className, type, ...props }, ref) => {
   return (
     (<input

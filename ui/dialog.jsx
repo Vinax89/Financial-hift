@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Dialog modal component using Radix UI primitives
+ * @description Accessible modal dialog with overlay, header, content, and footer sections
+ */
+
 "use client"
 
 import * as React from "react"
@@ -6,14 +11,38 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Dialog root component
+ * @type {React.Component}
+ */
 const Dialog = DialogPrimitive.Root
 
+/**
+ * Dialog trigger component
+ * @type {React.Component}
+ */
 const DialogTrigger = DialogPrimitive.Trigger
 
+/**
+ * Dialog portal component for rendering outside DOM hierarchy
+ * @type {React.Component}
+ */
 const DialogPortal = DialogPrimitive.Portal
 
+/**
+ * Dialog close button component
+ * @type {React.Component}
+ */
 const DialogClose = DialogPrimitive.Close
 
+/**
+ * Dialog backdrop overlay component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dialog overlay
+ */
 const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
@@ -25,6 +54,15 @@ const DialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
+/**
+ * Dialog content component with close button
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.ReactNode} props.children - Dialog content
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dialog content container
+ */
 const DialogContent = React.forwardRef(({ className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
@@ -46,6 +84,12 @@ const DialogContent = React.forwardRef(({ className, children, ...props }, ref) 
 ))
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
+/**
+ * Dialog header section component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Dialog header
+ */
 const DialogHeader = ({
   className,
   ...props
@@ -56,6 +100,12 @@ const DialogHeader = ({
 )
 DialogHeader.displayName = "DialogHeader"
 
+/**
+ * Dialog footer section component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Dialog footer
+ */
 const DialogFooter = ({
   className,
   ...props
@@ -66,6 +116,14 @@ const DialogFooter = ({
 )
 DialogFooter.displayName = "DialogFooter"
 
+/**
+ * Dialog title component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dialog title heading
+ */
 const DialogTitle = React.forwardRef(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
@@ -74,6 +132,14 @@ const DialogTitle = React.forwardRef(({ className, ...props }, ref) => (
 ))
 DialogTitle.displayName = DialogPrimitive.Title.displayName
 
+/**
+ * Dialog description component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dialog description text
+ */
 const DialogDescription = React.forwardRef(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}

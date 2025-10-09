@@ -1,9 +1,24 @@
+/**
+ * @fileoverview Checkbox component using Radix UI primitives
+ * @description Accessible checkbox with checked state indicator and form integration support
+ */
+
 import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Checkbox component with ref forwarding
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref for form integration
+ * @returns {JSX.Element} Checkbox input
+ * @example
+ * <Checkbox checked={true} onCheckedChange={handleChange} />
+ */
 const Checkbox = React.forwardRef(({ className, ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}

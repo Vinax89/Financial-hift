@@ -1,7 +1,22 @@
+/**
+ * @fileoverview Textarea component for multi-line text input
+ * @description Accessible textarea with consistent styling and ref forwarding for form integration
+ */
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Textarea component with ref forwarding
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref for form integration
+ * @returns {JSX.Element} Textarea element
+ * @example
+ * <Textarea placeholder="Enter description..." rows={4} />
+ */
 const Textarea = React.forwardRef(({ className, ...props }, ref) => {
   return (
     (<textarea

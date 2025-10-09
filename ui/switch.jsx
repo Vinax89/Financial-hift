@@ -1,8 +1,23 @@
+/**
+ * @fileoverview Toggle switch component using Radix UI primitives
+ * @description Accessible on/off switch with smooth animations and form integration
+ */
+
 import * as React from "react"
 import * as SwitchPrimitives from "@radix-ui/react-switch"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Switch toggle component with ref forwarding
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref for form integration
+ * @returns {JSX.Element} Switch toggle
+ * @example
+ * <Switch checked={enabled} onCheckedChange={setEnabled} />
+ */
 const Switch = React.forwardRef(({ className, ...props }, ref) => (
   <SwitchPrimitives.Root
     className={cn(

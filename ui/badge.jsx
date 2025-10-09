@@ -1,8 +1,23 @@
+/**
+ * @fileoverview Badge component for status indicators and labels
+ * @description Small styled badge with multiple variants for different semantic meanings
+ */
+
 import * as React from "react"
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Badge style variants using class-variance-authority
+ * @constant
+ * @type {Function}
+ * @property {Object} variants - Available badge variants
+ * @property {string} variants.default - Primary badge style
+ * @property {string} variants.secondary - Secondary badge style
+ * @property {string} variants.destructive - Destructive/danger badge style
+ * @property {string} variants.outline - Outlined badge style
+ */
 const badgeVariants = cva(
   "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   {
@@ -23,6 +38,16 @@ const badgeVariants = cva(
   }
 )
 
+/**
+ * Badge component for status indicators
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {('default'|'secondary'|'destructive'|'outline')} [props.variant='default'] - Badge variant
+ * @returns {JSX.Element} Badge element
+ * @example
+ * <Badge variant="destructive">Error</Badge>
+ * <Badge variant="secondary">Beta</Badge>
+ */
 function Badge({
   className,
   variant,
