@@ -1,7 +1,20 @@
+/**
+ * @fileoverview Table components for data display
+ * @description Semantic HTML table components with consistent styling and responsive overflow handling
+ */
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Table container with responsive overflow
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Table with auto overflow wrapper
+ */
 const Table = React.forwardRef(({ className, ...props }, ref) => (
   <div className="relative w-full overflow-auto">
     <table
@@ -12,11 +25,27 @@ const Table = React.forwardRef(({ className, ...props }, ref) => (
 ))
 Table.displayName = "Table"
 
+/**
+ * Table header (thead) component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Table header section
+ */
 const TableHeader = React.forwardRef(({ className, ...props }, ref) => (
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
+/**
+ * Table body (tbody) component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Table body section
+ */
 const TableBody = React.forwardRef(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
@@ -25,6 +54,14 @@ const TableBody = React.forwardRef(({ className, ...props }, ref) => (
 ))
 TableBody.displayName = "TableBody"
 
+/**
+ * Table footer (tfoot) component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Table footer section
+ */
 const TableFooter = React.forwardRef(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
@@ -33,6 +70,14 @@ const TableFooter = React.forwardRef(({ className, ...props }, ref) => (
 ))
 TableFooter.displayName = "TableFooter"
 
+/**
+ * Table row (tr) component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Table row with hover and selection states
+ */
 const TableRow = React.forwardRef(({ className, ...props }, ref) => (
   <tr
     ref={ref}
@@ -44,6 +89,14 @@ const TableRow = React.forwardRef(({ className, ...props }, ref) => (
 ))
 TableRow.displayName = "TableRow"
 
+/**
+ * Table header cell (th) component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Table header cell
+ */
 const TableHead = React.forwardRef(({ className, ...props }, ref) => (
   <th
     ref={ref}
@@ -55,6 +108,14 @@ const TableHead = React.forwardRef(({ className, ...props }, ref) => (
 ))
 TableHead.displayName = "TableHead"
 
+/**
+ * Table data cell (td) component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Table data cell
+ */
 const TableCell = React.forwardRef(({ className, ...props }, ref) => (
   <td
     ref={ref}
@@ -66,6 +127,14 @@ const TableCell = React.forwardRef(({ className, ...props }, ref) => (
 ))
 TableCell.displayName = "TableCell"
 
+/**
+ * Table caption component for accessibility
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Table caption describing table contents
+ */
 const TableCaption = React.forwardRef(({ className, ...props }, ref) => (
   <caption
     ref={ref}

@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Sheet (slide-out panel) component using Radix UI Dialog primitives
+ * @description Sliding panel overlay that can appear from any side of the screen.
+ * Commonly used for navigation menus, filters, or detailed views.
+ */
+
 "use client";
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
@@ -6,14 +12,38 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Sheet root component
+ * @type {React.Component}
+ */
 const Sheet = SheetPrimitive.Root
 
+/**
+ * Sheet trigger component
+ * @type {React.Component}
+ */
 const SheetTrigger = SheetPrimitive.Trigger
 
+/**
+ * Sheet close component
+ * @type {React.Component}
+ */
 const SheetClose = SheetPrimitive.Close
 
+/**
+ * Sheet portal for rendering outside DOM
+ * @type {React.Component}
+ */
 const SheetPortal = SheetPrimitive.Portal
 
+/**
+ * Sheet backdrop overlay
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dark overlay backdrop
+ */
 const SheetOverlay = React.forwardRef(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
@@ -25,6 +55,16 @@ const SheetOverlay = React.forwardRef(({ className, ...props }, ref) => (
 ))
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
+/**
+ * Sheet content style variants using CVA
+ * @constant
+ * @type {Function}
+ * @property {Object} variants - Available sheet sides
+ * @property {string} variants.side.top - Slide from top
+ * @property {string} variants.side.bottom - Slide from bottom
+ * @property {string} variants.side.left - Slide from left
+ * @property {string} variants.side.right - Slide from right (default)
+ */
 const sheetVariants = cva(
   "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out",
   {
@@ -44,6 +84,26 @@ const sheetVariants = cva(
   }
 )
 
+/**
+ * Sheet content panel with close button
+ * @component
+ * @param {Object} props - Component props
+ * @param {('top'|'bottom'|'left'|'right')} [props.side='right'] - Side to slide from
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.ReactNode} props.children - Sheet content
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Sheet content with overlay
+ * @example
+ * <Sheet>
+ *   <SheetTrigger>Open</SheetTrigger>
+ *   <SheetContent side="right">
+ *     <SheetHeader>
+ *       <SheetTitle>Title</SheetTitle>
+ *     </SheetHeader>
+ *     Content here
+ *   </SheetContent>
+ * </Sheet>
+ */
 const SheetContent = React.forwardRef(({ side = "right", className, children, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
@@ -59,6 +119,12 @@ const SheetContent = React.forwardRef(({ side = "right", className, children, ..
 ))
 SheetContent.displayName = SheetPrimitive.Content.displayName
 
+/**
+ * Sheet header section
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Header container
+ */
 const SheetHeader = ({
   className,
   ...props
@@ -69,6 +135,12 @@ const SheetHeader = ({
 )
 SheetHeader.displayName = "SheetHeader"
 
+/**
+ * Sheet footer section for actions
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Footer container
+ */
 const SheetFooter = ({
   className,
   ...props
@@ -79,6 +151,14 @@ const SheetFooter = ({
 )
 SheetFooter.displayName = "SheetFooter"
 
+/**
+ * Sheet title component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Sheet title heading
+ */
 const SheetTitle = React.forwardRef(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
@@ -87,6 +167,14 @@ const SheetTitle = React.forwardRef(({ className, ...props }, ref) => (
 ))
 SheetTitle.displayName = SheetPrimitive.Title.displayName
 
+/**
+ * Sheet description component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Sheet description text
+ */
 const SheetDescription = React.forwardRef(({ className, ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}

@@ -1,10 +1,27 @@
+/**
+ * @fileoverview Toast notification system with context provider
+ * @description Animated toast notifications with multiple variants and auto-dismiss functionality
+ */
+
 import React, { createContext, useContext, useState } from 'react';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+/**
+ * Toast context for managing notification state
+ * @type {React.Context}
+ */
 const ToastContext = createContext();
 
+/**
+ * Hook to access toast functionality
+ * @returns {Object} Toast methods (toast, removeToast, success, error, warning, info)
+ * @throws {Error} If used outside ToastProvider
+ * @example
+ * const { success } = useToast();
+ * success('Saved!', 'Your changes were saved successfully');
+ */
 export const useToast = () => {
     const context = useContext(ToastContext);
     if (!context) {
@@ -13,6 +30,12 @@ export const useToast = () => {
     return context;
 };
 
+/**
+ * Toast icon component based on variant
+ * @param {Object} props - Component props
+ * @param {('default'|'success'|'error'|'warning'|'destructive')} props.variant - Toast variant
+ * @returns {JSX.Element} Colored icon
+ */
 const ToastIcon = ({ variant }) => {
     const icons = {
         default: Info,
@@ -34,9 +57,29 @@ const ToastIcon = ({ variant }) => {
     return <Icon className={cn('h-5 w-5', colors[variant])} />;
 };
 
+/**
+ * Toast provider component with notification management
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components
+ * @returns {JSX.Element} Provider with toast context and notification container
+ * @example
+ * <ToastProvider>
+ *   <App />
+ * </ToastProvider>
+ */
 export const ToastProvider = ({ children }) => {
     const [toasts, setToasts] = useState([]);
 
+    /**
+     * Display a toast notification
+     * @param {Object} params - Toast parameters
+     * @param {string} params.title - Toast title
+     * @param {string} [params.description] - Toast description
+     * @param {('default'|'success'|'error'|'warning'|'destructive')} [params.variant='default'] - Toast variant
+     * @param {number} [params.duration=5000] - Auto-dismiss duration in ms (0 = no auto-dismiss)
+     * @returns {string} Toast ID
+     */
     const toast = ({ title, description, variant = 'default', duration = 5000 }) => {
         const id = Math.random().toString(36).substr(2, 9);
         const newToast = { id, title, description, variant };
@@ -52,14 +95,44 @@ export const ToastProvider = ({ children }) => {
         return id;
     };
 
+    /**
+     * Remove a toast by ID
+     * @param {string} id - Toast ID to remove
+     */
     const removeToast = (id) => {
         setToasts(prev => prev.filter(toast => toast.id !== id));
     };
 
-    // Convenience methods
+    /**
+     * Show success toast
+     * @param {string} title - Toast title
+     * @param {string} [description] - Toast description
+     * @returns {string} Toast ID
+     */
     const success = (title, description) => toast({ title, description, variant: 'success' });
+    
+    /**
+     * Show error toast
+     * @param {string} title - Toast title
+     * @param {string} [description] - Toast description
+     * @returns {string} Toast ID
+     */
     const error = (title, description) => toast({ title, description, variant: 'error' });
+    
+    /**
+     * Show warning toast
+     * @param {string} title - Toast title
+     * @param {string} [description] - Toast description
+     * @returns {string} Toast ID
+     */
     const warning = (title, description) => toast({ title, description, variant: 'warning' });
+    
+    /**
+     * Show info toast
+     * @param {string} title - Toast title
+     * @param {string} [description] - Toast description
+     * @returns {string} Toast ID
+     */
     const info = (title, description) => toast({ title, description, variant: 'default' });
 
     return (

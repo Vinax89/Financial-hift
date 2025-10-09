@@ -1,14 +1,41 @@
+/**
+ * @fileoverview Popover component using Radix UI primitives
+ * @description Floating content panel triggered by user interaction with portal rendering
+ */
+
 import * as React from "react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Popover root component
+ * @type {React.Component}
+ */
 const Popover = PopoverPrimitive.Root
 
+/**
+ * Popover trigger component
+ * @type {React.Component}
+ */
 const PopoverTrigger = PopoverPrimitive.Trigger
 
+/**
+ * Popover anchor component for positioning
+ * @type {React.Component}
+ */
 const PopoverAnchor = PopoverPrimitive.Anchor
 
+/**
+ * Popover content component with portal
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {('center'|'start'|'end')} [props.align='center'] - Alignment relative to trigger
+ * @param {number} [props.sideOffset=4] - Distance from trigger in pixels
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Popover content
+ */
 const PopoverContent = React.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
   <PopoverPrimitive.Portal>
     <PopoverPrimitive.Content

@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Avatar component using Radix UI primitives
+ * @description User avatar with automatic fallback for failed or missing images
+ */
+
 "use client"
 
 import * as React from "react"
@@ -5,6 +10,19 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Avatar container component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Circular avatar container
+ * @example
+ * <Avatar>
+ *   <AvatarImage src="/avatar.jpg" alt="User" />
+ *   <AvatarFallback>JD</AvatarFallback>
+ * </Avatar>
+ */
 const Avatar = React.forwardRef(({ className, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
@@ -13,6 +31,16 @@ const Avatar = React.forwardRef(({ className, ...props }, ref) => (
 ))
 Avatar.displayName = AvatarPrimitive.Root.displayName
 
+/**
+ * Avatar image component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.src - Image source URL
+ * @param {string} props.alt - Image alt text for accessibility
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Avatar image (falls back to AvatarFallback on error)
+ */
 const AvatarImage = React.forwardRef(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
@@ -21,6 +49,16 @@ const AvatarImage = React.forwardRef(({ className, ...props }, ref) => (
 ))
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
+/**
+ * Avatar fallback component (shown when image fails to load)
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Fallback content (typically initials)
+ * @example
+ * <AvatarFallback>JD</AvatarFallback>
+ */
 const AvatarFallback = React.forwardRef(({ className, ...props }, ref) => (
   <AvatarPrimitive.Fallback
     ref={ref}

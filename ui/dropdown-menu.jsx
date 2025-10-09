@@ -1,21 +1,40 @@
+/**
+ * @fileoverview Dropdown menu component using Radix UI primitives
+ * @description Rich dropdown menu with submenus, checkboxes, radio items, and keyboard navigation
+ */
+
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/** @type {React.Component} Dropdown menu root */
 const DropdownMenu = DropdownMenuPrimitive.Root
 
+/** @type {React.Component} Dropdown menu trigger */
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
 
+/** @type {React.Component} Dropdown menu group for organizing items */
 const DropdownMenuGroup = DropdownMenuPrimitive.Group
 
+/** @type {React.Component} Dropdown menu portal for rendering outside DOM */
 const DropdownMenuPortal = DropdownMenuPrimitive.Portal
 
+/** @type {React.Component} Dropdown menu submenu root */
 const DropdownMenuSub = DropdownMenuPrimitive.Sub
 
+/** @type {React.Component} Dropdown menu radio group for exclusive selection */
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
+/**
+ * Dropdown submenu trigger component
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.inset] - Add left padding for alignment
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Submenu trigger with chevron
+ */
 const DropdownMenuSubTrigger = React.forwardRef(({ className, inset, children, ...props }, ref) => (
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
@@ -32,6 +51,13 @@ const DropdownMenuSubTrigger = React.forwardRef(({ className, inset, children, .
 DropdownMenuSubTrigger.displayName =
   DropdownMenuPrimitive.SubTrigger.displayName
 
+/**
+ * Dropdown submenu content component
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Submenu content panel
+ */
 const DropdownMenuSubContent = React.forwardRef(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.SubContent
     ref={ref}
@@ -44,6 +70,14 @@ const DropdownMenuSubContent = React.forwardRef(({ className, ...props }, ref) =
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName
 
+/**
+ * Dropdown menu main content component with portal
+ * @component
+ * @param {Object} props - Component props
+ * @param {number} [props.sideOffset=4] - Distance from trigger in pixels
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dropdown content panel
+ */
 const DropdownMenuContent = React.forwardRef(({ className, sideOffset = 4, ...props }, ref) => (
   <DropdownMenuPrimitive.Portal>
     <DropdownMenuPrimitive.Content
@@ -59,6 +93,14 @@ const DropdownMenuContent = React.forwardRef(({ className, sideOffset = 4, ...pr
 ))
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
 
+/**
+ * Dropdown menu item component
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.inset] - Add left padding for alignment
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Menu item
+ */
 const DropdownMenuItem = React.forwardRef(({ className, inset, ...props }, ref) => (
   <DropdownMenuPrimitive.Item
     ref={ref}
@@ -71,6 +113,14 @@ const DropdownMenuItem = React.forwardRef(({ className, inset, ...props }, ref) 
 ))
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
 
+/**
+ * Dropdown checkbox item component
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.checked] - Checked state
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Checkbox menu item with indicator
+ */
 const DropdownMenuCheckboxItem = React.forwardRef(({ className, children, checked, ...props }, ref) => (
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
@@ -91,6 +141,13 @@ const DropdownMenuCheckboxItem = React.forwardRef(({ className, children, checke
 DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName
 
+/**
+ * Dropdown radio item component
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Radio menu item with indicator
+ */
 const DropdownMenuRadioItem = React.forwardRef(({ className, children, ...props }, ref) => (
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
@@ -109,6 +166,14 @@ const DropdownMenuRadioItem = React.forwardRef(({ className, children, ...props 
 ))
 DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName
 
+/**
+ * Dropdown menu label component
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.inset] - Add left padding for alignment
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Menu label heading
+ */
 const DropdownMenuLabel = React.forwardRef(({ className, inset, ...props }, ref) => (
   <DropdownMenuPrimitive.Label
     ref={ref}
@@ -117,6 +182,13 @@ const DropdownMenuLabel = React.forwardRef(({ className, inset, ...props }, ref)
 ))
 DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName
 
+/**
+ * Dropdown menu separator component
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Visual separator line
+ */
 const DropdownMenuSeparator = React.forwardRef(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Separator
     ref={ref}
@@ -125,6 +197,12 @@ const DropdownMenuSeparator = React.forwardRef(({ className, ...props }, ref) =>
 ))
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName
 
+/**
+ * Dropdown menu keyboard shortcut display component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Keyboard shortcut text
+ */
 const DropdownMenuShortcut = ({
   className,
   ...props

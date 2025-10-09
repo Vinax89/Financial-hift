@@ -1,15 +1,41 @@
+/**
+ * @fileoverview Alert dialog component for critical user confirmations
+ * @description Modal dialog requiring explicit user action, typically for destructive operations.
+ * Interrupts user flow and demands attention before proceeding.
+ */
+
 import * as React from "react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/ui/button.jsx"
 
+/**
+ * Alert dialog root component
+ * @type {React.Component}
+ */
 const AlertDialog = AlertDialogPrimitive.Root
 
+/**
+ * Alert dialog trigger component
+ * @type {React.Component}
+ */
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger
 
+/**
+ * Alert dialog portal for rendering outside DOM
+ * @type {React.Component}
+ */
 const AlertDialogPortal = AlertDialogPrimitive.Portal
 
+/**
+ * Alert dialog backdrop overlay
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dark overlay backdrop
+ */
 const AlertDialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Overlay
     className={cn(
@@ -21,6 +47,14 @@ const AlertDialogOverlay = React.forwardRef(({ className, ...props }, ref) => (
 ))
 AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
 
+/**
+ * Alert dialog content container with animations
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dialog content with overlay
+ */
 const AlertDialogContent = React.forwardRef(({ className, ...props }, ref) => (
   <AlertDialogPortal>
     <AlertDialogOverlay />
@@ -35,6 +69,12 @@ const AlertDialogContent = React.forwardRef(({ className, ...props }, ref) => (
 ))
 AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName
 
+/**
+ * Alert dialog header section
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Header container
+ */
 const AlertDialogHeader = ({
   className,
   ...props
@@ -45,6 +85,12 @@ const AlertDialogHeader = ({
 )
 AlertDialogHeader.displayName = "AlertDialogHeader"
 
+/**
+ * Alert dialog footer section for action buttons
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Footer container
+ */
 const AlertDialogFooter = ({
   className,
   ...props
@@ -55,11 +101,27 @@ const AlertDialogFooter = ({
 )
 AlertDialogFooter.displayName = "AlertDialogFooter"
 
+/**
+ * Alert dialog title component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dialog title heading
+ */
 const AlertDialogTitle = React.forwardRef(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Title ref={ref} className={cn("text-lg font-semibold", className)} {...props} />
 ))
 AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName
 
+/**
+ * Alert dialog description component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Dialog description text
+ */
 const AlertDialogDescription = React.forwardRef(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Description
     ref={ref}
@@ -69,11 +131,31 @@ const AlertDialogDescription = React.forwardRef(({ className, ...props }, ref) =
 AlertDialogDescription.displayName =
   AlertDialogPrimitive.Description.displayName
 
+/**
+ * Alert dialog primary action button
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Primary action button
+ * @example
+ * <AlertDialogAction onClick={handleDelete}>
+ *   Delete
+ * </AlertDialogAction>
+ */
 const AlertDialogAction = React.forwardRef(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Action ref={ref} className={cn(buttonVariants(), className)} {...props} />
 ))
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName
 
+/**
+ * Alert dialog cancel button
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Cancel button with outline variant
+ */
 const AlertDialogCancel = React.forwardRef(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Cancel
     ref={ref}
