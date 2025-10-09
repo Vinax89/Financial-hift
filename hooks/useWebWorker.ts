@@ -3,17 +3,73 @@
  * @description Provides easy interface to offload heavy computations to background thread
  */
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { logError, logWarn } from '@/utils/logger.js';
+import { useEffect, useState, useCallback } from 'react';
+import { logError, logWarn } from '@/utils/logger';
 
-let workerInstance = null;
-let workerCallbacks = new Map();
+interface WorkerCallback {
+  resolve: (value: any) => void;
+  reject: (reason: any) => void;
+}
+
+interface Transaction {
+  amount: string | number;
+  category?: string;
+  date: string;
+  [key: string]: any;
+}
+
+interface Budget {
+  category: string;
+  amount: string | number;
+  [key: string]: any;
+}
+
+interface BudgetStatus extends Budget {
+  spent: number;
+  remaining: number;
+  percentage: number;
+  status: 'ok' | 'warning' | 'over';
+}
+
+interface Debt {
+  balance: number;
+  interestRate: number;
+  minPayment: number;
+  [key: string]: any;
+}
+
+interface TransactionFilters {
+  startDate?: string;
+  endDate?: string;
+  categories?: string[];
+  [key: string]: any;
+}
+
+interface FinancialTotals {
+  income: number;
+  expenses: number;
+  net: number;
+}
+
+interface CategoryAnalytics {
+  category: string;
+  total: number;
+  count: number;
+}
+
+interface AnalyticsResult {
+  byCategory: CategoryAnalytics[];
+  topCategories: CategoryAnalytics[];
+}
+
+let workerInstance: Worker | null = null;
+const workerCallbacks = new Map<number, WorkerCallback>();
 let callbackId = 0;
 
 /**
  * Initialize shared Web Worker instance
  */
-function getWorkerInstance() {
+function getWorkerInstance(): Worker | null {
   if (!workerInstance && typeof Worker !== 'undefined') {
     try {
       // Create worker from separate file
@@ -22,11 +78,11 @@ function getWorkerInstance() {
         { type: 'module' }
       );
 
-      workerInstance.addEventListener('message', (event) => {
+      workerInstance.addEventListener('message', (event: MessageEvent) => {
         const { id, result, error } = event.data;
         
         if (id && workerCallbacks.has(id)) {
-          const callback = workerCallbacks.get(id);
+          const callback = workerCallbacks.get(id)!;
           workerCallbacks.delete(id);
           
           if (error) {
@@ -37,7 +93,7 @@ function getWorkerInstance() {
         }
       });
 
-      workerInstance.addEventListener('error', (error) => {
+      workerInstance.addEventListener('error', (error: ErrorEvent) => {
         logError('Worker error', error);
       });
     } catch (error) {
@@ -52,10 +108,10 @@ function getWorkerInstance() {
 /**
  * Send calculation to Web Worker
  * @param {string} type - Calculation type
- * @param {*} data - Data to process
- * @returns {Promise<*>} Calculation result
+ * @param {any} data - Data to process
+ * @returns {Promise<any>} Calculation result
  */
-function calculateInWorker(type, data) {
+function calculateInWorker<T = any>(type: string, data: any): Promise<T> {
   const worker = getWorkerInstance();
   
   // Fallback to main thread if worker unavailable
@@ -83,7 +139,7 @@ function calculateInWorker(type, data) {
 
 /**
  * Hook for Web Worker calculations
- * @returns {Object} Worker calculation functions
+ * @returns Worker calculation functions
  */
 export function useWebWorker() {
   const [isSupported, setIsSupported] = useState(false);
@@ -95,9 +151,9 @@ export function useWebWorker() {
   /**
    * Calculate financial totals
    */
-  const calculateTotals = useCallback(async (transactions) => {
+  const calculateTotals = useCallback(async (transactions: Transaction[]): Promise<FinancialTotals> => {
     try {
-      return await calculateInWorker('CALCULATE_TOTALS', transactions);
+      return await calculateInWorker<FinancialTotals>('CALCULATE_TOTALS', transactions);
     } catch (error) {
       // Fallback to main thread
       return fallbackCalculateTotals(transactions);
@@ -107,9 +163,12 @@ export function useWebWorker() {
   /**
    * Calculate budget status
    */
-  const calculateBudgetStatus = useCallback(async (budgets, transactions) => {
+  const calculateBudgetStatus = useCallback(async (
+    budgets: Budget[], 
+    transactions: Transaction[]
+  ): Promise<BudgetStatus[]> => {
     try {
-      return await calculateInWorker('CALCULATE_BUDGET_STATUS', { budgets, transactions });
+      return await calculateInWorker<BudgetStatus[]>('CALCULATE_BUDGET_STATUS', { budgets, transactions });
     } catch (error) {
       logWarn('Worker calculation failed, using main thread', { error, type: 'budgetStatus' });
       return fallbackCalculateBudgetStatus(budgets, transactions);
@@ -119,7 +178,10 @@ export function useWebWorker() {
   /**
    * Calculate debt payoff schedule
    */
-  const calculateDebtPayoff = useCallback(async (debts, monthlyPayment) => {
+  const calculateDebtPayoff = useCallback(async (
+    debts: Debt[], 
+    monthlyPayment: number
+  ): Promise<{ schedule: any[], monthsToPayoff: number }> => {
     try {
       return await calculateInWorker('CALCULATE_DEBT_PAYOFF', { debts, monthlyPayment });
     } catch (error) {
@@ -131,9 +193,9 @@ export function useWebWorker() {
   /**
    * Calculate cashflow forecast
    */
-  const calculateCashflowForecast = useCallback(async (data) => {
+  const calculateCashflowForecast = useCallback(async (data: any): Promise<any[]> => {
     try {
-      return await calculateInWorker('CALCULATE_CASHFLOW_FORECAST', data);
+      return await calculateInWorker<any[]>('CALCULATE_CASHFLOW_FORECAST', data);
     } catch (error) {
       logWarn('Worker calculation failed, using main thread', { error });
       return [];
@@ -143,9 +205,9 @@ export function useWebWorker() {
   /**
    * Calculate analytics
    */
-  const calculateAnalytics = useCallback(async (transactions) => {
+  const calculateAnalytics = useCallback(async (transactions: Transaction[]): Promise<AnalyticsResult> => {
     try {
-      return await calculateInWorker('CALCULATE_ANALYTICS', transactions);
+      return await calculateInWorker<AnalyticsResult>('CALCULATE_ANALYTICS', transactions);
     } catch (error) {
       logWarn('Worker calculation failed, using main thread', { error, type: 'analytics' });
       return fallbackCalculateAnalytics(transactions);
@@ -155,9 +217,12 @@ export function useWebWorker() {
   /**
    * Filter transactions
    */
-  const filterTransactions = useCallback(async (transactions, filters) => {
+  const filterTransactions = useCallback(async (
+    transactions: Transaction[], 
+    filters: TransactionFilters
+  ): Promise<Transaction[]> => {
     try {
-      return await calculateInWorker('FILTER_TRANSACTIONS', { transactions, filters });
+      return await calculateInWorker<Transaction[]>('FILTER_TRANSACTIONS', { transactions, filters });
     } catch (error) {
       logWarn('Worker calculation failed, using main thread', { error });
       return fallbackFilterTransactions(transactions, filters);
@@ -167,9 +232,13 @@ export function useWebWorker() {
   /**
    * Sort large dataset
    */
-  const sortLargeDataset = useCallback(async (items, sortBy, direction) => {
+  const sortLargeDataset = useCallback(async <T extends Record<string, any>>(
+    items: T[], 
+    sortBy: string, 
+    direction: 'asc' | 'desc'
+  ): Promise<T[]> => {
     try {
-      return await calculateInWorker('SORT_LARGE_DATASET', { items, sortBy, direction });
+      return await calculateInWorker<T[]>('SORT_LARGE_DATASET', { items, sortBy, direction });
     } catch (error) {
       logWarn('Worker calculation failed, using main thread', { error });
       return items.sort((a, b) => {
@@ -183,9 +252,9 @@ export function useWebWorker() {
   /**
    * Aggregate by category
    */
-  const aggregateByCategory = useCallback(async (transactions) => {
+  const aggregateByCategory = useCallback(async (transactions: Transaction[]): Promise<any[]> => {
     try {
-      return await calculateInWorker('AGGREGATE_BY_CATEGORY', transactions);
+      return await calculateInWorker<any[]>('AGGREGATE_BY_CATEGORY', transactions);
     } catch (error) {
       logWarn('Worker calculation failed, using main thread', { error });
       return [];
@@ -209,11 +278,11 @@ export function useWebWorker() {
 // FALLBACK FUNCTIONS (Main Thread)
 // ============================================
 
-function fallbackCalculateTotals(transactions) {
-  const totals = { income: 0, expenses: 0, net: 0 };
+function fallbackCalculateTotals(transactions: Transaction[]): FinancialTotals {
+  const totals: FinancialTotals = { income: 0, expenses: 0, net: 0 };
   
   transactions.forEach(t => {
-    const amount = parseFloat(t.amount) || 0;
+    const amount = parseFloat(String(t.amount)) || 0;
     if (amount > 0) {
       totals.income += amount;
     } else {
@@ -225,18 +294,18 @@ function fallbackCalculateTotals(transactions) {
   return totals;
 }
 
-function fallbackCalculateBudgetStatus(budgets, transactions) {
+function fallbackCalculateBudgetStatus(budgets: Budget[], transactions: Transaction[]): BudgetStatus[] {
   return budgets.map(budget => {
     const categoryTransactions = transactions.filter(
       t => t.category === budget.category
     );
     
     const spent = categoryTransactions.reduce(
-      (sum, t) => sum + Math.abs(parseFloat(t.amount) || 0),
+      (sum, t) => sum + Math.abs(parseFloat(String(t.amount)) || 0),
       0
     );
     
-    const allocated = parseFloat(budget.amount) || 0;
+    const allocated = parseFloat(String(budget.amount)) || 0;
     const remaining = allocated - spent;
     const percentage = allocated > 0 ? (spent / allocated) * 100 : 0;
     
@@ -250,33 +319,29 @@ function fallbackCalculateBudgetStatus(budgets, transactions) {
   });
 }
 
-function fallbackCalculateAnalytics(transactions) {
-  const byCategory = {};
+function fallbackCalculateAnalytics(transactions: Transaction[]): AnalyticsResult {
+  const byCategory: Record<string, CategoryAnalytics> = {};
   
   transactions.forEach(t => {
-    const amount = Math.abs(parseFloat(t.amount) || 0);
+    const amount = Math.abs(parseFloat(String(t.amount)) || 0);
     const category = t.category || 'Uncategorized';
     
     if (!byCategory[category]) {
-      byCategory[category] = { total: 0, count: 0 };
+      byCategory[category] = { category, total: 0, count: 0 };
     }
     byCategory[category].total += amount;
     byCategory[category].count++;
   });
   
   return {
-    byCategory: Object.entries(byCategory).map(([category, data]) => ({
-      category,
-      ...data,
-    })),
-    topCategories: Object.entries(byCategory)
-      .sort((a, b) => b[1].total - a[1].total)
-      .slice(0, 5)
-      .map(([category, data]) => ({ category, ...data })),
+    byCategory: Object.values(byCategory),
+    topCategories: Object.values(byCategory)
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 5),
   };
 }
 
-function fallbackFilterTransactions(transactions, filters) {
+function fallbackFilterTransactions(transactions: Transaction[], filters: TransactionFilters): Transaction[] {
   return transactions.filter(t => {
     if (filters.startDate && new Date(t.date) < new Date(filters.startDate)) {
       return false;
@@ -284,7 +349,7 @@ function fallbackFilterTransactions(transactions, filters) {
     if (filters.endDate && new Date(t.date) > new Date(filters.endDate)) {
       return false;
     }
-    if (filters.categories && !filters.categories.includes(t.category)) {
+    if (filters.categories && !filters.categories.includes(t.category || '')) {
       return false;
     }
     return true;

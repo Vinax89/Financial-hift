@@ -6,18 +6,46 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
-import { QueryKeys } from '@/hooks/useEntityQueries.jsx';
-import * as entities from '@/api/entities.js';
+import { QueryKeys } from '@/hooks/useEntityQueries';
+import * as entities from '@/api/optimizedEntities';
+
+interface PrefetchOptions {
+  enabled?: boolean;
+  delay?: number;
+}
+
+interface PrefetchRouteReturn {
+  prefetch: () => void;
+  cancelPrefetch: () => void;
+}
+
+interface QueryConfig {
+  queryKey: string[];
+  queryFn: () => Promise<any>;
+  staleTime?: number;
+  priority?: 'high' | 'normal' | 'low';
+}
+
+interface ParallelQueriesOptions {
+  priority?: 'high' | 'normal' | 'low';
+}
+
+interface ResourceConfig {
+  href: string;
+  as: 'font' | 'script' | 'style' | 'image' | 'fetch' | 'document' | 'embed' | 'object' | 'video' | 'audio';
+  type?: string;
+  crossOrigin?: 'anonymous' | 'use-credentials';
+}
 
 /**
  * Prefetch route data on hover or idle
  * @param {string} route - Route to prefetch
- * @param {Object} options - Prefetch options
+ * @param {PrefetchOptions} options - Prefetch options
  */
-export function usePrefetchRoute(route, options = {}) {
+export function usePrefetchRoute(route: string, options: PrefetchOptions = {}): PrefetchRouteReturn {
   const queryClient = useQueryClient();
   const { enabled = true, delay = 200 } = options;
-  const timeoutRef = useRef(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const prefetch = useCallback(() => {
     if (!enabled) return;
@@ -116,7 +144,7 @@ export function usePrefetchRoute(route, options = {}) {
  * Prefetch on link hover
  * @param {string} to - Route to prefetch
  */
-export function usePrefetchOnHover(to) {
+export function usePrefetchOnHover(to: string) {
   const { prefetch, cancelPrefetch } = usePrefetchRoute(to);
 
   return {
@@ -130,7 +158,7 @@ export function usePrefetchOnHover(to) {
  * Intelligent idle-time prefetching
  * Uses requestIdleCallback to prefetch during browser idle time
  */
-export function useIdlePrefetch() {
+export function useIdlePrefetch(): void {
   const queryClient = useQueryClient();
   const location = useLocation();
 
@@ -145,7 +173,7 @@ export function useIdlePrefetch() {
       const currentRoute = location.pathname;
       
       // Define common navigation patterns
-      const navigationPatterns = {
+      const navigationPatterns: Record<string, string[]> = {
         '/': ['/dashboard', '/transactions', '/shifts'],
         '/transactions': ['/dashboard', '/budget', '/analytics'],
         '/dashboard': ['/transactions', '/goals', '/budget'],
@@ -160,7 +188,8 @@ export function useIdlePrefetch() {
       nextRoutes.forEach((route) => {
         window.requestIdleCallback(
           () => {
-            usePrefetchRoute(route).prefetch();
+            const { prefetch } = usePrefetchRoute(route);
+            prefetch();
           },
           { timeout: 2000 }
         );
@@ -178,7 +207,7 @@ export function useIdlePrefetch() {
  * Preload critical images
  * @param {string[]} imagePaths - Array of image paths to preload
  */
-export function useImagePreload(imagePaths = []) {
+export function useImagePreload(imagePaths: string[] = []): void {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -200,9 +229,9 @@ export function useImagePreload(imagePaths = []) {
  * Parallel data loading hook
  * Loads multiple queries simultaneously with priority management
  */
-export function useParallelQueries(queries = [], options = {}) {
+export function useParallelQueries(queries: QueryConfig[] = [], options: ParallelQueriesOptions = {}): void {
   const queryClient = useQueryClient();
-  const { priority = 'normal' } = options; // 'high', 'normal', 'low'
+  const { priority = 'normal' } = options;
 
   useEffect(() => {
     if (queries.length === 0) return;
@@ -269,7 +298,7 @@ export function useParallelQueries(queries = [], options = {}) {
  * DNS Prefetch helper
  * Adds DNS prefetch link tags for external domains
  */
-export function useDNSPrefetch(domains = []) {
+export function useDNSPrefetch(domains: string[] = []): void {
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
@@ -295,7 +324,7 @@ export function useDNSPrefetch(domains = []) {
  * Preconnect to external origins
  * Establishes early connections to important origins
  */
-export function usePreconnect(origins = []) {
+export function usePreconnect(origins: string[] = []): void {
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
@@ -322,7 +351,7 @@ export function usePreconnect(origins = []) {
  * Resource preload helper
  * Preloads critical resources (fonts, scripts, styles)
  */
-export function useResourcePreload(resources = []) {
+export function useResourcePreload(resources: ResourceConfig[] = []): void {
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
@@ -330,7 +359,7 @@ export function useResourcePreload(resources = []) {
       const link = document.createElement('link');
       link.rel = 'preload';
       link.href = resource.href;
-      link.as = resource.as; // 'font', 'script', 'style', 'image', etc.
+      link.as = resource.as;
       if (resource.type) link.type = resource.type;
       if (resource.crossOrigin) link.crossOrigin = resource.crossOrigin;
       document.head.appendChild(link);
