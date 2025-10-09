@@ -3,6 +3,8 @@
  * @description Tracks in-flight requests and reuses promises for identical requests
  */
 
+import { logDebug } from '@/utils/logger';
+
 /**
  * Map to track pending requests
  * Key: request identifier (URL + options hash)
@@ -43,7 +45,7 @@ export async function fetchWithDedup(url, options = {}) {
   
   // If same request is already in flight, return existing promise
   if (pendingRequests.has(key)) {
-    console.log(`[DEDUP] Reusing pending request for: ${url}`);
+    logDebug(`[DEDUP] Reusing pending request for: ${url}`);
     return pendingRequests.get(key);
   }
   

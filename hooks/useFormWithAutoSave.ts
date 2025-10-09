@@ -37,6 +37,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { z } from 'zod';
 import { useDebounce } from './useDebounce';
+import { logError } from '@/utils/logger';
 
 /**
  * Configuration options for useFormWithAutoSave
@@ -132,7 +133,7 @@ export const useFormWithAutoSave = <T extends FieldValues>({
         loadedDefaultValues.current = { ...defaultValues, ...parsedDraft };
       }
     } catch (error) {
-      console.error('Failed to load draft from localStorage:', error);
+      logError('Failed to load draft from localStorage', error);
     }
   }
 
@@ -161,7 +162,7 @@ export const useFormWithAutoSave = <T extends FieldValues>({
     try {
       localStorage.setItem(storageKey, JSON.stringify(formValues));
     } catch (error) {
-      console.error('Failed to save draft to localStorage:', error);
+      logError('Failed to save draft to localStorage', error);
     }
   }, [enableDraftPersistence, storageKey, formValues]);
 
@@ -179,7 +180,7 @@ export const useFormWithAutoSave = <T extends FieldValues>({
         return parsedDraft;
       }
     } catch (error) {
-      console.error('Failed to load draft from localStorage:', error);
+      logError('Failed to load draft from localStorage', error);
     }
     return null;
   }, [enableDraftPersistence, storageKey, methods]);
@@ -194,7 +195,7 @@ export const useFormWithAutoSave = <T extends FieldValues>({
       localStorage.removeItem(storageKey);
       setHasUnsavedChanges(false);
     } catch (error) {
-      console.error('Failed to clear draft from localStorage:', error);
+      logError('Failed to clear draft from localStorage', error);
     }
   }, [storageKey]);
 
@@ -239,7 +240,7 @@ export const useFormWithAutoSave = <T extends FieldValues>({
       } catch (error) {
         if (!isMountedRef.current) return;
 
-        console.error('Auto-save failed:', error);
+        logError('Auto-save failed', error);
 
         // Call error callback if provided
         if (onAutoSaveError) {

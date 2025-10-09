@@ -19,11 +19,45 @@ export interface ChatMessage {
 /**
  * Financial context for AI advisor
  */
+
+export interface Transaction {
+  id: string;
+  amount: number;
+  date: string; // ISO date string
+  description?: string;
+  category?: string;
+}
+
+export interface Shift {
+  id: string;
+  startTime: string; // ISO date string
+  endTime: string; // ISO date string
+  description?: string;
+  payRate?: number;
+}
+
+export interface Bill {
+  id: string;
+  dueDate: string; // ISO date string
+  amount: number;
+  description?: string;
+  isRecurring?: boolean;
+}
+
+export interface Goal {
+  id: string;
+  name: string;
+  targetAmount: number;
+  currentAmount: number;
+  dueDate?: string; // ISO date string
+  description?: string;
+}
+
 export interface FinancialContext {
-  recent_transactions: any[];
-  active_shifts: any[];
-  upcoming_bills: any[];
-  active_goals: any[];
+  recent_transactions: Transaction[];
+  active_shifts: Shift[];
+  upcoming_bills: Bill[];
+  active_goals: Goal[];
 }
 
 /**

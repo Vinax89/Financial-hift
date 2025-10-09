@@ -8,6 +8,7 @@ import React, { useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Skeleton } from '@/ui/skeleton';
 import { DollarSign, Percent, TrendingUp, TrendingDown, PiggyBank, CreditCard } from 'lucide-react';
+import { logError } from '@/utils/logger';
 
 /**
  * Format currency value for display
@@ -91,7 +92,7 @@ function FinancialMetrics({ data = {}, isLoading = false }) {
                 emergencyFund: Math.min(emergencyFundPercentage, 100)
             };
         } catch (error) {
-            if (import.meta.env.DEV) console.error('Error calculating financial metrics:', error);
+            if (import.meta.env.DEV) logError('Error calculating financial metrics', error);
             return { 
                 totalIncome: 0, 
                 totalSpending: 0, 

@@ -711,12 +711,14 @@ export { base44 };
 // DEVELOPMENT MONITORING
 // ============================================================================
 
+import { logDebug } from '@/utils/logger';
+
 // Log stats in development
 if ((import.meta as any).env?.DEV) {
   setInterval(() => {
     const stats = getRateLimiterStats();
     if (stats.rateLimiter.queueLength > 0 || stats.deduplicator.pendingRequests > 0) {
-      console.log('📊 API Stats:', stats);
+      logDebug('📊 API Stats:', { stats });
     }
   }, 10000); // Every 10 seconds
 }

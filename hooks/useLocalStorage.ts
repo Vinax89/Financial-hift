@@ -63,7 +63,7 @@ function stringifyStorageValue(value: unknown): string {
   try {
     return JSON.stringify(value);
   } catch (error) {
-    console.warn('Failed to stringify value for localStorage:', error);
+    logWarn('Failed to stringify value for localStorage', { error });
     return String(value);
   }
 }
@@ -228,7 +228,7 @@ export function getLocalStorageValue<T>(key: string, fallback: T): T {
     const item = window.localStorage.getItem(key);
     return parseStorageValue(item, fallback);
   } catch (error) {
-    console.warn(`Error reading localStorage key "${key}":`, error);
+    logWarn(`Error reading localStorage key "${key}"`, { error, key });
     return fallback;
   }
 }
@@ -251,7 +251,7 @@ export function setLocalStorageValue(key: string, value: unknown): boolean {
     window.localStorage.setItem(key, stringifyStorageValue(value));
     return true;
   } catch (error) {
-    console.warn(`Error setting localStorage key "${key}":`, error);
+    logWarn(`Error setting localStorage key "${key}"`, { error, key });
     return false;
   }
 }
@@ -273,7 +273,7 @@ export function removeLocalStorageValue(key: string): boolean {
     window.localStorage.removeItem(key);
     return true;
   } catch (error) {
-    console.warn(`Error removing localStorage key "${key}":`, error);
+    logWarn(`Error removing localStorage key "${key}"`, { error, key });
     return false;
   }
 }
@@ -294,7 +294,7 @@ export function clearLocalStorage(): boolean {
     window.localStorage.clear();
     return true;
   } catch (error) {
-    console.warn('Error clearing localStorage:', error);
+    logWarn('Error clearing localStorage', { error });
     return false;
   }
 }

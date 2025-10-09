@@ -1,6 +1,7 @@
 ﻿// Enhanced API Client with Caching Layer
 import { createClient } from '@base44/sdk';
 import { cachedFetch, CacheStrategy, setupOfflineDetection } from '@/utils/caching';
+import { logDebug } from '@/utils/logger';
 
 // Create base client
 export const base44 = createClient({
@@ -92,7 +93,7 @@ export const invalidateCache = (entityType) => {
   if (pattern) {
     // Invalidation logic would go here
     // For now, this is a placeholder for future implementation
-    console.log(`Cache invalidated for: ${entityType}`);
+    logDebug(`Cache invalidated for: ${entityType}`);
   }
 };
 

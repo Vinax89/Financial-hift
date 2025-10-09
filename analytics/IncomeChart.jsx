@@ -9,6 +9,7 @@ import { ChartSkeleton } from '@/shared/SkeletonLoaders';
 import { useTheme } from '../theme/ThemeProvider';
 import { format, startOfISOWeek, parseISO } from 'date-fns';
 import { getChartTheme } from './ChartTheme';
+import { logError } from '@/utils/logger';
 
 /**
  * Format amount as USD currency
@@ -44,7 +45,7 @@ function IncomeChart({ shifts, isLoading }) {
                 acc[weekStart].net_pay += shift.net_pay || 0;
             } catch (e) {
                 if (import.meta.env.DEV) {
-                    console.error("Invalid date for shift:", shift);
+                    logError("Invalid date for shift", e);
                 }
             }
             return acc;
