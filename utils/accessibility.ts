@@ -13,7 +13,13 @@
  * Useful for modals, dialogs, and dropdowns
  */
 export class FocusTrap {
-    constructor(element) {
+    private element: HTMLElement;
+    private focusableElements: HTMLElement[];
+    private firstFocusableElement: HTMLElement | null;
+    private lastFocusableElement: HTMLElement | null;
+    private previousActiveElement: HTMLElement | null;
+
+    constructor(element: HTMLElement) {
         this.element = element;
         this.focusableElements = [];
         this.firstFocusableElement = null;
@@ -25,7 +31,7 @@ export class FocusTrap {
      * Activate the focus trap
      */
     activate() {
-        this.previousActiveElement = document.activeElement;
+        this.previousActiveElement = document.activeElement as HTMLElement;
         this.updateFocusableElements();
         
         if (this.firstFocusableElement) {
@@ -61,7 +67,7 @@ export class FocusTrap {
 
         this.focusableElements = Array.from(
             this.element.querySelectorAll(focusableSelector)
-        );
+        ) as HTMLElement[];
 
         this.firstFocusableElement = this.focusableElements[0];
         this.lastFocusableElement = 
@@ -71,7 +77,7 @@ export class FocusTrap {
     /**
      * Handle keyboard navigation within the trap
      */
-    handleKeyDown = (e) => {
+    handleKeyDown = (e: KeyboardEvent) => {
         if (e.key !== 'Tab') return;
 
         if (this.focusableElements.length === 1) {
@@ -81,13 +87,13 @@ export class FocusTrap {
 
         if (e.shiftKey) {
             // Shift + Tab: Move backwards
-            if (document.activeElement === this.firstFocusableElement) {
+            if (document.activeElement === this.firstFocusableElement && this.lastFocusableElement) {
                 e.preventDefault();
                 this.lastFocusableElement.focus();
             }
         } else {
             // Tab: Move forwards
-            if (document.activeElement === this.lastFocusableElement) {
+            if (document.activeElement === this.lastFocusableElement && this.firstFocusableElement) {
                 e.preventDefault();
                 this.firstFocusableElement.focus();
             }
@@ -100,7 +106,7 @@ export class FocusTrap {
  * @param {HTMLElement} element - Container element
  * @returns {FocusTrap} Focus trap instance
  */
-export function createFocusTrap(element) {
+export function createFocusTrap(element: HTMLElement): FocusTrap {
     return new FocusTrap(element);
 }
 
@@ -108,6 +114,8 @@ export function createFocusTrap(element) {
  * ARIA Live Announcer for screen readers
  */
 class AriaAnnouncer {
+    private liveRegion: HTMLDivElement | null;
+
     constructor() {
         this.liveRegion = null;
         this.initialize();
@@ -138,24 +146,24 @@ class AriaAnnouncer {
      * @param {string} priority - 'polite' | 'assertive'
      * @param {number} delay - Delay before announcement (ms)
      */
-    announce(message, priority = 'polite', delay = 100) {
+    announce(message: string, priority: 'polite' | 'assertive' = 'polite', delay: number = 100) {
         if (!this.liveRegion) {
             this.initialize();
         }
 
-        this.liveRegion.setAttribute('aria-live', priority);
+        this.liveRegion!.setAttribute('aria-live', priority);
         
         // Clear previous message
-        this.liveRegion.textContent = '';
+        this.liveRegion!.textContent = '';
 
         // Announce new message after a brief delay
         setTimeout(() => {
-            this.liveRegion.textContent = message;
+            this.liveRegion!.textContent = message;
         }, delay);
 
         // Clear message after it's been read
         setTimeout(() => {
-            this.liveRegion.textContent = '';
+            this.liveRegion!.textContent = '';
         }, delay + 5000);
     }
 
@@ -163,7 +171,7 @@ class AriaAnnouncer {
      * Announce an error message
      * @param {string} message - Error message
      */
-    announceError(message) {
+    announceError(message: string) {
         this.announce(message, 'assertive', 0);
     }
 
@@ -171,7 +179,7 @@ class AriaAnnouncer {
      * Announce a success message
      * @param {string} message - Success message
      */
-    announceSuccess(message) {
+    announceSuccess(message: string) {
         this.announce(message, 'polite', 100);
     }
 
@@ -179,7 +187,7 @@ class AriaAnnouncer {
      * Announce loading state
      * @param {string} message - Loading message
      */
-    announceLoading(message = 'Loading...') {
+    announceLoading(message: string = 'Loading...') {
         this.announce(message, 'polite', 0);
     }
 }
@@ -207,7 +215,16 @@ export class KeyboardNavigator {
      * @param {Object} options - Navigation options
      * @returns {number} New index
      */
-    static handleArrowKeys(event, elements, currentIndex, options = {}) {
+    static handleArrowKeys(
+        event: KeyboardEvent, 
+        elements: HTMLElement[], 
+        currentIndex: number, 
+        options: {
+            loop?: boolean;
+            horizontal?: boolean;
+            onNavigate?: (index: number, element: HTMLElement) => void;
+        } = {}
+    ): number {
         const {
             loop = true,
             horizontal = false,
@@ -255,7 +272,13 @@ export class KeyboardNavigator {
      * @param {number} totalCols - Total number of columns
      * @returns {{row: number, col: number}} New position
      */
-    static handleGridNavigation(event, currentRow, currentCol, totalRows, totalCols) {
+    static handleGridNavigation(
+        event: KeyboardEvent, 
+        currentRow: number, 
+        currentCol: number, 
+        totalRows: number, 
+        totalCols: number
+    ): { row: number; col: number } {
         let newRow = currentRow;
         let newCol = currentCol;
 
@@ -295,7 +318,7 @@ export class KeyboardNavigator {
 /**
  * Skip link utilities for keyboard navigation
  */
-export function createSkipLink(targetId, label = 'Skip to main content') {
+export function createSkipLink(targetId: string, label: string = 'Skip to main content'): HTMLAnchorElement {
     const skipLink = document.createElement('a');
     skipLink.href = `#${targetId}`;
     skipLink.className = 'skip-link';
@@ -344,15 +367,15 @@ export const FocusManager = {
     /**
      * Save current focus position
      */
-    saveFocus() {
+    saveFocus(): Element | null {
         return document.activeElement;
     },
 
     /**
      * Restore focus to an element
      */
-    restoreFocus(element) {
-        if (element && element.focus) {
+    restoreFocus(element: HTMLElement | Element | null): void {
+        if (element && 'focus' in element && typeof element.focus === 'function') {
             element.focus();
         }
     },
@@ -360,8 +383,8 @@ export const FocusManager = {
     /**
      * Focus first invalid input in a form
      */
-    focusFirstInvalid(formElement) {
-        const firstInvalid = formElement.querySelector('[aria-invalid="true"], .error');
+    focusFirstInvalid(formElement: HTMLElement): boolean {
+        const firstInvalid = formElement.querySelector('[aria-invalid="true"], .error') as HTMLElement;
         if (firstInvalid) {
             firstInvalid.focus();
             return true;
@@ -372,10 +395,10 @@ export const FocusManager = {
     /**
      * Focus first element in container
      */
-    focusFirst(container) {
+    focusFirst(container: HTMLElement): void {
         const focusable = container.querySelector(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
+        ) as HTMLElement;
         if (focusable) {
             focusable.focus();
         }
@@ -384,8 +407,8 @@ export const FocusManager = {
     /**
      * Check if element is focusable
      */
-    isFocusable(element) {
-        if (!element || element.disabled) return false;
+    isFocusable(element: HTMLElement | null): boolean {
+        if (!element || (element as any).disabled) return false;
         
         const focusableTags = ['A', 'BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'];
         if (focusableTags.includes(element.tagName)) return true;
@@ -402,35 +425,35 @@ export const AriaHelper = {
     /**
      * Set ARIA expanded state
      */
-    setExpanded(element, expanded) {
+    setExpanded(element: HTMLElement, expanded: boolean): void {
         element.setAttribute('aria-expanded', expanded.toString());
     },
 
     /**
      * Set ARIA pressed state (for toggle buttons)
      */
-    setPressed(element, pressed) {
+    setPressed(element: HTMLElement, pressed: boolean): void {
         element.setAttribute('aria-pressed', pressed.toString());
     },
 
     /**
      * Set ARIA selected state
      */
-    setSelected(element, selected) {
+    setSelected(element: HTMLElement, selected: boolean): void {
         element.setAttribute('aria-selected', selected.toString());
     },
 
     /**
      * Set ARIA checked state
      */
-    setChecked(element, checked) {
+    setChecked(element: HTMLElement, checked: boolean): void {
         element.setAttribute('aria-checked', checked.toString());
     },
 
     /**
      * Set ARIA disabled state
      */
-    setDisabled(element, disabled) {
+    setDisabled(element: HTMLElement, disabled: boolean): void {
         element.setAttribute('aria-disabled', disabled.toString());
         if (disabled) {
             element.setAttribute('tabindex', '-1');
@@ -442,7 +465,7 @@ export const AriaHelper = {
     /**
      * Set ARIA invalid state with error message
      */
-    setInvalid(element, invalid, errorId = null) {
+    setInvalid(element: HTMLElement, invalid: boolean, errorId: string | null = null): void {
         element.setAttribute('aria-invalid', invalid.toString());
         if (invalid && errorId) {
             element.setAttribute('aria-describedby', errorId);
@@ -454,7 +477,7 @@ export const AriaHelper = {
     /**
      * Set ARIA live region
      */
-    setLive(element, politeness = 'polite') {
+    setLive(element: HTMLElement, politeness: 'polite' | 'assertive' = 'polite'): void {
         element.setAttribute('aria-live', politeness);
         element.setAttribute('aria-atomic', 'true');
     },
@@ -462,21 +485,21 @@ export const AriaHelper = {
     /**
      * Set ARIA label
      */
-    setLabel(element, label) {
+    setLabel(element: HTMLElement, label: string): void {
         element.setAttribute('aria-label', label);
     },
 
     /**
      * Set ARIA labelledby
      */
-    setLabelledBy(element, labelId) {
+    setLabelledBy(element: HTMLElement, labelId: string): void {
         element.setAttribute('aria-labelledby', labelId);
     },
 
     /**
      * Set ARIA describedby
      */
-    setDescribedBy(element, descriptionId) {
+    setDescribedBy(element: HTMLElement, descriptionId: string): void {
         element.setAttribute('aria-describedby', descriptionId);
     },
 };
@@ -484,7 +507,7 @@ export const AriaHelper = {
 /**
  * Screen reader utility text
  */
-export function createScreenReaderText(text) {
+export function createScreenReaderText(text: string): HTMLSpanElement {
     const span = document.createElement('span');
     span.className = 'sr-only';
     span.textContent = text;
@@ -506,6 +529,9 @@ export function createScreenReaderText(text) {
  * Enhanced keyboard shortcuts manager
  */
 export class KeyboardShortcuts {
+    private shortcuts: Map<string, { callback: (event: KeyboardEvent) => void; description: string; preventDefault: boolean }>;
+    private enabled: boolean;
+
     constructor() {
         this.shortcuts = new Map();
         this.enabled = true;
@@ -517,7 +543,11 @@ export class KeyboardShortcuts {
      * @param {Function} callback - Function to execute
      * @param {Object} options - Options
      */
-    register(key, callback, options = {}) {
+    register(
+        key: string, 
+        callback: (event: KeyboardEvent) => void, 
+        options: { description?: string; preventDefault?: boolean } = {}
+    ): void {
         const normalizedKey = this.normalizeKey(key);
         this.shortcuts.set(normalizedKey, {
             callback,
@@ -529,7 +559,7 @@ export class KeyboardShortcuts {
     /**
      * Unregister a keyboard shortcut
      */
-    unregister(key) {
+    unregister(key: string): void {
         const normalizedKey = this.normalizeKey(key);
         this.shortcuts.delete(normalizedKey);
     }
@@ -537,7 +567,7 @@ export class KeyboardShortcuts {
     /**
      * Handle keyboard events
      */
-    handleKeyDown = (event) => {
+    handleKeyDown = (event: KeyboardEvent): void => {
         if (!this.enabled) return;
 
         const key = this.getKeyFromEvent(event);
@@ -554,7 +584,7 @@ export class KeyboardShortcuts {
     /**
      * Enable shortcuts
      */
-    enable() {
+    enable(): void {
         this.enabled = true;
         document.addEventListener('keydown', this.handleKeyDown);
     }
@@ -562,7 +592,7 @@ export class KeyboardShortcuts {
     /**
      * Disable shortcuts
      */
-    disable() {
+    disable(): void {
         this.enabled = false;
         document.removeEventListener('keydown', this.handleKeyDown);
     }
@@ -570,7 +600,7 @@ export class KeyboardShortcuts {
     /**
      * Get all registered shortcuts
      */
-    getAll() {
+    getAll(): Array<{ key: string; description: string }> {
         return Array.from(this.shortcuts.entries()).map(([key, data]) => ({
             key,
             description: data.description,
@@ -580,14 +610,14 @@ export class KeyboardShortcuts {
     /**
      * Normalize key string
      */
-    normalizeKey(key) {
+    normalizeKey(key: string): string {
         return key.toLowerCase().replace(/\s+/g, '');
     }
 
     /**
      * Get key combination from event
      */
-    getKeyFromEvent(event) {
+    getKeyFromEvent(event: KeyboardEvent): string {
         const parts = [];
         
         if (event.ctrlKey || event.metaKey) parts.push('ctrl');
@@ -648,7 +678,12 @@ export function detectKeyboardUser() {
 /**
  * Initialize all accessibility features
  */
-export function initializeAccessibility(options = {}) {
+export function initializeAccessibility(options: {
+    enableSkipLinks?: boolean;
+    enableKeyboardShortcuts?: boolean;
+    enableFocusVisible?: boolean;
+    announcements?: boolean;
+} = {}): KeyboardShortcuts | undefined {
     const {
         enableSkipLinks = true,
         enableKeyboardShortcuts = true,

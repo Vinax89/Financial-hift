@@ -13,7 +13,11 @@
  * IndexedDB wrapper for persistent caching
  */
 class IndexedDBCache {
-    constructor(dbName = 'financial-hift-cache', version = 1) {
+    private dbName: string;
+    private version: number;
+    private db: IDBDatabase | null;
+
+    constructor(dbName: string = 'financial-hift-cache', version: number = 1) {
         this.dbName = dbName;
         this.version = version;
         this.db = null;
@@ -22,7 +26,7 @@ class IndexedDBCache {
     /**
      * Open database connection
      */
-    async open() {
+    async open(): Promise<IDBDatabase> {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open(this.dbName, this.version);
 
@@ -33,7 +37,7 @@ class IndexedDBCache {
             };
 
             request.onupgradeneeded = (event) => {
-                const db = event.target.result;
+                const db = (event.target as IDBOpenDBRequest).result;
 
                 // Create object stores
                 if (!db.objectStoreNames.contains('cache')) {
@@ -52,7 +56,7 @@ class IndexedDBCache {
     /**
      * Ensure database is open
      */
-    async ensureOpen() {
+    async ensureOpen(): Promise<void> {
         if (!this.db) {
             await this.open();
         }
@@ -61,11 +65,11 @@ class IndexedDBCache {
     /**
      * Get item from cache
      */
-    async get(key) {
+    async get(key: string): Promise<any> {
         await this.ensureOpen();
 
         return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['cache'], 'readonly');
+            const transaction = this.db!.transaction(['cache'], 'readonly');
             const store = transaction.objectStore('cache');
             const request = store.get(key);
 
@@ -88,7 +92,7 @@ class IndexedDBCache {
     /**
      * Set item in cache
      */
-    async set(key, value, ttl = null) {
+    async set(key: string, value: any, ttl: number | null = null): Promise<void> {
         await this.ensureOpen();
 
         const data = {
@@ -98,8 +102,8 @@ class IndexedDBCache {
             expires: ttl ? Date.now() + ttl : null,
         };
 
-        return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['cache'], 'readwrite');
+        return new Promise<void>((resolve, reject) => {
+            const transaction = this.db!.transaction(['cache'], 'readwrite');
             const store = transaction.objectStore('cache');
             const request = store.put(data);
 
@@ -111,11 +115,11 @@ class IndexedDBCache {
     /**
      * Delete item from cache
      */
-    async delete(key) {
+    async delete(key: string): Promise<void> {
         await this.ensureOpen();
 
-        return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['cache'], 'readwrite');
+        return new Promise<void>((resolve, reject) => {
+            const transaction = this.db!.transaction(['cache'], 'readwrite');
             const store = transaction.objectStore('cache');
             const request = store.delete(key);
 
@@ -127,11 +131,11 @@ class IndexedDBCache {
     /**
      * Clear all cache
      */
-    async clear() {
+    async clear(): Promise<void> {
         await this.ensureOpen();
 
-        return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['cache'], 'readwrite');
+        return new Promise<void>((resolve, reject) => {
+            const transaction = this.db!.transaction(['cache'], 'readwrite');
             const store = transaction.objectStore('cache');
             const request = store.clear();
 
@@ -143,11 +147,11 @@ class IndexedDBCache {
     /**
      * Get all keys
      */
-    async keys() {
+    async keys(): Promise<IDBValidKey[]> {
         await this.ensureOpen();
 
         return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['cache'], 'readonly');
+            const transaction = this.db!.transaction(['cache'], 'readonly');
             const store = transaction.objectStore('cache');
             const request = store.getAllKeys();
 
@@ -159,11 +163,11 @@ class IndexedDBCache {
     /**
      * Clean expired entries
      */
-    async cleanExpired() {
+    async cleanExpired(): Promise<number> {
         await this.ensureOpen();
 
         return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['cache'], 'readwrite');
+            const transaction = this.db!.transaction(['cache'], 'readwrite');
             const store = transaction.objectStore('cache');
             const index = store.index('expires');
             const now = Date.now();
@@ -172,7 +176,7 @@ class IndexedDBCache {
             let deletedCount = 0;
 
             request.onsuccess = (event) => {
-                const cursor = event.target.result;
+                const cursor = (event.target as IDBRequest).result;
                 if (cursor) {
                     if (cursor.value.expires && cursor.value.expires < now) {
                         cursor.delete();
@@ -191,7 +195,7 @@ class IndexedDBCache {
     /**
      * Add to offline queue
      */
-    async addToQueue(request) {
+    async addToQueue(request: { url: string; method: string; headers: any; body: any }): Promise<IDBValidKey> {
         await this.ensureOpen();
 
         const queueItem = {
@@ -203,7 +207,7 @@ class IndexedDBCache {
         };
 
         return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['queue'], 'readwrite');
+            const transaction = this.db!.transaction(['queue'], 'readwrite');
             const store = transaction.objectStore('queue');
             const req = store.add(queueItem);
 
@@ -215,11 +219,11 @@ class IndexedDBCache {
     /**
      * Get all queued requests
      */
-    async getQueue() {
+    async getQueue(): Promise<any[]> {
         await this.ensureOpen();
 
         return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['queue'], 'readonly');
+            const transaction = this.db!.transaction(['queue'], 'readonly');
             const store = transaction.objectStore('queue');
             const request = store.getAll();
 
@@ -231,11 +235,11 @@ class IndexedDBCache {
     /**
      * Remove from queue
      */
-    async removeFromQueue(id) {
+    async removeFromQueue(id: IDBValidKey): Promise<void> {
         await this.ensureOpen();
 
-        return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['queue'], 'readwrite');
+        return new Promise<void>((resolve, reject) => {
+            const transaction = this.db!.transaction(['queue'], 'readwrite');
             const store = transaction.objectStore('queue');
             const request = store.delete(id);
 
@@ -247,11 +251,11 @@ class IndexedDBCache {
     /**
      * Clear queue
      */
-    async clearQueue() {
+    async clearQueue(): Promise<void> {
         await this.ensureOpen();
 
-        return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['queue'], 'readwrite');
+        return new Promise<void>((resolve, reject) => {
+            const transaction = this.db!.transaction(['queue'], 'readwrite');
             const store = transaction.objectStore('queue');
             const request = store.clear();
 
