@@ -75,14 +75,14 @@ export function useMemoizedCallback<T extends CallbackFn>(callback: T, dependenc
  * const renderCount = useRenderCount('ExpensiveComponent');
  * console.log('Rendered', renderCount, 'times');
  */
+import { logDebug } from './logger';
+
 export function useRenderCount(componentName: string): number {
   const renderCount = useRef(0);
   
   useEffect(() => {
     renderCount.current++;
-    if (import.meta.env.DEV) {
-      console.log(`[Performance] ${componentName} rendered ${renderCount.current} times`);
-    }
+    logDebug(`[Performance] ${componentName} rendered ${renderCount.current} times`);
   });
   
   return renderCount.current;
@@ -255,7 +255,7 @@ export function profileFunction<T extends CallbackFn>(fn: T, label: string): T {
     const result = fn(...args);
     const end = performance.now();
     
-    console.log(`[Profile] ${label}: ${(end - start).toFixed(2)}ms`);
+    logDebug(`[Profile] ${label}: ${(end - start).toFixed(2)}ms`);
     
     return result;
   }) as T;

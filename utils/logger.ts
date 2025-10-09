@@ -1,46 +1,179 @@
 /**
- * @fileoverview Centralized logging utility for production-safe logging
- * @description Provides structured logging with DEV-only console output and
- * hooks for production error tracking services (Sentry, LogRocket, etc.)
+ * Centralized logging utility for production-safe logging
+ * 
+ * @remarks
+ * Provides structured logging with environment-aware output and integration
+ * with external error tracking services (Sentry, LogRocket). In development,
+ * all logs output to the browser console. In production, warnings and errors
+ * are sent to Sentry for monitoring.
+ * 
+ * ## Features
+ * 
+ * - **Environment-aware**: Dev console output, production Sentry integration
+ * - **Type-safe**: Full TypeScript support with comprehensive interfaces
+ * - **Namespaced loggers**: Create module-specific loggers with `createLogger()`
+ * - **Performance tracking**: Built-in performance measurement with `logPerformance()`
+ * - **Production monitoring**: Automatic Sentry integration for errors and warnings
+ * 
+ * ## Usage Examples
+ * 
+ * ### Basic Logging
+ * 
+ * ```typescript
+ * import logger from '@/utils/logger';
+ * 
+ * // Debug (development only)
+ * logger.debug('User data loaded', { userId: '123', count: 50 });
+ * 
+ * // Info
+ * logger.info('Transaction created', { amount: 100 });
+ * 
+ * // Warning (logged to Sentry in production)
+ * logger.warn('API rate limit approaching', { remaining: 10 });
+ * 
+ * // Error (always logged to Sentry in production)
+ * try {
+ *   await saveTransaction(data);
+ * } catch (error) {
+ *   logger.error('Failed to save transaction', error);
+ * }
+ * ```
+ * 
+ * ### Namespaced Loggers
+ * 
+ * ```typescript
+ * import { createLogger } from '@/utils/logger';
+ * 
+ * const log = createLogger('Dashboard');
+ * log.info('Component mounted'); 
+ * // Output: "[INFO] [Dashboard] Component mounted"
+ * ```
+ * 
+ * ### Performance Tracking
+ * 
+ * ```typescript
+ * const start = performance.now();
+ * await fetchTransactions();
+ * const duration = performance.now() - start;
+ * logger.perf('fetchTransactions', duration);
+ * // Output: "[PERF] fetchTransactions: 245.67ms"
+ * ```
+ * 
+ * @packageDocumentation
+ * @module utils/logger
+ * @public
  */
 
 import { captureException, captureMessage, addBreadcrumb } from './sentry.js';
 
 /**
- * Log level type
+ * Log severity levels
+ * 
+ * @remarks
+ * Defines the available log levels ordered by severity:
+ * - `debug`: Verbose diagnostic information (development only)
+ * - `info`: General informational messages
+ * - `warn`: Warning messages for potentially harmful situations
+ * - `error`: Error messages for failures and exceptions
+ * 
+ * @public
  */
 export type LogLevelType = 'debug' | 'info' | 'warn' | 'error';
 
 /**
  * Logger interface for namespaced loggers
+ * 
+ * @remarks
+ * Returned by `createLogger()` to provide module-specific logging.
+ * All methods automatically include the namespace in log output.
+ * 
+ * @example
+ * ```typescript
+ * const logger = createLogger('API');
+ * logger.info('Request started');
+ * // Output: "[INFO] [API] Request started"
+ * ```
+ * 
+ * @public
  */
 export interface Logger {
+  /** Log debug information (development only) */
   debug: (message: string, data?: unknown) => void;
+  
+  /** Log informational messages */
   info: (message: string, data?: unknown) => void;
+  
+  /** Log warning messages (sent to Sentry in production) */
   warn: (message: string, data?: unknown) => void;
+  
+  /** Log error messages (sent to Sentry in production) */
   error: (message: string, error?: Error | unknown) => void;
+  
+  /** Log performance metrics (development only) */
   perf: (label: string, duration: number) => void;
 }
 
 /**
  * Check if running in development mode
+ * 
+ * @returns `true` if running in development, `false` in production
+ * 
+ * @internal
  */
 const isDev = (): boolean => import.meta.env.DEV;
 
 /**
- * Log levels for categorizing messages
+ * Log level constants for categorizing messages
+ * 
+ * @remarks
+ * Use these constants instead of magic strings when calling `log()`.
+ * 
+ * @example
+ * ```typescript
+ * import { LogLevel, log } from '@/utils/logger';
+ * 
+ * log(LogLevel.INFO, 'User logged in', { userId: '123' });
+ * ```
+ * 
+ * @public
  */
 export const LogLevel = {
+  /** Debug level - verbose diagnostic information */
   DEBUG: 'debug' as const,
+  
+  /** Info level - general informational messages */
   INFO: 'info' as const,
+  
+  /** Warning level - potentially harmful situations */
   WARN: 'warn' as const,
+  
+  /** Error level - error events and exceptions */
   ERROR: 'error' as const,
 };
 
 /**
  * Log a debug message (only in development)
+ * 
+ * @remarks
+ * Debug logs are verbose diagnostic information useful during development.
+ * They are **completely suppressed** in production environments.
+ * 
+ * Use for:
+ * - Detailed state information
+ * - Function entry/exit tracing
+ * - Variable inspection
+ * - Development troubleshooting
+ * 
  * @param message - Debug message
- * @param data - Optional data to log
+ * @param data - Optional additional data to log
+ * 
+ * @example
+ * ```typescript
+ * logDebug('Component rendering', { props, state });
+ * logDebug('API response received', responseData);
+ * ```
+ * 
+ * @public
  */
 export const logDebug = (message: string, data?: unknown): void => {
   if (isDev()) {

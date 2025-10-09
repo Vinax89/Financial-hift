@@ -426,13 +426,13 @@ export function createPrioritizedLazyComponent<T extends ComponentType<any>>(
     };
 }
 
+import { logDebug } from './logger';
+
 /**
  * Bundle analyzer helper (development only)
  */
 export function logChunkLoading(chunkName: string): void {
-    if (import.meta.env.DEV) {
-        console.log(`[Lazy Loading] Loading chunk: ${chunkName}`);
-    }
+    logDebug(`[Lazy Loading] Loading chunk: ${chunkName}`);
 }
 
 /**

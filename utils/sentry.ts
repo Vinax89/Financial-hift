@@ -5,6 +5,12 @@
  * Only active in production environment to avoid cluttering dev logs.
  */
 
+import { logInfo, logDebug } from './logger';
+
+/**
+ * Sentry types and configuration
+ */
+
 import * as Sentry from '@sentry/react';
 import type { SentryLevel, ErrorContext } from '@/types/sentry.types';
 
@@ -88,9 +94,9 @@ export const initSentry = () => {
       ],
     });
     
-    console.log('✅ Sentry initialized for production error tracking');
+    logInfo('✅ Sentry initialized for production error tracking');
   } else {
-    console.log('🔧 Sentry disabled in development mode');
+    logDebug('🔧 Sentry disabled in development mode');
   }
 };
 
