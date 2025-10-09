@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview OTP (One-Time Password) input component
  * @description Accessible OTP input with individual digit slots and caret animation

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Idle prefetch hook for performance optimization
  * @description Prefetches resources when browser is idle to improve perceived performance

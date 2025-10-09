@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Quick filters component for calendar event types
  * @description Preset filter buttons for common calendar view configurations

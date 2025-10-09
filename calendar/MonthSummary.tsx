@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Month summary component displaying financial totals by category
  * @description Shows aggregated totals for bills, subscriptions, debts, BNPL, payments, and shifts

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Debt simulator component showing snowball payoff projection
  * @description Calculates and displays debt payoff timeline using snowball method

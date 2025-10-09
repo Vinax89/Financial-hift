@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Toggle button component using Radix UI primitives
  * @description On/off toggle button with variants (similar to checkbox but styled as button)

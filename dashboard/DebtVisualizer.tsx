@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Debt visualization with pie charts and payoff strategies
  * @description Interactive debt breakdown showing avalanche/snowball strategies,

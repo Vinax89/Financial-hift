@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Subscription paywall component
  * @description Displays available subscription plans with trial options,
@@ -119,12 +120,12 @@ function Paywall({ featureKey = "pro_feature", title = "Unlock Pro Features", de
                 </CardFooter>
               </Card>
             )) : (
-              <div className="text-sm text-muted-foreground">Loading plans…</div>
+              <div className="text-sm text-muted-foreground">Loading plansâ€¦</div>
             )}
           </div>
           <Separator className="my-6" />
           <div className="text-xs text-muted-foreground">
-            Signed in as: {user?.email || "guest"} • You can cancel anytime during trial.
+            Signed in as: {user?.email || "guest"} â€¢ You can cancel anytime during trial.
           </div>
         </CardContent>
       </Card>

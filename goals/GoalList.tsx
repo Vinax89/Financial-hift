@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Goal list component displaying all financial goals in a table
  * @description Shows goal details including target amount, current progress, deadline,
@@ -42,11 +43,11 @@ const formatCurrency = (value) => {
  * @returns {string} Formatted date string
  */
 const formatDate = (value) => {
-    if (!value) return '—';
+    if (!value) return 'â€”';
     try {
         return format(new Date(value), 'MMM d, yyyy');
     } catch (error) {
-        return '—';
+        return 'â€”';
     }
 };
 

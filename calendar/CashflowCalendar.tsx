@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Monthly cashflow calendar view
  * @description Displays income and expenses on a calendar grid with

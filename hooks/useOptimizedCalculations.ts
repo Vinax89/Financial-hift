@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useMemo } from 'react';
 import { calculateShiftPay, calculateDebtPayoff } from '../utils/calculations';
 

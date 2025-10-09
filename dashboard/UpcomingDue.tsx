@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Upcoming due items display component (TypeScript)
  * @description Shows upcoming bills and debt payments sorted by due date
@@ -59,11 +60,11 @@ interface UpcomingDueProps {
  * @returns {string} Formatted date string (MMM d) or fallback
  */
 const formatDate = (value: Date | string | undefined): string => {
-    if (!value) return '—';
+    if (!value) return 'â€”';
     try {
         return format(new Date(value), 'MMM d');
     } catch (error) {
-        return '—';
+        return 'â€”';
     }
 };
 

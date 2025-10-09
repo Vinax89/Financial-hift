@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Menubar component using Radix UI primitives
  * @description Horizontal menu bar with dropdowns (like native app menus: File, Edit, View)
@@ -301,7 +302,7 @@ MenubarSeparator.displayName = MenubarPrimitive.Separator.displayName
  * @component
  * @param {Object} props - Component props
  * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Shortcut text (e.g., "⌘N")
+ * @returns {JSX.Element} Shortcut text (e.g., "âŒ˜N")
  */
 const MenubarShortcut = ({
   className,

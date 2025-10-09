@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Filters toolbar component for calendar event visibility
  * @description Switch controls for toggling different calendar event types

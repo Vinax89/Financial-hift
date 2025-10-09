@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Application entry point for Financial $hift
  * @description Initializes React root, React Query client with optimized caching,

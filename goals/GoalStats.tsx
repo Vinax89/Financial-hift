@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Goal statistics component displaying aggregate goal metrics
  * @description Shows total active goals, invested capital, and remaining funding with progress

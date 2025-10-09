@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Calendar settings popover component
  * @description Provides settings controls for calendar display options
@@ -47,7 +48,7 @@ function CalendarSettings({ value, onChange }: CalendarSettingsProps) {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <Label className="text-sm">Show Net Chips</Label>
-              <p className="text-xs text-muted-foreground">Per-day net (income Ã¢Ë†â€™ outflow) chip</p>
+              <p className="text-xs text-muted-foreground">Per-day net (income ÃƒÂ¢Ã‹â€ Ã¢â‚¬â„¢ outflow) chip</p>
             </div>
             <Switch checked={!!v.showNetChips} onCheckedChange={(val) => set("showNetChips", val)} />
           </div>

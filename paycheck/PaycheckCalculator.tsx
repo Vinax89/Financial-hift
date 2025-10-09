@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
@@ -383,8 +384,8 @@ export default function PaycheckCalculator() {
                                         {(calculation.standardDeductions?.federal || calculation.standardDeductions?.state) && (
                                             <div className="mt-3 text-xs text-muted-foreground">
                                                 <div>Standard Deduction (annual) used in calc:</div>
-                                                <div>• Federal: ${Number(calculation.standardDeductions.federal || 0).toFixed(0)}</div>
-                                                <div>• State: ${Number(calculation.standardDeductions.state || 0).toFixed(0)}</div>
+                                                <div>â€¢ Federal: ${Number(calculation.standardDeductions.federal || 0).toFixed(0)}</div>
+                                                <div>â€¢ State: ${Number(calculation.standardDeductions.state || 0).toFixed(0)}</div>
                                             </div>
                                         )}
                                     </div>

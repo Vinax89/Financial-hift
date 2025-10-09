@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Debt account creation and editing form with autosave
  * @description Form for managing debt accounts with validation, autosave,

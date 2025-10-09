@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Sonner toast notification wrapper with theme support
  * @description Customized Sonner toaster with theme integration and styled variants

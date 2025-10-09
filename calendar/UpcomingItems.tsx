@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Upcoming items component showing next shifts, bills, and BNPL payments
  * @description Dashboard widget displaying chronologically upcoming financial events

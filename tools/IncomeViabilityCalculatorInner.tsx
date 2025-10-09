@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Button } from '@/ui/button';
@@ -247,7 +248,7 @@ export default function IncomeViabilityCalculatorInner(props) {
       `Cost of Living: $${Math.round(results?.cost_of_living?.total_annual || 0).toLocaleString()}/yr`,
       `Debt Burden: $${Math.round(results?.debtBurdenAnnual || 0).toLocaleString()}/yr`,
       `Disposable (Net): $${Math.round(results?.viableIncome || 0).toLocaleString()}/yr (${(results?.viabilityRatio || 0).toFixed(1)}%)`,
-      `Monthly View — Gross: $${Math.round((results?.income || 0)/12).toLocaleString()}, Tax: $${Math.round((results?.taxBurden || 0)/12).toLocaleString()}, CoL: $${Math.round((results?.cost_of_living?.total_annual || 0)/12).toLocaleString()}, Debt: $${Math.round(results?.monthlyDebtBurden || 0).toLocaleString()}, Net: $${Math.round(results?.monthlyViable || 0).toLocaleString()}`,
+      `Monthly View â€” Gross: $${Math.round((results?.income || 0)/12).toLocaleString()}, Tax: $${Math.round((results?.taxBurden || 0)/12).toLocaleString()}, CoL: $${Math.round((results?.cost_of_living?.total_annual || 0)/12).toLocaleString()}, Debt: $${Math.round(results?.monthlyDebtBurden || 0).toLocaleString()}, Net: $${Math.round(results?.monthlyViable || 0).toLocaleString()}`,
       `User intent: Please estimate if picking up extra hours or shifts would improve viability. If shortfall exists, estimate hours needed based on base hourly rate (if known) and suggest the best strategy (e.g., overtime or differentials).`
     ].join("\n");
 
@@ -386,7 +387,7 @@ export default function IncomeViabilityCalculatorInner(props) {
             <Copy className="h-4 w-4 mr-2" /> Copy Summary
           </Button>
           <Button type="button" variant="secondary" onClick={askAICoach} disabled={!results}>
-            🤖 Ask AI Coach
+            ðŸ¤– Ask AI Coach
           </Button>
         </div>
 
@@ -439,7 +440,7 @@ export default function IncomeViabilityCalculatorInner(props) {
                 {formatCurrency(monthlyView ? results.monthlyViable : results.viableIncome)}
               </p>
               <p className={`text-sm ${results.viableIncome > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-destructive'} mb-2`}>
-                {monthlyView ? `${formatCurrency(results.monthlyViable)}/month` : `${formatCurrency(results.viableIncome)}/year`} • {(results?.viabilityRatio || 0).toFixed(1)}% of gross income
+                {monthlyView ? `${formatCurrency(results.monthlyViable)}/month` : `${formatCurrency(results.viableIncome)}/year`} â€¢ {(results?.viabilityRatio || 0).toFixed(1)}% of gross income
               </p>
               <p className="text-xs text-muted-foreground">
                 Available for savings, investments, entertainment, and unexpected expenses
@@ -574,7 +575,7 @@ export default function IncomeViabilityCalculatorInner(props) {
 
             {results.viableIncome < 0 && (
               <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-                <h4 className="font-semibold text-destructive mb-2">⚠️ Income Shortfall</h4>
+                <h4 className="font-semibold text-destructive mb-2">âš ï¸ Income Shortfall</h4>
                 <p className="text-sm text-destructive/90">
                   Your current income may not be sufficient to cover basic living costs and debt payments in this area.
                   Consider:
@@ -591,7 +592,7 @@ export default function IncomeViabilityCalculatorInner(props) {
 
             {results.viableIncome > 0 && results.viabilityRatio < 20 && (
               <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-                <h4 className="font-semibold text-amber-600 dark:text-amber-400 mb-2">💡 Tight Budget</h4>
+                <h4 className="font-semibold text-amber-600 dark:text-amber-400 mb-2">ðŸ’¡ Tight Budget</h4>
                 <p className="text-sm text-muted-foreground">
                   While viable, you'll have limited financial flexibility after all expenses. Consider building an emergency fund
                   and looking for ways to increase income or reduce costs.

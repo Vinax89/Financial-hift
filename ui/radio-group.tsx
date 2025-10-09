@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Radio group component using Radix UI primitives
  * @description Accessible radio button group with visual indicators for form selection

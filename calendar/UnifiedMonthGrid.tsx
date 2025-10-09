@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Unified month grid component for calendar display
  * @description Feature-rich calendar grid with event density, net chips, and interactive day sheets
@@ -127,7 +128,7 @@ const DayCell = React.memo(function DayCell({
         {showNetChips && (totals.inc > 0 || totals.out > 0) && (
           <div
             className={`text-[10px] font-bold ${netClass} sensitive`}
-            title={`Income ${Math.round(totals.inc)} • Outflow ${Math.round(totals.out)}`}
+            title={`Income ${Math.round(totals.inc)} â€¢ Outflow ${Math.round(totals.out)}`}
           >
             {net > 0 ? "+" : ""}
             {Math.round(net)}

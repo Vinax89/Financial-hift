@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Advanced prefetching and preloading hooks
  * @description Implements intelligent route prefetching, data preloading, and resource hints

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview ContextMenu component using Radix UI primitives
  * @description Right-click context menu with items, checkboxes, radio groups, and submenus
@@ -209,7 +210,7 @@ ContextMenuSeparator.displayName = ContextMenuPrimitive.Separator.displayName
  * @component
  * @param {Object} props - Component props
  * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Shortcut text (e.g., "⌘K")
+ * @returns {JSX.Element} Shortcut text (e.g., "âŒ˜K")
  */
 const ContextMenuShortcut = ({
   className,

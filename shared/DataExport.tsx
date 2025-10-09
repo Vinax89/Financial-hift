@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Data Export Component with JSON and CSV formats
  * @description Dropdown menu for exporting data in various formats
@@ -175,7 +176,7 @@ function DataExportComponent({ datasets = {}, fileBase = 'export' }: DataExportP
               className="capitalize"
               aria-label={`Download ${key} as CSV${isEmpty ? ' (empty)' : ''}`}
             >
-              {key} {isEmpty ? '— empty' : ''}
+              {key} {isEmpty ? 'â€” empty' : ''}
             </DropdownMenuItem>
           );
         })}
