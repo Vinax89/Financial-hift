@@ -337,55 +337,43 @@ export function FormField({
 /**
  * Optimistic update hook
  */
-export function useOptimisticUpdate(mutationFn, options = {}) {
+export function useOptimisticUpdate(mutationFn: (data: any) => Promise<any>, options: {
+    onSuccess?: ((result: any) => void) | null;
+    onError?: ((error: any) => void) | null;
+    rollbackOnError?: boolean;
+} = {}) {
     const {
         onSuccess = null,
         onError = null,
         rollbackOnError = true,
     } = options;
 
-    const [optimisticData, setOptimisticData] = React.useState(null);
+    const [optimisticData, setOptimisticData] = React.useState<any>(null);
     const [isOptimistic, setIsOptimistic] = React.useState(false);
-    const [error, setError] = React.useState(null);
-    const previousDataRef = React.useRef(null);
+    const [error, setError] = React.useState<any>(null);
+    const previousDataRef = React.useRef<any>(null);
 
-    const mutate = React.useCallback(async (data, optimisticUpdate) => {
-        // Store previous data for rollback
-        previousDataRef.current = data;
-
-        // Apply optimistic update immediately
+    const mutate = React.useCallback(async (data: any, optimisticUpdate?: any) => {
         if (optimisticUpdate) {
+            previousDataRef.current = { ...data };
             setOptimisticData(optimisticUpdate);
             setIsOptimistic(true);
         }
 
         try {
-            // Perform actual mutation
-            const result = await mutationFn(optimisticUpdate || data);
-            
-            // Update with real data
-            setOptimisticData(null);
+            const result = await mutationFn(data);
             setIsOptimistic(false);
+            setOptimisticData(null);
             setError(null);
-            
             onSuccess?.(result);
-            return { success: true, data: result };
+            return result;
         } catch (err) {
-            // Rollback on error
+            setError(err as any);
             if (rollbackOnError && previousDataRef.current) {
                 setOptimisticData(previousDataRef.current);
-                setTimeout(() => {
-                    setOptimisticData(null);
-                    setIsOptimistic(false);
-                }, 100);
-            } else {
-                setOptimisticData(null);
-                setIsOptimistic(false);
             }
-            
-            setError(err);
             onError?.(err);
-            return { success: false, error: err };
+            throw err;
         }
     }, [mutationFn, onSuccess, onError, rollbackOnError]);
 
@@ -400,70 +388,65 @@ export function useOptimisticUpdate(mutationFn, options = {}) {
 /**
  * Form history (undo/redo) hook
  */
-export function useFormHistory(initialValue, options = {}) {
+export function useFormHistory(initialValue: any, options: {
+    maxHistorySize?: number;
+} = {}) {
     const { maxHistorySize = 50 } = options;
 
-    const [history, setHistory] = React.useState([initialValue]);
+    const [history, setHistory] = React.useState<any[]>([initialValue]);
     const [currentIndex, setCurrentIndex] = React.useState(0);
 
     const currentValue = history[currentIndex];
     const canUndo = currentIndex > 0;
     const canRedo = currentIndex < history.length - 1;
 
-    const pushValue = React.useCallback((value) => {
-        setHistory(prev => {
-            // Remove any future history if we're not at the end
-            const newHistory = prev.slice(0, currentIndex + 1);
-            
-            // Add new value
-            newHistory.push(value);
-            
-            // Limit history size
-            if (newHistory.length > maxHistorySize) {
-                newHistory.shift();
-                setCurrentIndex(prev => Math.max(0, prev - 1));
-            }
-            
-            return newHistory;
-        });
-        
-        setCurrentIndex(prev => Math.min(prev + 1, history.length));
-    }, [currentIndex, maxHistorySize, history.length]);
+    const pushValue = React.useCallback((value: any) => {
+        const newHistory = history.slice(0, currentIndex + 1);
+        newHistory.push(value);
+        if (newHistory.length > maxHistorySize) {
+            newHistory.shift();
+        }
+        setHistory(newHistory);
+        setCurrentIndex(newHistory.length - 1);
+    }, [history, currentIndex, maxHistorySize]);
 
     const undo = React.useCallback(() => {
         if (canUndo) {
-            setCurrentIndex(prev => prev - 1);
-            announceSuccess('Undo applied');
+            setCurrentIndex(currentIndex - 1);
         }
-    }, [canUndo]);
+    }, [canUndo, currentIndex]);
 
     const redo = React.useCallback(() => {
         if (canRedo) {
-            setCurrentIndex(prev => prev + 1);
-            announceSuccess('Redo applied');
+            setCurrentIndex(currentIndex + 1);
         }
-    }, [canRedo]);
+    }, [canRedo, currentIndex]);
 
-    const clear = React.useCallback(() => {
+    const reset = React.useCallback(() => {
         setHistory([initialValue]);
         setCurrentIndex(0);
     }, [initialValue]);
 
     return {
         value: currentValue,
-        pushValue,
+        setValue: pushValue,
         undo,
         redo,
+        reset,
         canUndo,
         canRedo,
-        clear,
+        history,
     };
 }
 
 /**
  * Multi-step form hook
  */
-export function useMultiStepForm(steps, options = {}) {
+export function useMultiStepForm(steps: any[], options: {
+    initialStep?: number;
+    onStepChange?: ((step: number) => void) | null;
+    onComplete?: (() => void) | null;
+} = {}) {
     const {
         initialStep = 0,
         onStepChange = null,
@@ -472,14 +455,14 @@ export function useMultiStepForm(steps, options = {}) {
 
     const [currentStep, setCurrentStep] = React.useState(initialStep);
     const [completedSteps, setCompletedSteps] = React.useState(new Set());
-    const [stepData, setStepData] = React.useState({});
+    const [stepData, setStepData] = React.useState<Record<number, any>>({});
 
     const totalSteps = steps.length;
     const isFirstStep = currentStep === 0;
     const isLastStep = currentStep === totalSteps - 1;
     const progress = ((currentStep + 1) / totalSteps) * 100;
 
-    const goToStep = React.useCallback((stepIndex) => {
+    const goToStep = React.useCallback((stepIndex: number) => {
         if (stepIndex >= 0 && stepIndex < totalSteps) {
             setCurrentStep(stepIndex);
             onStepChange?.(stepIndex);
@@ -500,7 +483,7 @@ export function useMultiStepForm(steps, options = {}) {
         }
     }, [currentStep, isFirstStep, goToStep]);
 
-    const updateStepData = React.useCallback((data) => {
+    const updateStepData = React.useCallback((data: any) => {
         setStepData(prev => ({
             ...prev,
             [currentStep]: data,
@@ -511,11 +494,11 @@ export function useMultiStepForm(steps, options = {}) {
         setCompletedSteps(prev => new Set([...prev, currentStep]));
         
         if (onComplete) {
-            await onComplete(stepData);
+            await onComplete();
         }
         
         announceSuccess('Form completed successfully');
-    }, [currentStep, stepData, onComplete]);
+    }, [currentStep, onComplete]);
 
     const reset = React.useCallback(() => {
         setCurrentStep(initialStep);
@@ -544,25 +527,25 @@ export function useMultiStepForm(steps, options = {}) {
 /**
  * Form field array hook (for dynamic form fields)
  */
-export function useFieldArray(name, initialValues = []) {
-    const [fields, setFields] = React.useState(initialValues);
+export function useFieldArray(name: string, initialValues: any[] = []) {
+    const [fields, setFields] = React.useState<any[]>(initialValues);
 
-    const append = React.useCallback((value) => {
+    const append = React.useCallback((value: any) => {
         setFields(prev => [...prev, value]);
         announceSuccess(`Added new ${name}`);
     }, [name]);
 
-    const prepend = React.useCallback((value) => {
+    const prepend = React.useCallback((value: any) => {
         setFields(prev => [value, ...prev]);
         announceSuccess(`Added new ${name} at the beginning`);
     }, [name]);
 
-    const remove = React.useCallback((index) => {
+    const remove = React.useCallback((index: number) => {
         setFields(prev => prev.filter((_, i) => i !== index));
         announceSuccess(`Removed ${name}`);
     }, [name]);
 
-    const insert = React.useCallback((index, value) => {
+    const insert = React.useCallback((index: number, value: any) => {
         setFields(prev => {
             const newFields = [...prev];
             newFields.splice(index, 0, value);
@@ -571,7 +554,7 @@ export function useFieldArray(name, initialValues = []) {
         announceSuccess(`Inserted ${name}`);
     }, [name]);
 
-    const update = React.useCallback((index, value) => {
+    const update = React.useCallback((index: number, value: any) => {
         setFields(prev => {
             const newFields = [...prev];
             newFields[index] = value;
@@ -579,19 +562,18 @@ export function useFieldArray(name, initialValues = []) {
         });
     }, []);
 
-    const move = React.useCallback((fromIndex, toIndex) => {
-        setFields(prev => {
-            const newFields = [...prev];
-            const [removed] = newFields.splice(fromIndex, 1);
-            newFields.splice(toIndex, 0, removed);
+    const move = React.useCallback((fromIndex: number, toIndex: number) => {
+        setFields(current => {
+            const newFields = [...current];
+            const [movedItem] = newFields.splice(fromIndex, 1);
+            newFields.splice(toIndex, 0, movedItem);
             return newFields;
         });
-        announceSuccess(`Moved ${name}`);
-    }, [name]);
+    }, []);
 
-    const swap = React.useCallback((indexA, indexB) => {
-        setFields(prev => {
-            const newFields = [...prev];
+    const swap = React.useCallback((indexA: number, indexB: number) => {
+        setFields(current => {
+            const newFields = [...current];
             [newFields[indexA], newFields[indexB]] = [newFields[indexB], newFields[indexA]];
             return newFields;
         });
