@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Empty state component for no data scenarios
  * @description Placeholder UI for empty lists, search results, or missing content

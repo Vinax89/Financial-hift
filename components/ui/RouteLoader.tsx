@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Route transition loader component
  * @description Displays a loading indicator during route transitions

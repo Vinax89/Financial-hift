@@ -1,4 +1,3 @@
-// @ts-nocheck - VFS cache issues, will be fixed after TypeScript server restart
 /**
  * @fileoverview Idle prefetch hook for performance optimization
  * @description Prefetches resources when browser is idle to improve perceived performance

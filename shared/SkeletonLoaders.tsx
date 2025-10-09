@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Skeleton loading components for Financial $hift
  * @description Reusable skeleton loaders for various content types

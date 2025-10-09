@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { Toaster as SonnerToaster } from '@/ui/sonner';
 

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { useToast } from '@/ui/use-toast';
 import { CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';

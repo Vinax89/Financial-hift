@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Menubar component using Radix UI primitives
  * @description Horizontal menu bar with dropdowns (like native app menus: File, Edit, View)

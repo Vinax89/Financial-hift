@@ -1,4 +1,3 @@
-// @ts-nocheck - Incremental migration in progress
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';

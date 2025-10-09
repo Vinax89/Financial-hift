@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview HoverCard component using Radix UI primitives
  * @description Popover content shown on hover with animations and positioning

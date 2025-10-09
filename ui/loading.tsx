@@ -1,4 +1,3 @@
-// @ts-nocheck - Incremental migration in progress
 
 import React from 'react';
 import { Skeleton } from '@/ui/skeleton';

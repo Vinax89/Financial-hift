@@ -1,4 +1,3 @@
-// @ts-nocheck - VFS cache issues, will be fixed after TypeScript server restart
 /**
  * @fileoverview Notifications Center with unread badge
  * @description Dropdown menu showing notifications with mark as read functionality

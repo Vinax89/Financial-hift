@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview ContextMenu component using Radix UI primitives
  * @description Right-click context menu with items, checkboxes, radio groups, and submenus

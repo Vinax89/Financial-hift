@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Theme-aware animation components
  * @description Animation effects with theme integration: glow effects, background patterns, shimmer loading, glassmorphism

@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import React, { useMemo } from 'react';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card';

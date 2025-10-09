@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Drawer component using Vaul library
  * @description Bottom-drawer modal for mobile-first interfaces with backdrop scaling

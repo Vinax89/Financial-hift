@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Optimized React Query Configuration
  * Improves loading times and user experience

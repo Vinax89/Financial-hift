@@ -1,4 +1,3 @@
-// @ts-nocheck - VFS cache issues, will be fixed after TypeScript server restart
 /**
  * @fileoverview Reusable DataTable component with search and pagination
  * @description Generic table component with built-in filtering, pagination, and loading states

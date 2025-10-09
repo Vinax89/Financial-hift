@@ -1,4 +1,3 @@
-// @ts-nocheck - VFS cache issues, will be fixed after TypeScript server restart
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Toaster as SonnerToaster } from "@/ui/sonner";
 
 const Toaster = (props) => {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Google Analytics 4 integration utility
  * @description Provides analytics tracking for user actions, page views, and events

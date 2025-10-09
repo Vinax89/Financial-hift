@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Debt payoff countdown and scenario planner (TypeScript)
  * @description Shows debt freedom timeline with different payment scenarios

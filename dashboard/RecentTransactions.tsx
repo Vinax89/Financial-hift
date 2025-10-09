@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Recent transactions display component (TypeScript)
  * @description Shows recent transactions with virtualization for performance,

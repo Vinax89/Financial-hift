@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Goals progress display component (TypeScript)
  * @description Shows active savings goals with progress bars, target dates, and amounts

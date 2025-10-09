@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Focus trap wrapper for accessible modal/dialog interactions
  * @description Manages keyboard focus within modal content for improved accessibility

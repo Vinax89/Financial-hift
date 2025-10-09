@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Investment scenario simulator with growth projections
  * @description Calculates future investment value with different growth rates

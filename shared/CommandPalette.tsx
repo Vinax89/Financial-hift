@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Command Palette for quick navigation and actions
  * @description Keyboard-driven command palette with Cmd/Ctrl+K shortcut

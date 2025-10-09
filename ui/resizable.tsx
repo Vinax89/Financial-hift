@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * @fileoverview Resizable panel components using react-resizable-panels
  * @description Split layouts with draggable resize handles (horizontal or vertical)

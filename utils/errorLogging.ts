@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Error Logging Utility
  * Provides safe error handling and logging without information leakage
