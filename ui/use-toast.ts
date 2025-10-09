@@ -1,10 +1,19 @@
 import { toast as sonnerToast } from '@/ui/sonner';
+import { ReactNode } from 'react';
 
 // Provider-less toast wrapper that works globally with Sonner.
 // Exposes the same API surface used across the app, without requiring a Provider.
 
+type ToastVariant = "default" | "destructive" | "error" | "success" | "warning" | "warn";
+
+interface ToastOptions {
+  title?: string;
+  description?: string;
+  variant?: ToastVariant;
+}
+
 export function useToast() {
-  const toast = ({ title, description, variant = "default" }) => {
+  const toast = ({ title, description, variant = "default" }: ToastOptions) => {
     // Map variants to Sonner styles
     if (variant === "destructive" || variant === "error") {
       sonnerToast.error(title || "Error", { description });
@@ -22,9 +31,9 @@ export function useToast() {
   };
 
   // Convenience helpers for common variants
-  const success = (title, description) => sonnerToast.success(title || "Success", { description });
-  const error = (title, description) => sonnerToast.error(title || "Error", { description });
-  const warning = (title, description) => sonnerToast.warning(title || "Warning", { description });
+  const success = (title?: string, description?: string) => sonnerToast.success(title || "Success", { description });
+  const error = (title?: string, description?: string) => sonnerToast.error(title || "Error", { description });
+  const warning = (title?: string, description?: string) => sonnerToast.warning(title || "Warning", { description });
 
   // Dismiss not supported per-toast without id; provide a global clear as fallback
   const dismiss = () => sonnerToast.dismiss();
@@ -32,8 +41,12 @@ export function useToast() {
   return { toast, dismiss, success, error, warning };
 }
 
+interface ToastProviderProps {
+  children: ReactNode;
+}
+
 // No-op Provider to maintain backward compatibility if imported/used.
-export function ToastProvider({ children }) {
+export function ToastProvider({ children }: ToastProviderProps) {
   return children;
 }
 

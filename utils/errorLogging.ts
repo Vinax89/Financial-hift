@@ -1,34 +1,40 @@
 /**
  * Error Logging Utility
  * Provides safe error handling and logging without information leakage
- * 
- * Usage:
- * import { logError, sanitizeError } from '@/utils/errorLogging';
- * 
- * try {
- *   await apiCall();
- * } catch (error) {
- *   logError(error, { context: 'AI API call', userId: user.id });
- *   setUserMessage(sanitizeError(error).userMessage);
- * }
  */
 
-const isDevelopment = typeof window !== 'undefined' && 
+import React from 'react';
+
+const isDevelopment = typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+interface SanitizeErrorOptions {
+  fallbackMessage?: string;
+}
+
+interface SanitizedError {
+  userMessage: string;
+  code: string;
+  timestamp: string;
+}
+
+interface ErrorResponse {
+  status: number;
+}
+
+interface ErrorWithResponse extends Error {
+  response?: ErrorResponse;
+}
 
 /**
  * Sanitize error for user display
  * Removes sensitive information while keeping helpful context
- * 
- * @param {Error} error - The error object
- * @param {Object} options - Configuration options
- * @returns {Object} Sanitized error with userMessage and code
  */
-export function sanitizeError(error, options = {}) {
+export function sanitizeError(error: any, options: SanitizeErrorOptions = {}): SanitizedError {
   const { fallbackMessage = 'An unexpected error occurred. Please try again.' } = options;
-  
+
   // Default sanitized response
-  const sanitized = {
+  const sanitized: SanitizedError = {
     userMessage: fallbackMessage,
     code: 'UNKNOWN_ERROR',
     timestamp: new Date().toISOString()
@@ -39,7 +45,7 @@ export function sanitizeError(error, options = {}) {
   // Handle known API errors
   if (error.response) {
     const status = error.response.status;
-    
+
     switch (status) {
       case 400:
         sanitized.userMessage = 'Invalid request. Please check your input and try again.';
@@ -87,18 +93,19 @@ export function sanitizeError(error, options = {}) {
     sanitized.userMessage = error.message || 'Please check your input and try again.';
     sanitized.code = 'VALIDATION_ERROR';
   }
-  
+
   return sanitized;
+}
+
+interface ErrorContext {
+  [key: string]: any;
 }
 
 /**
  * Log error securely
  * Logs full details in development, sanitized in production
- * 
- * @param {Error} error - The error object
- * @param {Object} context - Additional context (component, user action, etc.)
  */
-export function logError(error, context = {}) {
+export function logError(error: any, context: ErrorContext = {}) {
   const errorDetails = {
     timestamp: new Date().toISOString(),
     message: error?.message || 'Unknown error',
@@ -113,7 +120,7 @@ export function logError(error, context = {}) {
 
   // Console logging (visible in development)
   if (isDevelopment) {
-    console.error('🚨 Error:', errorDetails);
+    console.error(' Error:', errorDetails);
   } else {
     // Production: minimal console logging
     console.error('Error:', errorDetails.name, errorDetails.message);
@@ -128,18 +135,16 @@ export function logError(error, context = {}) {
   return errorDetails;
 }
 
+type ActionType = 'fetch' | 'create' | 'update' | 'delete' | 'save' | 'load' | string;
+
 /**
  * Create a user-friendly error message
- * 
- * @param {string} action - What the user was trying to do
- * @param {Error} error - The error that occurred
- * @returns {string} User-friendly message
  */
-export function createUserErrorMessage(action, error) {
+export function createUserErrorMessage(action: ActionType, error: any): string {
   const sanitized = sanitizeError(error);
-  
+
   // Map common actions to friendly messages
-  const actionMessages = {
+  const actionMessages: Record<string, string> = {
     'fetch': 'loading data',
     'create': 'creating',
     'update': 'updating',
@@ -149,31 +154,36 @@ export function createUserErrorMessage(action, error) {
   };
 
   const friendlyAction = actionMessages[action?.toLowerCase()] || action || 'completing the action';
-  
+
   return `Sorry, there was an error ${friendlyAction}. ${sanitized.userMessage}`;
+}
+
+interface ErrorHandlerOptions {
+  context?: ErrorContext;
+  onError?: ((error: SanitizedError) => void) | null;
+  fallback?: any;
 }
 
 /**
  * Error handler for async functions
  * Wraps async functions with error handling
- * 
- * @param {Function} fn - Async function to wrap
- * @param {Object} options - Configuration options
- * @returns {Function} Wrapped function
  */
-export function withErrorHandler(fn, options = {}) {
-  const { 
+export function withErrorHandler<T extends (...args: any[]) => Promise<any>>(
+  fn: T, 
+  options: ErrorHandlerOptions = {}
+): (...args: Parameters<T>) => Promise<any> {
+  const {
     context = {},
     onError = null,
-    fallback = null 
+    fallback = null
   } = options;
 
-  return async (...args) => {
+  return async (...args: Parameters<T>) => {
     try {
       return await fn(...args);
     } catch (error) {
       logError(error, context);
-      
+
       if (onError) {
         onError(sanitizeError(error));
       }
@@ -181,7 +191,7 @@ export function withErrorHandler(fn, options = {}) {
       if (fallback !== null) {
         return fallback;
       }
-      
+
       throw error;
     }
   };
@@ -189,10 +199,10 @@ export function withErrorHandler(fn, options = {}) {
 
 /**
  * React hook for error handling
- * 
+ *
  * Usage:
  * const { handleError, errorMessage, clearError } = useErrorHandler();
- * 
+ *
  * try {
  *   await apiCall();
  * } catch (error) {
@@ -200,9 +210,9 @@ export function withErrorHandler(fn, options = {}) {
  * }
  */
 export function useErrorHandler() {
-  const [errorMessage, setErrorMessage] = React.useState(null);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-  const handleError = React.useCallback((error, action) => {
+  const handleError = React.useCallback((error: any, action: ActionType) => {
     const message = createUserErrorMessage(action, error);
     setErrorMessage(message);
     logError(error, { action });
@@ -215,9 +225,6 @@ export function useErrorHandler() {
   return { handleError, errorMessage, clearError };
 }
 
-// Re-export React for the hook
-import React from 'react';
-
 export default {
   sanitizeError,
   logError,
@@ -225,4 +232,3 @@ export default {
   withErrorHandler,
   useErrorHandler
 };
-

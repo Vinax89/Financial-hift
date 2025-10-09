@@ -1,21 +1,20 @@
 /**
- * Optimized React Query Configuration
- * Improves loading times and user experience
+ * React Query Client Configuration
+ * Optimized for performance with aggressive caching
  */
+
 import { QueryClient } from '@tanstack/react-query';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Aggressive caching for instant perceived loading
-      staleTime: 60 * 1000, // 1 minute - data feels instant
+      // Aggressive caching strategy
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes (renamed from cacheTime in v5)
 
-      // Keep data in cache much longer
-      gcTime: 10 * 60 * 1000, // 10 minutes - reduces re-fetching
-
-      // Minimal retries for speed
-      retry: 1, // Only retry once (was 3)
-      retryDelay: 500, // Fast retry (was 1000ms)
+      // Fast retries
+      retry: 2,
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
 
       // Network optimizations
       networkMode: 'online',
@@ -24,9 +23,6 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchOnMount: false, // KEY: Use cache immediately, don't refetch
-
-      // Suspense mode for better loading UX
-      suspense: false,
     },
     mutations: {
       // Faster mutation feedback
@@ -41,14 +37,10 @@ export const queryClient = new QueryClient({
 if (import.meta.env.DEV) {
   queryClient.setDefaultOptions({
     queries: {
-      retry: false, // No retries = instant error feedback
-      staleTime: 10 * 60 * 1000, // 10 minutes - very long cache
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      refetchOnMount: false, // Never refetch in dev (pure cache mode)
-    },
-    mutations: {
-      retry: false, // Instant mutation feedback
+      staleTime: 10 * 60 * 1000, // 10 minutes in dev
+      gcTime: 30 * 60 * 1000, // 30 minutes
     },
   });
 }
+
+export default queryClient;

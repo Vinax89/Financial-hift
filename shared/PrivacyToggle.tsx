@@ -5,7 +5,11 @@ import { Eye, EyeOff } from "lucide-react";
 import { useToast } from '@/ui/use-toast';
 import { User } from "@/api/entities";
 
-export default function PrivacyToggle({ className }) {
+interface PrivacyToggleProps {
+  className?: string;
+}
+
+export default function PrivacyToggle({ className }: PrivacyToggleProps) {
   const { toast } = useToast();
   const [enabled, setEnabled] = React.useState(false);
 
@@ -54,4 +58,3 @@ export default function PrivacyToggle({ className }) {
     </Button>
   );
 }
-

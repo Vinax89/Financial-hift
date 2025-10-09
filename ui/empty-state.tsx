@@ -5,18 +5,18 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { Inbox } from 'lucide-react';
+import { Inbox, LucideIcon } from 'lucide-react';
+
+interface EmptyStateProps {
+  icon?: LucideIcon;
+  title?: string;
+  description?: string;
+  action?: React.ReactNode;
+  className?: string;
+}
 
 /**
  * Empty state placeholder component
- * @component
- * @param {Object} props - Component props
- * @param {React.ComponentType} [props.icon=Inbox] - Icon component to display
- * @param {string} [props.title='No Data Found'] - Empty state heading
- * @param {string} [props.description] - Explanation text
- * @param {React.ReactNode} [props.action] - Optional action button/link
- * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Empty state card
  */
 export function EmptyState({
   icon: Icon = Inbox,
@@ -24,7 +24,7 @@ export function EmptyState({
   description = "There is no data to display here yet.",
   action,
   className,
-}) {
+}: EmptyStateProps) {
   return (
     <div
       className={cn(

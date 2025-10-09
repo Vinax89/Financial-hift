@@ -1,8 +1,19 @@
-export async function sleep(ms) {
+export async function sleep(ms: number): Promise<void> {
   return new Promise((res) => setTimeout(res, ms));
 }
 
-export async function retryWithBackoff(fn, options = {}) {
+interface RetryOptions {
+  retries?: number;
+  baseDelay?: number;
+  factor?: number;
+  jitter?: boolean;
+  isRetryable?: (error: any) => boolean;
+}
+
+export async function retryWithBackoff<T>(
+  fn: () => Promise<T>, 
+  options: RetryOptions = {}
+): Promise<T> {
   const {
     retries = 3,
     baseDelay = 300,

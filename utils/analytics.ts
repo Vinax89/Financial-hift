@@ -3,13 +3,51 @@
  * @description Provides analytics tracking for user actions, page views, and events
  */
 
+// Extend Window interface for gtag
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
+interface GtagConfig {
+  send_page_view?: boolean;
+  [key: string]: any;
+}
+
+interface EventParams {
+  [key: string]: any;
+}
+
+interface TrackActionParams {
+  event_category: string;
+  event_label: string;
+  value?: number;
+}
+
+interface TransactionItem {
+  item_id: string;
+  item_name: string;
+  price: number;
+  quantity?: number;
+  [key: string]: any;
+}
+
+interface Transaction {
+  transaction_id: string;
+  value: number;
+  currency?: string;
+  items?: TransactionItem[];
+}
+
 /**
  * Initialize Google Analytics 4
  * Call this in main.jsx or App.jsx
  */
-export function initAnalytics() {
+export function initAnalytics(): void {
   const trackingId = import.meta.env.VITE_GA_TRACKING_ID;
-  
+
   if (!trackingId) {
     if (import.meta.env.DEV) {
       console.log('[Analytics] GA4 Tracking ID not configured');
@@ -25,15 +63,15 @@ export function initAnalytics() {
 
   // Initialize dataLayer
   window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    window.dataLayer.push(arguments);
+  function gtag(...args: any[]): void {
+    window.dataLayer.push(args);
   }
   window.gtag = gtag;
 
   gtag('js', new Date());
   gtag('config', trackingId, {
     send_page_view: false // We'll manually track page views
-  });
+  } as GtagConfig);
 
   if (import.meta.env.DEV) {
     console.log('[Analytics] GA4 initialized:', trackingId);
@@ -42,16 +80,14 @@ export function initAnalytics() {
 
 /**
  * Track a page view
- * @param {string} pagePath - The page path (e.g., '/dashboard')
- * @param {string} pageTitle - The page title
  */
-export function trackPageView(pagePath, pageTitle = '') {
+export function trackPageView(pagePath: string, pageTitle: string = ''): void {
   if (typeof window.gtag !== 'undefined') {
     window.gtag('event', 'page_view', {
       page_path: pagePath,
       page_title: pageTitle || document.title
     });
-    
+
     if (import.meta.env.DEV) {
       console.log('[Analytics] Page view:', pagePath);
     }
@@ -60,13 +96,11 @@ export function trackPageView(pagePath, pageTitle = '') {
 
 /**
  * Track a custom event
- * @param {string} eventName - Name of the event (e.g., 'transaction_created')
- * @param {Object} eventParams - Event parameters
  */
-export function trackEvent(eventName, eventParams = {}) {
+export function trackEvent(eventName: string, eventParams: EventParams = {}): void {
   if (typeof window.gtag !== 'undefined') {
     window.gtag('event', eventName, eventParams);
-    
+
     if (import.meta.env.DEV) {
       console.log('[Analytics] Event:', eventName, eventParams);
     }
@@ -75,46 +109,46 @@ export function trackEvent(eventName, eventParams = {}) {
 
 /**
  * Track user action
- * @param {string} action - The action name (e.g., 'create_budget')
- * @param {string} category - Category (e.g., 'Budget')
- * @param {string} label - Optional label
- * @param {number} value - Optional numeric value
  */
-export function trackAction(action, category, label = '', value = null) {
-  const params = {
+export function trackAction(
+  action: string, 
+  category: string, 
+  label: string = '', 
+  value: number | null = null
+): void {
+  const params: TrackActionParams = {
     event_category: category,
     event_label: label
   };
-  
+
   if (value !== null) {
     params.value = value;
   }
-  
+
   trackEvent(action, params);
 }
 
 /**
  * Track conversion event
- * @param {string} conversionName - Name of conversion (e.g., 'signup', 'goal_completed')
- * @param {number} value - Monetary value (optional)
- * @param {string} currency - Currency code (default: USD)
  */
-export function trackConversion(conversionName, value = null, currency = 'USD') {
-  const params = { currency };
-  
+export function trackConversion(
+  conversionName: string, 
+  value: number | null = null, 
+  currency: string = 'USD'
+): void {
+  const params: EventParams = { currency };
+
   if (value !== null) {
     params.value = value;
   }
-  
+
   trackEvent(conversionName, params);
 }
 
 /**
  * Track feature usage
- * @param {string} featureName - Name of feature (e.g., 'debt_simulator')
- * @param {Object} properties - Additional properties
  */
-export function trackFeatureUsage(featureName, properties = {}) {
+export function trackFeatureUsage(featureName: string, properties: EventParams = {}): void {
   trackEvent('feature_used', {
     feature_name: featureName,
     ...properties
@@ -123,11 +157,12 @@ export function trackFeatureUsage(featureName, properties = {}) {
 
 /**
  * Track error occurrence
- * @param {string} errorMessage - Error message
- * @param {string} errorType - Type of error (e.g., 'api_error', 'validation_error')
- * @param {boolean} fatal - Whether error was fatal
  */
-export function trackError(errorMessage, errorType = 'error', fatal = false) {
+export function trackError(
+  errorMessage: string, 
+  errorType: string = 'error', 
+  fatal: boolean = false
+): void {
   trackEvent('exception', {
     description: errorMessage,
     error_type: errorType,
@@ -137,12 +172,11 @@ export function trackError(errorMessage, errorType = 'error', fatal = false) {
 
 /**
  * Set user properties for analytics
- * @param {Object} properties - User properties (e.g., { user_id, plan_type })
  */
-export function setUserProperties(properties) {
+export function setUserProperties(properties: EventParams): void {
   if (typeof window.gtag !== 'undefined') {
     window.gtag('set', 'user_properties', properties);
-    
+
     if (import.meta.env.DEV) {
       console.log('[Analytics] User properties set:', properties);
     }
@@ -151,12 +185,13 @@ export function setUserProperties(properties) {
 
 /**
  * Track timing/performance metric
- * @param {string} name - Metric name (e.g., 'api_call_duration')
- * @param {number} value - Duration in milliseconds
- * @param {string} category - Category (e.g., 'API')
- * @param {string} label - Optional label
  */
-export function trackTiming(name, value, category = 'Performance', label = '') {
+export function trackTiming(
+  name: string, 
+  value: number, 
+  category: string = 'Performance', 
+  label: string = ''
+): void {
   trackEvent('timing_complete', {
     name,
     value: Math.round(value),
@@ -167,9 +202,8 @@ export function trackTiming(name, value, category = 'Performance', label = '') {
 
 /**
  * Track ecommerce/transaction (for subscription tracking)
- * @param {Object} transaction - Transaction details
  */
-export function trackTransaction(transaction) {
+export function trackTransaction(transaction: Transaction): void {
   const {
     transaction_id,
     value,
@@ -189,22 +223,22 @@ export function trackTransaction(transaction) {
  * React Hook for tracking page views
  * Use in your Route components
  */
-export function usePageTracking() {
-  if (typeof window === 'undefined') return;
+export function usePageTracking(): ((pagePath: string, pageTitle?: string) => void) | undefined {
+  if (typeof window === 'undefined') return undefined;
 
-  return (pagePath, pageTitle) => {
-    trackPageView(pagePath, pageTitle);
+  return (pagePath: string, pageTitle?: string) => {
+    trackPageView(pagePath, pageTitle || '');
   };
 }
 
 /**
  * Higher-order function to wrap async functions with timing tracking
- * @param {Function} fn - Async function to track
- * @param {string} name - Name for the timing metric
- * @returns {Function} Wrapped function
  */
-export function withTiming(fn, name) {
-  return async (...args) => {
+export function withTiming<T extends (...args: any[]) => Promise<any>>(
+  fn: T, 
+  name: string
+): (...args: Parameters<T>) => Promise<ReturnType<T>> {
+  return async (...args: Parameters<T>): Promise<ReturnType<T>> => {
     const startTime = performance.now();
     try {
       const result = await fn(...args);
@@ -234,4 +268,3 @@ export default {
   usePageTracking,
   withTiming
 };
-
