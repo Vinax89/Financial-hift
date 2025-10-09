@@ -11,6 +11,7 @@ import { formatCurrency } from '../utils/calculations';
 import { validateShift } from '../utils/validation';
 import { format } from 'date-fns';
 import { ErrorMessage, InlineError } from '@/shared/ErrorMessage';
+import { logError } from '@/utils/logger';
 
 // Simple field error component
 const FieldError = ({ error, className }) => {
@@ -168,7 +169,7 @@ export default function FastShiftForm({ shift, onSubmit, onCancel, allShifts = [
             
             await onSubmit(submitData);
         } catch (error) {
-            console.error('Submit error:', error);
+            logError('Submit error', error);
         } finally {
             setIsSubmitting(false);
         }

@@ -10,6 +10,7 @@ import { ThemedProgress } from '../ui/enhanced-components';
 import { Card, CardContent } from '@/ui/card';
 import { Shift } from '@/api/entities';
 import { toast } from 'sonner';
+import { logError } from '@/utils/logger';
 
 /**
  * Shift import component with CSV parsing
@@ -109,7 +110,7 @@ function ShiftImport() {
                 } catch (err) {
                     errorCount++;
                     if (import.meta.env.DEV) {
-                        console.error(`Failed to parse row ${i+1}:`, err);
+                        logError(`Failed to parse row ${i+1}`, err);
                     }
                     toast.error(`Import Error on row ${i + 2}`, { description: err.message });
                 }

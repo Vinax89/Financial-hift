@@ -10,6 +10,7 @@ import { PaycheckSettings } from '@/api/entities';
 import { useToast } from '@/ui/use-toast';
 import { Switch } from '@/ui/switch';
 import { computeTaxBurden } from "@/api/functions";
+import { logError } from '@/utils/logger';
 
 // A mock calculation function - replace with a real one if available
 const mockCalculatePaycheck = (settings) => {
@@ -174,7 +175,7 @@ export default function PaycheckCalculator() {
                 annualBreakdown: data.breakdown // keep full annual for potential future views
             });
         } catch (error) {
-            console.error("Compute tax burden error:", error);
+            logError("Compute tax burden error", error);
             toast({ title: "Error", description: "Failed to compute zip-aware taxes. Please check your inputs.", variant: "destructive" });
         } finally {
             setIsComputing(false);

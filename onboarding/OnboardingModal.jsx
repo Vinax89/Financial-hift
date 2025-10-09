@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { User } from "@/api/entities";
 import { PaycheckSettings } from "@/api/entities";
 import { useToast } from "@/ui/use-toast";
+import { logError } from "@/utils/logger";
 
 // The requested change 'export { default } from "./OnboardingModal";' would turn this file
 // into an index file re-exporting another file named OnboardingModal.
@@ -43,7 +44,7 @@ export default function OnboardingModal({ open, onClose }) {
           setHoursPerWeek(String(s.hours_per_week || "40"));
         }
       } catch (error) {
-        console.error("Failed to load user or paycheck settings:", error);
+        logError("Failed to load user or paycheck settings", error);
         // ignore - user will fill it out
       }
     })();

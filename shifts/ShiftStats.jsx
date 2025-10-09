@@ -9,6 +9,7 @@ import { Skeleton } from '@/ui/skeleton';
 import { DollarSign, Clock, TrendingUp, Calendar } from 'lucide-react';
 import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, parseISO, isWithinInterval } from 'date-fns';
 import { formatCurrency } from '../utils/calculations';
+import { logError } from '@/utils/logger';
 
 /**
  * Individual stat card component
@@ -91,7 +92,7 @@ function ShiftStats({ shifts, isLoading }) {
                 }
             } catch (e) {
                 if (import.meta.env.DEV) {
-                    console.error("Could not parse shift date:", shift.start_datetime);
+                    logError("Could not parse shift date", e);
                 }
             }
         });

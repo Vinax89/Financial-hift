@@ -10,6 +10,7 @@
  */
 
 import { createLazyRoute, LoadPriority, createPrioritizedLazyComponent } from '@/utils/lazyLoading';
+import { logDebug } from '@/utils/logger';
 
 /**
  * Critical pages - Load immediately
@@ -371,7 +372,7 @@ export function prefetchRoutes(priority = 'high') {
 export function trackRouteChange(route, duration) {
     if (import.meta.env.PROD) {
         // Send to analytics service
-        console.log('Route change:', {
+        logDebug('Route change:', {
             path: route.path,
             name: route.name,
             duration,

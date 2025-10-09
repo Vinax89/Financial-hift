@@ -18,6 +18,7 @@ import { format } from "date-fns";
 import { motion } from "framer-motion";
 import { validateTransaction, sanitizeInput } from "@/utils/validation";
 import { useToast } from '@/ui/toast';
+import { logError } from '@/utils/logger';
 
 /**
  * Transaction categories organized by type
@@ -109,7 +110,7 @@ function TransactionForm({ transaction, onSubmit, onCancel }) {
             );
         } catch (error) {
             toast.error("Error", "Failed to save transaction. Please try again.");
-            if (import.meta.env.DEV) console.error(error);
+            if (import.meta.env.DEV) logError('Failed to save transaction', error);
         } finally {
             setIsSubmitting(false);
         }
