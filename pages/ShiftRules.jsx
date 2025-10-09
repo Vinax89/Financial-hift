@@ -18,10 +18,10 @@ import ShiftRuleList from '@/shift-rules/ShiftRuleList';
 import ShiftRulePreview from '@/shift-rules/ShiftRulePreview';
 
 export default function ShiftRulesPage() {
-    const [shiftRules, setShiftRules] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [editingRule, setEditingRule] = useState(null);
+    const [shiftRules, setShiftRules] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [editingRule, setEditingRule] = useState<any>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
     const [activeTab, setActiveTab] = useState('overview');
@@ -276,7 +276,7 @@ export default function ShiftRulesPage() {
                                         <Input
                                             placeholder="Search by name, facility, or description..."
                                             value={searchTerm}
-                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                            onChange={(e: any) => setSearchTerm(e.target.value)}
                                             className="pl-10"
                                         />
                                     </div>
@@ -284,7 +284,7 @@ export default function ShiftRulesPage() {
                                         <Filter className="h-4 w-4 text-muted-foreground" />
                                         <select
                                             value={filterStatus}
-                                            onChange={(e) => setFilterStatus(e.target.value)}
+                                            onChange={(e: any) => setFilterStatus(e.target.value)}
                                             className="px-3 py-2 border border-input bg-background text-foreground rounded-md"
                                         >
                                             <option value="all">All Status</option>

@@ -38,7 +38,7 @@ const formatCurrency = (amount) => {
  * @param {boolean} props.isLoading - Loading state
  * @returns {JSX.Element}
  */
-function CashflowCalendar({ calendarData, currentDate, isLoading }) {
+interface CashflowCalendarProps { [key: string]: any; }`n`nfunction CashflowCalendar({ calendarData, currentDate, isLoading }: CashflowCalendarProps) {
     const { theme } = useTheme();
     
     // Handle cases where calendarData might be empty or not yet loaded

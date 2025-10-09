@@ -46,7 +46,7 @@ const coerceNumber = (value) => {
  * @param {Function} props.onCancel - Cancel handler
  * @returns {JSX.Element}
  */
-function GoalForm({ goal, onSubmit, onCancel }) {
+interface GoalFormProps { [key: string]: any; }`n`nfunction GoalForm({ goal, onSubmit, onCancel }: GoalFormProps) {
     const [formState, setFormState] = useState(defaultGoal);
 
     useEffect(() => {

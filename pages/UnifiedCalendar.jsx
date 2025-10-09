@@ -63,8 +63,8 @@ function occurrencesFromAnchorEveryNDays(anchorISO, nDays, rangeStart, rangeEnd,
 
 export default function UnifiedCalendar() {
   const { bills, debts, shifts, transactions, loading, refreshData } = useFinancialData();
-  const [bnpl, setBnpl] = React.useState([]);
-  const [bnplLoading, setBnplLoading] = React.useState(true);
+  const [bnpl, setBnpl] = React.useState<any[]>([]);
+  const [bnplLoading, setBnplLoading] = React.useState<boolean>(true);
 
   const [month, setMonth] = useLocalStorage("apex-finance:calendar-month", startOfMonth(new Date()).toISOString());
   const monthDate = React.useMemo(() => new Date(month), [month]);
@@ -240,14 +240,14 @@ export default function UnifiedCalendar() {
     // Apply search filter
     const q = debouncedQuery;
     if (q) {
-      return out.filter((e) => (e.title || "").toLowerCase().includes(q) || (e.subtitle || "").toLowerCase().includes(q));
+      return out.filter((e: any) => (e.title || "").toLowerCase().includes(q) || (e.subtitle || "").toLowerCase().includes(q));
     }
     return out;
   }, [filters, shifts, bills, debts, bnpl, transactions, rangeStart, rangeEnd, debouncedQuery, monthDate]);
 
   const eventsByDate = React.useMemo(() => {
     const m = new Map();
-    events.forEach((e) => {
+    events.forEach((e: any) => {
       const k = format(e.date, "yyyy-MM-dd");
       if (!m.has(k)) m.set(k, []);
       m.get(k).push(e);
@@ -257,7 +257,7 @@ export default function UnifiedCalendar() {
 
   // keyboard shortcuts: ← → to move months, T to go today
   React.useEffect(() => {
-    const onKey = (e) => {
+    const onKey = (e: any) => {
       if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
       if (e.key === "ArrowLeft") {
         setMonth(startOfMonth(addMonths(monthDate, -1)).toISOString());
@@ -281,7 +281,7 @@ export default function UnifiedCalendar() {
     setMonth(startOfMonth(new Date()).toISOString());
   }, [setMonth]);
 
-  const handleGoToDate = (e) => {
+  const handleGoToDate = (e: any) => {
     const val = e.target.value; // yyyy-MM
     if (!val) return;
     const [y, m] = val.split("-").map((x) => parseInt(x, 10));
@@ -421,7 +421,7 @@ export default function UnifiedCalendar() {
                   className="pl-8 w-64"
                   placeholder="Search events..."
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e: any) => setQuery(e.target.value)}
                 />
               </div>
             </div>

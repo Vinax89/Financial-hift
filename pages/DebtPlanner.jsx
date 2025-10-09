@@ -12,10 +12,10 @@ import { Plus, Landmark } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 
 export default function DebtPlannerPage() {
-    const [debts, setDebts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [editingDebt, setEditingDebt] = useState(null);
+    const [debts, setDebts] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [editingDebt, setEditingDebt] = useState<any>(null);
 
     const loadDebts = async () => {
         setLoading(true);

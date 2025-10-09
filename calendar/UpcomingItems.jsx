@@ -56,7 +56,7 @@ const Item = ({ icon, title, date, amount, amountColor }) => (
  * @param {Array<Object>} props.bnplPlans - BNPL payment plans
  * @returns {JSX.Element} Upcoming items card
  */
-function UpcomingItems({ shifts, bills, bnplPlans }) {
+interface UpcomingItemsProps { [key: string]: any; }`n`nfunction UpcomingItems({ shifts, bills, bnplPlans }: UpcomingItemsProps) {
     const upcomingBnpl = bnplPlans
         .filter(plan => new Date(plan.next_due_date) > new Date())
         .slice(0, 3);

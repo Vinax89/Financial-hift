@@ -40,7 +40,7 @@ const InvestmentForm = ({ investment, onSubmit, onCancel }) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         const numericData = {
             ...formData,
@@ -66,11 +66,11 @@ const InvestmentForm = ({ investment, onSubmit, onCancel }) => {
                         <div className="grid md:grid-cols-3 gap-4">
                             <div className="space-y-1">
                                 <Label htmlFor="name">Name</Label>
-                                <Input id="name" value={formData.name} onChange={(e) => handleChange('name', e.target.value)} required />
+                                <Input id="name" value={formData.name} onChange={(e: any) => handleChange('name', e.target.value)} required />
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="symbol">Symbol</Label>
-                                <Input id="symbol" value={formData.symbol} onChange={(e) => handleChange('symbol', e.target.value)} />
+                                <Input id="symbol" value={formData.symbol} onChange={(e: any) => handleChange('symbol', e.target.value)} />
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="type">Type</Label>
@@ -81,15 +81,15 @@ const InvestmentForm = ({ investment, onSubmit, onCancel }) => {
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="shares">Shares</Label>
-                                <Input id="shares" type="number" step="any" value={formData.shares} onChange={(e) => handleChange('shares', e.target.value)} required />
+                                <Input id="shares" type="number" step="any" value={formData.shares} onChange={(e: any) => handleChange('shares', e.target.value)} required />
                             </div>
                             <div className="space-y-1">
                                 <Label htmlFor="purchase_price">Purchase Price</Label>
-                                <Input id="purchase_price" type="number" step="any" value={formData.purchase_price} onChange={(e) => handleChange('purchase_price', e.target.value)} required />
+                                <Input id="purchase_price" type="number" step="any" value={formData.purchase_price} onChange={(e: any) => handleChange('purchase_price', e.target.value)} required />
                             </div>
                              <div className="space-y-1">
                                 <Label htmlFor="current_price">Current Price</Label>
-                                <Input id="current_price" type="number" step="any" value={formData.current_price} onChange={(e) => handleChange('current_price', e.target.value)} required />
+                                <Input id="current_price" type="number" step="any" value={formData.current_price} onChange={(e: any) => handleChange('current_price', e.target.value)} required />
                             </div>
                         </div>
                         <div className="flex justify-end gap-3">
@@ -111,10 +111,15 @@ const InvestmentForm = ({ investment, onSubmit, onCancel }) => {
  * @param {Function} props.refreshData - Callback to refresh data after changes
  * @returns {JSX.Element}
  */
-function InvestmentTracker({ investments, refreshData }) {
+interface InvestmentTrackerProps {
+  investments?: any[];
+  refreshData?: () => void;
+}
+
+function InvestmentTracker({ investments, refreshData }: InvestmentTrackerProps) {
     const { toast } = useToast();
     const [showForm, setShowForm] = useState(false);
-    const [editingInvestment, setEditingInvestment] = useState(null);
+    const [editingInvestment, setEditingInvestment] = useState<any>(null);
 
     const investmentTotals = useMemo(() => {
         if (!investments) return { totalValue: 0, totalCost: 0, totalGainLoss: 0, performance: 0 };

@@ -105,7 +105,7 @@ export function ErrorMessage({
  * Inline error message (smaller, more compact)
  * @component
  */
-export function InlineError({ message, className }) {
+export interface InlineErrorProps { [key: string]: any; }`n`nfunction InlineError({ message, className }: InlineErrorProps) {
   if (!message) return null;
   
   return (
@@ -120,7 +120,7 @@ export function InlineError({ message, className }) {
  * Form field error message
  * @component
  */
-export function FieldError({ error, className }) {
+export interface FieldErrorProps { [key: string]: any; }`n`nfunction FieldError({ error, className }: FieldErrorProps) {
   if (!error) return null;
   
   return (

@@ -116,10 +116,10 @@ const navigationItems = [
 function LayoutContent({ children, currentPageName }) {
     const location = useLocation();
     const { gameState, isLoading: gamificationLoading } = useGamification();
-    const [user, setUser] = React.useState(null);
-    const [userLoading, setUserLoading] = React.useState(true);
+    const [user, setUser] = React.useState<any>(null);
+    const [userLoading, setUserLoading] = React.useState<boolean>(true);
     const { setTheme } = useTheme();
-    const [perfLite, setPerfLite] = React.useState(false);
+    const [perfLite, setPerfLite] = React.useState<boolean>(false);
 
     // Effect for initializing and managing global privacy mode behavior (Alt-hold reveal, localStorage persistence)
     React.useEffect(() => {
@@ -142,7 +142,7 @@ function LayoutContent({ children, currentPageName }) {
         }
 
         // Press-and-hold Alt to temporarily reveal sensitive amounts
-        const onKeyDown = (e) => {
+        const onKeyDown = (e: any) => {
             if (e.altKey) {
                 document.documentElement.setAttribute("data-privacy", "false");
             }
@@ -157,7 +157,7 @@ function LayoutContent({ children, currentPageName }) {
         window.addEventListener("keyup", onKeyUp);
 
         // Sync perf-lite from other tabs
-        const onStorage = (e) => {
+        const onStorage = (e: any) => {
             if (e.key === "apex-finance:perf-lite") {
                 const lite = e.newValue === "true";
                 setPerfLite(lite);
@@ -485,7 +485,7 @@ function LayoutContent({ children, currentPageName }) {
                                     </SidebarGroupLabel>
                                     <SidebarGroupContent>
                                         <SidebarMenu className="space-y-2">
-                                            {navigationItems.map((item) => {
+                                            {navigationItems.map((item: any) => {
                                                 // Hide admin-only items for non-admin users
                                                 if (item.adminOnly && user?.role !== 'admin') return null;
                                                 return (

@@ -21,7 +21,7 @@ import { DashboardCardSkeleton } from "@/shared/SkeletonLoaders";
  * @param {boolean} props.isLoading - Loading state
  * @returns {JSX.Element}
  */
-function FinancialSummary({ monthlyIncome, monthlyExpenses, netIncome, totalGoals, isLoading }) {
+interface FinancialSummaryProps { [key: string]: any; }`n`nfunction FinancialSummary({ monthlyIncome, monthlyExpenses, netIncome, totalGoals, isLoading }: FinancialSummaryProps) {
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',

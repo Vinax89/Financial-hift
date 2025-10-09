@@ -133,7 +133,7 @@ export default function DataImporter() {
           </div>
           <div className="space-y-1 md:col-span-2">
             <Label>File (CSV, XLSX, PDF image receipts supported)</Label>
-            <Input type="file" accept=".csv,.xlsx,.xls,.pdf,.png,.jpg,.jpeg" onChange={(e) => handleFile(e.target.files?.[0])} />
+            <Input type="file" accept=".csv,.xlsx,.xls,.pdf,.png,.jpg,.jpeg" onChange={(e: any) => handleFile(e.target.files?.[0])} />
           </div>
         </div>
         <div className="flex gap-2">

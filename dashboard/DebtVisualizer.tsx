@@ -58,7 +58,11 @@ const CustomTooltip = ({ active, payload }) => {
  * @param {Array} props.debts - List of debt accounts with balances and APR
  * @returns {JSX.Element}
  */
-function DebtVisualizer({ debts }) {
+interface DebtVisualizerProps {
+  debts: any[];
+}
+
+function DebtVisualizer({ debts }: DebtVisualizerProps) {
     const { isDark } = useTheme();
     const [viewMode, setViewMode] = useState('pie');
     const DEBT_COLORS = isDark ? DEBT_COLORS_DARK : DEBT_COLORS_LIGHT;

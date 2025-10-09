@@ -84,7 +84,7 @@ function TransactionForm({ transaction, onSubmit, onCancel }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         setIsSubmitting(true);
 
@@ -141,7 +141,7 @@ function TransactionForm({ transaction, onSubmit, onCancel }) {
                             id="title"
                             placeholder="e.g., Lunch at restaurant"
                             value={formData.title}
-                            onChange={(e) => handleChange('title', e.target.value)}
+                            onChange={(e: any) => handleChange('title', e.target.value)}
                             className={`transition-all duration-200 ${errors.title ? 'border-destructive focus:border-destructive' : ''}`}
                             maxLength={200}
                         />
@@ -168,7 +168,7 @@ function TransactionForm({ transaction, onSubmit, onCancel }) {
                                 placeholder="0.00"
                                 className={`pl-10 transition-all duration-200 ${errors.amount ? 'border-destructive focus:border-destructive' : ''}`}
                                 value={formData.amount}
-                                onChange={(e) => handleChange('amount', e.target.value)}
+                                onChange={(e: any) => handleChange('amount', e.target.value)}
                             />
                         </div>
                         {errors.amount && (
@@ -287,7 +287,7 @@ function TransactionForm({ transaction, onSubmit, onCancel }) {
                             id="notes"
                             placeholder="Additional notes (optional)"
                             value={formData.notes}
-                            onChange={(e) => handleChange('notes', e.target.value)}
+                            onChange={(e: any) => handleChange('notes', e.target.value)}
                             className="resize-none transition-all duration-200"
                             rows={3}
                             maxLength={500}

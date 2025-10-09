@@ -17,7 +17,7 @@ import { SlidersHorizontal } from "lucide-react";
  * @param {Function} props.onChange - Settings change handler
  * @returns {JSX.Element} Settings popover
  */
-function CalendarSettings({ value, onChange }) {
+interface CalendarSettingsProps { [key: string]: any; }`n`nfunction CalendarSettings({ value, onChange }: CalendarSettingsProps) {
   const v = value || { showNetChips: true, compactMode: false, highlightToday: true };
   /**
    * Update a specific setting

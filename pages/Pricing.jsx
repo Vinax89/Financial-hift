@@ -8,8 +8,8 @@ import { Subscription } from "@/api/entities";
 import { User } from "@/api/entities";
 
 export default function Pricing() {
-  const [plans, setPlans] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [plans, setPlans] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {
     (async () => {

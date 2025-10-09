@@ -15,7 +15,7 @@ import { Card } from "@/ui/card";
  * @param {Function} props.onChange - Filter change handler
  * @returns {JSX.Element} Filter switches grid
  */
-function FiltersToolbarInner({ filters, onChange }) {
+interface FiltersToolbarInnerProps { [key: string]: any; }`n`nfunction FiltersToolbarInner({ filters, onChange }: FiltersToolbarInnerProps) {
   /**
    * Toggle a specific filter
    * @param {string} key - Filter key to toggle

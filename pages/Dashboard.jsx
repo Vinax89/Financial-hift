@@ -1,4 +1,4 @@
-﻿
+
 import React, { useEffect, useMemo, Suspense, useCallback } from 'react';
 import { useTransactions, useShifts, useGoals, useDebts, useBudgets, useBills, useInvestments } from '@/hooks/useEntityQueries';
 import { Loading, ShimmerBox, CardLoading, ChartLoading } from '@/ui/loading';
@@ -80,7 +80,7 @@ export default function Dashboard() {
     const { isOled } = useTheme();
     const { toast } = useToast();
     const [chaosMode, setChaosMode] = useLocalStorage('apex-finance:chaos-mode', false);
-    const [showOnboarding, setShowOnboarding] = React.useState(false);
+    const [showOnboarding, setShowOnboarding] = React.useState<boolean>(false);
 
     // Determine initial tab: URL param > saved > default fallback
     const allowedTabs = useMemo(() => ["overview", "debts", "budget", "tools", "automations", "progress"], []);
@@ -289,7 +289,7 @@ export default function Dashboard() {
 
     // Keyboard shortcut: 'r' to refresh (Shift+R = forced)
     React.useEffect(() => {
-        const onKeyDown = (e) => {
+        const onKeyDown = (e: any) => {
             const key = (e && typeof e.key === 'string') ? e.key.toLowerCase() : '';
             if (key === 'r' && !e.metaKey && !e.ctrlKey && !e.altKey) {
                 e.preventDefault?.();
@@ -302,7 +302,7 @@ export default function Dashboard() {
 
     // Listen for global refresh events from Command Palette
     React.useEffect(() => {
-        const handler = (e) => {
+        const handler = (e: any) => {
             handleRefresh();
         };
         window.addEventListener("dashboard:refresh", handler);
@@ -536,7 +536,7 @@ export default function Dashboard() {
                                 <div className="mb-4">
                                     <h3 className="text-lg font-semibold">Paycheck / Income Viability</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        Income Viability = Gross Income âˆ’ (Debt Burden + Tax Burden + Cost of Living)
+                                        Income Viability = Gross Income − (Debt Burden + Tax Burden + Cost of Living)
                                     </p>
                                 </div>
                                 <Suspense fallback={<CardLoading />}>

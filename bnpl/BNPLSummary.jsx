@@ -15,7 +15,7 @@ import { DashboardCardSkeleton } from '@/shared/SkeletonLoaders';
  * @param {boolean} props.isLoading - Loading state
  * @returns {JSX.Element} Summary cards grid
  */
-function BNPLSummary({ plans, isLoading }) {
+interface BNPLSummaryProps { [key: string]: any; }`n`nfunction BNPLSummary({ plans, isLoading }: BNPLSummaryProps) {
     /**
      * Calculate BNPL summary statistics
      */

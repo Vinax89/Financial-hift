@@ -58,7 +58,7 @@ const formatDate = (value) => {
  * @param {Function} props.onDelete - Delete goal handler
  * @returns {JSX.Element} Goals table
  */
-function GoalList({ goals = [], onEdit, onDelete }) {
+interface GoalListProps { [key: string]: any; }`n`nfunction GoalList({ goals = [], onEdit, onDelete }: GoalListProps) {
     return (
         <Table>
             <TableHeader>

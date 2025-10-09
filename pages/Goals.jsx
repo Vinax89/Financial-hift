@@ -23,8 +23,8 @@ export default function GoalsPage() {
     const deleteGoal = useDeleteGoal();
     
     const { toast } = useToast();
-    const [showForm, setShowForm] = useState(false);
-    const [editingGoal, setEditingGoal] = useState(null);
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [editingGoal, setEditingGoal] = useState<any>(null);
 
     const handleFormSubmit = async (data) => {
         try {

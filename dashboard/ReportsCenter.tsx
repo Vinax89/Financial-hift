@@ -65,7 +65,14 @@ const getCategoryData = (transactions) => {
  * @param {Array} props.investments - Investment portfolio (unused currently)
  * @returns {JSX.Element}
  */
-function ReportsCenter({ transactions, debts, goals, investments }) {
+interface ReportsCenterProps {
+  transactions?: any[];
+  budgets?: any[];
+  debts?: any[];
+  goals?: any[];
+}
+
+function ReportsCenter({ transactions, debts, goals, investments }: ReportsCenterProps) {
     const monthlyData = getMonthlyData(transactions);
     const categoryData = getCategoryData(transactions);
 

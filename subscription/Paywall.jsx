@@ -26,7 +26,7 @@ import { createPageUrl } from "@/utils";
  * @param {string} [props.description="Upgrade to access this feature."] - Description text
  * @returns {JSX.Element}
  */
-function Paywall({ featureKey = "pro_feature", title = "Unlock Pro Features", description = "Upgrade to access this feature." }) {
+interface PaywallProps { [key: string]: any; }`n`nfunction Paywall({ featureKey = "pro_feature", title = "Unlock Pro Features", description = "Upgrade to access this feature." }: PaywallProps) {
   const [plans, setPlans] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const { user } = useSubscription();

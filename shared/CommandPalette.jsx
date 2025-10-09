@@ -28,7 +28,7 @@ export default function CommandPalette() {
   const { cycleTheme, actualTheme } = useTheme();
 
   React.useEffect(() => {
-    const down = (e) => {
+    const down = (e: any) => {
       if ((e.key === "k" || e.key === "K") && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         setOpen((o) => !o);
@@ -70,7 +70,7 @@ export default function CommandPalette() {
           <CommandEmpty>No results found.</CommandEmpty>
 
           <CommandGroup heading="Navigate">
-            {navItems.map((item) => (
+            {navItems.map((item: any) => (
               <CommandItem
                 key={item.label}
                 onSelect={() => {

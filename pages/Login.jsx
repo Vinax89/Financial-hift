@@ -17,15 +17,15 @@ import { logError, logInfo } from '@/utils/logger.js';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const location = useLocation();
     const { toast } = useToast();
 
     const from = location.state?.from || '/dashboard';
 
-    const handleEmailLogin = async (e) => {
+    const handleEmailLogin = async (e: any) => {
         e.preventDefault();
         
         if (!email || !password) {
@@ -115,7 +115,7 @@ export default function Login() {
                                     type="email"
                                     placeholder="you@example.com"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e: any) => setEmail(e.target.value)}
                                     disabled={isLoading}
                                     className="pl-10"
                                     autoComplete="email"
@@ -141,7 +141,7 @@ export default function Login() {
                                     type={showPassword ? "text" : "password"}
                                     placeholder=""
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e: any) => setPassword(e.target.value)}
                                     disabled={isLoading}
                                     className="pl-10 pr-10"
                                     autoComplete="current-password"

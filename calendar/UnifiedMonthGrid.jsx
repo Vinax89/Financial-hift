@@ -99,7 +99,7 @@ const DayCell = React.memo(function DayCell({
   const net = totals.inc - totals.out;
   const netClass = net > 0 ? "text-income" : net < 0 ? "text-expense" : "text-muted-foreground";
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: any) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       onOpen(date, null);
@@ -141,7 +141,7 @@ const DayCell = React.memo(function DayCell({
             <span className={`h-2 w-2 rounded-full ${TYPE_STYLES[ev.type] || "bg-primary"}`} />
             <button
               className="text-xs text-foreground text-left truncate hover:underline"
-              onClick={(e) => {
+              onClick={(e: any) => {
                 e.stopPropagation();
                 onOpen(date, ev.id);
               }}
@@ -155,7 +155,7 @@ const DayCell = React.memo(function DayCell({
         {extra > 0 && (
           <button
             className="text-[11px] text-primary hover:underline"
-            onClick={(e) => {
+            onClick={(e: any) => {
               e.stopPropagation();
               onOpen(date, null);
             }}
@@ -183,7 +183,7 @@ const DayCell = React.memo(function DayCell({
  * @param {boolean} props.isHighlighted - Whether event is highlighted
  * @returns {JSX.Element} Event row
  */
-function EventRow({ ev, onAction, isHighlighted }) {
+interface EventRowProps { [key: string]: any; }`n`nfunction EventRow({ ev, onAction, isHighlighted }: EventRowProps) {
   return (
     <div
       className={[
@@ -276,7 +276,7 @@ function UnifiedMonthGrid({
   const map = React.useMemo(() => {
     if (eventsByDate && typeof eventsByDate.get === "function") return eventsByDate;
     const m = new Map();
-    (Array.isArray(events) ? events : []).forEach((e) => {
+    (Array.isArray(events) ? events : []).forEach((e: any) => {
       if (!e?.date) return;
       const k = dayKey(e.date);
       if (!m.has(k)) m.set(k, []);

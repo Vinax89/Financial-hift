@@ -30,15 +30,15 @@ export default function DebtControlPage() {
     const [activeTab, setActiveTab] = useState('debts');
     
     // Data state
-    const [debts, setDebts] = useState([]);
-    const [bnplPlans, setBnplPlans] = useState([]);
+    const [debts, setDebts] = useState<any[]>([]);
+    const [bnplPlans, setBnplPlans] = useState<any[]>([]);
     const [loading, setLoading] = useState({ debts: true, bnpl: true });
     
     // Form state
-    const [showDebtForm, setShowDebtForm] = useState(false);
-    const [showBNPLForm, setShowBNPLForm] = useState(false);
-    const [editingDebt, setEditingDebt] = useState(null);
-    const [editingBNPL, setEditingBNPL] = useState(null);
+    const [showDebtForm, setShowDebtForm] = useState<boolean>(false);
+    const [showBNPLForm, setShowBNPLForm] = useState<boolean>(false);
+    const [editingDebt, setEditingDebt] = useState<any>(null);
+    const [editingBNPL, setEditingBNPL] = useState<any>(null);
     
     const { toast } = useToast();
 

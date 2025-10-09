@@ -38,10 +38,10 @@ export default function FinancialPlanningPage() {
     const [reportTab, setReportTab] = useState('income');
     
     // Goals state
-    const [goals, setGoals] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showGoalForm, setShowGoalForm] = useState(false);
-    const [editingGoal, setEditingGoal] = useState(null);
+    const [goals, setGoals] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [showGoalForm, setShowGoalForm] = useState<boolean>(false);
+    const [editingGoal, setEditingGoal] = useState<any>(null);
     
     const { toast } = useToast();
 

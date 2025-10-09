@@ -17,10 +17,10 @@ const QUICK_PROMPTS = [
 ];
 
 export default function AIAdvisorPage() {
-    const [conversation, setConversation] = useState(null);
-    const [messages, setMessages] = useState([]);
+    const [conversation, setConversation] = useState<any>(null);
+    const [messages, setMessages] = useState<any[]>([]);
     const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
@@ -112,10 +112,10 @@ export default function AIAdvisorPage() {
                         <div className="relative">
                             <Textarea
                                 value={input}
-                                onChange={(e) => setInput(e.target.value)}
+                                onChange={(e: any) => setInput(e.target.value)}
                                 placeholder="Ask your financial question..."
                                 className="pr-12"
-                                onKeyDown={(e) => {
+                                onKeyDown={(e: any) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
                                         e.preventDefault();
                                         handleSendMessage();

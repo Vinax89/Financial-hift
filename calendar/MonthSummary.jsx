@@ -15,7 +15,7 @@ import { format } from "date-fns";
  */
 function sumByType(events, type) {
   return (events || [])
-    .filter((e) => e.type === type && typeof e.amount === "number")
+    .filter((e: any) => e.type === type && typeof e.amount === "number")
     .reduce((s, e) => s + e.amount, 0);
 }
 
@@ -26,7 +26,7 @@ function sumByType(events, type) {
  * @param {Array<Object>} props.events - Calendar events
  * @returns {JSX.Element} Month summary card
  */
-function MonthSummary({ monthDate, events }) {
+interface MonthSummaryProps { [key: string]: any; }`n`nfunction MonthSummary({ monthDate, events }: MonthSummaryProps) {
   /**
    * Calculate totals by event type
    */

@@ -22,10 +22,10 @@ export default function Signup() {
         password: '',
         confirmPassword: ''
     });
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [acceptedTerms, setAcceptedTerms] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+    const [acceptedTerms, setAcceptedTerms] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const { toast } = useToast();
 
@@ -91,7 +91,7 @@ export default function Signup() {
         return true;
     };
 
-    const handleEmailSignup = async (e) => {
+    const handleEmailSignup = async (e: any) => {
         e.preventDefault();
         
         if (!validateForm()) return;
@@ -175,7 +175,7 @@ export default function Signup() {
                                     type="text"
                                     placeholder="John Doe"
                                     value={formData.fullName}
-                                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                                    onChange={(e: any) => handleInputChange('fullName', e.target.value)}
                                     disabled={isLoading}
                                     className="pl-10"
                                     autoComplete="name"
@@ -193,7 +193,7 @@ export default function Signup() {
                                     type="email"
                                     placeholder="you@example.com"
                                     value={formData.email}
-                                    onChange={(e) => handleInputChange('email', e.target.value)}
+                                    onChange={(e: any) => handleInputChange('email', e.target.value)}
                                     disabled={isLoading}
                                     className="pl-10"
                                     autoComplete="email"
@@ -211,7 +211,7 @@ export default function Signup() {
                                     type={showPassword ? "text" : "password"}
                                     placeholder=""
                                     value={formData.password}
-                                    onChange={(e) => handleInputChange('password', e.target.value)}
+                                    onChange={(e: any) => handleInputChange('password', e.target.value)}
                                     disabled={isLoading}
                                     className="pl-10 pr-10"
                                     autoComplete="new-password"
@@ -257,7 +257,7 @@ export default function Signup() {
                                     type={showConfirmPassword ? "text" : "password"}
                                     placeholder=""
                                     value={formData.confirmPassword}
-                                    onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                                    onChange={(e: any) => handleInputChange('confirmPassword', e.target.value)}
                                     disabled={isLoading}
                                     className="pl-10 pr-10"
                                     autoComplete="new-password"

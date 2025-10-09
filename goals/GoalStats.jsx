@@ -30,7 +30,7 @@ const formatCurrency = (value) => {
  * @param {boolean} props.isLoading - Loading state
  * @returns {JSX.Element} Goal statistics cards
  */
-function GoalStats({ goals = [], isLoading }) {
+interface GoalStatsProps { [key: string]: any; }`n`nfunction GoalStats({ goals = [], isLoading }: GoalStatsProps) {
     /**
      * Calculate aggregate statistics from goals
      */

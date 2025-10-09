@@ -15,10 +15,10 @@ import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 import { useToast } from '@/ui/use-toast';
 
 export default function ShiftsPage() {
-    const [shifts, setShifts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [editingShift, setEditingShift] = useState(null);
+    const [shifts, setShifts] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [editingShift, setEditingShift] = useState<any>(null);
     const { toast } = useToast();
 
     const loadShifts = useCallback(async () => {

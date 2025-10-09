@@ -303,11 +303,11 @@ export default function IncomeViabilityCalculatorInner(props) {
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 text-sm text-muted-foreground">
-              <input type="checkbox" checked={compareMode} onChange={(e) => setCompareMode(e.target.checked)} />
+              <input type="checkbox" checked={compareMode} onChange={(e: any) => setCompareMode(e.target.checked)} />
               Compare with another scenario
             </label>
             <label className="flex items-center gap-2 text-sm text-muted-foreground">
-              <input type="checkbox" checked={monthlyView} onChange={(e) => setMonthlyView(e.target.checked)} />
+              <input type="checkbox" checked={monthlyView} onChange={(e: any) => setMonthlyView(e.target.checked)} />
               Show monthly values
             </label>
           </div>
@@ -318,7 +318,7 @@ export default function IncomeViabilityCalculatorInner(props) {
                 <input
                   type="checkbox"
                   checked={includeDebt}
-                  onChange={(e) => setIncludeDebt(e.target.checked)}
+                  onChange={(e: any) => setIncludeDebt(e.target.checked)}
                 />
                 Include debt payments in calculation
               </label>
@@ -329,7 +329,7 @@ export default function IncomeViabilityCalculatorInner(props) {
                     <input
                       type="checkbox"
                       checked={useCustomDebt}
-                      onChange={(e) => setUseCustomDebt(e.target.checked)}
+                      onChange={(e: any) => setUseCustomDebt(e.target.checked)}
                     />
                     Use custom total monthly debt
                   </label>
@@ -347,7 +347,7 @@ export default function IncomeViabilityCalculatorInner(props) {
                         step="1"
                         placeholder="e.g., 1200"
                         value={customMonthlyDebt}
-                        onChange={(e) => setCustomMonthlyDebt(e.target.value)}
+                        onChange={(e: any) => setCustomMonthlyDebt(e.target.value)}
                         className="w-40"
                       />
                     </div>

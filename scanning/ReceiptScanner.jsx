@@ -19,15 +19,15 @@ const CATEGORY_OPTIONS = [
 const ACCOUNT_OPTIONS = ["checking","savings","credit_card","cash","investment"];
 const BILL_CATEGORIES = ["housing","utilities","insurance","telecommunications","subscriptions","loans","credit_cards","other"];
 
-export default function ReceiptScanner({ refreshData }) {
+export default interface ReceiptScannerProps { [key: string]: any; }`n`nfunction ReceiptScanner({ refreshData }: ReceiptScannerProps) {
   const { toast } = useToast();
-  const [file, setFile] = React.useState(null);
+  const [file, setFile] = React.useState<any>(null);
   const [fileUrl, setFileUrl] = React.useState("");
-  const [uploading, setUploading] = React.useState(false);
-  const [extracting, setExtracting] = React.useState(false);
+  const [uploading, setUploading] = React.useState<boolean>(false);
+  const [extracting, setExtracting] = React.useState<boolean>(false);
   const [error, setError] = React.useState("");
 
-  const [saveAsBill, setSaveAsBill] = React.useState(false);
+  const [saveAsBill, setSaveAsBill] = React.useState<boolean>(false);
 
   const [txForm, setTxForm] = React.useState({
     title: "",
@@ -48,7 +48,7 @@ export default function ReceiptScanner({ refreshData }) {
     auto_pay: false,
   });
 
-  const onFileChange = async (e) => {
+  const onFileChange = async (e: any) => {
     const f = e.target.files?.[0];
     if (!f) return;
     setFile(f);
@@ -221,11 +221,11 @@ export default function ReceiptScanner({ refreshData }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Title</Label>
-                <Input value={txForm.title} onChange={(e) => setTxForm({ ...txForm, title: e.target.value })} />
+                <Input value={txForm.title} onChange={(e: any) => setTxForm({ ...txForm, title: e.target.value })} />
               </div>
               <div>
                 <Label>Amount</Label>
-                <Input type="number" step="0.01" value={txForm.amount} onChange={(e) => setTxForm({ ...txForm, amount: e.target.value })} />
+                <Input type="number" step="0.01" value={txForm.amount} onChange={(e: any) => setTxForm({ ...txForm, amount: e.target.value })} />
               </div>
               <div>
                 <Label>Category</Label>
@@ -247,11 +247,11 @@ export default function ReceiptScanner({ refreshData }) {
               </div>
               <div>
                 <Label>Date</Label>
-                <Input type="date" value={txForm.date} onChange={(e) => setTxForm({ ...txForm, date: e.target.value })} />
+                <Input type="date" value={txForm.date} onChange={(e: any) => setTxForm({ ...txForm, date: e.target.value })} />
               </div>
               <div className="sm:col-span-2">
                 <Label>Notes</Label>
-                <Input value={txForm.notes} onChange={(e) => setTxForm({ ...txForm, notes: e.target.value })} placeholder="Optional" />
+                <Input value={txForm.notes} onChange={(e: any) => setTxForm({ ...txForm, notes: e.target.value })} placeholder="Optional" />
               </div>
             </div>
             <Button onClick={saveTransaction} className="w-full sm:w-auto">Save Transaction</Button>
@@ -269,11 +269,11 @@ export default function ReceiptScanner({ refreshData }) {
             <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${saveAsBill ? "" : "opacity-60 pointer-events-none"}`}>
               <div>
                 <Label>Name</Label>
-                <Input value={billForm.name} onChange={(e) => setBillForm({ ...billForm, name: e.target.value })} />
+                <Input value={billForm.name} onChange={(e: any) => setBillForm({ ...billForm, name: e.target.value })} />
               </div>
               <div>
                 <Label>Amount</Label>
-                <Input type="number" step="0.01" value={billForm.amount} onChange={(e) => setBillForm({ ...billForm, amount: e.target.value })} />
+                <Input type="number" step="0.01" value={billForm.amount} onChange={(e: any) => setBillForm({ ...billForm, amount: e.target.value })} />
               </div>
               <div>
                 <Label>Category</Label>
@@ -286,7 +286,7 @@ export default function ReceiptScanner({ refreshData }) {
               </div>
               <div>
                 <Label>Due Day (1-31)</Label>
-                <Input type="number" min={1} max={31} value={billForm.due_date} onChange={(e) => setBillForm({ ...billForm, due_date: e.target.value })} />
+                <Input type="number" min={1} max={31} value={billForm.due_date} onChange={(e: any) => setBillForm({ ...billForm, due_date: e.target.value })} />
               </div>
               <div>
                 <Label>Frequency</Label>

@@ -25,13 +25,13 @@ import { useToast } from '@/ui/use-toast';
 
 export default function WorkHubPage() {
     const [activeTab, setActiveTab] = useState('schedule');
-    const [shifts, setShifts] = useState([]);
-    const [shiftRules, setShiftRules] = useState([]);
+    const [shifts, setShifts] = useState<any[]>([]);
+    const [shiftRules, setShiftRules] = useState<any[]>([]);
     const [loading, setLoading] = useState({ shifts: true, rules: true });
-    const [showShiftForm, setShowShiftForm] = useState(false);
-    const [showRuleForm, setShowRuleForm] = useState(false);
-    const [editingShift, setEditingShift] = useState(null);
-    const [editingRule, setEditingRule] = useState(null);
+    const [showShiftForm, setShowShiftForm] = useState<boolean>(false);
+    const [showRuleForm, setShowRuleForm] = useState<boolean>(false);
+    const [editingShift, setEditingShift] = useState<any>(null);
+    const [editingRule, setEditingRule] = useState<any>(null);
     const { toast } = useToast();
     
     // Track if initial load is complete to prevent duplicate loads

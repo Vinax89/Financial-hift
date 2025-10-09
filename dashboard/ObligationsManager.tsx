@@ -21,7 +21,12 @@ import { format, addMonths } from 'date-fns';
  * @param {Function} props.refreshData - Callback to refresh data
  * @returns {JSX.Element}
  */
-function ObligationsManager({ bills, refreshData }) {
+interface ObligationsManagerProps {
+  obligations?: any[];
+  refreshData?: () => void;
+}
+
+function ObligationsManager({ bills, refreshData }: ObligationsManagerProps) {
     const obligationData = useMemo(() => {
         const now = new Date();
         const currentMonth = now.getMonth();

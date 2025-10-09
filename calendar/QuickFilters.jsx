@@ -13,7 +13,7 @@ import { Button } from "@/ui/button";
  * @param {Function} props.onChange - Filter change handler
  * @returns {JSX.Element} Filter buttons
  */
-function QuickFilters({ value, onChange }) {
+interface QuickFiltersProps { [key: string]: any; }`n`nfunction QuickFilters({ value, onChange }: QuickFiltersProps) {
   /** Show all event types */
   const setAll = React.useCallback(() => onChange({ shifts: true, bills: true, debts: true, bnpl: true, subscriptions: true, payments: true }), [onChange]);
   /** Hide all event types */

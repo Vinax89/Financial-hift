@@ -49,7 +49,7 @@ const statusColors = {
  * @param {boolean} props.isLoading - Loading state
  * @returns {JSX.Element} Animated plan list
  */
-function BNPLPlanList({ plans, onEdit, onMarkPaid, onDelete, isLoading }) {
+interface BNPLPlanListProps { [key: string]: any; }`n`nfunction BNPLPlanList({ plans, onEdit, onMarkPaid, onDelete, isLoading }: BNPLPlanListProps) {
     /**
      * Check if a payment is overdue
      * @param {string|Date} dueDate - Due date to check

@@ -21,14 +21,14 @@ export default function Settings() {
   const { toast } = useToast();
   const { setTheme } = useTheme();
 
-  const [loading, setLoading] = React.useState(true);
-  const [saving, setSaving] = React.useState(false);
-  const [user, setUser] = React.useState(null);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [saving, setSaving] = React.useState<boolean>(false);
+  const [user, setUser] = React.useState<any>(null);
 
   const [currency, setCurrency] = React.useState("USD");
   const [dateFormat, setDateFormat] = React.useState("MM/dd/yyyy");
-  const [privacy, setPrivacy] = React.useState(false);
-  const [reducedMotion, setReducedMotion] = React.useState(false);
+  const [privacy, setPrivacy] = React.useState<boolean>(false);
+  const [reducedMotion, setReducedMotion] = React.useState<boolean>(false);
   const [defaultTab, setDefaultTab] = React.useState("overview");
 
   React.useEffect(() => {

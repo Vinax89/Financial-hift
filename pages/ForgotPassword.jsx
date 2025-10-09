@@ -15,11 +15,11 @@ import { logError, logInfo } from '@/utils/logger.js';
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [emailSent, setEmailSent] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [emailSent, setEmailSent] = useState<boolean>(false);
     const { toast } = useToast();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         
         if (!email) {
@@ -94,7 +94,7 @@ export default function ForgotPassword() {
                                         type="email"
                                         placeholder="you@example.com"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e: any) => setEmail(e.target.value)}
                                         disabled={isLoading}
                                         className="pl-10"
                                         autoComplete="email"

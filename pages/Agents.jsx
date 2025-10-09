@@ -83,12 +83,12 @@ const AGENT_CATEGORIES = {
 
 export default function AgentsPage() {
     const [selectedAgent, setSelectedAgent] = useState('financial_orchestrator');
-    const [conversations, setConversations] = useState([]);
-    const [activeConversation, setActiveConversation] = useState(null);
-    const [messages, setMessages] = useState([]);
+    const [conversations, setConversations] = useState<any[]>([]);
+    const [activeConversation, setActiveConversation] = useState<any>(null);
+    const [messages, setMessages] = useState<any[]>([]);
     const [newMessage, setNewMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isInitializing, setIsInitializing] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isInitializing, setIsInitializing] = useState<boolean>(true);
     const messagesEndRef = useRef(null);
     const { toast } = useToast();
 
@@ -193,7 +193,7 @@ export default function AgentsPage() {
         }
     };
 
-    const handleKeyPress = (e) => {
+    const handleKeyPress = (e: any) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
@@ -332,7 +332,7 @@ export default function AgentsPage() {
                                 <div className="flex-1 relative">
                                     <Input
                                         value={newMessage}
-                                        onChange={(e) => setNewMessage(e.target.value)}
+                                        onChange={(e: any) => setNewMessage(e.target.value)}
                                         onKeyPress={handleKeyPress}
                                         placeholder={`Ask ${currentAgentConfig.name} anything...`}
                                         disabled={isLoading}

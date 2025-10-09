@@ -27,7 +27,7 @@ const formatCurrency = (amount) => {
  * @param {Array<Object>} props.forecasts - Cashflow forecasts
  * @returns {JSX.Element} Safe-to-spend card
  */
-function SafeToSpend({ netCashflow, forecasts }) {
+interface SafeToSpendProps { [key: string]: any; }`n`nfunction SafeToSpend({ netCashflow, forecasts }: SafeToSpendProps) {
     const latestForecast = forecasts[0];
 
     return (

@@ -13,10 +13,10 @@ import { AnimatePresence } from 'framer-motion';
 import { useToast } from '@/ui/use-toast';
 
 export default function BNPLPage() {
-    const [plans, setPlans] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [editingPlan, setEditingPlan] = useState(null);
+    const [plans, setPlans] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [editingPlan, setEditingPlan] = useState<any>(null);
     const { toast } = useToast();
 
     const loadPlans = async () => {

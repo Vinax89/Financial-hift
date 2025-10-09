@@ -34,7 +34,7 @@ function download(filename, text, mime = "text/plain;charset=utf-8") {
  */
 function toCsv(events) {
   const headers = ["date", "type", "title", "amount", "subtitle"];
-  const rows = (events || []).map((e) => [
+  const rows = (events || []).map((e: any) => [
     e.date ? format(e.date, "yyyy-MM-dd") : "",
     e.type || "",
     (e.title || "").replace(/"/g, '""'),
@@ -103,7 +103,7 @@ function toIcs(events, calName = "Unified Calendar") {
  * @param {Date} props.monthDate - Current month date
  * @returns {JSX.Element} Export dropdown menu
  */
-function ExportMenu({ events = [], monthDate }) {
+interface ExportMenuProps { [key: string]: any; }`n`nfunction ExportMenu({ events = [], monthDate }: ExportMenuProps) {
   const monthLabel = monthDate ? format(monthDate, "yyyy-MM") : "export";
   
   /**
