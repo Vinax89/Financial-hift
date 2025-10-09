@@ -6,6 +6,49 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import type { ReactNode, SyntheticEvent } from 'react';
+
+export interface OptimizedImageProps {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  placeholder?: 'blur' | 'skeleton' | 'none';
+  blurDataURL?: string;
+  loading?: 'lazy' | 'eager';
+  className?: string;
+  onLoad?: (e: SyntheticEvent<HTMLImageElement>) => void;
+  onError?: (e: SyntheticEvent<HTMLImageElement>) => void;
+  [key: string]: any;
+}
+
+export interface ImageSource {
+  src: string;
+  width: number;
+}
+
+export interface ResponsiveImageProps {
+  srcSet: ImageSource[];
+  alt: string;
+  sizes: string;
+  className?: string;
+  [key: string]: any;
+}
+
+export interface AvatarImageProps {
+  src?: string;
+  alt: string;
+  size?: number;
+  fallback?: string;
+  className?: string;
+}
+
+export interface BackgroundImageProps {
+  src: string;
+  children?: ReactNode;
+  className?: string;
+  [key: string]: any;
+}
 
 /**
  * Optimized Image Component with lazy loading and blur-up effect
@@ -45,11 +88,11 @@ export function OptimizedImage({
   onLoad,
   onError,
   ...props
-}) {
+}: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isInView, setIsInView] = useState(loading === 'eager');
-  const imgRef = useRef(null);
+  const imgRef = useRef<HTMLDivElement>(null);
 
   // Intersection Observer for lazy loading
   useEffect(() => {
@@ -74,12 +117,12 @@ export function OptimizedImage({
     return () => observer.disconnect();
   }, [loading]);
 
-  const handleLoad = (e) => {
+  const handleLoad = (e: SyntheticEvent<HTMLImageElement>) => {
     setIsLoaded(true);
     if (onLoad) onLoad(e);
   };
 
-  const handleError = (e) => {
+  const handleError = (e: SyntheticEvent<HTMLImageElement>) => {
     setHasError(true);
     if (onError) onError(e);
   };
@@ -171,16 +214,18 @@ export function OptimizedImage({
  *   sizes="(max-width: 768px) 100vw, 50vw"
  * />
  */
-export function ResponsiveImage({ srcSet, alt, sizes, className, ...props }) {
+export function ResponsiveImage({ srcSet, alt, sizes, className, ...props }: ResponsiveImageProps) {
   const srcSetString = srcSet
-    .map(({ src, width }) => `${src} ${width}w`)
+    .map(({ src, width }: ImageSource) => `${src} ${width}w`)
     .join(', ');
+
+  const largestImage = srcSet[srcSet.length - 1];
 
   return (
     <OptimizedImage
-      src={srcSet[srcSet.length - 1].src} // Fallback to largest
-      srcSet={srcSetString}
-      sizes={sizes}
+      src={largestImage.src} // Fallback to largest
+      width={largestImage.width}
+      height={largestImage.width} // Assume square or provide height in props
       alt={alt}
       className={className}
       {...props}
@@ -206,7 +251,7 @@ export function ResponsiveImage({ srcSet, alt, sizes, className, ...props }) {
  *   fallback="JD"
  * />
  */
-export function AvatarImage({ src, alt, size = 40, fallback, className }) {
+export function AvatarImage({ src, alt, size = 40, fallback, className }: AvatarImageProps) {
   const [hasError, setHasError] = useState(false);
 
   if (hasError || !src) {
@@ -250,10 +295,10 @@ export function AvatarImage({ src, alt, size = 40, fallback, className }) {
  *   <h1>Welcome</h1>
  * </BackgroundImage>
  */
-export function BackgroundImage({ src, children, className, ...props }) {
+export function BackgroundImage({ src, children, className, ...props }: BackgroundImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;

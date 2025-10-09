@@ -5,6 +5,21 @@
 
 import { Link as RouterLink } from 'react-router-dom';
 import { usePrefetchOnHover } from '@/hooks/usePrefetch';
+import type { ReactNode, MouseEvent } from 'react';
+
+export interface PrefetchLinkProps {
+  to: string;
+  prefetch?: boolean;
+  children: ReactNode;
+  [key: string]: any;
+}
+
+export interface PrefetchButtonProps {
+  href: string;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+  children: ReactNode;
+  [key: string]: any;
+}
 
 /**
  * Enhanced Link component with hover prefetching
@@ -14,7 +29,7 @@ import { usePrefetchOnHover } from '@/hooks/usePrefetch';
  * @param {ReactNode} props.children - Link content
  * @returns {JSX.Element} Enhanced link with prefetching
  */
-export function PrefetchLink({ to, prefetch = true, children, ...props }) {
+export function PrefetchLink({ to, prefetch = true, children, ...props }: PrefetchLinkProps) {
   const prefetchHandlers = usePrefetchOnHover(to);
 
   return (
@@ -36,7 +51,7 @@ export function PrefetchLink({ to, prefetch = true, children, ...props }) {
  * @param {ReactNode} props.children - Button content
  * @returns {JSX.Element} Button with prefetching
  */
-export function PrefetchButton({ href, onClick, children, ...props }) {
+export function PrefetchButton({ href, onClick, children, ...props }: PrefetchButtonProps) {
   const prefetchHandlers = usePrefetchOnHover(href);
 
   return (
