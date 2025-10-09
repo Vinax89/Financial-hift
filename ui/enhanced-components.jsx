@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Theme-aware enhanced components with professional styling
+ * @description Component library with theme integration: cards, buttons, progress bars, metrics, glass containers, status indicators
+ */
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
@@ -7,7 +11,17 @@ import { useTheme } from '../theme/ThemeProvider';
 import { cn } from '@/lib/utils';
 import { MagneticHover, GlowEffect } from './theme-aware-animations';
 
-// Professional theme-aware card with refined styling and better performance
+/**
+ * Professional theme-aware card with variant options
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.glowing=false] - Add glow effect
+ * @param {boolean} [props.elevated=false] - Elevated shadow on hover
+ * @param {boolean} [props.magnetic=false] - Magnetic hover effect
+ * @param {boolean} [props.interactive=false] - Interactive hover states
+ * @param {'default'|'elevated'|'glass'|'gradient'} [props.variant='default'] - Card variant
+ * @returns {JSX.Element} Theme-aware card
+ */
 export function ThemedCard({ 
   children, 
   className, 

@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Comprehensive sidebar navigation system using Radix UI
+ * @description Full-featured collapsible sidebar with mobile support, keyboard shortcuts (Cmd+B), state persistence, and 20+ sub-components
+ * @note Includes: SidebarProvider, Sidebar, SidebarTrigger, SidebarRail, SidebarInset, SidebarInput, SidebarHeader, SidebarFooter, SidebarContent, SidebarGroup, SidebarMenu, etc.
+ */
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva } from "class-variance-authority";

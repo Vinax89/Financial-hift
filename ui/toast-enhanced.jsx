@@ -1,8 +1,25 @@
+/**
+ * @fileoverview Enhanced toast notification hook with rich visual feedback
+ * @description Extended toast system with styled variants (success, error, warning, info) and icons
+ */
+
 import React from 'react';
 import { useToast } from '@/ui/use-toast.jsx';
 import { CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 
-// Enhanced toast system with better visual feedback
+/**
+ * Hook for enhanced toast notifications with visual feedback
+ * @returns {{
+ *   showSuccess: (title: string, description?: string, options?: Object) => void,
+ *   showError: (title: string, description?: string, options?: Object) => void,
+ *   showWarning: (title: string, description?: string, options?: Object) => void,
+ *   showInfo: (title: string, description?: string, options?: Object) => void
+ * }} Toast notification functions with styled variants
+ * @example
+ * const { showSuccess, showError } = useEnhancedToast();
+ * showSuccess("Saved!", "Your changes have been saved");
+ * showError("Failed", "Unable to save changes");
+ */
 export function useEnhancedToast() {
     const { toast } = useToast();
 

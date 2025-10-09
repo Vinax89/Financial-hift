@@ -1,14 +1,34 @@
+/**
+ * @fileoverview Breadcrumb navigation component
+ * @description Accessible breadcrumb trail for hierarchical navigation
+ */
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Breadcrumb root container (nav element)
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Accessible breadcrumb navigation
+ */
 const Breadcrumb = React.forwardRef(
   ({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />
 )
 Breadcrumb.displayName = "Breadcrumb"
 
+/**
+ * Breadcrumb list (ordered list)
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Breadcrumb list container
+ */
 const BreadcrumbList = React.forwardRef(({ className, ...props }, ref) => (
   <ol
     ref={ref}
@@ -20,6 +40,14 @@ const BreadcrumbList = React.forwardRef(({ className, ...props }, ref) => (
 ))
 BreadcrumbList.displayName = "BreadcrumbList"
 
+/**
+ * Individual breadcrumb item
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} List item wrapper
+ */
 const BreadcrumbItem = React.forwardRef(({ className, ...props }, ref) => (
   <li
     ref={ref}
@@ -28,6 +56,15 @@ const BreadcrumbItem = React.forwardRef(({ className, ...props }, ref) => (
 ))
 BreadcrumbItem.displayName = "BreadcrumbItem"
 
+/**
+ * Clickable breadcrumb link
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.asChild] - Use Slot for custom component
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Link with hover effect
+ */
 const BreadcrumbLink = React.forwardRef(({ asChild, className, ...props }, ref) => {
   const Comp = asChild ? Slot : "a"
 
@@ -40,6 +77,14 @@ const BreadcrumbLink = React.forwardRef(({ asChild, className, ...props }, ref) 
 })
 BreadcrumbLink.displayName = "BreadcrumbLink"
 
+/**
+ * Current page indicator (non-clickable)
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Current page text with aria-current
+ */
 const BreadcrumbPage = React.forwardRef(({ className, ...props }, ref) => (
   <span
     ref={ref}
@@ -51,6 +96,14 @@ const BreadcrumbPage = React.forwardRef(({ className, ...props }, ref) => (
 ))
 BreadcrumbPage.displayName = "BreadcrumbPage"
 
+/**
+ * Breadcrumb separator (defaults to chevron)
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - Custom separator icon
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Separator between items
+ */
 const BreadcrumbSeparator = ({
   children,
   className,
@@ -66,6 +119,13 @@ const BreadcrumbSeparator = ({
 )
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
 
+/**
+ * Ellipsis indicator for collapsed items
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Three-dot ellipsis icon
+ */
 const BreadcrumbEllipsis = ({
   className,
   ...props

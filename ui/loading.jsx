@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Professional loading components with multiple variants
+ * @description Loading spinners, skeletons, progress bars, and loading wrappers with theme support
+ */
 
 import React from 'react';
 import { Skeleton } from '@/ui/skeleton.jsx';
@@ -5,7 +9,20 @@ import { Loader2, CheckCircle, AlertCircle, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/theme/ThemeProvider.jsx';
 
-// Professional loading component with enhanced UX
+/**
+ * Professional loading component with multiple variants
+ * @component
+ * @param {Object} props - Component props
+ * @param {'spinner'|'skeleton'|'progress'|'inline'|'dots'|'pulse'} [props.variant='spinner'] - Loading style
+ * @param {'sm'|'md'|'lg'|'xl'} [props.size='md'] - Component size
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {string} [props.text='Loading...'] - Loading message
+ * @param {number|null} [props.progress=null] - Progress percentage (0-100) for progress variant
+ * @param {boolean} [props.error=false] - Show error state
+ * @param {boolean} [props.success=false] - Show success state
+ * @param {'light'|'dark'|'oled'|null} [props.theme=null] - Force specific theme
+ * @returns {JSX.Element} Loading indicator
+ */
 export function Loading({ 
     variant = 'spinner', 
     size = 'md', 

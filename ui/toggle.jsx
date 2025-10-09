@@ -1,9 +1,18 @@
+/**
+ * @fileoverview Toggle button component using Radix UI primitives
+ * @description On/off toggle button with variants (similar to checkbox but styled as button)
+ */
+
 import * as React from "react"
 import * as TogglePrimitive from "@radix-ui/react-toggle"
 import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Toggle button variants (CVA configuration)
+ * @constant
+ */
 const toggleVariants = cva(
   "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
@@ -26,6 +35,18 @@ const toggleVariants = cva(
   }
 )
 
+/**
+ * Toggle button component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {'default'|'outline'} [props.variant='default'] - Visual style
+ * @param {'default'|'sm'|'lg'} [props.size='default'] - Button size
+ * @param {boolean} [props.pressed] - Controlled pressed state
+ * @param {(pressed: boolean) => void} [props.onPressedChange] - Press change callback
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Toggle button with on/off states
+ */
 const Toggle = React.forwardRef(({ className, variant, size, ...props }, ref) => (
   <TogglePrimitive.Root
     ref={ref}

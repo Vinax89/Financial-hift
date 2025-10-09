@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Enhanced card components with advanced styling and interactions
+ * @description Card extensions with status indicators, trends, actions, and multiple variants (stats, features)
+ */
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
 import { Badge } from '@/ui/badge.jsx';
@@ -11,7 +16,20 @@ import {
     DropdownMenuTrigger,
 } from "@/ui/dropdown-menu.jsx";
 
-// Enhanced card with better visual hierarchy and interactions
+/**
+ * Enhanced card with visual hierarchy, status, trends, and actions
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.title] - Card title
+ * @param {string} [props.subtitle] - Card subtitle
+ * @param {string|number} [props.value] - Primary value display
+ * @param {number} [props.trend] - Trend percentage (positive/negative)
+ * @param {React.ComponentType} [props.icon] - Icon component
+ * @param {Array} [props.actions=[]] - Dropdown actions
+ * @param {'default'|'success'|'warning'|'danger'|'info'} [props.variant='default'] - Card variant
+ * @param {'active'|'warning'|'danger'|'inactive'} [props.status] - Status indicator
+ * @returns {JSX.Element} Enhanced card with rich features
+ */
 export function EnhancedCard({ 
     title,
     subtitle,

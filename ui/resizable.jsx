@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Resizable panel components using react-resizable-panels
+ * @description Split layouts with draggable resize handles (horizontal or vertical)
+ */
+
 "use client"
 
 import { GripVertical } from "lucide-react"
@@ -5,6 +10,20 @@ import * as ResizablePrimitive from "react-resizable-panels"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Resizable panel group container
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {'horizontal'|'vertical'} props.direction - Panel layout direction
+ * @returns {JSX.Element} Panel group container
+ * @example
+ * <ResizablePanelGroup direction="horizontal">
+ *   <ResizablePanel defaultSize={50}>Panel 1</ResizablePanel>
+ *   <ResizableHandle />
+ *   <ResizablePanel defaultSize={50}>Panel 2</ResizablePanel>
+ * </ResizablePanelGroup>
+ */
 const ResizablePanelGroup = ({
   className,
   ...props
@@ -17,8 +36,21 @@ const ResizablePanelGroup = ({
     {...props} />
 )
 
+/** 
+ * Resizable panel (child of ResizablePanelGroup)
+ * @type {React.ComponentType} 
+ * @description Individual panel with size constraints (defaultSize, minSize, maxSize props)
+ */
 const ResizablePanel = ResizablePrimitive.Panel
 
+/**
+ * Draggable resize handle between panels
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.withHandle] - Show visible grip icon
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Resize handle with optional grip indicator
+ */
 const ResizableHandle = ({
   withHandle,
   className,

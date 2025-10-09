@@ -1,3 +1,8 @@
+/**
+ * @fileoverview HoverCard component using Radix UI primitives
+ * @description Popover content shown on hover with animations and positioning
+ */
+
 "use client"
 
 import * as React from "react"
@@ -5,10 +10,30 @@ import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * HoverCard root component
+ * @type {React.ComponentType}
+ * @example
+ * <HoverCard>
+ *   <HoverCardTrigger>Hover me</HoverCardTrigger>
+ *   <HoverCardContent>Additional info</HoverCardContent>
+ * </HoverCard>
+ */
 const HoverCard = HoverCardPrimitive.Root
 
+/** @type {React.ComponentType} Element that triggers hover card on hover */
 const HoverCardTrigger = HoverCardPrimitive.Trigger
 
+/**
+ * HoverCard content popover
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {'start'|'center'|'end'} [props.align='center'] - Content alignment
+ * @param {number} [props.sideOffset=4] - Distance from trigger
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Animated popover content
+ */
 const HoverCardContent = React.forwardRef(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
   <HoverCardPrimitive.Content
     ref={ref}

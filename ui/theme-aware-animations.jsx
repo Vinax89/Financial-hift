@@ -1,9 +1,19 @@
+/**
+ * @fileoverview Theme-aware animation components
+ * @description Animation effects with theme integration: glow effects, background patterns, shimmer loading, glassmorphism
+ * @note Floating/parallax/magnetic effects are disabled for stability
+ */
 
 import React, { useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '../theme/ThemeProvider';
 
-// Enhanced floating animation with theme awareness - DISABLED for stability
+/**
+ * Enhanced floating animation (DISABLED for stability)
+ * @component
+ * @param {Object} props - Component props
+ * @returns {JSX.Element} Static element (animation disabled)
+ */
 export function FloatingElement({ children, intensity = 'medium', className, disabled = false }) {
     const { actualTheme } = useTheme();
     

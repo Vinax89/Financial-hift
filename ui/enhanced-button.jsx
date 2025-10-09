@@ -1,9 +1,24 @@
+/**
+ * @fileoverview Enhanced button components with loading states and advanced variants
+ * @description Button extensions with loading states, floating action buttons, button groups, and confirm buttons
+ */
+
 import React from 'react';
 import { Button } from '@/ui/button.jsx';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Enhanced button with loading states and improved variants
+/**
+ * Enhanced button with loading states and icon support
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} [props.loading=false] - Show loading spinner
+ * @param {string} [props.loadingText='Loading...'] - Text shown when loading
+ * @param {React.ComponentType} [props.icon] - Icon component
+ * @param {'left'|'right'} [props.iconPosition='left'] - Icon position
+ * @param {boolean} [props.fullWidth=false] - Full width button
+ * @returns {JSX.Element} Enhanced button with loading state
+ */
 export function EnhancedButton({ 
     children,
     loading = false,

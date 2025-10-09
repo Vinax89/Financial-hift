@@ -1,9 +1,30 @@
+/**
+ * @fileoverview OTP (One-Time Password) input component
+ * @description Accessible OTP input with individual digit slots and caret animation
+ */
+
 import * as React from "react"
 import { OTPInput, OTPInputContext } from "input-otp"
 import { Minus } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * OTP input root component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {string} [props.containerClassName] - Container CSS classes
+ * @param {number} props.maxLength - Number of OTP digits
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} OTP input container
+ * @example
+ * <InputOTP maxLength={6}>
+ *   <InputOTPGroup>
+ *     {[...Array(6)].map((_, i) => <InputOTPSlot key={i} index={i} />)}
+ *   </InputOTPGroup>
+ * </InputOTP>
+ */
 const InputOTP = React.forwardRef(({ className, containerClassName, ...props }, ref) => (
   <OTPInput
     ref={ref}
@@ -13,11 +34,28 @@ const InputOTP = React.forwardRef(({ className, containerClassName, ...props }, 
 ))
 InputOTP.displayName = "InputOTP"
 
+/**
+ * OTP input group (container for slots)
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Group of OTP slots
+ */
 const InputOTPGroup = React.forwardRef(({ className, ...props }, ref) => (
   <div ref={ref} className={cn("flex items-center", className)} {...props} />
 ))
 InputOTPGroup.displayName = "InputOTPGroup"
 
+/**
+ * Individual OTP digit slot
+ * @component
+ * @param {Object} props - Component props
+ * @param {number} props.index - Slot index (0-based)
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Single OTP digit box with caret
+ */
 const InputOTPSlot = React.forwardRef(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.useContext(OTPInputContext)
   const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
@@ -43,6 +81,13 @@ const InputOTPSlot = React.forwardRef(({ index, className, ...props }, ref) => {
 })
 InputOTPSlot.displayName = "InputOTPSlot"
 
+/**
+ * OTP separator (visual divider between groups)
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Separator dash icon
+ */
 const InputOTPSeparator = React.forwardRef(({ ...props }, ref) => (
   <div ref={ref} role="separator" {...props}>
     <Minus />

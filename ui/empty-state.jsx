@@ -1,7 +1,23 @@
+/**
+ * @fileoverview Empty state component for no data scenarios
+ * @description Placeholder UI for empty lists, search results, or missing content
+ */
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Inbox } from 'lucide-react';
 
+/**
+ * Empty state placeholder component
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.ComponentType} [props.icon=Inbox] - Icon component to display
+ * @param {string} [props.title='No Data Found'] - Empty state heading
+ * @param {string} [props.description] - Explanation text
+ * @param {React.ReactNode} [props.action] - Optional action button/link
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Empty state card
+ */
 export function EmptyState({
   icon: Icon = Inbox,
   title = "No Data Found",

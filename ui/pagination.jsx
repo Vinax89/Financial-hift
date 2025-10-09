@@ -1,9 +1,21 @@
+/**
+ * @fileoverview Pagination component for navigating data pages
+ * @description Accessible pagination controls with previous/next and page numbers
+ */
+
 import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/ui/button.jsx";
 
+/**
+ * Pagination root container (nav element)
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Accessible pagination navigation
+ */
 const Pagination = ({
   className,
   ...props
@@ -16,6 +28,14 @@ const Pagination = ({
 )
 Pagination.displayName = "Pagination"
 
+/**
+ * Pagination list container
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} List of pagination items
+ */
 const PaginationContent = React.forwardRef(({ className, ...props }, ref) => (
   <ul
     ref={ref}
@@ -24,11 +44,28 @@ const PaginationContent = React.forwardRef(({ className, ...props }, ref) => (
 ))
 PaginationContent.displayName = "PaginationContent"
 
+/**
+ * Individual pagination list item
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} List item wrapper
+ */
 const PaginationItem = React.forwardRef(({ className, ...props }, ref) => (
   <li ref={ref} className={cn("", className)} {...props} />
 ))
 PaginationItem.displayName = "PaginationItem"
 
+/**
+ * Pagination link button
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.isActive] - Active page indicator
+ * @param {string} [props.size='icon'] - Button size
+ * @returns {JSX.Element} Clickable page link with active state
+ */
 const PaginationLink = ({
   className,
   isActive,
@@ -45,6 +82,13 @@ const PaginationLink = ({
 )
 PaginationLink.displayName = "PaginationLink"
 
+/**
+ * Previous page button
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Previous page link with chevron icon
+ */
 const PaginationPrevious = ({
   className,
   ...props
@@ -60,6 +104,13 @@ const PaginationPrevious = ({
 )
 PaginationPrevious.displayName = "PaginationPrevious"
 
+/**
+ * Next page button
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Next page link with chevron icon
+ */
 const PaginationNext = ({
   className,
   ...props
@@ -75,6 +126,13 @@ const PaginationNext = ({
 )
 PaginationNext.displayName = "PaginationNext"
 
+/**
+ * Ellipsis indicator for skipped pages
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Three-dot ellipsis icon
+ */
 const PaginationEllipsis = ({
   className,
   ...props

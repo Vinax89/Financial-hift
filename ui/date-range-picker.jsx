@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Date range picker component
+ * @description Date range selector with calendar popover (from/to dates)
+ */
+
 import * as React from "react"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
@@ -11,6 +16,15 @@ import {
   PopoverTrigger,
 } from "@/ui/popover.jsx"
 
+/**
+ * Date range picker with calendar popover
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {{from: Date, to: Date}} props.value - Selected date range
+ * @param {(range: {from: Date, to: Date}) => void} props.onValueChange - Range change callback
+ * @returns {JSX.Element} Date range picker button with calendar
+ */
 export function DateRangePicker({
   className,
   value,

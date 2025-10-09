@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Command palette component using cmdk
+ * @description Searchable command menu with keyboard navigation (⌘K style)
+ */
+
 import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
 import { Search } from "lucide-react"
@@ -5,6 +10,14 @@ import { Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent } from "@/ui/dialog.jsx"
 
+/**
+ * Command palette root component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Command palette container
+ */
 const Command = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive
     ref={ref}
@@ -16,6 +29,13 @@ const Command = React.forwardRef(({ className, ...props }, ref) => (
 ))
 Command.displayName = CommandPrimitive.displayName
 
+/**
+ * Command palette in modal dialog
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Command content
+ * @returns {JSX.Element} Command palette in dialog (⌘K style)
+ */
 const CommandDialog = ({
   children,
   ...props
@@ -32,6 +52,14 @@ const CommandDialog = ({
   );
 }
 
+/**
+ * Command search input with icon
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Search input with magnifying glass icon
+ */
 const CommandInput = React.forwardRef(({ className, ...props }, ref) => (
   <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
     <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
@@ -47,6 +75,14 @@ const CommandInput = React.forwardRef(({ className, ...props }, ref) => (
 
 CommandInput.displayName = CommandPrimitive.Input.displayName
 
+/**
+ * Command list container (scrollable)
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Scrollable list of commands
+ */
 const CommandList = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
@@ -56,12 +92,27 @@ const CommandList = React.forwardRef(({ className, ...props }, ref) => (
 
 CommandList.displayName = CommandPrimitive.List.displayName
 
+/**
+ * Empty state message (shown when no results)
+ * @component
+ * @param {Object} props - Component props
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Empty state text
+ */
 const CommandEmpty = React.forwardRef((props, ref) => (
   <CommandPrimitive.Empty ref={ref} className="py-6 text-center text-sm" {...props} />
 ))
 
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName
 
+/**
+ * Command group with optional heading
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Grouped section of commands
+ */
 const CommandGroup = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive.Group
     ref={ref}
@@ -74,11 +125,27 @@ const CommandGroup = React.forwardRef(({ className, ...props }, ref) => (
 
 CommandGroup.displayName = CommandPrimitive.Group.displayName
 
+/**
+ * Command separator line
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Visual separator between groups
+ */
 const CommandSeparator = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive.Separator ref={ref} className={cn("-mx-1 h-px bg-border", className)} {...props} />
 ))
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 
+/**
+ * Individual command item
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Selectable command option
+ */
 const CommandItem = React.forwardRef(({ className, ...props }, ref) => (
   <CommandPrimitive.Item
     ref={ref}
@@ -91,6 +158,13 @@ const CommandItem = React.forwardRef(({ className, ...props }, ref) => (
 
 CommandItem.displayName = CommandPrimitive.Item.displayName
 
+/**
+ * Keyboard shortcut indicator
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Shortcut text (e.g., "⌘K")
+ */
 const CommandShortcut = ({
   className,
   ...props

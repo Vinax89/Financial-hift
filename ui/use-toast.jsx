@@ -1,8 +1,25 @@
+/**
+ * @fileoverview useToast hook for provider-less global toast notifications
+ * @description Hook that wraps Sonner toast with consistent API (supports variants: success, error, warning)
+ */
+
 import { toast as sonnerToast } from "@/ui/sonner.jsx";
 
-// Provider-less toast wrapper that works globally with Sonner.
-// Exposes the same API surface used across the app, without requiring a Provider.
-
+/**
+ * Hook for displaying toast notifications (provider-less)
+ * @returns {{
+ *   toast: (options: {title: string, description?: string, variant?: string}) => void,
+ *   dismiss: () => void,
+ *   success: (title: string, description?: string) => void,
+ *   error: (title: string, description?: string) => void,
+ *   warning: (title: string, description?: string) => void
+ * }} Toast notification functions
+ * @example
+ * const { toast, success, error } = useToast();
+ * toast({ title: "Hello", variant: "success" });
+ * success("Saved successfully");
+ * error("Failed to save");
+ */
 export function useToast() {
   const toast = ({ title, description, variant = "default" }) => {
     // Map variants to Sonner styles

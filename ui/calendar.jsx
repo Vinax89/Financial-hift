@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Calendar component using react-day-picker
+ * @description Date picker calendar with range selection, navigation, and accessibility
+ */
+
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker } from "react-day-picker"
@@ -5,6 +10,16 @@ import { DayPicker } from "react-day-picker"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/ui/button.jsx"
 
+/**
+ * Calendar date picker component
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {Object} [props.classNames] - Custom class names for DayPicker elements
+ * @param {boolean} [props.showOutsideDays=true] - Show days from adjacent months
+ * @param {'single'|'range'|'multiple'} props.mode - Selection mode
+ * @returns {JSX.Element} Interactive calendar grid
+ */
 function Calendar({
   className,
   classNames,

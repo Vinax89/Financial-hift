@@ -1,7 +1,18 @@
+/**
+ * @fileoverview Sonner toast notification wrapper with theme support
+ * @description Customized Sonner toaster with theme integration and styled variants
+ */
+
 "use client";
 import { useTheme } from "next-themes"
 import { Toaster as Sonner, toast } from "sonner"
 
+/**
+ * Sonner toast wrapper with theme integration
+ * @component
+ * @param {Object} props - Sonner props
+ * @returns {JSX.Element} Themed toast container
+ */
 const Toaster = ({
   ...props
 }) => {

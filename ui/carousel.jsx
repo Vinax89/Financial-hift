@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Carousel component using Embla Carousel
+ * @description Accessible carousel with keyboard navigation, scroll controls, and horizontal/vertical orientation
+ */
+
 import * as React from "react"
 import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react"
@@ -5,8 +10,25 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/ui/button.jsx"
 
+/**
+ * @typedef {Object} CarouselContextValue
+ * @property {React.RefObject} carouselRef - Embla carousel ref
+ * @property {Object} api - Embla API instance
+ * @property {Object} opts - Carousel options
+ * @property {'horizontal'|'vertical'} orientation - Scroll direction
+ * @property {() => void} scrollPrev - Scroll to previous slide
+ * @property {() => void} scrollNext - Scroll to next slide
+ * @property {boolean} canScrollPrev - Can scroll to previous
+ * @property {boolean} canScrollNext - Can scroll to next
+ */
+
 const CarouselContext = React.createContext(null)
 
+/**
+ * Hook to access carousel context
+ * @returns {CarouselContextValue} Carousel API and state
+ * @throws {Error} If used outside Carousel component
+ */
 function useCarousel() {
   const context = React.useContext(CarouselContext)
 
@@ -17,6 +39,27 @@ function useCarousel() {
   return context
 }
 
+/**
+ * Carousel root component with keyboard navigation
+ * @component
+ * @param {Object} props - Component props
+ * @param {'horizontal'|'vertical'} [props.orientation='horizontal'] - Scroll direction
+ * @param {Object} [props.opts] - Embla carousel options
+ * @param {(api: Object) => void} [props.setApi] - Callback to access Embla API
+ * @param {Array} [props.plugins] - Embla plugins
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Carousel container with context provider
+ * @example
+ * <Carousel>
+ *   <CarouselContent>
+ *     <CarouselItem>Slide 1</CarouselItem>
+ *     <CarouselItem>Slide 2</CarouselItem>
+ *   </CarouselContent>
+ *   <CarouselPrevious />
+ *   <CarouselNext />
+ * </Carousel>
+ */
 const Carousel = React.forwardRef((
   {
     orientation = "horizontal",
@@ -112,6 +155,14 @@ const Carousel = React.forwardRef((
 })
 Carousel.displayName = "Carousel"
 
+/**
+ * Carousel content container with overflow handling
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Scrollable content container
+ */
 const CarouselContent = React.forwardRef(({ className, ...props }, ref) => {
   const { carouselRef, orientation } = useCarousel()
 
@@ -130,6 +181,14 @@ const CarouselContent = React.forwardRef(({ className, ...props }, ref) => {
 })
 CarouselContent.displayName = "CarouselContent"
 
+/**
+ * Individual carousel slide
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Carousel slide with ARIA attributes
+ */
 const CarouselItem = React.forwardRef(({ className, ...props }, ref) => {
   const { orientation } = useCarousel()
 
@@ -148,6 +207,16 @@ const CarouselItem = React.forwardRef(({ className, ...props }, ref) => {
 })
 CarouselItem.displayName = "CarouselItem"
 
+/**
+ * Previous button for carousel navigation
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {string} [props.variant='outline'] - Button variant
+ * @param {string} [props.size='icon'] - Button size
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Previous slide button (auto-disabled at start)
+ */
 const CarouselPrevious = React.forwardRef(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel()
 
@@ -169,6 +238,16 @@ const CarouselPrevious = React.forwardRef(({ className, variant = "outline", siz
 })
 CarouselPrevious.displayName = "CarouselPrevious"
 
+/**
+ * Next button for carousel navigation
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {string} [props.variant='outline'] - Button variant
+ * @param {string} [props.size='icon'] - Button size
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Next slide button (auto-disabled at end)
+ */
 const CarouselNext = React.forwardRef(({ className, variant = "outline", size = "icon", ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel()
 

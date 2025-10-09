@@ -1,17 +1,39 @@
+/**
+ * @fileoverview Chart components using Recharts library
+ * @description Wrapper components for Recharts with theme support and custom styling
+ */
+
 "use client";
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
 import { cn } from "@/lib/utils"
 
-// Format: { THEME_NAME: CSS_SELECTOR }
+/**
+ * Theme configuration mapping
+ * @constant
+ * @type {Object.<string, string>}
+ */
 const THEMES = {
   light: "",
   dark: ".dark"
 }
 
+/**
+ * @typedef {Object} ChartConfig
+ * @property {string} [label] - Display label
+ * @property {string} [color] - Color value
+ * @property {Object} [theme] - Theme-specific colors
+ * @property {React.ComponentType} [icon] - Icon component
+ */
+
 const ChartContext = React.createContext(null)
 
+/**
+ * Hook to access chart configuration
+ * @returns {{config: ChartConfig}} Chart config object
+ * @throws {Error} If used outside ChartContainer
+ */
 function useChart() {
   const context = React.useContext(ChartContext)
 
@@ -22,6 +44,24 @@ function useChart() {
   return context
 }
 
+/**
+ * Chart container with theme and configuration
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.id] - Chart ID for styling
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {ChartConfig} props.config - Chart configuration (colors, labels, icons)
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Responsive chart container
+ * @example
+ * <ChartContainer config={{
+ *   revenue: { label: "Revenue", color: "#3b82f6" }
+ * }}>
+ *   <LineChart data={data}>
+ *     <Line dataKey="revenue" />
+ *   </LineChart>
+ * </ChartContainer>
+ */
 const ChartContainer = React.forwardRef(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId()
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
@@ -46,6 +86,14 @@ const ChartContainer = React.forwardRef(({ id, className, children, config, ...p
 })
 ChartContainer.displayName = "Chart"
 
+/**
+ * Dynamic CSS variables for chart colors
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.id - Chart ID
+ * @param {ChartConfig} props.config - Chart configuration
+ * @returns {JSX.Element|null} Style element with CSS variables
+ */
 const ChartStyle = ({
   id,
   config
@@ -77,8 +125,24 @@ return color ? `  --color-${key}: ${color};` : null
   );
 }
 
+/** @type {React.ComponentType} Recharts Tooltip component */
 const ChartTooltip = RechartsPrimitive.Tooltip
 
+/**
+ * Custom tooltip content for charts
+ * @component
+ * @param {Object} props - Component props
+ * @param {boolean} props.active - Tooltip active state
+ * @param {Array} props.payload - Data payload
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {'dot'|'line'|'dashed'} [props.indicator='dot'] - Indicator style
+ * @param {boolean} [props.hideLabel=false] - Hide tooltip label
+ * @param {boolean} [props.hideIndicator=false] - Hide color indicator
+ * @param {Function} [props.labelFormatter] - Custom label formatter
+ * @param {Function} [props.formatter] - Custom value formatter
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element|null} Styled tooltip with indicators
+ */
 const ChartTooltipContent = React.forwardRef((
   {
     active,
@@ -214,8 +278,21 @@ const ChartTooltipContent = React.forwardRef((
 })
 ChartTooltipContent.displayName = "ChartTooltip"
 
+/** @type {React.ComponentType} Recharts Legend component */
 const ChartLegend = RechartsPrimitive.Legend
 
+/**
+ * Custom legend content for charts
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.hideIcon=false] - Hide legend icons
+ * @param {Array} props.payload - Legend data
+ * @param {'top'|'bottom'} [props.verticalAlign='bottom'] - Vertical alignment
+ * @param {string} [props.nameKey] - Key for legend names
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element|null} Styled legend with icons
+ */
 const ChartLegendContent = React.forwardRef((
   { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
   ref
@@ -262,7 +339,13 @@ const ChartLegendContent = React.forwardRef((
 })
 ChartLegendContent.displayName = "ChartLegend"
 
-// Helper to extract item config from a payload.
+/**
+ * Helper to extract item config from payload
+ * @param {ChartConfig} config - Chart configuration
+ * @param {Object} payload - Data payload
+ * @param {string} key - Config key
+ * @returns {Object|undefined} Item configuration
+ */
 function getPayloadConfigFromPayload(
   config,
   payload,

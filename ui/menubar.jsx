@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Menubar component using Radix UI primitives
+ * @description Horizontal menu bar with dropdowns (like native app menus: File, Edit, View)
+ */
+
 "use client"
 
 import * as React from "react"
@@ -6,36 +11,78 @@ import { Check, ChevronRight, Circle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/** 
+ * Menubar menu container (dropdown)
+ * @component
+ * @returns {JSX.Element} Menu wrapper
+ */
 function MenubarMenu({
   ...props
 }) {
   return <MenubarPrimitive.Menu {...props} />;
 }
 
+/** 
+ * Menubar group for related items
+ * @component
+ * @returns {JSX.Element} Group wrapper
+ */
 function MenubarGroup({
   ...props
 }) {
   return <MenubarPrimitive.Group {...props} />;
 }
 
+/** 
+ * Portal for menubar content
+ * @component
+ * @returns {JSX.Element} Portal wrapper
+ */
 function MenubarPortal({
   ...props
 }) {
   return <MenubarPrimitive.Portal {...props} />;
 }
 
+/** 
+ * Radio group for mutually exclusive items
+ * @component
+ * @returns {JSX.Element} Radio group wrapper
+ */
 function MenubarRadioGroup({
   ...props
 }) {
   return <MenubarPrimitive.RadioGroup {...props} />;
 }
 
+/** 
+ * Submenu container
+ * @component
+ * @returns {JSX.Element} Submenu wrapper
+ */
 function MenubarSub({
   ...props
 }) {
   return <MenubarPrimitive.Sub data-slot="menubar-sub" {...props} />;
 }
 
+/**
+ * Menubar root container
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Horizontal menubar
+ * @example
+ * <Menubar>
+ *   <MenubarMenu>
+ *     <MenubarTrigger>File</MenubarTrigger>
+ *     <MenubarContent>
+ *       <MenubarItem>New</MenubarItem>
+ *     </MenubarContent>
+ *   </MenubarMenu>
+ * </Menubar>
+ */
 const Menubar = React.forwardRef(({ className, ...props }, ref) => (
   <MenubarPrimitive.Root
     ref={ref}
@@ -47,6 +94,14 @@ const Menubar = React.forwardRef(({ className, ...props }, ref) => (
 ))
 Menubar.displayName = MenubarPrimitive.Root.displayName
 
+/**
+ * Menubar trigger button (menu label)
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Menu trigger button
+ */
 const MenubarTrigger = React.forwardRef(({ className, ...props }, ref) => (
   <MenubarPrimitive.Trigger
     ref={ref}
@@ -58,6 +113,15 @@ const MenubarTrigger = React.forwardRef(({ className, ...props }, ref) => (
 ))
 MenubarTrigger.displayName = MenubarPrimitive.Trigger.displayName
 
+/**
+ * Submenu trigger item
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.inset] - Inset padding for alignment
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Item that opens submenu
+ */
 const MenubarSubTrigger = React.forwardRef(({ className, inset, children, ...props }, ref) => (
   <MenubarPrimitive.SubTrigger
     ref={ref}
@@ -73,6 +137,14 @@ const MenubarSubTrigger = React.forwardRef(({ className, inset, children, ...pro
 ))
 MenubarSubTrigger.displayName = MenubarPrimitive.SubTrigger.displayName
 
+/**
+ * Submenu content panel
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Submenu dropdown
+ */
 const MenubarSubContent = React.forwardRef(({ className, ...props }, ref) => (
   <MenubarPrimitive.SubContent
     ref={ref}
@@ -84,6 +156,17 @@ const MenubarSubContent = React.forwardRef(({ className, ...props }, ref) => (
 ))
 MenubarSubContent.displayName = MenubarPrimitive.SubContent.displayName
 
+/**
+ * Main menubar dropdown content
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {'start'|'center'|'end'} [props.align='start'] - Alignment
+ * @param {number} [props.alignOffset=-4] - Alignment offset
+ * @param {number} [props.sideOffset=8] - Distance from trigger
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Menu dropdown panel (portaled)
+ */
 const MenubarContent = React.forwardRef((
   { className, align = "start", alignOffset = -4, sideOffset = 8, ...props },
   ref
@@ -103,6 +186,15 @@ const MenubarContent = React.forwardRef((
 ))
 MenubarContent.displayName = MenubarPrimitive.Content.displayName
 
+/**
+ * Standard menubar item
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.inset] - Inset padding for alignment
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Clickable menu item
+ */
 const MenubarItem = React.forwardRef(({ className, inset, ...props }, ref) => (
   <MenubarPrimitive.Item
     ref={ref}
@@ -115,6 +207,15 @@ const MenubarItem = React.forwardRef(({ className, inset, ...props }, ref) => (
 ))
 MenubarItem.displayName = MenubarPrimitive.Item.displayName
 
+/**
+ * Checkbox menu item with check indicator
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} props.checked - Checked state
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Menu item with checkbox
+ */
 const MenubarCheckboxItem = React.forwardRef(({ className, children, checked, ...props }, ref) => (
   <MenubarPrimitive.CheckboxItem
     ref={ref}
@@ -134,6 +235,14 @@ const MenubarCheckboxItem = React.forwardRef(({ className, children, checked, ..
 ))
 MenubarCheckboxItem.displayName = MenubarPrimitive.CheckboxItem.displayName
 
+/**
+ * Radio menu item with circle indicator
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Menu item with radio indicator
+ */
 const MenubarRadioItem = React.forwardRef(({ className, children, ...props }, ref) => (
   <MenubarPrimitive.RadioItem
     ref={ref}
@@ -152,6 +261,15 @@ const MenubarRadioItem = React.forwardRef(({ className, children, ...props }, re
 ))
 MenubarRadioItem.displayName = MenubarPrimitive.RadioItem.displayName
 
+/**
+ * Menu label (non-interactive heading)
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {boolean} [props.inset] - Inset padding for alignment
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Menu section label
+ */
 const MenubarLabel = React.forwardRef(({ className, inset, ...props }, ref) => (
   <MenubarPrimitive.Label
     ref={ref}
@@ -160,6 +278,14 @@ const MenubarLabel = React.forwardRef(({ className, inset, ...props }, ref) => (
 ))
 MenubarLabel.displayName = MenubarPrimitive.Label.displayName
 
+/**
+ * Menu separator line
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Visual separator
+ */
 const MenubarSeparator = React.forwardRef(({ className, ...props }, ref) => (
   <MenubarPrimitive.Separator
     ref={ref}
@@ -168,6 +294,13 @@ const MenubarSeparator = React.forwardRef(({ className, ...props }, ref) => (
 ))
 MenubarSeparator.displayName = MenubarPrimitive.Separator.displayName
 
+/**
+ * Keyboard shortcut indicator
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {JSX.Element} Shortcut text (e.g., "⌘N")
+ */
 const MenubarShortcut = ({
   className,
   ...props
