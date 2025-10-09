@@ -14,12 +14,18 @@
  * }
  */
 
+import type { RateLimiterOptions, RateLimiterStats } from '../types/rateLimiting.types';
+
 /**
  * Rate Limiter Class
  * Tracks requests per identifier within a time window
  */
 export class RateLimiter {
-  constructor(options = {}) {
+  private maxRequests: number;
+  private windowMs: number;
+  private requests: Map<string, number[]>;
+
+  constructor(options: RateLimiterOptions = {}) {
     this.maxRequests = options.maxRequests || 10;
     this.windowMs = options.windowMs || 60000; // 1 minute default
     this.requests = new Map(); // Map of identifier -> array of timestamps
@@ -27,10 +33,10 @@ export class RateLimiter {
 
   /**
    * Try to make a request
-   * @param {string} identifier - Unique identifier (userId, IP, etc.)
-   * @returns {boolean} Whether the request is allowed
+   * @param identifier - Unique identifier (userId, IP, etc.)
+   * @returns Whether the request is allowed
    */
-  tryRequest(identifier) {
+  tryRequest(identifier: string): boolean {
     const now = Date.now();
     const windowStart = now - this.windowMs;
 
@@ -59,10 +65,10 @@ export class RateLimiter {
 
   /**
    * Check remaining requests without consuming one
-   * @param {string} identifier - Unique identifier
-   * @returns {number} Number of remaining requests
+   * @param identifier - Unique identifier
+   * @returns Number of remaining requests
    */
-  getRemainingRequests(identifier) {
+  getRemainingRequests(identifier: string): number {
     const now = Date.now();
     const windowStart = now - this.windowMs;
     const userRequests = (this.requests.get(identifier) || [])
@@ -73,10 +79,10 @@ export class RateLimiter {
 
   /**
    * Get time until next available request
-   * @param {string} identifier - Unique identifier
-   * @returns {number} Milliseconds until next request allowed (0 if allowed now)
+   * @param identifier - Unique identifier
+   * @returns Milliseconds until next request allowed (0 if allowed now)
    */
-  getRetryAfter(identifier) {
+  getRetryAfter(identifier: string): number {
     const now = Date.now();
     const windowStart = now - this.windowMs;
     const userRequests = (this.requests.get(identifier) || [])
@@ -93,16 +99,16 @@ export class RateLimiter {
 
   /**
    * Reset rate limit for an identifier
-   * @param {string} identifier - Unique identifier
+   * @param identifier - Unique identifier
    */
-  reset(identifier) {
+  reset(identifier: string): void {
     this.requests.delete(identifier);
   }
 
   /**
    * Clean up expired entries
    */
-  cleanup() {
+  cleanup(): void {
     const now = Date.now();
     const windowStart = now - this.windowMs;
 
@@ -118,9 +124,9 @@ export class RateLimiter {
 
   /**
    * Get statistics
-   * @returns {Object} Stats about rate limiter
+   * @returns Stats about rate limiter
    */
-  getStats() {
+  getStats(): RateLimiterStats {
     return {
       totalIdentifiers: this.requests.size,
       maxRequests: this.maxRequests,
@@ -147,30 +153,31 @@ export class RateLimiter {
  * }
  */
 import { useRef, useCallback } from 'react';
+import type { UseRateLimitOptions, UseRateLimitReturn } from '../types/rateLimiting.types';
 
-export function useRateLimit(options = {}) {
+export function useRateLimit(options: UseRateLimitOptions = {}): UseRateLimitReturn {
   const { maxRequests = 10, windowMs = 60000, identifier = 'default' } = options;
   
-  const rateLimiterRef = useRef(null);
+  const rateLimiterRef = useRef<RateLimiter | null>(null);
   
   if (!rateLimiterRef.current) {
     rateLimiterRef.current = new RateLimiter({ maxRequests, windowMs });
   }
 
   const canMakeRequest = useCallback(() => {
-    return rateLimiterRef.current.tryRequest(identifier);
+    return rateLimiterRef.current!.tryRequest(identifier);
   }, [identifier]);
 
   const getRemainingRequests = useCallback(() => {
-    return rateLimiterRef.current.getRemainingRequests(identifier);
+    return rateLimiterRef.current!.getRemainingRequests(identifier);
   }, [identifier]);
 
   const getRetryAfter = useCallback(() => {
-    return rateLimiterRef.current.getRetryAfter(identifier);
+    return rateLimiterRef.current!.getRetryAfter(identifier);
   }, [identifier]);
 
   const reset = useCallback(() => {
-    rateLimiterRef.current.reset(identifier);
+    rateLimiterRef.current!.reset(identifier);
   }, [identifier]);
 
   return {
@@ -200,10 +207,10 @@ export const GlobalRateLimiters = {
 
 /**
  * Format retry time for user display
- * @param {number} ms - Milliseconds until retry
- * @returns {string} Formatted time
+ * @param ms - Milliseconds until retry
+ * @returns Formatted time
  */
-export function formatRetryTime(ms) {
+export function formatRetryTime(ms: number): string {
   if (ms <= 0) return 'now';
   
   const seconds = Math.ceil(ms / 1000);
