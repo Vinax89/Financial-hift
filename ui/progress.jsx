@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Progress bar component using Radix UI primitives
+ * @description Accessible progress indicator with smooth transitions
+ */
+
 "use client"
 
 import * as React from "react"
@@ -5,6 +10,17 @@ import * as ProgressPrimitive from "@radix-ui/react-progress"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Progress bar component with ref forwarding
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {number} [props.value=0] - Progress value (0-100)
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Progress bar
+ * @example
+ * <Progress value={75} className="w-full" />
+ */
 const Progress = React.forwardRef(({ className, value, ...props }, ref) => (
   <ProgressPrimitive.Root
     ref={ref}

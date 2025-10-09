@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Tooltip component using Radix UI primitives
+ * @description Accessible tooltip with portal rendering and smooth animations
+ */
+
 "use client"
 
 import * as React from "react"
@@ -5,12 +10,40 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Tooltip provider component for shared tooltip context
+ * @type {React.Component}
+ */
 const TooltipProvider = TooltipPrimitive.Provider
 
+/**
+ * Tooltip root component
+ * @type {React.Component}
+ */
 const Tooltip = TooltipPrimitive.Root
 
+/**
+ * Tooltip trigger component
+ * @type {React.Component}
+ */
 const TooltipTrigger = TooltipPrimitive.Trigger
 
+/**
+ * Tooltip content component with portal
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {number} [props.sideOffset=4] - Distance from trigger in pixels
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {JSX.Element} Tooltip content
+ * @example
+ * <TooltipProvider>
+ *   <Tooltip>
+ *     <TooltipTrigger>Hover me</TooltipTrigger>
+ *     <TooltipContent>Helpful tooltip text</TooltipContent>
+ *   </Tooltip>
+ * </TooltipProvider>
+ */
 const TooltipContent = React.forwardRef(({ className, sideOffset = 4, ...props }, ref) => (
   <TooltipPrimitive.Portal>
     <TooltipPrimitive.Content
