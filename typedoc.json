@@ -76,5 +76,6 @@
   "emit": "docs",
   "theme": "default",
   "lightHighlightTheme": "light-plus",
-  "darkHighlightTheme": "dark-plus"
+  "darkHighlightTheme": "dark-plus",
+  "skipErrorChecking": true
 }
