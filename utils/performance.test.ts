@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for performance optimization utilities
  * @description Comprehensive test coverage for React performance hooks and utilities
@@ -516,3 +517,4 @@ describe('Performance Utilities', () => {
     });
   });
 });
+

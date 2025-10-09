@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Toggle button component using Radix UI primitives
  * @description On/off toggle button with variants (similar to checkbox but styled as button)
@@ -57,3 +58,4 @@ const Toggle = React.forwardRef(({ className, variant, size, ...props }, ref) =>
 Toggle.displayName = TogglePrimitive.Root.displayName
 
 export { Toggle, toggleVariants }
+

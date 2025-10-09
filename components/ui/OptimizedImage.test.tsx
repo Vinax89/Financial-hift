@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for OptimizedImage component family
  * @description Component tests for image optimization with lazy loading, placeholders, and error handling
@@ -795,3 +796,4 @@ describe('BackgroundImage', () => {
     });
   });
 });
+

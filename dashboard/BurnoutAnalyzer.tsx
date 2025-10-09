@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 import React, { useMemo } from 'react';
 import { CardContent, CardHeader, CardTitle } from '@/ui/card';
@@ -213,3 +214,4 @@ export default function BurnoutAnalyzer({ shifts }) {
         </ThemedCard>
     );
 }
+

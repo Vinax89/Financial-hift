@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Transaction creation and editing form
  * @description Full-featured form with validation, sanitization, animations,

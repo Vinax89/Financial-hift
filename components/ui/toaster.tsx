@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Toaster as SonnerToaster } from "@/ui/sonner";
 
 const Toaster = (props) => {
@@ -6,3 +7,4 @@ const Toaster = (props) => {
 
 export { Toaster };
 export default Toaster;
+

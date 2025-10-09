@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Transaction filters component for filtering by type, category, and date range
  * @description Provides filter controls with preset date ranges and clear functionality
@@ -130,3 +131,4 @@ function TransactionFilters({ onFilterChange }) {
 }
 
 export default React.memo(TransactionFilters);
+

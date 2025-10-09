@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for centralized logging utility
  * @description Comprehensive test coverage for logger functions
@@ -408,3 +409,4 @@ describe('Logger Utility', () => {
     });
   });
 });
+

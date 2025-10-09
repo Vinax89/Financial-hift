@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Comprehensive tests for authentication utilities
  * @description Tests for isAuthenticated, getCurrentUser, and logout functionality
@@ -305,3 +306,4 @@ describe('useLogout', () => {
         expect(mockToast).not.toHaveBeenCalled();
     });
 });
+

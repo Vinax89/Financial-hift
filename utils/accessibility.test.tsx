@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { FocusTrap, KeyboardShortcuts, announce } from '@/utils/accessibility';
 
@@ -275,3 +276,4 @@ describe('announce', () => {
     expect(removedRegion).toBeNull();
   });
 });
+

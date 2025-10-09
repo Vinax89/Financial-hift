@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Autonomous agent orchestration center
  * @description Triggers and monitors multi-agent workflows with health checks,

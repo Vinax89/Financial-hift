@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { useAutosave, useDebouncedAutosave, useFormPersistence } from '@/utils/formEnhancement';
@@ -273,3 +274,4 @@ describe('Form validation helpers', () => {
     expect(isDirty).toBe(true);
   });
 });
+

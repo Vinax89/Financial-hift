@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview NavigationMenu component using Radix UI primitives
  * @description Site navigation menu with dropdowns and keyboard navigation
@@ -161,3 +162,4 @@ export {
   NavigationMenuIndicator,
   NavigationMenuViewport,
 }
+

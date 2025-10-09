@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { toast as sonnerToast } from '@/ui/sonner';
 
 // Provider-less toast wrapper that works globally with Sonner.

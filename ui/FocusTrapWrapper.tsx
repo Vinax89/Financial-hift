@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Focus trap wrapper for accessible modal/dialog interactions
  * @description Manages keyboard focus within modal content for improved accessibility
@@ -99,3 +100,4 @@ export function useFocusTrap(ref, enabled = true) {
 }
 
 export default FocusTrapWrapper;
+

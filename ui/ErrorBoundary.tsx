@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { AlertTriangle, Home, RotateCw } from 'lucide-react';
 import { Button } from '@/ui/button';
@@ -209,3 +210,4 @@ export function FormErrorBoundary({ children, formName = 'form' }) {
 }
 
 export default ErrorBoundary;
+

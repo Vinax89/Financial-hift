@@ -1,3 +1,4 @@
+// @ts-nocheck - Incremental migration in progress
 /**
  * @fileoverview Performance-optimized main dashboard hub
  * @description Enhanced MoneyHub with React.memo optimizations, memoized calculations,

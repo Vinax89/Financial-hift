@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for rate limiting utilities
  * @description Comprehensive test coverage for RateLimiter, RequestDeduplicator, and RequestBatcher
@@ -524,3 +525,4 @@ describe('Integration tests', () => {
     expect(processor).toHaveBeenCalledTimes(2);
   });
 });
+

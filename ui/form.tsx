@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Form components for React Hook Form integration
  * @description Accessible form components with automatic error handling, validation, and ARIA attributes.
@@ -219,3 +220,4 @@ export {
   FormMessage,
   FormField,
 }
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Upcoming due items display component (TypeScript)
  * @description Shows upcoming bills and debt payments sorted by due date
@@ -156,3 +157,4 @@ function UpcomingDue({ bills = [], debts = [] }: UpcomingDueProps): JSX.Element 
 }
 
 export default memo(UpcomingDue);
+

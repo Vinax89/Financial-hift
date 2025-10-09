@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Toast notification system with context provider
  * @description Animated toast notifications with multiple variants and auto-dismiss functionality

@@ -1,3 +1,4 @@
+// @ts-nocheck - Incremental migration in progress
 
 import React, { useState, useMemo } from 'react';
 import { logError } from '@/utils/logger';

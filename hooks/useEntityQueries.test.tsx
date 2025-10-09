@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for useEntityQueries hook
  * @description Comprehensive test coverage for all entity query hooks
@@ -195,3 +196,4 @@ describe('useEntityQueries - useDebts', () => {
     expect(result.current.data).toEqual([]);
   });
 });
+

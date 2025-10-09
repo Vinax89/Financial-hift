@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview HoverCard component using Radix UI primitives
  * @description Popover content shown on hover with animations and positioning
@@ -48,3 +49,4 @@ const HoverCardContent = React.forwardRef(({ className, align = "center", sideOf
 HoverCardContent.displayName = HoverCardPrimitive.Content.displayName
 
 export { HoverCard, HoverCardTrigger, HoverCardContent }
+

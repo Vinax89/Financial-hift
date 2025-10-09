@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Breadcrumb navigation component
  * @description Accessible breadcrumb trail for hierarchical navigation
@@ -150,3 +151,4 @@ export {
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
 }
+

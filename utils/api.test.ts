@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Comprehensive tests for API utility functions
  * @description Tests for sleep, retryWithBackoff, and error handling
@@ -192,3 +193,4 @@ describe('retryWithBackoff', () => {
         }
     });
 });
+

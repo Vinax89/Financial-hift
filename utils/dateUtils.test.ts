@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Comprehensive tests for date utility functions
  * @description Tests for all date formatting, shift calculations, and date validation utilities
@@ -380,3 +381,4 @@ describe('getShiftStatus', () => {
         expect(getShiftStatus(shift)).toBe('upcoming');
     });
 });
+

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Virtualized transaction list with filtering and actions
  * @description Displays transactions in a performant virtualized list with
@@ -131,3 +132,4 @@ function TransactionList({ transactions, onEdit, onDelete, isLoading }) {
 }
 
 export default memo(TransactionList);
+

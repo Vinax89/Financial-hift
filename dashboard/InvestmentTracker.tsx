@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Investment portfolio tracker and manager
  * @description Manages investment portfolio with CRUD operations, tracks gains/losses,

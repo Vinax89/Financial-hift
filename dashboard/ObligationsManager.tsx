@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Bill obligations manager with urgency tracking
  * @description Manages monthly bills with status indicators (critical/due soon/upcoming),

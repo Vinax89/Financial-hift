@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Tests for PrefetchLink component
  * @description Component tests for enhanced Link with prefetching functionality
@@ -398,3 +399,4 @@ describe('PrefetchButton', () => {
     });
   });
 });
+

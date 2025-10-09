@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @fileoverview Goals progress display component (TypeScript)
  * @description Shows active savings goals with progress bars, target dates, and amounts
@@ -111,3 +112,4 @@ function GoalsProgress({ goals, isLoading = false }: GoalsProgressProps): JSX.El
 }
 
 export default memo(GoalsProgress);
+

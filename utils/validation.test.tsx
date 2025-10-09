@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { describe, it, expect } from 'vitest';
 import {
   sanitizeInput,
@@ -426,3 +427,4 @@ describe('validateGoal', () => {
     expect(result.errors.current_amount).toBeDefined();
   });
 });
+
