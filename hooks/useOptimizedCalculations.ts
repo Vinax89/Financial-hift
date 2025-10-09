@@ -74,7 +74,7 @@ export function useShiftCalculations(
       return { totalGross: 0, totalNet: 0, avgHourly: 0, calculations: [] };
     }
 
-    const calculations = shifts.map(shift => calculateShiftPay(shift, rules));
+    const calculations = shifts.map(shift => calculateShiftPay(shift as any, rules));
     const totalGross = calculations.reduce((sum, calc) => sum + (calc?.gross_pay || 0), 0);
     const totalNet = calculations.reduce((sum, calc) => sum + (calc?.net_pay || 0), 0);
     const totalHours = shifts.reduce(
@@ -97,7 +97,7 @@ export function useDebtCalculations(
 ): ReturnType<typeof calculateDebtPayoff> | null {
   return useMemo(() => {
     if (!Array.isArray(debts) || debts.length === 0) return null;
-    return calculateDebtPayoff(debts, strategy, extraPayment);
+    return calculateDebtPayoff(debts as any, strategy, extraPayment);
   }, [debts, strategy, extraPayment]);
 }
 

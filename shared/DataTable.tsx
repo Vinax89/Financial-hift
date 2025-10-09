@@ -4,12 +4,17 @@
  */
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table';
-import { Card, CardContent } from '@/ui/card';
-import { Button } from '@/ui/button';
-import { Input } from '@/ui/input';
+// @ts-ignore - Using .jsx component until TypeScript migration complete
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table.jsx';
+// @ts-ignore - Using .jsx component until TypeScript migration complete
+import { Card, CardContent } from '@/ui/card.jsx';
+// @ts-ignore - Using .jsx component until TypeScript migration complete
+import { Button } from '@/ui/button.jsx';
+// @ts-ignore - Using .jsx component until TypeScript migration complete
+import { Input } from '@/ui/input.jsx';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { Loading, TableLoading } from '../ui/loading';
+// @ts-ignore - Using .jsx component until TypeScript migration complete
+import { Loading, TableLoading } from '@/ui/loading.jsx';
 import { cn } from '@/lib/utils';
 
 /**

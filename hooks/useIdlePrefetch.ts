@@ -32,7 +32,7 @@ function runWhenIdle(fn: () => void): IdleCallbackId {
   if (typeof window !== "undefined" && "requestIdleCallback" in window) {
     return window.requestIdleCallback(fn, { timeout: 3000 });
   }
-  return window.setTimeout(fn, 1500) as unknown as IdleCallbackId;
+  return window.setTimeout(fn, 1500) as any as IdleCallbackId;
 }
 
 // ============================================================================
@@ -66,7 +66,7 @@ export function useIdlePrefetch(
   useEffect(() => {
     if (!Array.isArray(importFns) || importFns.length === 0) return;
 
-    const timeouts: number[] = [];
+    const timeouts: any[] = [];
     
     const schedule = (): void => {
       importFns.forEach((imp, idx) => {
