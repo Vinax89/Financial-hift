@@ -10,12 +10,34 @@ import { Button } from '@/ui/button';
 import { Badge } from '@/ui/badge';
 import { AutoSizedVirtualList, getVirtualListMetrics } from '@/utils/virtualScroll';
 
+interface Debt {
+    id?: string | number;
+    name?: string;
+    account_name?: string;
+    balance: number;
+    interest_rate: number;
+    minimum_payment: number;
+    status?: 'active' | 'paid' | 'paused';
+}
+
+interface DebtRowProps {
+    debt: Debt;
+    onEdit?: (debt: Debt) => void;
+    onDelete?: (id: string | number) => void;
+}
+
+interface DebtListProps {
+    debts?: Debt[];
+    onEdit: (debt: Debt) => void;
+    onDelete: (id: string | number) => void;
+}
+
 /**
  * Format value as USD currency with safety checks
  * @param {number|string} value - Value to format
  * @returns {string} Formatted currency string
  */
-const formatCurrency = (value) => {
+const formatCurrency = (value: number | string): string => {
     const amount = typeof value === 'number' ? value : parseFloat(value);
     if (!Number.isFinite(amount)) {
         return '$0.00';
@@ -28,7 +50,7 @@ const formatCurrency = (value) => {
  * @param {number|string} value - Rate to format
  * @returns {string} Formatted percentage string
  */
-const formatRate = (value) => {
+const formatRate = (value: number | string): string => {
     const rate = typeof value === 'number' ? value : parseFloat(value);
     if (!Number.isFinite(rate)) {
         return '0%';
@@ -44,7 +66,7 @@ const formatRate = (value) => {
  * @param {Function} props.onDelete - Delete handler
  * @returns {JSX.Element} Debt row
  */
-const DebtRow = React.memo(({ debt, onEdit, onDelete }) => (
+const DebtRow = React.memo<DebtRowProps>(({ debt, onEdit, onDelete }) => (
     <TableRow key={debt.id || debt.name}>
         <TableCell className="font-medium">{debt.name || debt.account_name}</TableCell>
         <TableCell>{formatCurrency(debt.balance)}</TableCell>
@@ -59,7 +81,7 @@ const DebtRow = React.memo(({ debt, onEdit, onDelete }) => (
             <Button size="sm" variant="outline" onClick={() => onEdit?.(debt)}>
                 Edit
             </Button>
-            <Button size="sm" variant="destructive" onClick={() => onDelete?.(debt.id)}>
+            <Button size="sm" variant="destructive" onClick={() => debt.id && onDelete?.(debt.id)}>
                 Delete
             </Button>
         </TableCell>
@@ -76,7 +98,7 @@ DebtRow.displayName = 'DebtRow';
  * @param {Function} props.onDelete - Delete debt handler
  * @returns {JSX.Element} Debts table
  */
-function DebtList({ debts = [], onEdit, onDelete }) {
+function DebtList({ debts = [], onEdit, onDelete }: DebtListProps) {
     // Calculate performance metrics
     const metrics = useMemo(() => getVirtualListMetrics(debts, 60), [debts]);
     

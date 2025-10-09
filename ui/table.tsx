@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils"
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element} Table with auto overflow wrapper
  */
-const Table = React.forwardRef(({ className, ...props }, ref) => (
+const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(({ className, ...props }, ref) => (
   <div className="relative w-full overflow-auto">
     <table
       ref={ref}
@@ -33,7 +33,7 @@ Table.displayName = "Table"
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element} Table header section
  */
-const TableHeader = React.forwardRef(({ className, ...props }, ref) => (
+const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => (
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
@@ -46,7 +46,7 @@ TableHeader.displayName = "TableHeader"
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element} Table body section
  */
-const TableBody = React.forwardRef(({ className, ...props }, ref) => (
+const TableBody = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
     className={cn("[&_tr:last-child]:border-0", className)}
@@ -62,7 +62,7 @@ TableBody.displayName = "TableBody"
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element} Table footer section
  */
-const TableFooter = React.forwardRef(({ className, ...props }, ref) => (
+const TableFooter = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
     className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
@@ -78,7 +78,7 @@ TableFooter.displayName = "TableFooter"
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element} Table row with hover and selection states
  */
-const TableRow = React.forwardRef(({ className, ...props }, ref) => (
+const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(({ className, ...props }, ref) => (
   <tr
     ref={ref}
     className={cn(
@@ -97,7 +97,7 @@ TableRow.displayName = "TableRow"
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element} Table header cell
  */
-const TableHead = React.forwardRef(({ className, ...props }, ref) => (
+const TableHead = React.forwardRef<HTMLTableHeaderCellElement, React.ThHTMLAttributes<HTMLTableHeaderCellElement>>(({ className, ...props }, ref) => (
   <th
     ref={ref}
     className={cn(
@@ -116,7 +116,7 @@ TableHead.displayName = "TableHead"
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element} Table data cell
  */
-const TableCell = React.forwardRef(({ className, ...props }, ref) => (
+const TableCell = React.forwardRef<HTMLTableDataCellElement, React.TdHTMLAttributes<HTMLTableDataCellElement>>(({ className, ...props }, ref) => (
   <td
     ref={ref}
     className={cn(
@@ -135,7 +135,7 @@ TableCell.displayName = "TableCell"
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element} Table caption describing table contents
  */
-const TableCaption = React.forwardRef(({ className, ...props }, ref) => (
+const TableCaption = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(({ className, ...props }, ref) => (
   <caption
     ref={ref}
     className={cn("mt-4 text-sm text-muted-foreground", className)}
