@@ -17,7 +17,12 @@ import { announceSuccess, announceError } from '@/utils/accessibility';
 /**
  * Autosave hook with debouncing
  */
-export function useAutosave(onSave, options = {}) {
+export function useAutosave(onSave: (data: any) => Promise<void>, options: {
+    delay?: number;
+    enabled?: boolean;
+    onSuccess?: (() => void) | null;
+    onError?: ((err: any) => void) | null;
+} = {}) {
     const {
         delay = 2000,
         enabled = true,
@@ -26,10 +31,10 @@ export function useAutosave(onSave, options = {}) {
     } = options;
 
     const [isSaving, setIsSaving] = React.useState(false);
-    const [lastSaved, setLastSaved] = React.useState(null);
-    const [error, setError] = React.useState(null);
+    const [lastSaved, setLastSaved] = React.useState<Date | null>(null);
+    const [error, setError] = React.useState<any>(null);
 
-    const saveData = React.useCallback(async (data) => {
+    const saveData = React.useCallback(async (data: any) => {
         if (!enabled || !data) return;
 
         setIsSaving(true);
@@ -41,7 +46,7 @@ export function useAutosave(onSave, options = {}) {
             onSuccess?.();
             announceSuccess('Changes saved automatically');
         } catch (err) {
-            setError(err);
+            setError(err as any);
             onError?.(err);
             announceError('Failed to save changes');
             console.error('Autosave error:', err);
@@ -63,7 +68,13 @@ export function useAutosave(onSave, options = {}) {
 /**
  * Enhanced form state management with validation
  */
-export function useFormState(initialValues, schema, options = {}) {
+export function useFormState(initialValues: Record<string, any>, schema: any, options: {
+    validateOnChange?: boolean;
+    validateOnBlur?: boolean;
+    onSubmit?: ((data: any) => Promise<void>) | null;
+    autosave?: boolean;
+    autosaveDelay?: number;
+} = {}) {
     const {
         validateOnChange = true,
         validateOnBlur = true,
@@ -72,9 +83,9 @@ export function useFormState(initialValues, schema, options = {}) {
         autosaveDelay = 2000,
     } = options;
 
-    const [values, setValues] = React.useState(initialValues);
-    const [errors, setErrors] = React.useState({});
-    const [touched, setTouched] = React.useState({});
+    const [values, setValues] = React.useState<Record<string, any>>(initialValues);
+    const [errors, setErrors] = React.useState<Record<string, string>>({});
+    const [touched, setTouched] = React.useState<Record<string, boolean>>({});
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [isDirty, setIsDirty] = React.useState(false);
 
@@ -92,27 +103,27 @@ export function useFormState(initialValues, schema, options = {}) {
     );
 
     // Validate single field
-    const validateField = React.useCallback((name, value) => {
+    const validateField = React.useCallback((name: string, value: any): string | null => {
         if (!schema) return null;
 
         try {
             const fieldSchema = schema.pick({ [name]: true });
             fieldSchema.parse({ [name]: value });
             return null;
-        } catch (error) {
+        } catch (error: any) {
             return error.errors[0]?.message || 'Invalid value';
         }
     }, [schema]);
 
     // Validate all fields
-    const validateForm = React.useCallback(() => {
+    const validateForm = React.useCallback((): { isValid: boolean; errors: Record<string, string> } => {
         if (!schema) return { isValid: true, errors: {} };
 
         const result = validateData(schema, values);
         
         if (!result.success) {
-            setErrors(result.errors);
-            return { isValid: false, errors: result.errors };
+            setErrors(result.errors || {});
+            return { isValid: false, errors: result.errors || {} };
         }
 
         setErrors({});
@@ -120,8 +131,8 @@ export function useFormState(initialValues, schema, options = {}) {
     }, [schema, values]);
 
     // Handle field change
-    const handleChange = React.useCallback((name, value) => {
-        setValues(prev => {
+    const handleChange = React.useCallback((name: string, value: any) => {
+        setValues((prev: Record<string, any>) => {
             const newValues = { ...prev, [name]: value };
             
             // Trigger autosave
@@ -139,13 +150,13 @@ export function useFormState(initialValues, schema, options = {}) {
             const error = validateField(name, value);
             setErrors(prev => ({
                 ...prev,
-                [name]: error,
+                [name]: error || '',
             }));
         }
     }, [validateOnChange, touched, validateField, autosave, autosaveData]);
 
     // Handle field blur
-    const handleBlur = React.useCallback((name) => {
+    const handleBlur = React.useCallback((name: string) => {
         setTouched(prev => ({ ...prev, [name]: true }));
 
         // Validate on blur if enabled
@@ -153,19 +164,19 @@ export function useFormState(initialValues, schema, options = {}) {
             const error = validateField(name, values[name]);
             setErrors(prev => ({
                 ...prev,
-                [name]: error,
+                [name]: error || '',
             }));
         }
     }, [validateOnBlur, validateField, values]);
 
     // Handle form submit
-    const handleSubmit = React.useCallback(async (e) => {
+    const handleSubmit = React.useCallback(async (e?: React.FormEvent) => {
         if (e) {
             e.preventDefault();
         }
 
         // Mark all fields as touched
-        const allTouched = Object.keys(values).reduce((acc, key) => {
+        const allTouched = Object.keys(values).reduce((acc: Record<string, boolean>, key) => {
             acc[key] = true;
             return acc;
         }, {});
@@ -190,8 +201,8 @@ export function useFormState(initialValues, schema, options = {}) {
             setIsDirty(false);
             announceSuccess('Form submitted successfully');
             return { success: true, data: result };
-        } catch (error) {
-            const errorMessage = error.message || 'Failed to submit form';
+        } catch (error: any) {
+            const errorMessage = error?.message || 'Failed to submit form';
             announceError(errorMessage);
             return { success: false, error };
         } finally {
@@ -208,12 +219,12 @@ export function useFormState(initialValues, schema, options = {}) {
     }, [initialValues]);
 
     // Set field value programmatically
-    const setFieldValue = React.useCallback((name, value) => {
+    const setFieldValue = React.useCallback((name: string, value: any) => {
         handleChange(name, value);
     }, [handleChange]);
 
     // Set field error programmatically
-    const setFieldError = React.useCallback((name, error) => {
+    const setFieldError = React.useCallback((name: string, error: string) => {
         setErrors(prev => ({
             ...prev,
             [name]: error,
@@ -221,7 +232,7 @@ export function useFormState(initialValues, schema, options = {}) {
     }, []);
 
     // Set multiple values at once
-    const setFieldValues = React.useCallback((newValues) => {
+    const setFieldValues = React.useCallback((newValues: Record<string, any>) => {
         setValues(prev => ({ ...prev, ...newValues }));
         setIsDirty(true);
     }, []);
@@ -263,6 +274,20 @@ export function FormField({
     onBlur,
     className = '',
     ...props
+}: {
+    name: string;
+    label?: string;
+    type?: string;
+    value: any;
+    error?: string;
+    touched?: boolean;
+    required?: boolean;
+    disabled?: boolean;
+    placeholder?: string;
+    onChange: (name: string, value: any) => void;
+    onBlur: (name: string) => void;
+    className?: string;
+    [key: string]: any;
 }) {
     const fieldId = `field-${name}`;
     const errorId = `error-${name}`;

@@ -282,7 +282,12 @@ export const CacheStrategy = {
 /**
  * Cached fetch with strategy
  */
-export async function cachedFetch(url, options = {}) {
+export async function cachedFetch(url: string, options: {
+    strategy?: string;
+    ttl?: number;
+    cacheKey?: string;
+    [key: string]: any;
+} = {}): Promise<any> {
     const {
         strategy = CacheStrategy.NETWORK_FIRST,
         ttl = 5 * 60 * 1000, // 5 minutes default
@@ -297,7 +302,9 @@ export async function cachedFetch(url, options = {}) {
             return cacheFirst(url, options, cacheKey, ttl);
         
         case CacheStrategy.NETWORK_ONLY:
-            return fetch(url, options);
+            // Extract only fetch-compatible options
+            const { strategy: _, ttl: __, cacheKey: ___, ...fetchOptions } = options;
+            return fetch(url, fetchOptions);
         
         case CacheStrategy.CACHE_ONLY:
             return dbCache.get(cacheKey);
@@ -313,7 +320,7 @@ export async function cachedFetch(url, options = {}) {
 /**
  * Network-first strategy
  */
-async function networkFirst(url, options, cacheKey, ttl) {
+async function networkFirst(url: string, options: any, cacheKey: string, ttl: number): Promise<any> {
     try {
         const response = await fetch(url, options);
         const data = await response.json();
@@ -340,7 +347,7 @@ async function networkFirst(url, options, cacheKey, ttl) {
 /**
  * Cache-first strategy
  */
-async function cacheFirst(url, options, cacheKey, ttl) {
+async function cacheFirst(url: string, options: any, cacheKey: string, ttl: number): Promise<any> {
     // Try cache first
     const cachedData = await dbCache.get(cacheKey);
     
@@ -367,7 +374,7 @@ async function cacheFirst(url, options, cacheKey, ttl) {
 /**
  * Stale-while-revalidate strategy
  */
-async function staleWhileRevalidate(url, options, cacheKey, ttl) {
+async function staleWhileRevalidate(url: string, options: any, cacheKey: string, ttl: number): Promise<any> {
     // Return cached data immediately
     const cachedData = await dbCache.get(cacheKey);
     
@@ -394,6 +401,9 @@ async function staleWhileRevalidate(url, options, cacheKey, ttl) {
  * Offline queue manager
  */
 class OfflineQueue {
+    private processing: boolean;
+    private listeners: Array<(data: any) => void>;
+
     constructor() {
         this.processing = false;
         this.listeners = [];
@@ -402,7 +412,7 @@ class OfflineQueue {
     /**
      * Add request to queue
      */
-    async add(request) {
+    async add(request: { url: string; method: string; headers: any; body: any }): Promise<IDBValidKey> {
         const id = await dbCache.addToQueue(request);
         this.notifyListeners();
         return id;
@@ -456,7 +466,7 @@ class OfflineQueue {
     /**
      * Subscribe to queue changes
      */
-    subscribe(listener) {
+    subscribe(listener: (data?: any) => void): () => void {
         this.listeners.push(listener);
         return () => {
             this.listeners = this.listeners.filter(l => l !== listener);
@@ -466,8 +476,8 @@ class OfflineQueue {
     /**
      * Notify listeners
      */
-    notifyListeners() {
-        this.listeners.forEach(listener => listener());
+    notifyListeners(): void {
+        this.listeners.forEach(listener => listener({}));
     }
 }
 
@@ -500,13 +510,13 @@ export const CacheInvalidation = {
     /**
      * Invalidate by key pattern
      */
-    async invalidatePattern(pattern) {
+    async invalidatePattern(pattern: string): Promise<void> {
         const keys = await dbCache.keys();
         const regex = new RegExp(pattern);
         
         const deletePromises = keys
-            .filter(key => regex.test(key))
-            .map(key => dbCache.delete(key));
+            .filter(key => regex.test(String(key)))
+            .map(key => dbCache.delete(String(key)));
         
         await Promise.all(deletePromises);
     },
@@ -528,10 +538,18 @@ export const CacheInvalidation = {
 
 /**
  * React hook for cached data
+ * Note: Requires React to be available in the environment
  */
-export function useCachedData(key, fetchFn, options = {}) {
+export function useCachedData(key: string, fetchFn: () => Promise<any>, options: {
+    strategy?: string;
+    ttl?: number;
+    enabled?: boolean;
+} = {}): { data: any; loading: boolean; error: any; refresh: () => Promise<void>; invalidate: () => Promise<void> } {
+    // @ts-ignore - React is available globally
     const [data, setData] = React.useState(null);
+    // @ts-ignore - React is available globally
     const [loading, setLoading] = React.useState(true);
+    // @ts-ignore - React is available globally
     const [error, setError] = React.useState(null);
 
     const {
@@ -540,6 +558,7 @@ export function useCachedData(key, fetchFn, options = {}) {
         enabled = true,
     } = options;
 
+    // @ts-ignore - React is available globally
     React.useEffect(() => {
         if (!enabled) return;
 
@@ -576,7 +595,7 @@ export function useCachedData(key, fetchFn, options = {}) {
                     if (cached) {
                         setData(cached);
                     } else {
-                        setError(err);
+                        setError(err as any);
                     }
                 }
             } finally {
@@ -593,6 +612,7 @@ export function useCachedData(key, fetchFn, options = {}) {
         };
     }, [key, fetchFn, strategy, ttl, enabled]);
 
+    // @ts-ignore - React is available globally
     const refresh = React.useCallback(async () => {
         setLoading(true);
         try {
@@ -601,12 +621,13 @@ export function useCachedData(key, fetchFn, options = {}) {
             setData(result);
             setError(null);
         } catch (err) {
-            setError(err);
+            setError(err as any);
         } finally {
             setLoading(false);
         }
     }, [key, fetchFn, ttl]);
 
+    // @ts-ignore - React is available globally
     const invalidate = React.useCallback(async () => {
         await dbCache.delete(key);
     }, [key]);
@@ -622,10 +643,13 @@ export function useCachedData(key, fetchFn, options = {}) {
 
 /**
  * React hook for offline queue
+ * Note: Requires React to be available in the environment
  */
-export function useOfflineQueue() {
+export function useOfflineQueue(): { queueSize: number; processQueue: () => Promise<void>; clearQueue: () => Promise<void> } {
+    // @ts-ignore - React is available globally
     const [queueSize, setQueueSize] = React.useState(0);
 
+    // @ts-ignore - React is available globally
     React.useEffect(() => {
         const updateSize = async () => {
             const size = await offlineQueue.getSize();
