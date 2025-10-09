@@ -7,28 +7,42 @@
 import { captureException, captureMessage, addBreadcrumb } from './sentry.js';
 
 /**
- * Check if running in development mode
- * @returns {boolean}
+ * Log level type
  */
-const isDev = () => import.meta.env.DEV;
+export type LogLevelType = 'debug' | 'info' | 'warn' | 'error';
+
+/**
+ * Logger interface for namespaced loggers
+ */
+export interface Logger {
+  debug: (message: string, data?: unknown) => void;
+  info: (message: string, data?: unknown) => void;
+  warn: (message: string, data?: unknown) => void;
+  error: (message: string, error?: Error | unknown) => void;
+  perf: (label: string, duration: number) => void;
+}
+
+/**
+ * Check if running in development mode
+ */
+const isDev = (): boolean => import.meta.env.DEV;
 
 /**
  * Log levels for categorizing messages
- * @enum {string}
  */
 export const LogLevel = {
-  DEBUG: 'debug',
-  INFO: 'info',
-  WARN: 'warn',
-  ERROR: 'error',
+  DEBUG: 'debug' as const,
+  INFO: 'info' as const,
+  WARN: 'warn' as const,
+  ERROR: 'error' as const,
 };
 
 /**
  * Log a debug message (only in development)
- * @param {string} message - Debug message
- * @param {*} [data] - Optional data to log
+ * @param message - Debug message
+ * @param data - Optional data to log
  */
-export const logDebug = (message, data) => {
+export const logDebug = (message: string, data?: unknown): void => {
   if (isDev()) {
     console.log(`[DEBUG] ${message}`, data !== undefined ? data : '');
   }
@@ -36,10 +50,10 @@ export const logDebug = (message, data) => {
 
 /**
  * Log an info message (only in development)
- * @param {string} message - Info message
- * @param {*} [data] - Optional data to log
+ * @param message - Info message
+ * @param data - Optional data to log
  */
-export const logInfo = (message, data) => {
+export const logInfo = (message: string, data?: unknown): void => {
   if (isDev()) {
     console.info(`[INFO] ${message}`, data !== undefined ? data : '');
   }
@@ -48,10 +62,10 @@ export const logInfo = (message, data) => {
 /**
  * Log a warning message (only in development)
  * In production, send to error tracking service
- * @param {string} message - Warning message
- * @param {*} [data] - Optional data to log
+ * @param message - Warning message
+ * @param data - Optional data to log
  */
-export const logWarn = (message, data) => {
+export const logWarn = (message: string, data?: unknown): void => {
   if (isDev()) {
     console.warn(`[WARN] ${message}`, data !== undefined ? data : '');
   } else {
@@ -61,7 +75,7 @@ export const logWarn = (message, data) => {
       addBreadcrumb({
         category: 'warning',
         message,
-        data,
+        data: data as Record<string, unknown>,
         level: 'warning',
       });
     }
@@ -71,10 +85,10 @@ export const logWarn = (message, data) => {
 /**
  * Log an error message (development and production)
  * In production, send to error tracking service
- * @param {string} message - Error message
- * @param {Error|*} [error] - Error object or additional data
+ * @param message - Error message
+ * @param error - Error object or additional data
  */
-export const logError = (message, error) => {
+export const logError = (message: string, error?: Error | unknown): void => {
   if (isDev()) {
     console.error(`[ERROR] ${message}`, error || '');
   } else {
@@ -89,10 +103,10 @@ export const logError = (message, error) => {
 
 /**
  * Log performance metrics (only in development)
- * @param {string} label - Performance label
- * @param {number} duration - Duration in milliseconds
+ * @param label - Performance label
+ * @param duration - Duration in milliseconds
  */
-export const logPerformance = (label, duration) => {
+export const logPerformance = (label: string, duration: number): void => {
   if (isDev()) {
     console.log(`[PERF] ${label}: ${duration.toFixed(2)}ms`);
   }
@@ -100,11 +114,11 @@ export const logPerformance = (label, duration) => {
 
 /**
  * Log a generic message with custom level
- * @param {LogLevel} level - Log level
- * @param {string} message - Message to log
- * @param {*} [data] - Optional data
+ * @param level - Log level
+ * @param message - Message to log
+ * @param data - Optional data
  */
-export const log = (level, message, data) => {
+export const log = (level: LogLevelType, message: string, data?: unknown): void => {
   switch (level) {
     case LogLevel.DEBUG:
       logDebug(message, data);
@@ -125,16 +139,16 @@ export const log = (level, message, data) => {
 
 /**
  * Create a namespaced logger for a specific module
- * @param {string} namespace - Module name
- * @returns {Object} Namespaced logger functions
+ * @param namespace - Module name
+ * @returns Namespaced logger functions
  */
-export const createLogger = (namespace) => {
+export const createLogger = (namespace: string): Logger => {
   return {
-    debug: (message, data) => logDebug(`[${namespace}] ${message}`, data),
-    info: (message, data) => logInfo(`[${namespace}] ${message}`, data),
-    warn: (message, data) => logWarn(`[${namespace}] ${message}`, data),
-    error: (message, error) => logError(`[${namespace}] ${message}`, error),
-    perf: (label, duration) => logPerformance(`[${namespace}] ${label}`, duration),
+    debug: (message: string, data?: unknown) => logDebug(`[${namespace}] ${message}`, data),
+    info: (message: string, data?: unknown) => logInfo(`[${namespace}] ${message}`, data),
+    warn: (message: string, data?: unknown) => logWarn(`[${namespace}] ${message}`, data),
+    error: (message: string, error?: Error | unknown) => logError(`[${namespace}] ${message}`, error),
+    perf: (label: string, duration: number) => logPerformance(`[${namespace}] ${label}`, duration),
   };
 };
 
