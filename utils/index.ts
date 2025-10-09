@@ -1,8 +1,24 @@
 /**
+ * @fileoverview Utility functions index - re-exports commonly used utilities
+ * @description Central export point for utility functions used throughout the application.
+ * 
+ * @module utils
+ */
+
+/**
  * Converts a page name into a URL path by producing a hyphen-separated, lowercased slug prefixed with a leading slash.
  *
  * @param pageName - The page name to convert into a URL-friendly slug.
  * @returns The URL path in the form "/<slug>" where the slug is lowercased, spaces/underscores replaced with hyphens, and hyphens inserted between case transitions (e.g., "AIAssistant" -> "ai-assistant").
+ * 
+ * @example
+ * ```typescript
+ * createPageUrl('Dashboard') // => '/dashboard'
+ * createPageUrl('AIAssistant') // => '/ai-assistant'
+ * createPageUrl('User Settings') // => '/user-settings'
+ * ```
+ * 
+ * @public
  */
 export function createPageUrl(pageName: string) {
     const slug = pageName

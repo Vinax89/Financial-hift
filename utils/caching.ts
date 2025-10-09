@@ -1,16 +1,42 @@
 /**
- * Advanced Caching Strategies
+ * @fileoverview Advanced caching strategies with IndexedDB and Service Worker integration
+ * @description Provides comprehensive caching utilities including:
+ * - IndexedDB for persistent client-side caching
+ * - Service Worker integration for offline support
+ * - Offline queue management for failed requests
+ * - Cache invalidation strategies (TTL, manual)
+ * - Network-first and cache-first strategies
+ * - Background sync for deferred operations
  * 
- * Features:
- * - IndexedDB for persistent caching
- * - Service Worker integration
- * - Offline queue management
- * - Cache invalidation strategies
- * - Network-first, cache-first strategies
+ * @module utils/caching
+ * 
+ * @example
+ * ```typescript
+ * import { IndexedDBCache, CacheStrategy, OfflineQueue } from '@/utils/caching';
+ * 
+ * // Use IndexedDB cache
+ * const cache = new IndexedDBCache();
+ * await cache.set('user-data', userData, 3600000); // 1 hour TTL
+ * const data = await cache.get('user-data');
+ * 
+ * // Cache with strategy
+ * const strategy = new CacheStrategy();
+ * const data = await strategy.networkFirst('api-data', () => fetchData());
+ * 
+ * // Queue offline requests
+ * const queue = new OfflineQueue();
+ * await queue.add({ method: 'POST', url: '/api/data', body: data });
+ * ```
  */
 
 /**
  * IndexedDB wrapper for persistent caching
+ * 
+ * @description Provides a simple key-value store backed by IndexedDB for
+ * persistent client-side caching with TTL support and automatic expiration.
+ * 
+ * @class IndexedDBCache
+ * @public
  */
 class IndexedDBCache {
     private dbName: string;
@@ -25,6 +51,11 @@ class IndexedDBCache {
 
     /**
      * Open database connection
+     * 
+     * @returns Promise that resolves with the IDBDatabase instance
+     * @throws Error if database cannot be opened
+     * 
+     * @public
      */
     async open(): Promise<IDBDatabase> {
         return new Promise((resolve, reject) => {
@@ -55,6 +86,11 @@ class IndexedDBCache {
 
     /**
      * Ensure database is open
+     * 
+     * @description Opens the database if not already open. Called internally
+     * before all read/write operations.
+     * 
+     * @public
      */
     async ensureOpen(): Promise<void> {
         if (!this.db) {
@@ -64,6 +100,22 @@ class IndexedDBCache {
 
     /**
      * Get item from cache
+     * 
+     * @param key - Cache key to retrieve
+     * @returns Promise that resolves with the cached value, or null if not found/expired
+     * 
+     * @remarks
+     * Automatically deletes expired items and returns null
+     * 
+     * @example
+     * ```typescript
+     * const data = await cache.get('user-preferences');
+     * if (data) {
+     *   console.log('Cache hit:', data);
+     * }
+     * ```
+     * 
+     * @public
      */
     async get(key: string): Promise<any> {
         await this.ensureOpen();
@@ -91,6 +143,21 @@ class IndexedDBCache {
 
     /**
      * Set item in cache
+     * 
+     * @param key - Cache key to store under
+     * @param value - Value to cache (must be serializable)
+     * @param ttl - Time to live in milliseconds (null = never expires)
+     * 
+     * @example
+     * ```typescript
+     * // Cache for 1 hour
+     * await cache.set('api-data', data, 3600000);
+     * 
+     * // Cache indefinitely
+     * await cache.set('user-id', userId, null);
+     * ```
+     * 
+     * @public
      */
     async set(key: string, value: any, ttl: number | null = null): Promise<void> {
         await this.ensureOpen();
@@ -436,9 +503,9 @@ class OfflineQueue {
                 });
                 
                 await dbCache.removeFromQueue(item.id);
-                console.log('Processed queued request:', item.url);
+                logDebug('Processed queued request', { url: item.url });
             } catch (error) {
-                console.error('Failed to process queued request:', error);
+                logError('Failed to process queued request', error);
                 // Keep in queue to retry later
             }
         }
@@ -484,17 +551,19 @@ class OfflineQueue {
 // Create singleton instance
 const offlineQueue = new OfflineQueue();
 
+import { logDebug, logError } from './logger';
+
 /**
  * Online/offline detection
  */
 export function setupOfflineDetection() {
     window.addEventListener('online', () => {
-        console.log('Network connection restored');
+        logDebug('Network connection restored');
         offlineQueue.processQueue();
     });
 
     window.addEventListener('offline', () => {
-        console.log('Network connection lost');
+        logDebug('Network connection lost');
     });
 
     // Process queue on page load if online

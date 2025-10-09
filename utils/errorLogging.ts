@@ -1,6 +1,29 @@
 /**
- * Error Logging Utility
- * Provides safe error handling and logging without information leakage
+ * @fileoverview Error logging utility with safe error sanitization
+ * @description Provides comprehensive error handling, logging, and sanitization
+ * to prevent sensitive information leakage while maintaining helpful error context.
+ * Includes React Error Boundary component for graceful error recovery.
+ * 
+ * @module utils/errorLogging
+ * 
+ * @example
+ * ```typescript
+ * import { sanitizeError, logError, ErrorBoundary } from '@/utils/errorLogging';
+ * 
+ * // Sanitize errors for user display
+ * try {
+ *   await riskyOperation();
+ * } catch (error) {
+ *   const safe = sanitizeError(error);
+ *   showToast(safe.userMessage);
+ *   logError(error);
+ * }
+ * 
+ * // Use Error Boundary
+ * <ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
+ *   <App />
+ * </ErrorBoundary>
+ * ```
  */
 
 import React from 'react';
@@ -28,7 +51,27 @@ interface ErrorWithResponse extends Error {
 
 /**
  * Sanitize error for user display
- * Removes sensitive information while keeping helpful context
+ * 
+ * @description Removes sensitive information (stack traces, internal details) while
+ * keeping helpful context for users. Maps API status codes to user-friendly messages.
+ * 
+ * @param error - Error object to sanitize
+ * @param options - Sanitization options
+ * @returns Sanitized error object safe for user display
+ * 
+ * @example
+ * ```typescript
+ * try {
+ *   await api.updateUser(data);
+ * } catch (error) {
+ *   const sanitized = sanitizeError(error, {
+ *     fallbackMessage: 'Failed to update profile'
+ *   });
+ *   toast.error(sanitized.userMessage);
+ * }
+ * ```
+ * 
+ * @public
  */
 export function sanitizeError(error: any, options: SanitizeErrorOptions = {}): SanitizedError {
   const { fallbackMessage = 'An unexpected error occurred. Please try again.' } = options;
