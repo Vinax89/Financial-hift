@@ -16,6 +16,7 @@ import { useFinancialData } from '@/hooks/useFinancialData';
 import { InvokeLLM } from '@/api/integrations';
 import { logError, sanitizeError } from '@/utils/errorLogging';
 import { useRateLimit, formatRetryTime } from '@/utils/rateLimiting';
+import type { ChatMessage, AgentTaskData, AgentType } from '@/types/ai.types';
 
 const QUICK_PROMPTS = [
   "Analyze my spending from last month.",
@@ -28,14 +29,14 @@ export default function AIAssistantContent() {
   const [activeTab, setActiveTab] = useState('advisor');
 
   // AI Advisor state
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Agent Console state
-  const [agentTasks, setAgentTasks] = useState([]);
-  const [selectedAgent, setSelectedAgent] = useState('financial_orchestrator');
+  const [agentTasks, setAgentTasks] = useState<AgentTaskData[]>([]);
+  const [selectedAgent, setSelectedAgent] = useState<AgentType>('financial_orchestrator');
   const [agentInput, setAgentInput] = useState('');
   const [agentLoading, setAgentLoading] = useState(false);
   const [tasksLoading, setTasksLoading] = useState(true);
@@ -105,7 +106,7 @@ export default function AIAssistantContent() {
       return;
     }
 
-    const userMessage = { role: 'user', content: message };
+    const userMessage: ChatMessage = { role: 'user', content: message };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
@@ -124,7 +125,7 @@ export default function AIAssistantContent() {
         add_context_from_internet: false
       });
 
-      const assistantMessage = {
+      const assistantMessage: ChatMessage = {
         role: 'assistant',
         content: response || 'I apologize, but I encountered an issue processing your request. Please try again.'
       };
@@ -133,7 +134,7 @@ export default function AIAssistantContent() {
       const sanitized = sanitizeError(error);
       logError(error, { component: 'AIAssistantContent', action: 'ai_chat', prompt: message });
       
-      const errorMessage = {
+      const errorMessage: ChatMessage = {
         role: 'assistant',
         content: 'I encountered an error while processing your request. Please try again later.'
       };
@@ -173,7 +174,7 @@ export default function AIAssistantContent() {
       });
 
       setAgentInput('');
-      toast({ title: 'Agent task created successfully' });
+      toast({ title: 'Agent task created successfully', description: 'Your task has been submitted.' });
       await loadAgentTasks();
 
       // Simulate agent processing (placeholder)
@@ -210,7 +211,7 @@ export default function AIAssistantContent() {
     { id: 'financial_watchdog', name: 'Financial Watchdog', description: 'Monitor for unusual patterns and alerts' }
   ];
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string): string => {
     switch (status) {
       case 'completed': return 'badge-success';
       case 'running':
@@ -225,9 +226,9 @@ export default function AIAssistantContent() {
       <div className="max-w-7xl mx-auto space-y-8">
         <GlassContainer className="p-6">
           <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <FloatingElement>
+            <FloatingElement className="">
               <div>
-                <GlowEffect color="emerald" intensity="medium">
+                <GlowEffect color="emerald" intensity="medium" className="">
                   <h1 className="text-3xl md:text-4xl font-bold text-foreground flex items-center gap-3">
                     <Bot className="h-8 w-8" />
                     AI Assistant
@@ -268,7 +269,7 @@ export default function AIAssistantContent() {
           <div className="space-y-8">
             <TabsContent value="advisor" className="mt-0">
               <div className="max-w-4xl mx-auto h-[calc(100vh-12rem)] flex flex-col">
-                <FloatingElement>
+                <FloatingElement className="">
                   <ThemedCard elevated className="flex-1 flex flex-col overflow-hidden">
                     <div className="flex-1 overflow-y-auto p-6 space-y-6">
                       {messages.map((msg, index) => (
@@ -325,7 +326,7 @@ export default function AIAssistantContent() {
 
             <TabsContent value="agents" className="space-y-8 mt-0">
               <div className="grid lg:grid-cols-2 gap-8">
-                <FloatingElement>
+                <FloatingElement className="">
                   <ThemedCard elevated className="min-h-[500px]">
                     <CardHeader>
                       <CardTitle>Run AI Agent</CardTitle>
@@ -335,7 +336,7 @@ export default function AIAssistantContent() {
                         <label className="text-sm font-medium mb-2 block">Select Agent</label>
                         <select
                           value={selectedAgent}
-                          onChange={(e) => setSelectedAgent(e.target.value)}
+                          onChange={(e) => setSelectedAgent(e.target.value as AgentType)}
                           className="w-full p-2 border border-border rounded-md bg-background"
                         >
                           {[
@@ -392,13 +393,13 @@ export default function AIAssistantContent() {
                   </ThemedCard>
                 </FloatingElement>
 
-                <FloatingElement>
+                <FloatingElement className="">
                   <ThemedCard elevated className="min-h-[500px]">
                     <CardHeader>
                       <CardTitle>Recent Tasks</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <LoadingWrapper isLoading={tasksLoading} fallback={<CardLoading />}>
+                      <LoadingWrapper isLoading={tasksLoading} error={null} success={true} className="" fallback={<CardLoading className="" />}>
                         <div className="space-y-4 max-h-[400px] overflow-y-auto">
                           {agentTasks.map(task => (
                             <div key={task.id} className="p-4 border border-border rounded-lg bg-muted/30">
