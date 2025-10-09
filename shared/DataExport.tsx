@@ -1,0 +1,188 @@
+/**
+ * @fileoverview Data Export Component with JSON and CSV formats
+ * @description Dropdown menu for exporting data in various formats
+ */
+
+import React, { useCallback, useMemo } from 'react';
+import { Button } from '@/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/ui/dropdown-menu';
+import { Download, FileJson, FileSpreadsheet } from 'lucide-react';
+import { useToast } from '@/ui/use-toast';
+
+/**
+ * Dataset map type (key -> array of objects)
+ */
+type Datasets = Record<string, any[]>;
+
+/**
+ * DataExport component props
+ */
+export interface DataExportProps {
+  /** Named datasets to export (key: dataset name, value: array of objects) */
+  datasets?: Datasets;
+  /** Base filename for exports (default: "export") */
+  fileBase?: string;
+}
+
+/**
+ * Convert array of objects to CSV string
+ */
+function toCSV(rows: any[]): string {
+  const data = Array.isArray(rows) ? rows : [];
+  if (data.length === 0) return '';
+
+  // Get all unique headers from all rows
+  const headers = Array.from(
+    data.reduce((set, row) => {
+      Object.keys(row || {}).forEach((k) => set.add(k));
+      return set;
+    }, new Set<string>())
+  );
+
+  /**
+   * Escape CSV cell value
+   */
+  const escapeCell = (val: any): string => {
+    if (val === null || val === undefined) return '';
+    const str = typeof val === 'object' ? JSON.stringify(val) : String(val);
+    const needsQuotes = str.includes(',') || str.includes('"') || str.includes('\n');
+    const escaped = str.replace(/"/g, '""');
+    return needsQuotes ? `"${escaped}"` : escaped;
+  };
+
+  const headerLine = headers.map(escapeCell).join(',');
+  const lines = data.map((row) => headers.map((h) => escapeCell(row ? row[h] : '')).join(','));
+
+  return [headerLine, ...lines].join('\n');
+}
+
+/**
+ * Download blob as file
+ */
+function downloadBlob(content: string, filename: string, mime: string): void {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * DataExport Component
+ * Provides dropdown menu for exporting data as JSON or CSV
+ */
+function DataExportComponent({ datasets = {}, fileBase = 'export' }: DataExportProps): JSX.Element {
+  const { toast } = useToast();
+
+  /**
+   * Ensure all datasets are arrays
+   */
+  const safeDatasets = useMemo(() => {
+    return Object.entries(datasets || {}).reduce<Datasets>((acc, [k, v]) => {
+      acc[k] = Array.isArray(v) ? v : [];
+      return acc;
+    }, {});
+  }, [datasets]);
+
+  /**
+   * Check if all datasets are empty
+   */
+  const allEmpty = useMemo(
+    () => Object.values(safeDatasets).every((arr) => !Array.isArray(arr) || arr.length === 0),
+    [safeDatasets]
+  );
+
+  /**
+   * Export all datasets as JSON
+   */
+  const handleExportAllJSON = useCallback(() => {
+    const payload = {
+      exported_at: new Date().toISOString(),
+      ...safeDatasets,
+    };
+    const json = JSON.stringify(payload, null, 2);
+    downloadBlob(json, `${fileBase}.json`, 'application/json');
+    toast({
+      title: 'Export started',
+      description: 'Your JSON export has been downloaded.',
+    });
+  }, [safeDatasets, fileBase, toast]);
+
+  /**
+   * Export single dataset as CSV
+   */
+  const handleExportCSV = useCallback(
+    (key: string) => {
+      const rows = safeDatasets[key] || [];
+      const csv = toCSV(rows);
+      const name = `${fileBase}_${key}.csv`;
+      downloadBlob(csv, name, 'text/csv;charset=utf-8');
+      toast({
+        title: 'Export started',
+        description: `${key} CSV export has been downloaded.`,
+      });
+    },
+    [safeDatasets, fileBase, toast]
+  );
+
+  const datasetKeys = useMemo(() => Object.keys(safeDatasets), [safeDatasets]);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          className="gap-2 min-w-[140px]"
+          disabled={allEmpty}
+          title={allEmpty ? 'No data to export' : 'Export data'}
+          aria-label="Export data"
+        >
+          <Download className="h-4 w-4" />
+          Export
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56" aria-label="Export options">
+        <DropdownMenuLabel className="flex items-center gap-2">
+          <FileJson className="h-4 w-4 text-primary" /> Export All
+        </DropdownMenuLabel>
+        <DropdownMenuItem onClick={handleExportAllJSON} aria-label="Download all data as JSON">
+          Download JSON
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuLabel className="flex items-center gap-2">
+          <FileSpreadsheet className="h-4 w-4 text-primary" /> CSV (per set)
+        </DropdownMenuLabel>
+        {datasetKeys.map((key) => {
+          const isEmpty = !safeDatasets[key]?.length;
+          return (
+            <DropdownMenuItem
+              key={key}
+              onClick={() => handleExportCSV(key)}
+              disabled={isEmpty}
+              className="capitalize"
+              aria-label={`Download ${key} as CSV${isEmpty ? ' (empty)' : ''}`}
+            >
+              {key} {isEmpty ? '— empty' : ''}
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+const DataExport = React.memo(DataExportComponent);
+export default DataExport;
