@@ -63,7 +63,7 @@ export default function NotificationsCenter(): JSX.Element {
     const unread = items.filter((n) => !n.read);
     if (unread.length === 0) return;
     await Promise.all(unread.map((n) => Notification.update(n.id, { read: true })));
-    toast({ title: 'All notifications marked as read' });
+    toast({ title: 'All notifications marked as read', description: '' });
     load();
   };
 

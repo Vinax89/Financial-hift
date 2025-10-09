@@ -5,17 +5,19 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { Transaction } from '@/api/entities';
-import { Shift } from '@/api/entities';
-import { Goal } from '@/api/entities';
-import { DebtAccount } from '@/api/entities';
-import { Budget } from '@/api/entities';
-import { Bill } from '@/api/entities';
-import { Investment } from '@/api/entities';
+import {
+  Transaction,
+  Shift,
+  Goal,
+  DebtAccount,
+  Budget,
+  Bill,
+  Investment,
+} from '@/api/optimizedEntities';
 import { useLocalStorage } from './useLocalStorage';
 import { retryWithBackoff } from '@/utils/api';
 import { perfLog } from '@/utils/perf';
-import { logError, logWarn } from '@/utils/logger';
+import { logError, logWarn } from '@/utils/logger.js';
 
 // ============================================================================
 // TYPE DEFINITIONS

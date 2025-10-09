@@ -97,7 +97,7 @@ export function useKeyboardShortcuts(
       const { action, description = '', preventDefault = false } =
         typeof config === 'function' ? { action: config } : config;
 
-      instance.register(combo, action, description, preventDefault);
+      instance.register(combo, action, { description, preventDefault });
     });
 
     // Cleanup on unmount
@@ -124,7 +124,10 @@ export function useKeyboardShortcutsHelp(): () => void {
 
   return () => {
     if (shortcutsRef.current) {
-      shortcutsRef.current.showHelp();
+      // Get all shortcuts and display them
+      const shortcuts = shortcutsRef.current.getAll();
+      console.log('Available keyboard shortcuts:', shortcuts);
+      // TODO: Implement help panel UI
     }
   };
 }

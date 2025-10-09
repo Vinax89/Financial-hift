@@ -24,9 +24,6 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       refetchOnMount: false, // KEY: Use cache immediately, don't refetch
-
-      // Suspense mode for better loading UX
-      suspense: false,
     },
     mutations: {
       // Faster mutation feedback
