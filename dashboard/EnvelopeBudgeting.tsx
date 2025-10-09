@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { logError } from '@/utils/logger';
 import { CardContent, CardHeader, CardTitle, CardFooter } from '@/ui/card';
 import { Button } from '@/ui/button';
@@ -11,7 +11,7 @@ import { Wallet, Brain, AlertTriangle, Target, Loader2 } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { ThemedCard, ThemedProgress } from '../ui/enhanced-components';
-import ReactMarkdown from 'react-markdown';
+import Markdown from 'react-markdown';
 import { useToast } from '@/ui/use-toast';
 import { Loading } from '@/ui/loading';
 
@@ -43,8 +43,15 @@ const CATEGORY_COLORS = {
  * @param {Function} props.refreshData - Callback to refresh data
  * @returns {JSX.Element} Envelope budgeting interface
  */
-function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
-    const [envelopes, setEnvelopes] = useLocalStorage('envelope-allocations', {});
+interface EnvelopeBudgetingProps {
+  budgets: any[];
+  transactions: any[];
+  income: number;
+  refreshData: () => void;
+}
+
+function EnvelopeBudgeting({ budgets, transactions, income, refreshData }: EnvelopeBudgetingProps) {
+    const [envelopes, setEnvelopes] = useLocalStorage<Record<string, number>>('envelope-allocations', {});
     const [isOptimizing, setIsOptimizing] = useState(false);
     const [optimizationSuggestion, setOptimizationSuggestion] = useState('');
     const { toast } = useToast();
@@ -56,7 +63,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
         // FIX: Use transaction type === 'expense' instead of negative amounts (schema enforces non-negative amounts)
         const spending = uniqueTransactions
             .filter(t => t && t.type === 'expense')
-            .reduce((acc, t) => {
+            .reduce((acc: any, t) => {
                 const category = t.category || 'Uncategorized';
                 const amt = typeof t.amount === 'number' ? Math.abs(t.amount) : 0;
                 acc[category] = (acc[category] || 0) + amt;
@@ -69,11 +76,11 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
 
         const calculatedCategories = allCategories.map(category => ({
             category,
-            allocated: parseFloat(envelopes[category]) || 0,
+            allocated: parseFloat((envelopes as Record<string, number>)[category]) || 0,
             spent: spending[category] || 0,
         }));
 
-        const allocated = Object.values(envelopes).reduce((sum, amount) => sum + (parseFloat(amount) || 0), 0);
+        const allocated = Object.values(envelopes).reduce((sum: number, amount) => sum + (parseFloat(amount as any) || 0), 0);
         const remaining = (income || 0) - allocated;
 
         return {
@@ -123,7 +130,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
                 result_summary: 'Budget optimization recommendations generated.'
             });
 
-        } catch (error) {
+        } catch (error: any) {
             logError('AI optimization failed', error);
             setOptimizationSuggestion('Error: Could not generate suggestions.');
             toast({ 
@@ -140,9 +147,9 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
      * Handle allocation with validation
      * Prevents negative values, very large numbers, and invalid input
      */
-    const handleAllocate = useCallback((category, amount) => {
+    const handleAllocate = useCallback((category: string, amount: number) => {
         // Parse and validate the input
-        const parsedAmount = parseFloat(amount);
+        const parsedAmount = parseFloat(amount as any);
         
         // Empty input - allow it (represents 0)
         if (amount === '' || amount === null || amount === undefined) {
@@ -208,7 +215,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
     
         // Prioritize existing allocations
         for (const category of Object.keys(newEnvelopes)) {
-            const allocatedAmount = parseFloat(newEnvelopes[category]) || 0;
+            const allocatedAmount = parseFloat(new(envelopes as Record<string, number>)[category]) || 0;
             currentRemaining -= allocatedAmount;
         }
     
@@ -219,29 +226,29 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
                 description: "Your current allocations exceed your income. Adjusting proportionally...",
                 variant: "warning",
             });
-            const totalAllocatedAmount = Object.values(newEnvelopes).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
+            const totalAllocatedAmount = Object.values(newEnvelopes).reduce((sum: number, val) => sum + (parseFloat(val) || 0), 0);
             if (totalAllocatedAmount > 0) {
                 for (const category of Object.keys(newEnvelopes)) {
-                    newEnvelopes[category] = ((parseFloat(newEnvelopes[category]) || 0) / totalAllocatedAmount) * income;
+                    new(envelopes as Record<string, number>)[category] = ((parseFloat(new(envelopes as Record<string, number>)[category]) || 0) / totalAllocatedAmount) * income;
                 }
             }
         } else if (currentRemaining > 0) {
             // Find categories that have no explicit allocation yet, or have 0
             const unallocatedCategories = envelopeCategories
-                .filter(env => !envelopes[env.category] || parseFloat(envelopes[env.category]) === 0)
+                .filter(env => !envelopes[env.category] || parseFloat(envelopes[env.category]).toString() === 0)
                 .map(env => env.category);
     
             if (unallocatedCategories.length > 0) {
                 const amountPerCategory = currentRemaining / unallocatedCategories.length;
                 unallocatedCategories.forEach(category => {
-                    newEnvelopes[category] = (parseFloat(newEnvelopes[category]) || 0) + amountPerCategory;
+                    new(envelopes as Record<string, number>)[category] = (parseFloat(new(envelopes as Record<string, number>)[category]) || 0) + amountPerCategory;
                 });
             } else {
                 // If all categories have some allocation, distribute remaining proportionally
-                const totalAllocatedAmount = Object.values(newEnvelopes).reduce((sum, val) => sum + (parseFloat(val) || 0), 0);
+                const totalAllocatedAmount = Object.values(newEnvelopes).reduce((sum: number, val) => sum + (parseFloat(val) || 0), 0);
                 if (totalAllocatedAmount > 0) {
                     for (const category of Object.keys(newEnvelopes)) {
-                        newEnvelopes[category] = ((parseFloat(newEnvelopes[category]) || 0) / totalAllocatedAmount) * income;
+                        new(envelopes as Record<string, number>)[category] = ((parseFloat(new(envelopes as Record<string, number>)[category]) || 0) / totalAllocatedAmount) * income;
                     }
                 } else {
                      // Fallback if no categories and no existing allocations - just put it all into first category
@@ -261,7 +268,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
 
     return (
         <div className="space-y-6">
-            <ThemedCard elevated>
+            <ThemedCard className="" elevated className="" className="">
                 <CardHeader className="pb-2">
                     <div className="space-y-4">
                         <CardTitle className="text-2xl font-bold flex items-center gap-2">
@@ -362,7 +369,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }) {
             </ThemedCard>
 
             {(isOptimizing || optimizationSuggestion) && (
-                <ThemedCard glowing>
+                <ThemedCard className="" glowing className="" className="">
                     <CardHeader>
                         <CardTitle className="text-primary flex items-center gap-2">
                             <Brain className="w-5 h-5"/>

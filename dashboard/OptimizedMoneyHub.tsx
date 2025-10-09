@@ -25,7 +25,7 @@ import { EmptyState } from '../ui/empty-state';
  * @returns {JSX.Element}
  */
 const MetricCard = React.memo(({ title, value, subtitle, icon: Icon, colorClass }) => (
-    <ThemedCard>
+    <ThemedCard className="" className="" className="" className="">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">{title}</CardTitle>
             <Icon className={`h-4 w-4 text-muted-foreground ${colorClass}`} />
@@ -130,7 +130,7 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
                     return shiftDate >= today && shiftDate <= nextWeek;
                 } catch { return false; }
             })
-            .sort((a, b) => new Date(a.start_datetime) - new Date(b.start_datetime))
+            .sort((a: any, b: any) => new Date(a.start_datetime) - new Date(b.start_datetime))
             .slice(0, 3);
             
         const upcomingBills = (bills || [])
@@ -138,7 +138,7 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
                 const dueDate = new Date(today.getFullYear(), today.getMonth(), bill.due_date);
                 return dueDate >= today && dueDate <= nextWeek;
             })
-            .sort((a, b) => a.due_date - b.due_date)
+            .sort((a: any, b: any) => a.due_date - b.due_date)
             .slice(0, 3);
             
         return { shifts: upcomingShifts, bills: upcomingBills };
@@ -157,7 +157,7 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
             });
         const transactionIncome = monthlyTransactions
             .filter(t => t.type === 'income')
-            .reduce((sum, t) => sum + (t.amount || 0), 0);
+            .reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
         const monthlyShiftIncome = (shifts || [])
             .filter(shift => {
                 try {
@@ -167,7 +167,7 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
                     return false;
                 }
             })
-            .reduce((sum, shift) => {
+            .reduce((sum: number, shift: any) => {
                 const netPay = Number(shift?.net_pay);
                 const grossPay = Number(shift?.gross_pay);
                 if (!Number.isFinite(netPay) && !Number.isFinite(grossPay)) {
@@ -177,7 +177,7 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
             }, 0);
         // We assume shift income is not already represented within transactions to avoid double counting.
         const income = transactionIncome + monthlyShiftIncome;
-        const expenses = monthlyTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + (t.amount || 0), 0);
+        const expenses = monthlyTransactions.filter(t => t.type === 'expense').reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
         return { income, expenses, net: income - expenses, transactionCount: monthlyTransactions.length, shiftIncome: monthlyShiftIncome };
     }, [transactions, shifts]);
 
@@ -192,14 +192,14 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
             </div>
 
             <div className="grid lg:grid-cols-2 gap-8">
-                <ThemedCard>
+                <ThemedCard className="" className="" className="" className="">
                     <CardHeader><CardTitle className="flex items-center gap-2"><Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />Coming Up Next 7 Days</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
                         <div>
                             <h4 className="font-medium mb-2 flex items-center gap-2"><Clock className="h-4 w-4 text-muted-foreground" />Next Shifts</h4>
                             <div className="space-y-2">
                                 {upcomingItems.shifts.length > 0 ? (
-                                    upcomingItems.shifts.map((s) => <UpcomingItem key={s.id} item={s} type="shift" />)
+                                    upcomingItems.shifts.map((s: any) => <UpcomingItem key={s.id} item={s} type="shift" />)
                                 ) : <p className="text-sm text-muted-foreground italic">No upcoming shifts scheduled.</p>}
                             </div>
                         </div>
@@ -207,18 +207,18 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
                             <h4 className="font-medium mb-2 flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-muted-foreground" />Bills Due Soon</h4>
                             <div className="space-y-2">
                                 {upcomingItems.bills.length > 0 ? (
-                                    upcomingItems.bills.map((b) => <UpcomingItem key={b.id} item={b} type="bill" />)
+                                    upcomingItems.bills.map((b: any) => <UpcomingItem key={b.id} item={b} type="bill" />)
                                 ) : <p className="text-sm text-muted-foreground italic">No bills due in the next week.</p>}
                             </div>
                         </div>
                     </CardContent>
                 </ThemedCard>
 
-                <ThemedCard>
+                <ThemedCard className="" className="" className="" className="">
                     <CardHeader><CardTitle className="flex items-center gap-2"><Target className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />Goal Progress</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
                         {topGoals.length > 0 ? (
-                            topGoals.map((goal) => <GoalProgress key={goal.id} goal={goal} />)
+                            topGoals.map((goal: any) => <GoalProgress key={goal.id} goal={goal} />)
                         ) : (
                             <EmptyState
                                 icon={Target}

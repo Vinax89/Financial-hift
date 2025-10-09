@@ -20,7 +20,7 @@ export function EnhancedButton({
 }) {
     const isDisabled = disabled || loading;
     
-    const handleClick = (e) => {
+    const handleClick = (e: any) => {
         if (isDisabled) return;
         onClick?.(e);
     };

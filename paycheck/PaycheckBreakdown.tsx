@@ -4,8 +4,12 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recha
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { FileText, HandCoins, Receipt } from 'lucide-react';
 
-export default function PaycheckBreakdown({ calculation }) {
-    const formatCurrency = (amount) => {
+interface PaycheckBreakdownProps {
+  calculation?: any;
+}
+
+export default function PaycheckBreakdown({ calculation }: PaycheckBreakdownProps) {
+    const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',

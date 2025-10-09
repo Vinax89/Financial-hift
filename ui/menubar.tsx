@@ -83,6 +83,8 @@ function MenubarSub({
  *   </MenubarMenu>
  * </Menubar>
  */
+interface MenubarProps extends React.HTMLAttributes<HTMLDivElement> {}
+
 const Menubar = React.forwardRef(({ className, ...props }, ref) => (
   <MenubarPrimitive.Root
     ref={ref}

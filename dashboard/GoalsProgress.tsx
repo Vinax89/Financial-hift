@@ -70,7 +70,7 @@ function GoalsProgress({ goals, isLoading = false }: GoalsProgressProps): JSX.El
             </CardHeader>
             <CardContent>
                 {isLoading ? (
-                    <ListSkeleton items={3} />
+                    <ListSkeleton items={3} className="" />
                 ) : activeGoals.length > 0 ? (
                     <div className="space-y-6">
                         {activeGoals.map((goal) => {

@@ -58,7 +58,7 @@ function toCSV(rows: any[]): string {
   };
 
   const headerLine = headers.map(escapeCell).join(',');
-  const lines = data.map((row) => headers.map((h) => escapeCell(row ? (row as Record<string, any>)[h] : '')).join(','));
+  const lines = data.map((row) => headers.map((h: string) => escapeCell(row ? (row as Record<string, any>)[h] : '')).join(','));
 
   return [headerLine, ...lines].join('\n');
 }

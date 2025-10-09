@@ -132,7 +132,7 @@ function RecentTransactions({ transactions = [], isLoading = false }: RecentTran
             </CardHeader>
             <CardContent>
                 {isLoading ? (
-                    <TransactionSkeleton count={5} />
+                    <TransactionSkeleton count={5} className="" />
                 ) : transactions.length > 0 ? (
                     <VirtualList
                         items={transactions}

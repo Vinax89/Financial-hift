@@ -14,7 +14,7 @@ import { useTheme } from '../theme/ThemeProvider';
  * @param {Object} props - Component props
  * @returns {JSX.Element} Static element (animation disabled)
  */
-export function FloatingElement({ children, intensity = 'medium', className, disabled = false }) {
+export function FloatingElement({ children, intensity = 'medium', className, disabled = false }: { children: React.ReactNode; intensity?: string; className?: string; disabled?: boolean }) {
     const { actualTheme } = useTheme();
     
     // Always return static element - no animations for professional stability
@@ -22,7 +22,7 @@ export function FloatingElement({ children, intensity = 'medium', className, dis
 }
 
 // Advanced glow effect that adapts to theme
-export function GlowEffect({ children, color = 'primary', intensity = 'medium', className, pulse = false }) {
+export function GlowEffect({ children, color = 'primary', intensity = 'medium', className, pulse = false }: { children: React.ReactNode; color?: string; intensity?: string; className?: string; pulse?: boolean }) {
     const { actualTheme, getGlowColor } = useTheme();
     
     const glowColors = {
@@ -54,7 +54,7 @@ export function GlowEffect({ children, color = 'primary', intensity = 'medium', 
 }
 
 // Sophisticated background patterns that adapt to theme
-export function BackgroundPattern({ pattern = 'dots', className, opacity = 'subtle' }) {
+export function BackgroundPattern({ pattern = 'dots', className, opacity = 'subtle' }: { [key: string]: any }) {
     const { actualTheme } = useTheme();
     
     const opacityLevels = {
@@ -94,7 +94,7 @@ export function BackgroundPattern({ pattern = 'dots', className, opacity = 'subt
 }
 
 // Parallax scroll effect with theme-aware performance optimization - DISABLED
-export function ParallaxContainer({ children, speed = 0.5, className }) {
+export function ParallaxContainer({ children, speed = 0.5, className }: { [key: string]: any }) {
     // Return static container - no parallax for stability
     return (
         <div className={cn('', className)}>
@@ -104,7 +104,7 @@ export function ParallaxContainer({ children, speed = 0.5, className }) {
 }
 
 // Advanced shimmer loading effect
-export function ShimmerEffect({ className, width = '100%', height = '1rem' }) {
+export function ShimmerEffect({ className, width = '100%', height = '1rem' }: { [key: string]: any }) {
     const { actualTheme } = useTheme();
     
     const shimmerGradient = actualTheme === 'light'
@@ -129,7 +129,7 @@ export function ShimmerEffect({ className, width = '100%', height = '1rem' }) {
 }
 
 // Magnetic hover effect for interactive elements - DISABLED for stability
-export function MagneticHover({ children, strength = 0.3, className }) {
+export function MagneticHover({ children, strength = 0.3, className }: { [key: string]: any }) {
     // Return static element - no magnetic effect for stability
     return (
         <div className={cn('', className)}>
@@ -139,7 +139,7 @@ export function MagneticHover({ children, strength = 0.3, className }) {
 }
 
 // Theme-aware glass morphism container
-export function GlassmorphismCard({ children, className, blur = 'md', opacity = 'medium' }) {
+export function GlassmorphismCard({ children, className, blur = 'md', opacity = 'medium' }: { [key: string]: any }) {
     const { actualTheme, getBlurIntensity } = useTheme();
     
     const blurIntensities = {

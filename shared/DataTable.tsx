@@ -110,7 +110,7 @@ export default function DataTable<T = any>({
     return (
       <Card className={cn('border-0 shadow-lg shadow-slate-200/50 bg-white/80 backdrop-blur-sm', className)}>
         <CardContent className="p-6">
-          <TableLoading rows={loadingRows} columns={columns.length} />
+          <TableLoading rows={loadingRows} columns={columns.length} className="" />
         </CardContent>
       </Card>
     );

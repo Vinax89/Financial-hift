@@ -32,7 +32,7 @@ function runWhenIdle(fn: () => void): IdleCallbackId {
   if (typeof window !== "undefined" && "requestIdleCallback" in window) {
     return window.requestIdleCallback(fn, { timeout: 3000 });
   }
-  return window.setTimeout(fn, 1500) as any as IdleCallbackId;
+  return (typeof window !== "undefined" ? window.setTimeout(fn, 1500) : 0) as any as IdleCallbackId;
 }
 
 // ============================================================================

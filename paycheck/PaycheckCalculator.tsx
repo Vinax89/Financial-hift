@@ -42,10 +42,15 @@ const mockCalculatePaycheck = (settings) => {
     };
 };
 
+interface PaycheckCalculatorProps {
+  income?: number;
+  refreshData?: () => void;
+}
+
 export default function PaycheckCalculator() {
     const { toast } = useToast();
-    const [settings, setSettings] = useState(null);
-    const [calculation, setCalculation] = useState(null);
+    const [settings, setSettings] = useState<any>(null);
+    const [calculation, setCalculation] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [useZipTaxes, setUseZipTaxes] = useState(false);
     const [zipCode, setZipCode] = useState("");
@@ -290,7 +295,7 @@ export default function PaycheckCalculator() {
                                 <Input
                                     placeholder="ZIP code (e.g., 10001)"
                                     value={zipCode}
-                                    onChange={(e) => setZipCode(e.target.value.trim().substring(0, 5))}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setZipCode(e.target.value.trim().substring(0, 5))}
                                     disabled={!useZipTaxes}
                                     className="max-w-[160px]"
                                     maxLength={5}
@@ -299,7 +304,7 @@ export default function PaycheckCalculator() {
                                     placeholder="Year"
                                     type="number"
                                     value={taxYear}
-                                    onChange={(e) => setTaxYear(e.target.value)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTaxYear(e.target.value)}
                                     disabled={!useZipTaxes}
                                     className="max-w-[100px]"
                                 />

@@ -24,7 +24,13 @@ const createNewDifferential = () => ({
     }
 });
 
-export default function ShiftRuleForm({ onSave, onCancel, initialRule }) {
+interface ShiftRuleFormProps {
+  onSave: (rule: any) => void;
+  onCancel: () => void;
+  initialRule?: any;
+}
+
+export default function ShiftRuleForm({ onSave, onCancel, initialRule }: ShiftRuleFormProps) {
     const [rule, setRule] = useState(initialRule || {
         name: '',
         description: '',
@@ -41,12 +47,12 @@ export default function ShiftRuleForm({ onSave, onCancel, initialRule }) {
         if (initialRule) setRule(initialRule);
     }, [initialRule]);
     
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setRule(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleNestedChange = (section, field, value) => {
+    const handleNestedChange = (section: string, field: string, value: any) => {
         setRule(prev => ({
             ...prev,
             [section]: {
@@ -56,13 +62,13 @@ export default function ShiftRuleForm({ onSave, onCancel, initialRule }) {
         }));
     };
 
-    const handleDifferentialChange = (index, field, value) => {
+    const handleDifferentialChange = (index: number, field: string, value: any) => {
         const newDifferentials = [...rule.differentials];
         newDifferentials[index] = { ...newDifferentials[index], [field]: value };
         setRule(prev => ({ ...prev, differentials: newDifferentials }));
     };
     
-    const handleDifferentialConditionChange = (index, field, value) => {
+    const handleDifferentialConditionChange = (index: number, field: string, value: any) => {
         const newDifferentials = [...rule.differentials];
         newDifferentials[index].conditions = { ...newDifferentials[index].conditions, [field]: value };
         setRule(prev => ({ ...prev, differentials: newDifferentials }));
@@ -75,21 +81,21 @@ export default function ShiftRuleForm({ onSave, onCancel, initialRule }) {
         }));
     };
     
-    const removeDifferential = (index) => {
+    const removeDifferential = (index: number) => {
         setRule(prev => ({
             ...prev,
-            differentials: rule.differentials.filter((_, i) => i !== index)
+            differentials: rule.differentials.filter(($1: any, i: number) => i !== index)
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: any) => {
         e.preventDefault();
         onSave(rule);
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-8">
-            <ThemedCard>
+            <ThemedCard className="" className="">
                 <div className="p-6">
                     <h2 className="text-2xl font-bold mb-4">
                         {initialRule ? 'Edit Shift Rule' : 'Create New Shift Rule'}
@@ -110,7 +116,7 @@ export default function ShiftRuleForm({ onSave, onCancel, initialRule }) {
             </ThemedCard>
 
             <Accordion type="multiple" defaultValue={['overtime', 'differentials']} className="w-full space-y-4">
-                <AccordionItem value="overtime"><ThemedCard><AccordionTrigger><div className="flex items-center gap-2 text-lg font-semibold"><Clock className="h-5 w-5"/>Overtime Rules</div></AccordionTrigger><AccordionContent className="p-6 space-y-4">
+                <AccordionItem value="overtime"><ThemedCard className="" className=""><AccordionTrigger><div className="flex items-center gap-2 text-lg font-semibold"><Clock className="h-5 w-5"/>Overtime Rules</div></AccordionTrigger><AccordionContent className="p-6 space-y-4">
                     <h4 className="font-semibold">Weekly Overtime</h4>
                     <div className="grid md:grid-cols-2 gap-4">
                         <InputGroup label="Threshold (hours/week)"><Input type="number" value={rule.overtime_rules.weekly_threshold} onChange={e => handleNestedChange('overtime_rules', 'weekly_threshold', parseFloat(e.target.value) || 0)} /></InputGroup>
@@ -128,8 +134,8 @@ export default function ShiftRuleForm({ onSave, onCancel, initialRule }) {
                     </div>
                 </AccordionContent></ThemedCard></AccordionItem>
 
-                <AccordionItem value="differentials"><ThemedCard><AccordionTrigger><div className="flex items-center gap-2 text-lg font-semibold"><BadgePercent className="h-5 w-5"/>Pay Differentials</div></AccordionTrigger><AccordionContent className="p-6 space-y-6">
-                    {rule.differentials?.map((diff, index) => (
+                <AccordionItem value="differentials"><ThemedCard className="" className=""><AccordionTrigger><div className="flex items-center gap-2 text-lg font-semibold"><BadgePercent className="h-5 w-5"/>Pay Differentials</div></AccordionTrigger><AccordionContent className="p-6 space-y-6">
+                    {rule.differentials?.map((diff: any, index: number) => (
                         <div key={diff.id || index} className="p-4 rounded-lg border bg-muted/50 space-y-4 relative">
                             <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-7 w-7 text-destructive" onClick={() => removeDifferential(index)}><Trash2 className="h-4 w-4"/></Button>
                             <div className="grid md:grid-cols-3 gap-4">
@@ -163,13 +169,13 @@ export default function ShiftRuleForm({ onSave, onCancel, initialRule }) {
                     <Button type="button" variant="outline" onClick={addDifferential}><PlusCircle className="mr-2 h-4 w-4"/>Add Differential</Button>
                 </AccordionContent></ThemedCard></AccordionItem>
 
-                <AccordionItem value="special_pay"><ThemedCard><AccordionTrigger><div className="flex items-center gap-2 text-lg font-semibold"><Zap className="h-5 w-5"/>Special Pay</div></AccordionTrigger><AccordionContent className="p-6 grid md:grid-cols-3 gap-4">
+                <AccordionItem value="special_pay"><ThemedCard className="" className=""><AccordionTrigger><div className="flex items-center gap-2 text-lg font-semibold"><Zap className="h-5 w-5"/>Special Pay</div></AccordionTrigger><AccordionContent className="p-6 grid md:grid-cols-3 gap-4">
                     <InputGroup label="On-Call Rate ($/hr)"><Input type="number" step="0.01" value={rule.special_pay?.on_call_rate} onChange={e => handleNestedChange('special_pay', 'on_call_rate', parseFloat(e.target.value) || 0)} /></InputGroup>
                     <InputGroup label="Callback Multiplier"><Input type="number" step="0.1" value={rule.special_pay?.callback_multiplier} onChange={e => handleNestedChange('special_pay', 'callback_multiplier', parseFloat(e.target.value) || 0)} /></InputGroup>
                     <InputGroup label="Callback Min. Hours"><Input type="number" value={rule.special_pay?.callback_minimum_hours} onChange={e => handleNestedChange('special_pay', 'callback_minimum_hours', parseFloat(e.target.value) || 0)} /></InputGroup>
                 </AccordionContent></ThemedCard></AccordionItem>
 
-                <AccordionItem value="meal_breaks"><ThemedCard><AccordionTrigger><div className="flex items-center gap-2 text-lg font-semibold"><Utensils className="h-5 w-5"/>Meal Breaks</div></AccordionTrigger><AccordionContent className="p-6 space-y-4">
+                <AccordionItem value="meal_breaks"><ThemedCard className="" className=""><AccordionTrigger><div className="flex items-center gap-2 text-lg font-semibold"><Utensils className="h-5 w-5"/>Meal Breaks</div></AccordionTrigger><AccordionContent className="p-6 space-y-4">
                     <div className="flex items-center space-x-2"><Switch id="auto-deduct-switch" checked={rule.meal_break_rules?.is_auto_deducted} onCheckedChange={c => handleNestedChange('meal_break_rules', 'is_auto_deducted', c)}/><Label htmlFor="auto-deduct-switch">Auto-Deduct Unpaid Breaks</Label></div>
                     <div className="grid md:grid-cols-2 gap-4">
                         <InputGroup label="Required After (hours)"><Input type="number" value={rule.meal_break_rules?.unpaid_break_threshold} onChange={e => handleNestedChange('meal_break_rules', 'unpaid_break_threshold', parseFloat(e.target.value) || 0)} /></InputGroup>
