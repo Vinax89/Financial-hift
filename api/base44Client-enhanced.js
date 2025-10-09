@@ -1,4 +1,4 @@
-﻿// Enhanced API Client with Caching Layer
+// Enhanced API Client with Caching Layer
 import { createClient } from '@base44/sdk';
 import { cachedFetch, CacheStrategy, setupOfflineDetection } from '@/utils/caching';
 import { logDebug } from '@/utils/logger';
@@ -49,6 +49,36 @@ export const CacheStrategies = {
   TRANSACTIONS: {
     strategy: CacheStrategy.NETWORK_FIRST,
     ttl: 2 * 60 * 1000, // 2 minutes
+  },
+  
+  // Budgets - moderately stable
+  BUDGETS: {
+    strategy: CacheStrategy.STALE_WHILE_REVALIDATE,
+    ttl: 10 * 60 * 1000, // 10 minutes
+  },
+  
+  // Debts - relatively stable
+  DEBTS: {
+    strategy: CacheStrategy.STALE_WHILE_REVALIDATE,
+    ttl: 15 * 60 * 1000, // 15 minutes
+  },
+  
+  // Goals - stable data
+  GOALS: {
+    strategy: CacheStrategy.STALE_WHILE_REVALIDATE,
+    ttl: 15 * 60 * 1000, // 15 minutes
+  },
+  
+  // Bills - stable recurring data
+  BILLS: {
+    strategy: CacheStrategy.STALE_WHILE_REVALIDATE,
+    ttl: 20 * 60 * 1000, // 20 minutes
+  },
+  
+  // Investments - can be slightly stale
+  INVESTMENTS: {
+    strategy: CacheStrategy.STALE_WHILE_REVALIDATE,
+    ttl: 15 * 60 * 1000, // 15 minutes
   },
   
   // Relatively stable data - use cache first, refresh in background
