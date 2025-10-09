@@ -13,19 +13,28 @@ import {
   useBills,
   useInvestments,
 } from '@/hooks/useEntityQueries';
+import type {
+  Transaction,
+  Shift,
+  Goal,
+  DebtAccount,
+  Budget,
+  Bill,
+  Investment,
+} from '@/api/optimizedEntities';
 
 /**
  * Dashboard data return type with staggered loading
  */
 export interface DashboardData {
   // Entity data
-  transactions: any[];
-  shifts: any[];
-  goals: any[];
-  debts: any[];
-  budgets: any[];
-  bills: any[];
-  investments: any[];
+  transactions: Transaction[];
+  shifts: Shift[];
+  goals: Goal[];
+  debts: DebtAccount[];
+  budgets: Budget[];
+  bills: Bill[];
+  investments: Investment[];
 
   // Loading states
   isLoadingCritical: boolean;
@@ -62,13 +71,13 @@ export interface DashboardData {
  */
 export interface DashboardDataParallel {
   // Entity data
-  transactions: any[];
-  shifts: any[];
-  goals: any[];
-  debts: any[];
-  budgets: any[];
-  bills: any[];
-  investments: any[];
+  transactions: Transaction[];
+  shifts: Shift[];
+  goals: Goal[];
+  debts: DebtAccount[];
+  budgets: Budget[];
+  bills: Bill[];
+  investments: Investment[];
 
   // Loading states
   loading: boolean;

@@ -3,26 +3,10 @@
  * 
  * Provides production error tracking, performance monitoring, and user feedback.
  * Only active in production environment to avoid cluttering dev logs.
- * 
- * NOTE: @sentry/react is not currently installed. Install with:
- * npm install @sentry/react
  */
 
-// import * as Sentry from '@sentry/react';  // Uncomment when Sentry is installed
-import React from 'react';
-
-// Stub Sentry object when not installed
-const Sentry: any = {
-  init: () => {},
-  captureException: () => {},
-  captureMessage: () => {},
-  setUser: () => {},
-  addBreadcrumb: () => {},
-  showReportDialog: () => {},
-  ErrorBoundary: ({ children }: any) => children,
-  browserTracingIntegration: () => ({}),
-  replayIntegration: () => ({}),
-};
+import * as Sentry from '@sentry/react';
+import type { SentryLevel, ErrorContext } from '@/types/sentry.types';
 
 // Initialize Sentry only in production
 export const initSentry = () => {
@@ -46,10 +30,6 @@ export const initSentry = () => {
         
         // Replay sessions for debugging (optional, uses quota)
         Sentry.replayIntegration({
-          // Capture 10% of all sessions
-          sessionSampleRate: 0.1,
-          // Capture 100% of sessions with errors
-          errorSampleRate: 1.0,
           // Mask sensitive data
           maskAllText: true,
           blockAllMedia: true,
@@ -59,8 +39,12 @@ export const initSentry = () => {
       // Performance Monitoring
       tracesSampleRate: import.meta.env.PROD ? 0.1 : 1.0, // 10% in prod, 100% in dev
       
+      // Session Replay sampling
+      replaysSessionSampleRate: 0.1, // 10% of all sessions
+      replaysOnErrorSampleRate: 1.0, // 100% of sessions with errors
+      
       // Filter out sensitive information
-      beforeSend(event: any, hint: any) {
+      beforeSend(event, hint) {
         // Don't send events if DSN is not configured
         if (!import.meta.env.VITE_SENTRY_DSN) {
           return null;
@@ -76,7 +60,7 @@ export const initSentry = () => {
         
         // Scrub sensitive data from breadcrumbs
         if (event.breadcrumbs) {
-          event.breadcrumbs = event.breadcrumbs.map((breadcrumb: any) => {
+          event.breadcrumbs = event.breadcrumbs.map((breadcrumb) => {
             if (breadcrumb.message) {
               breadcrumb.message = breadcrumb.message
                 .replace(/password[=:]\s*\S+/gi, 'password=[REDACTED]')
@@ -112,25 +96,23 @@ export const initSentry = () => {
 
 /**
  * Capture an exception to Sentry
- * @param {Error} error - The error to capture
- * @param {Object} context - Additional context
+ * @param error - The error to capture
+ * @param context - Additional context
  */
-export const captureException = (error: any, context: any = {}) => {
+export const captureException = (error: Error | string, context: Record<string, unknown> = {}) => {
   if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
     Sentry.captureException(error, {
-      contexts: {
-        custom: context,
-      },
+      extra: context,
     });
   }
 };
 
 /**
  * Capture a message to Sentry
- * @param {string} message - The message to capture
- * @param {string} level - The severity level (info, warning, error)
+ * @param message - The message to capture
+ * @param level - The severity level (info, warning, error)
  */
-export const captureMessage = (message: any, level: any = 'info') => {
+export const captureMessage = (message: string, level: SentryLevel = 'info') => {
   if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
     Sentry.captureMessage(message, level);
   }
@@ -138,15 +120,11 @@ export const captureMessage = (message: any, level: any = 'info') => {
 
 /**
  * Set user context for error tracking
- * @param {Object} user - User information
+ * @param user - User information
  */
-export const setUser = (user: any) => {
+export const setUser = (user: { id?: string; email?: string; username?: string } | null) => {
   if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
-    Sentry.setUser({
-      id: user?.id,
-      email: user?.email,
-      username: user?.username,
-    });
+    Sentry.setUser(user);
   }
 };
 
@@ -161,9 +139,9 @@ export const clearUser = () => {
 
 /**
  * Add breadcrumb for debugging
- * @param {Object} breadcrumb - Breadcrumb data
+ * @param breadcrumb - Breadcrumb data
  */
-export const addBreadcrumb = (breadcrumb: any) => {
+export const addBreadcrumb = (breadcrumb: { message?: string; category?: string; level?: SentryLevel; data?: Record<string, unknown> }) => {
   if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
     Sentry.addBreadcrumb(breadcrumb);
   }
