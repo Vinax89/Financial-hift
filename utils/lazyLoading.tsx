@@ -9,13 +9,26 @@
  * - Error boundaries for each lazy component
  */
 
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, ComponentType } from 'react';
 import { announceLoading, announceError } from '@/utils/accessibility';
+import type {
+    LoadingFallbackProps,
+    LazyErrorFallbackProps,
+    LazyRetryOptions,
+    CreateLazyComponentOptions,
+    ErrorBoundaryProps,
+    ErrorBoundaryState,
+    ImportFunc,
+    CreateLazyRouteOptions,
+    PagesMap,
+    RouteWithPreload,
+    PrioritizedLazyComponentOptions,
+} from '../types/lazyLoading.types';
 
 /**
  * Loading fallback component with skeleton UI
  */
-export function LoadingFallback({ message = 'Loading...', variant = 'default' }) {
+export function LoadingFallback({ message = 'Loading...', variant = 'default' }: LoadingFallbackProps): JSX.Element {
     React.useEffect(() => {
         announceLoading(message);
     }, [message]);
@@ -55,7 +68,7 @@ export function LoadingFallback({ message = 'Loading...', variant = 'default' })
 /**
  * Error fallback component for lazy loaded components
  */
-export function LazyErrorFallback({ error, resetErrorBoundary, componentName }) {
+export function LazyErrorFallback({ error, resetErrorBoundary, componentName }: LazyErrorFallbackProps): JSX.Element {
     React.useEffect(() => {
         announceError(`Failed to load ${componentName || 'component'}. Please try again.`);
     }, [componentName]);
@@ -97,11 +110,14 @@ export function LazyErrorFallback({ error, resetErrorBoundary, componentName }) 
 
 /**
  * Enhanced lazy loading with retry logic
- * @param {Function} importFunc - Dynamic import function
- * @param {Object} options - Options
- * @returns {React.LazyExoticComponent}
+ * @param importFunc - Dynamic import function
+ * @param options - Options
+ * @returns React.LazyExoticComponent
  */
-export function lazyWithRetry(importFunc, options = {}) {
+export function lazyWithRetry<T extends ComponentType<any>>(
+    importFunc: ImportFunc<T>,
+    options: LazyRetryOptions = {}
+): React.LazyExoticComponent<T> {
     const {
         retries = 3,
         retryDelay = 1000,
@@ -109,13 +125,13 @@ export function lazyWithRetry(importFunc, options = {}) {
     } = options;
 
     return lazy(async () => {
-        let lastError;
+        let lastError: Error | undefined;
 
         for (let i = 0; i < retries; i++) {
             try {
                 return await importFunc();
             } catch (error) {
-                lastError = error;
+                lastError = error as Error;
                 console.warn(
                     `Failed to load ${componentName} (attempt ${i + 1}/${retries}):`,
                     error
@@ -136,16 +152,21 @@ export function lazyWithRetry(importFunc, options = {}) {
 
 /**
  * Preload a lazy component
- * @param {Function} importFunc - Dynamic import function
+ * @param importFunc - Dynamic import function
  */
-export function preloadComponent(importFunc) {
+export function preloadComponent<T extends ComponentType<any>>(
+    importFunc: ImportFunc<T>
+): Promise<{ default: T }> {
     return importFunc();
 }
 
 /**
  * Create a lazy loaded component with error boundary and loading state
  */
-export function createLazyComponent(importFunc, options = {}) {
+export function createLazyComponent<T extends ComponentType<any>>(
+    importFunc: ImportFunc<T>,
+    options: CreateLazyComponentOptions = {}
+): ComponentType<any> {
     const {
         fallback = <LoadingFallback variant="default" />,
         componentName = 'Component',
@@ -154,7 +175,7 @@ export function createLazyComponent(importFunc, options = {}) {
 
     const LazyComponent = lazyWithRetry(importFunc, { componentName });
 
-    return function LazyComponentWrapper(props) {
+    return function LazyComponentWrapper(props: any) {
         return (
             <ErrorBoundary
                 fallback={LazyErrorFallback}
@@ -172,22 +193,22 @@ export function createLazyComponent(importFunc, options = {}) {
 /**
  * Simple error boundary for lazy components
  */
-class ErrorBoundary extends React.Component {
-    constructor(props) {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+    constructor(props: ErrorBoundaryProps) {
         super(props);
         this.state = { hasError: false, error: null };
     }
 
-    static getDerivedStateFromError(error) {
+    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
         return { hasError: true, error };
     }
 
-    componentDidCatch(error, errorInfo) {
+    componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
         console.error('LazyComponent error:', error, errorInfo);
         this.props.onError?.(error, errorInfo);
     }
 
-    resetErrorBoundary = () => {
+    resetErrorBoundary = (): void => {
         this.setState({ hasError: false, error: null });
     };
 
@@ -196,7 +217,7 @@ class ErrorBoundary extends React.Component {
             const Fallback = this.props.fallback;
             return (
                 <Fallback
-                    error={this.state.error}
+                    error={this.state.error ?? undefined}
                     resetErrorBoundary={this.resetErrorBoundary}
                     componentName={this.props.componentName}
                 />
@@ -210,17 +231,17 @@ class ErrorBoundary extends React.Component {
 /**
  * Preload components on idle
  */
-export function preloadOnIdle(importFuncs) {
+export function preloadOnIdle(importFuncs: ImportFunc<ComponentType<any>>[]): void {
     if ('requestIdleCallback' in window) {
         window.requestIdleCallback(() => {
-            importFuncs.forEach(importFunc => {
+            importFuncs.forEach((importFunc: ImportFunc<ComponentType<any>>) => {
                 preloadComponent(importFunc);
             });
         });
     } else {
         // Fallback for browsers without requestIdleCallback
         setTimeout(() => {
-            importFuncs.forEach(importFunc => {
+            importFuncs.forEach((importFunc: ImportFunc<ComponentType<any>>) => {
                 preloadComponent(importFunc);
             });
         }, 2000);
@@ -230,7 +251,9 @@ export function preloadOnIdle(importFuncs) {
 /**
  * Preload components on hover
  */
-export function usePreloadOnHover(importFunc) {
+export function usePreloadOnHover<T extends ComponentType<any>>(
+    importFunc: ImportFunc<T>
+): () => void {
     const preloaded = React.useRef(false);
 
     const handleMouseEnter = React.useCallback(() => {
@@ -246,7 +269,10 @@ export function usePreloadOnHover(importFunc) {
 /**
  * Route-based code splitting helper
  */
-export function createLazyRoute(importFunc, options = {}) {
+export function createLazyRoute<T extends ComponentType<any>>(
+    importFunc: ImportFunc<T>,
+    options: CreateLazyRouteOptions = {}
+): ComponentType<any> {
     const {
         pageName = 'Page',
         preload = false,
@@ -268,21 +294,21 @@ export function createLazyRoute(importFunc, options = {}) {
 /**
  * Lazy load all pages at once (useful for batch loading)
  */
-export function createLazyPages(pages) {
+export function createLazyPages(pages: PagesMap): Record<string, ComponentType<any>> {
     return Object.entries(pages).reduce((acc, [key, importFunc]) => {
         acc[key] = createLazyRoute(importFunc, {
             pageName: key,
         });
         return acc;
-    }, {});
+    }, {} as Record<string, ComponentType<any>>);
 }
 
 /**
  * Hook to preload routes on navigation intent
  */
-export function usePreloadOnNavigationIntent(routes) {
+export function usePreloadOnNavigationIntent(routes: RouteWithPreload[]): void {
     React.useEffect(() => {
-        const preloadRoute = (path) => {
+        const preloadRoute = (path: string): void => {
             const route = routes.find(r => r.path === path);
             if (route && route.preload) {
                 route.preload();
@@ -290,8 +316,8 @@ export function usePreloadOnNavigationIntent(routes) {
         };
 
         // Listen for link hover
-        const handleLinkHover = (e) => {
-            const link = e.target.closest('a');
+        const handleLinkHover = (e: Event): void => {
+            const link = (e.target as HTMLElement).closest('a');
             if (link && link.href) {
                 const path = new URL(link.href).pathname;
                 preloadRoute(path);
@@ -306,8 +332,11 @@ export function usePreloadOnNavigationIntent(routes) {
 /**
  * Intelligent prefetching based on viewport visibility
  */
-export function usePrefetchOnVisible(importFunc, enabled = true) {
-    const ref = React.useRef(null);
+export function usePrefetchOnVisible<T extends ComponentType<any>>(
+    importFunc: ImportFunc<T>,
+    enabled = true
+): React.RefObject<HTMLDivElement> {
+    const ref = React.useRef<HTMLDivElement>(null);
     const preloaded = React.useRef(false);
 
     React.useEffect(() => {
@@ -342,15 +371,19 @@ export const LoadPriority = {
     HIGH: 'high',         // Load on mount
     MEDIUM: 'medium',     // Load on idle
     LOW: 'low',           // Load on interaction
-};
+} as const;
 
 /**
  * Create lazy component with priority
  */
-export function createPrioritizedLazyComponent(importFunc, priority = LoadPriority.MEDIUM, options = {}) {
+export function createPrioritizedLazyComponent<T extends ComponentType<any>>(
+    importFunc: ImportFunc<T>,
+    priority: string = LoadPriority.MEDIUM,
+    options: PrioritizedLazyComponentOptions = {}
+): ComponentType<any> {
     const LazyComponent = createLazyComponent(importFunc, options);
 
-    return function PrioritizedComponent(props) {
+    return function PrioritizedComponent(props: any) {
         const [shouldLoad, setShouldLoad] = React.useState(
             priority === LoadPriority.CRITICAL || priority === LoadPriority.HIGH
         );
@@ -396,7 +429,7 @@ export function createPrioritizedLazyComponent(importFunc, priority = LoadPriori
 /**
  * Bundle analyzer helper (development only)
  */
-export function logChunkLoading(chunkName) {
+export function logChunkLoading(chunkName: string): void {
     if (import.meta.env.DEV) {
         console.log(`[Lazy Loading] Loading chunk: ${chunkName}`);
     }

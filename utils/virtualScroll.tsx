@@ -7,26 +7,38 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import * as ReactWindow from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import type {
+    ScrollData,
+    UseScrollRestorationReturn,
+    VirtualListProps,
+    AutoSizedVirtualListProps,
+    VariableVirtualListProps,
+    VirtualTableProps,
+    VirtualListMetrics,
+    UseNearBottomReturn,
+    RowRenderProps,
+    AutoSizerRenderProps,
+} from '../types/virtualScroll.types';
 
 const List = (ReactWindow as any).FixedSizeList;
 const VariableSizeList = (ReactWindow as any).VariableSizeList;
 
 /**
  * Scroll position storage key generator
- * @param {string} listId - Unique identifier for the list
- * @returns {string} Storage key
+ * @param listId - Unique identifier for the list
+ * @returns Storage key
  */
-const getScrollKey = (listId) => `scroll-position-${listId}`;
+const getScrollKey = (listId: string): string => `scroll-position-${listId}`;
 
 /**
  * Hook for managing scroll position restoration
- * @param {string} listId - Unique identifier for the list
- * @returns {Object} Scroll management functions
+ * @param listId - Unique identifier for the list
+ * @returns Scroll management functions
  */
-export function useScrollRestoration(listId) {
-  const listRef = useRef(null);
+export function useScrollRestoration(listId?: string): UseScrollRestorationReturn {
+  const listRef = useRef<any>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
-  const saveTimeoutRef = useRef(null);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Load saved scroll position on mount
   useEffect(() => {
@@ -45,7 +57,8 @@ export function useScrollRestoration(listId) {
   }, [listId]);
 
   // Save scroll position on change
-  const handleScroll = useCallback(({ scrollOffset }) => {
+  const handleScroll = useCallback((data: ScrollData) => {
+    const { scrollOffset } = data;
     setScrollOffset(scrollOffset);
     
     // Debounce saving to sessionStorage
@@ -86,19 +99,8 @@ export function useScrollRestoration(listId) {
 
 /**
  * Enhanced virtual list with scroll restoration
- * @param {Object} props - Component props
- * @param {Array} props.items - List items to render
- * @param {Function} props.renderItem - Render function for each item
- * @param {number} [props.itemHeight=60] - Height of each item in pixels
- * @param {number} [props.height=400] - List container height
- * @param {string} [props.listId] - Unique ID for scroll restoration
- * @param {number} [props.overscanCount=5] - Number of items to render outside visible area
- * @param {Function} [props.onScroll] - Custom scroll handler
- * @param {string} [props.className] - Additional CSS classes
- * @param {Object} [props.style] - Additional inline styles
- * @returns {JSX.Element} Virtual list component
  */
-export function VirtualList({
+export function VirtualList<T = any>({
   items = [],
   renderItem,
   itemHeight = 60,
@@ -108,11 +110,11 @@ export function VirtualList({
   onScroll,
   className = '',
   style = {},
-}) {
+}: VirtualListProps<T>): JSX.Element | null {
   const { listRef, handleScroll } = useScrollRestoration(listId);
 
   const Row = useCallback(
-    ({ index, style }) => {
+    ({ index, style }: RowRenderProps) => {
       const item = items[index];
       return <div style={style}>{renderItem(item, index)}</div>;
     },
@@ -120,7 +122,7 @@ export function VirtualList({
   );
 
   const combinedScrollHandler = useCallback(
-    (scrollData) => {
+    (scrollData: ScrollData) => {
       handleScroll(scrollData);
       onScroll?.(scrollData);
     },
@@ -150,18 +152,8 @@ export function VirtualList({
 
 /**
  * Auto-sized virtual list that fills available space
- * @param {Object} props - Component props
- * @param {Array} props.items - List items to render
- * @param {Function} props.renderItem - Render function for each item
- * @param {number} [props.itemHeight=60] - Height of each item in pixels
- * @param {string} [props.listId] - Unique ID for scroll restoration
- * @param {number} [props.overscanCount=5] - Number of items to render outside visible area
- * @param {number} [props.minHeight=300] - Minimum height in pixels
- * @param {Function} [props.onScroll] - Custom scroll handler
- * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Auto-sized virtual list
  */
-export function AutoSizedVirtualList({
+export function AutoSizedVirtualList<T = any>({
   items = [],
   renderItem,
   itemHeight = 60,
@@ -170,11 +162,11 @@ export function AutoSizedVirtualList({
   minHeight = 300,
   onScroll,
   className = '',
-}) {
+}: AutoSizedVirtualListProps<T>): JSX.Element | null {
   const { listRef, handleScroll } = useScrollRestoration(listId);
 
   const Row = useCallback(
-    ({ index, style }) => {
+    ({ index, style }: RowRenderProps) => {
       const item = items[index];
       return <div style={style}>{renderItem(item, index)}</div>;
     },
@@ -182,7 +174,7 @@ export function AutoSizedVirtualList({
   );
 
   const combinedScrollHandler = useCallback(
-    (scrollData) => {
+    (scrollData: ScrollData) => {
       handleScroll(scrollData);
       onScroll?.(scrollData);
     },
@@ -196,7 +188,7 @@ export function AutoSizedVirtualList({
   return (
     <div style={{ height: '100%', minHeight: `${minHeight}px` }} className={className}>
       <AutoSizer>
-        {({ height, width }) => (
+        {({ height, width }: AutoSizerRenderProps) => (
           <List
             ref={listRef}
             height={height}
@@ -216,19 +208,8 @@ export function AutoSizedVirtualList({
 
 /**
  * Variable-sized virtual list for items with different heights
- * @param {Object} props - Component props
- * @param {Array} props.items - List items to render
- * @param {Function} props.renderItem - Render function for each item
- * @param {Function} props.getItemSize - Function to get size of each item
- * @param {string} [props.listId] - Unique ID for scroll restoration
- * @param {number} [props.height=400] - List container height
- * @param {number} [props.overscanCount=3] - Number of items to render outside visible area
- * @param {number} [props.estimatedItemSize=60] - Estimated item size for initial render
- * @param {Function} [props.onScroll] - Custom scroll handler
- * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Variable-sized virtual list
  */
-export function VariableVirtualList({
+export function VariableVirtualList<T = any>({
   items = [],
   renderItem,
   getItemSize,
@@ -238,12 +219,12 @@ export function VariableVirtualList({
   estimatedItemSize = 60,
   onScroll,
   className = '',
-}) {
+}: VariableVirtualListProps<T>): JSX.Element | null {
   const { listRef, handleScroll } = useScrollRestoration(listId);
-  const sizeMapRef = useRef({});
+  const sizeMapRef = useRef<Record<number, number>>({});
 
   const Row = useCallback(
-    ({ index, style }) => {
+    ({ index, style }: RowRenderProps) => {
       const item = items[index];
       return <div style={style}>{renderItem(item, index)}</div>;
     },
@@ -251,7 +232,7 @@ export function VariableVirtualList({
   );
 
   const getSize = useCallback(
-    (index) => {
+    (index: number): number => {
       // Cache size calculations
       if (sizeMapRef.current[index] !== undefined) {
         return sizeMapRef.current[index];
@@ -265,7 +246,7 @@ export function VariableVirtualList({
   );
 
   const combinedScrollHandler = useCallback(
-    (scrollData) => {
+    (scrollData: ScrollData) => {
       handleScroll(scrollData);
       onScroll?.(scrollData);
     },
@@ -300,18 +281,8 @@ export function VariableVirtualList({
 
 /**
  * Virtual table component for tabular data
- * @param {Object} props - Component props
- * @param {Array} props.items - Table rows data
- * @param {Function} props.renderRow - Render function for each row
- * @param {Function} props.renderHeader - Render function for table header
- * @param {number} [props.rowHeight=60] - Height of each row in pixels
- * @param {number} [props.headerHeight=48] - Height of header in pixels
- * @param {string} [props.listId] - Unique ID for scroll restoration
- * @param {number} [props.overscanCount=5] - Number of rows to render outside visible area
- * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Virtual table component
  */
-export function VirtualTable({
+export function VirtualTable<T = any>({
   items = [],
   renderRow,
   renderHeader,
@@ -320,11 +291,11 @@ export function VirtualTable({
   listId,
   overscanCount = 5,
   className = '',
-}) {
+}: VirtualTableProps<T>): JSX.Element | null {
   const { listRef, handleScroll } = useScrollRestoration(listId);
 
   const Row = useCallback(
-    ({ index, style }) => {
+    ({ index, style }: RowRenderProps) => {
       const item = items[index];
       return <div style={style}>{renderRow(item, index)}</div>;
     },
@@ -356,7 +327,7 @@ export function VirtualTable({
       {/* Scrollable body */}
       <div style={{ height: '100%', minHeight: '300px' }}>
         <AutoSizer>
-          {({ height, width }) => (
+          {({ height, width }: AutoSizerRenderProps) => (
             <List
               ref={listRef}
               height={height - (renderHeader ? headerHeight : 0)}
@@ -377,11 +348,11 @@ export function VirtualTable({
 
 /**
  * Performance metrics for virtual list
- * @param {Array} items - List items
- * @param {number} itemHeight - Height of each item
- * @returns {Object} Performance metrics
+ * @param items - List items
+ * @param itemHeight - Height of each item
+ * @returns Performance metrics
  */
-export function getVirtualListMetrics(items, itemHeight) {
+export function getVirtualListMetrics(items: any[], itemHeight: number): VirtualListMetrics {
   const itemCount = items?.length || 0;
   const totalHeight = itemCount * itemHeight;
   const memoryWithoutVirtualization = itemCount * 5000; // Approx 5KB per rendered item
@@ -389,7 +360,7 @@ export function getVirtualListMetrics(items, itemHeight) {
   const memorySavings = memoryWithoutVirtualization - memoryWithVirtualization;
   const savingsPercentage = itemCount > 0 
     ? ((memorySavings / memoryWithoutVirtualization) * 100).toFixed(1)
-    : 0;
+    : '0';
 
   return {
     itemCount,
@@ -404,14 +375,14 @@ export function getVirtualListMetrics(items, itemHeight) {
 
 /**
  * Hook to detect when user is near bottom of list
- * @param {number} [threshold=0.8] - Threshold percentage (0-1)
- * @returns {Object} Near bottom detection
+ * @param threshold - Threshold percentage (0-1)
+ * @returns Near bottom detection
  */
-export function useNearBottom(threshold = 0.8) {
+export function useNearBottom(threshold = 0.8): UseNearBottomReturn {
   const [isNearBottom, setIsNearBottom] = useState(false);
 
   const handleScroll = useCallback(
-    ({ scrollOffset, scrollUpdateWasRequested }) => {
+    ({ scrollOffset, scrollUpdateWasRequested }: ScrollData) => {
       if (scrollUpdateWasRequested) return; // Ignore programmatic scrolls
       
       const container = document.querySelector('[data-virtual-list]');
