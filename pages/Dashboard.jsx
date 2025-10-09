@@ -1,27 +1,27 @@
 ﻿
 import React, { useEffect, useMemo, Suspense, useCallback } from 'react';
-import { useTransactions, useShifts, useGoals, useDebts, useBudgets, useBills, useInvestments } from '@/hooks/useEntityQueries.jsx';
-import { Loading, ShimmerBox, CardLoading, ChartLoading } from '@/ui/loading.jsx';
-import { ShimmerEffect, SkeletonCard } from '@/loading/LoadingStates.jsx';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
+import { useTransactions, useShifts, useGoals, useDebts, useBudgets, useBills, useInvestments } from '@/hooks/useEntityQueries';
+import { Loading, ShimmerBox, CardLoading, ChartLoading } from '@/ui/loading';
+import { ShimmerEffect, SkeletonCard } from '@/loading/LoadingStates';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import { RefreshCw, LayoutGrid, FileText, Landmark, Wallet, BrainCircuit, Bot, Bug, Download, BellRing, Mail } from 'lucide-react';
-import { ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
-import { useTheme } from '@/theme/ThemeProvider.jsx';
-import { ThemeToggle } from '@/theme/ThemeToggle.jsx';
+import { ThemedButton, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
+import { useTheme } from '@/theme/ThemeProvider';
+import { ThemeToggle } from '@/theme/ThemeToggle';
 import { logError } from '@/utils/logger.js';
-import { useToast } from '@/ui/use-toast.jsx';
-import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
-import { useLocalStorage } from '@/hooks/useLocalStorage.jsx';
-import { Button } from '@/ui/button.jsx';
+import { useToast } from '@/ui/use-toast';
+import { ErrorBoundary } from '@/shared/ErrorBoundary';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Button } from '@/ui/button';
 import DataExport from "@/shared/DataExport";
 import { generateFinancialReport } from "@/api/functions";
 import { User } from "@/api/entities";
 import UpcomingDue from "@/dashboard/UpcomingDue";
 import { generateReminders } from "@/api/functions";
 import { emailUpcomingBills } from "@/api/functions";
-import PrivacyToggle from "@/shared/PrivacyToggle.jsx";
-import { useIdlePrefetch } from "@/hooks/useIdlePrefetch.jsx";
+import PrivacyToggle from "@/shared/PrivacyToggle";
+import { useIdlePrefetch } from "@/hooks/useIdlePrefetch";
 // Replace the OnboardingModal import to avoid extension-specific path issues
 import OnboardingModal from "@/onboarding/OnboardingModal";
 

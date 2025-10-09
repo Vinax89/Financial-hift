@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
-import { Badge } from '@/ui/badge.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { Badge } from '@/ui/badge';
 
 const formatMemory = (value) => {
     if (!value) return '—';

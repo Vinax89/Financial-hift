@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
-import { Button } from '@/ui/button.jsx';
-import { Progress } from '@/ui/progress.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Progress } from '@/ui/progress';
 
 export default function StressTester() {
     const [iterations, setIterations] = useState(0);

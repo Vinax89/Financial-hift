@@ -5,13 +5,13 @@
  */
 
 import React, { useState } from 'react';
-import { Button } from '@/ui/button.jsx';
-import { Input } from '@/ui/input.jsx';
-import { Label } from '@/ui/label.jsx';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Label } from '@/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
 import { DollarSign, Save, Check } from 'lucide-react';
 import { format } from 'date-fns';
-import { useAutosave } from '@/utils/formEnhancement.jsx';
+import { useAutosave } from '@/utils/formEnhancement';
 
 /**
  * Budget category options with display labels

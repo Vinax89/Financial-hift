@@ -4,7 +4,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { DashboardCardSkeleton } from '@/shared/SkeletonLoaders';
 
 /**

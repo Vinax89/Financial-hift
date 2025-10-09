@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/ui/card.jsx";
+import { Card, CardHeader, CardTitle, CardContent } from "@/ui/card";
 import { ResponsiveContainer, Sankey, Tooltip } from "recharts";
-import { useTheme } from "@/theme/ThemeProvider.jsx";
+import { useTheme } from "@/theme/ThemeProvider";
 
 function monthKey(d) {
   try {

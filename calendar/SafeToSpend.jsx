@@ -4,9 +4,9 @@
  */
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Wallet, TrendingUp, TrendingDown, ShieldCheck } from 'lucide-react';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { Skeleton } from '@/ui/skeleton';
 
 /**
  * Format amount as USD currency

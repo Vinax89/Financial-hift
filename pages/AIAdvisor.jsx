@@ -2,11 +2,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, Send, Loader2, Brain, ChevronDown } from 'lucide-react';
 import { agentSDK } from '@/agents';
-import { Button } from '@/ui/button.jsx';
-import { Textarea } from '@/ui/textarea.jsx';
-import MessageBubble from '@/agents/MessageBubble.jsx';
-import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
+import { Button } from '@/ui/button';
+import { Textarea } from '@/ui/textarea';
+import MessageBubble from '@/agents/MessageBubble';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
 import { logError } from '@/utils/logger.js';
 
 const QUICK_PROMPTS = [

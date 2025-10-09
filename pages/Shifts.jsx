@@ -1,18 +1,18 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Shift } from '@/api/entities';
-import ShiftForm from '@/shifts/ShiftForm.jsx';
-import ShiftList from '@/shifts/ShiftList.jsx';
-import ShiftStats from '@/shifts/ShiftStats.jsx';
-import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
-import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import ShiftForm from '@/shifts/ShiftForm';
+import ShiftList from '@/shifts/ShiftList';
+import ShiftStats from '@/shifts/ShiftStats';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Plus, Clock } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
-import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
+import { LoadingWrapper, TableLoading } from '@/ui/loading';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
-import { useToast } from '@/ui/use-toast.jsx';
+import { useToast } from '@/ui/use-toast';
 
 export default function ShiftsPage() {
     const [shifts, setShifts] = useState([]);

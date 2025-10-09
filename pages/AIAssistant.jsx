@@ -1,7 +1,7 @@
 import React from "react";
-import useSubscription from "@/subscription/useSubscription.jsx";
-import Paywall from "@/subscription/Paywall.jsx";
-import AIAssistantContent from "@/ai/AIAssistantContent.jsx";
+import useSubscription from "@/subscription/useSubscription";
+import Paywall from "@/subscription/Paywall";
+import AIAssistantContent from "@/ai/AIAssistantContent";
 
 export default function AIAssistantPage() {
   const { loading, hasFeature } = useSubscription();

@@ -5,9 +5,9 @@
  */
 
 import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table.jsx';
-import { Button } from '@/ui/button.jsx';
-import { Badge } from '@/ui/badge.jsx';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table';
+import { Button } from '@/ui/button';
+import { Badge } from '@/ui/badge';
 import { format } from 'date-fns';
 
 /**

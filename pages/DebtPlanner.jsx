@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { DebtAccount } from '@/api/entities';
-import DebtList from '@/debt/DebtList.jsx';
-import DebtForm from '@/debt/DebtForm.jsx';
-import DebtSimulator from '@/debt/DebtSimulator.jsx';
-import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
-import { LoadingWrapper, TableLoading, CardLoading } from '@/ui/loading.jsx';
-import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import DebtList from '@/debt/DebtList';
+import DebtForm from '@/debt/DebtForm';
+import DebtSimulator from '@/debt/DebtSimulator';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
+import { LoadingWrapper, TableLoading, CardLoading } from '@/ui/loading';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Plus, Landmark } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 

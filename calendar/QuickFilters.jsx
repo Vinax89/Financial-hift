@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { Button } from "@/ui/button.jsx";
+import { Button } from "@/ui/button";
 
 /**
  * Quick filter buttons for calendar events

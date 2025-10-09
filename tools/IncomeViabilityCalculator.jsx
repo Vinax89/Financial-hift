@@ -1,6 +1,6 @@
 import React from "react";
-import useSubscription from "@/subscription/useSubscription.jsx";
-import Paywall from "@/subscription/Paywall.jsx";
+import useSubscription from "@/subscription/useSubscription";
+import Paywall from "@/subscription/Paywall";
 import IncomeViabilityCalculatorInner from "./IncomeViabilityCalculatorInner";
 
 export default function IncomeViabilityCalculator(props) {

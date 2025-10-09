@@ -1,16 +1,16 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { Button } from '@/ui/button.jsx';
-import { Input } from '@/ui/input.jsx';
-import { Label } from '@/ui/label.jsx';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
-import { Textarea } from '@/ui/textarea.jsx';
-import { Badge } from '@/ui/badge.jsx';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Label } from '@/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
+import { Textarea } from '@/ui/textarea';
+import { Badge } from '@/ui/badge';
 import { ThemedButton, ThemedInput } from '../ui/enhanced-components';
 import { Clock, MapPin, DollarSign, Calendar, Tag, AlertTriangle } from 'lucide-react';
 import { formatCurrency } from '../utils/calculations';
 import { validateShift } from '../utils/validation';
 import { format } from 'date-fns';
-import { ErrorMessage, InlineError } from '@/shared/ErrorMessage.jsx';
+import { ErrorMessage, InlineError } from '@/shared/ErrorMessage';
 
 // Simple field error component
 const FieldError = ({ error, className }) => {

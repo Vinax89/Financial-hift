@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "@/ui/button.jsx";
-import { Input } from "@/ui/input.jsx";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
 import { Save, FolderOpen, Trash2 } from "lucide-react";
 
 const STORAGE_KEY = "apex-finance:viability-scenarios";

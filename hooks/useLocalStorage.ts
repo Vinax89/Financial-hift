@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react';
-import { logWarn } from '@/utils/logger.js';
+import { logWarn } from '@/utils/logger';
 
 // ============================================================================
 // TYPE DEFINITIONS

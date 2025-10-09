@@ -1,25 +1,25 @@
 
 import React, { Suspense, useState, useEffect, useCallback } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
-import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
 import { Target, BarChart3, FileText, Plus, TrendingUp } from 'lucide-react';
-import { Button } from '@/ui/button.jsx';
-import { Badge } from '@/ui/badge.jsx';
+import { Button } from '@/ui/button';
+import { Badge } from '@/ui/badge';
 
 // Import entities
 import { Goal } from '@/api/entities';
 
 // Import components
-import GoalList from '@/goals/GoalList.jsx';
-import GoalForm from '@/goals/GoalForm.jsx';
-import GoalStats from '@/goals/GoalStats.jsx';
-import { LoadingWrapper, CardLoading, ChartLoading } from '@/ui/loading.jsx';
-import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import GoalList from '@/goals/GoalList';
+import GoalForm from '@/goals/GoalForm';
+import GoalStats from '@/goals/GoalStats';
+import { LoadingWrapper, CardLoading, ChartLoading } from '@/ui/loading';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { AnimatePresence } from 'framer-motion';
-import { useToast } from '@/ui/use-toast.jsx';
-import { useFinancialData } from '@/hooks/useFinancialData.jsx';
-import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
+import { useToast } from '@/ui/use-toast';
+import { useFinancialData } from '@/hooks/useFinancialData';
+import { ErrorBoundary } from '@/shared/ErrorBoundary';
 
 // Lazy load heavy analytics components
 const FinancialMetrics = React.lazy(() => import('@/analytics/FinancialMetrics.jsx'));

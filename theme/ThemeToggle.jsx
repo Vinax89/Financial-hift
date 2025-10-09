@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/ui/button.jsx';
+import { Button } from '@/ui/button';
 import { Sun, Moon, Monitor, Zap } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { cn } from '@/lib/utils';

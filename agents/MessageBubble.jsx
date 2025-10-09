@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Button } from "@/ui/button.jsx";
+import { Button } from "@/ui/button";
 import { Copy, Zap, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock } from 'lucide-react';
 import { cn } from "@/lib/utils";
-import { useToast } from "@/ui/use-toast.jsx";
+import { useToast } from "@/ui/use-toast";
 
 const FunctionDisplay = ({ toolCall }) => {
     const [expanded, setExpanded] = useState(false);

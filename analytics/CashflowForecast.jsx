@@ -4,8 +4,8 @@
  */
 
 import React, { useMemo } from "react";
-import { ThemedCard } from "@/ui/enhanced-components.jsx";
-import { CardHeader, CardTitle, CardContent } from "@/ui/card.jsx";
+import { ThemedCard } from "@/ui/enhanced-components";
+import { CardHeader, CardTitle, CardContent } from "@/ui/card";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { format, addDays } from "date-fns";
 

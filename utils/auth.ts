@@ -4,8 +4,8 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/ui/use-toast.jsx';
-import { logInfo, logError } from '@/utils/logger.js';
+import { useToast } from '@/ui/use-toast';
+import { logInfo, logError } from '@/utils/logger';
 
 // ============================================================================
 // TYPE DEFINITIONS

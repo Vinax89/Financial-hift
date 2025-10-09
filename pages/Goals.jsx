@@ -1,17 +1,17 @@
 
 import React, { useState } from 'react';
-import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from '@/hooks/useEntityQueries.jsx';
-import GoalList from '@/goals/GoalList.jsx';
-import GoalForm from '@/goals/GoalForm.jsx';
-import GoalStats from '@/goals/GoalStats.jsx';
-import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
-import { LoadingWrapper, CardLoading } from '@/ui/loading.jsx';
-import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from '@/hooks/useEntityQueries';
+import GoalList from '@/goals/GoalList';
+import GoalForm from '@/goals/GoalForm';
+import GoalStats from '@/goals/GoalStats';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
+import { LoadingWrapper, CardLoading } from '@/ui/loading';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { ErrorBoundary } from '@/shared/ErrorBoundary';
 import { Plus, Target } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
-import { useToast } from '@/ui/use-toast.jsx';
+import { useToast } from '@/ui/use-toast';
 
 export default function GoalsPage() {
     // React Query hooks - automatic caching and background refetching

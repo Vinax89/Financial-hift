@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table.jsx';
-import { Card, CardContent } from '@/ui/card.jsx';
-import { Button } from '@/ui/button.jsx';
-import { Input } from '@/ui/input.jsx';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table';
+import { Card, CardContent } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Loading, TableLoading } from '../ui/loading';
 import { cn } from '@/lib/utils';

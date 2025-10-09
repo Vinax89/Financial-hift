@@ -5,8 +5,8 @@
  */
 
 import React, { useMemo, memo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { Skeleton } from '@/ui/skeleton';
 import { DollarSign, Percent, TrendingUp, TrendingDown, PiggyBank, CreditCard } from 'lucide-react';
 
 /**

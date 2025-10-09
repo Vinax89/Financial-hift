@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { useTheme } from "@/theme/ThemeProvider.jsx";
+import { useTheme } from '@/theme/ThemeProvider';
 import {
   CommandDialog,
   CommandInput,
@@ -10,7 +10,7 @@ import {
   CommandItem,
   CommandEmpty,
   CommandSeparator,
-} from "@/ui/command.jsx";
+} from '@/ui/command';
 import { LayoutDashboard, Briefcase, Wallet, TrendingDown, Target, Bot, RefreshCw, Keyboard, Sun, Moon, Bug } from "lucide-react";
 
 const navItems = [

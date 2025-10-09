@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { ThemedCard } from "@/ui/enhanced-components.jsx";
+import { ThemedCard } from "@/ui/enhanced-components";
 
 /**
  * KPI bar component with three key metrics

@@ -1,14 +1,14 @@
 import React from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/ui/card.jsx";
-import { Button } from "@/ui/button.jsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
-import { Input } from "@/ui/input.jsx";
-import { Label } from "@/ui/label.jsx";
-import { Badge } from "@/ui/badge.jsx";
+import { Card, CardHeader, CardTitle, CardContent } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
+import { Badge } from "@/ui/badge";
 import { AutomationRule } from "@/api/entities";
 import { Notification } from "@/api/entities";
 import { Transaction } from "@/api/entities";
-import { useToast } from "@/ui/use-toast.jsx";
+import { useToast } from "@/ui/use-toast";
 
 const OPERATORS = [
   { value: "equals", label: "Equals" },

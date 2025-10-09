@@ -1,8 +1,8 @@
 
 import React from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
-import { Card, CardContent } from "@/ui/card.jsx";
-import { useTheme } from "@/theme/ThemeProvider.jsx";
+import { Card, CardContent } from "@/ui/card";
+import { useTheme } from "@/theme/ThemeProvider";
 import { formatCurrency } from "@/utils/calculations";
 
 function themed(colorVar) {

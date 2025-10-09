@@ -1,16 +1,16 @@
 
 import React, { Suspense } from "react";
-import { useFinancialData } from "@/hooks/useFinancialData.jsx";
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs.jsx";
-import { Button } from "@/ui/button.jsx";
+import { useFinancialData } from "@/hooks/useFinancialData";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { Button } from "@/ui/button";
 import { Wallet, List, ReceiptText, RefreshCw } from "lucide-react";
-import { Loading, CardLoading } from "@/ui/loading.jsx";
-import ReceiptScanner from "@/scanning/ReceiptScanner.jsx";
+import { Loading, CardLoading } from "@/ui/loading";
+import ReceiptScanner from "@/scanning/ReceiptScanner";
 
 // Existing components (present in repo)
-import TransactionList from "@/transactions/TransactionList.jsx";
-import BudgetOverview from "@/budget/BudgetOverview.jsx";
+import TransactionList from "@/transactions/TransactionList";
+import BudgetOverview from "@/budget/BudgetOverview";
 
 export default function MoneyManager() {
   const {

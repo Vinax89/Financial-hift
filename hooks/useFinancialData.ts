@@ -15,7 +15,7 @@ import { Investment } from '@/api/entities';
 import { useLocalStorage } from './useLocalStorage';
 import { retryWithBackoff } from '@/utils/api';
 import { perfLog } from '@/utils/perf';
-import { logError, logWarn } from '@/utils/logger.js';
+import { logError, logWarn } from '@/utils/logger';
 
 // ============================================================================
 // TYPE DEFINITIONS

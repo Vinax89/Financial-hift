@@ -5,10 +5,10 @@
  */
 
 import React, { memo } from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/ui/card.jsx";
-import { Button } from "@/ui/button.jsx";
-import { Badge } from "@/ui/badge.jsx";
-import { Separator } from "@/ui/separator.jsx";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Badge } from "@/ui/badge";
+import { Separator } from "@/ui/separator";
 import { Check, Crown, Rocket } from "lucide-react";
 import { Plan } from "@/api/entities";
 import { Subscription } from "@/api/entities";

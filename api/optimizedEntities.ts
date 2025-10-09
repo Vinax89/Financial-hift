@@ -671,35 +671,35 @@ export function getRateLimiterStats(): RateLimiterStatsResponse {
 // ============================================================================
 
 // Financial Entities
-export const Transaction: WrappedEntity<Transaction> = wrapEntity(base44.entities.Transaction, 'Transaction');
-export const Budget: WrappedEntity<Budget> = wrapEntity(base44.entities.Budget, 'Budget');
-export const Goal: WrappedEntity<Goal> = wrapEntity(base44.entities.Goal, 'Goal');
-export const BNPLPlan: WrappedEntity<BNPLPlan> = wrapEntity(base44.entities.BNPLPlan, 'BNPLPlan');
-export const Bill: WrappedEntity<Bill> = wrapEntity(base44.entities.Bill, 'Bill');
-export const DebtAccount: WrappedEntity<DebtAccount> = wrapEntity(base44.entities.DebtAccount, 'DebtAccount');
-export const Investment: WrappedEntity<Investment> = wrapEntity(base44.entities.Investment, 'Investment');
+export const Transaction: WrappedEntity<Transaction> = wrapEntity(base44.entities.Transaction as any as EntityCRUD<Transaction>, 'Transaction');
+export const Budget: WrappedEntity<Budget> = wrapEntity(base44.entities.Budget as any as EntityCRUD<Budget>, 'Budget');
+export const Goal: WrappedEntity<Goal> = wrapEntity(base44.entities.Goal as any as EntityCRUD<Goal>, 'Goal');
+export const BNPLPlan: WrappedEntity<BNPLPlan> = wrapEntity(base44.entities.BNPLPlan as any as EntityCRUD<BNPLPlan>, 'BNPLPlan');
+export const Bill: WrappedEntity<Bill> = wrapEntity(base44.entities.Bill as any as EntityCRUD<Bill>, 'Bill');
+export const DebtAccount: WrappedEntity<DebtAccount> = wrapEntity(base44.entities.DebtAccount as any as EntityCRUD<DebtAccount>, 'DebtAccount');
+export const Investment: WrappedEntity<Investment> = wrapEntity(base44.entities.Investment as any as EntityCRUD<Investment>, 'Investment');
 
 // Shift Worker Entities
-export const PaycheckSettings: WrappedEntity<PaycheckSettings> = wrapEntity(base44.entities.PaycheckSettings, 'PaycheckSettings');
-export const ShiftRule: WrappedEntity<ShiftRule> = wrapEntity(base44.entities.ShiftRule, 'ShiftRule');
-export const Shift: WrappedEntity<Shift> = wrapEntity(base44.entities.Shift, 'Shift');
-export const ForecastSnapshot: WrappedEntity<ForecastSnapshot> = wrapEntity(base44.entities.ForecastSnapshot, 'ForecastSnapshot');
+export const PaycheckSettings: WrappedEntity<PaycheckSettings> = wrapEntity(base44.entities.PaycheckSettings as any as EntityCRUD<PaycheckSettings>, 'PaycheckSettings');
+export const ShiftRule: WrappedEntity<ShiftRule> = wrapEntity(base44.entities.ShiftRule as any as EntityCRUD<ShiftRule>, 'ShiftRule');
+export const Shift: WrappedEntity<Shift> = wrapEntity(base44.entities.Shift as any as EntityCRUD<Shift>, 'Shift');
+export const ForecastSnapshot: WrappedEntity<ForecastSnapshot> = wrapEntity(base44.entities.ForecastSnapshot as any as EntityCRUD<ForecastSnapshot>, 'ForecastSnapshot');
 
 // Gamification & AI Entities
-export const Gamification: WrappedEntity<Gamification> = wrapEntity(base44.entities.Gamification, 'Gamification');
-export const AgentTask: WrappedEntity<AgentTask> = wrapEntity(base44.entities.AgentTask, 'AgentTask');
-export const Notification: WrappedEntity<Notification> = wrapEntity(base44.entities.Notification, 'Notification');
-export const AutomationRule: WrappedEntity<AutomationRule> = wrapEntity(base44.entities.AutomationRule, 'AutomationRule');
+export const Gamification: WrappedEntity<Gamification> = wrapEntity(base44.entities.Gamification as any as EntityCRUD<Gamification>, 'Gamification');
+export const AgentTask: WrappedEntity<AgentTask> = wrapEntity(base44.entities.AgentTask as any as EntityCRUD<AgentTask>, 'AgentTask');
+export const Notification: WrappedEntity<Notification> = wrapEntity(base44.entities.Notification as any as EntityCRUD<Notification>, 'Notification');
+export const AutomationRule: WrappedEntity<AutomationRule> = wrapEntity(base44.entities.AutomationRule as any as EntityCRUD<AutomationRule>, 'AutomationRule');
 
 // Tax & Location Entities
-export const FederalTaxConfig: WrappedEntity<FederalTaxConfig> = wrapEntity(base44.entities.FederalTaxConfig, 'FederalTaxConfig');
-export const StateTaxConfig: WrappedEntity<StateTaxConfig> = wrapEntity(base44.entities.StateTaxConfig, 'StateTaxConfig');
-export const ZipJurisdiction: WrappedEntity<ZipJurisdiction> = wrapEntity(base44.entities.ZipJurisdiction, 'ZipJurisdiction');
-export const CostOfLiving: WrappedEntity<CostOfLiving> = wrapEntity(base44.entities.CostOfLiving, 'CostOfLiving');
+export const FederalTaxConfig: WrappedEntity<FederalTaxConfig> = wrapEntity(base44.entities.FederalTaxConfig as any as EntityCRUD<FederalTaxConfig>, 'FederalTaxConfig');
+export const StateTaxConfig: WrappedEntity<StateTaxConfig> = wrapEntity(base44.entities.StateTaxConfig as any as EntityCRUD<StateTaxConfig>, 'StateTaxConfig');
+export const ZipJurisdiction: WrappedEntity<ZipJurisdiction> = wrapEntity(base44.entities.ZipJurisdiction as any as EntityCRUD<ZipJurisdiction>, 'ZipJurisdiction');
+export const CostOfLiving: WrappedEntity<CostOfLiving> = wrapEntity(base44.entities.CostOfLiving as any as EntityCRUD<CostOfLiving>, 'CostOfLiving');
 
 // Subscription Entities
-export const Plan: WrappedEntity<Plan> = wrapEntity(base44.entities.Plan, 'Plan');
-export const Subscription: WrappedEntity<Subscription> = wrapEntity(base44.entities.Subscription, 'Subscription');
+export const Plan: WrappedEntity<Plan> = wrapEntity(base44.entities.Plan as any as EntityCRUD<Plan>, 'Plan');
+export const Subscription: WrappedEntity<Subscription> = wrapEntity(base44.entities.Subscription as any as EntityCRUD<Subscription>, 'Subscription');
 
 // Authentication (no wrapping needed)
 export const User = base44.auth;

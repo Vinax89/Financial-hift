@@ -77,8 +77,8 @@ export default ${name};
  */
 function generatePage(name) {
   return `import { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/card.jsx';
-import { Button } from '@/components/ui/button.jsx';
+import { Card } from '@/ui/card';
+import { Button } from '@/ui/button';
 
 /**
  * ${name} page component

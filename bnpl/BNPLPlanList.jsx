@@ -4,10 +4,10 @@
  */
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
-import { Button } from "@/ui/button.jsx";
-import { Badge } from "@/ui/badge.jsx";
-import { Progress } from "@/ui/progress.jsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Badge } from "@/ui/badge";
+import { Progress } from "@/ui/progress";
 import { Calendar, Edit, Trash2, CheckCircle2, CreditCard } from "lucide-react";
 import { format } from "date-fns";
 import { ListSkeleton } from "@/shared/SkeletonLoaders";

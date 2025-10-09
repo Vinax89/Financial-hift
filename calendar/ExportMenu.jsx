@@ -4,8 +4,8 @@
  */
 
 import React from "react";
-import { Button } from "@/ui/button.jsx";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu.jsx";
+import { Button } from "@/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu";
 import { Download } from "lucide-react";
 import { format } from "date-fns";
 

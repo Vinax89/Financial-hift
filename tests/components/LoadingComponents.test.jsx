@@ -10,7 +10,7 @@ import {
   SkeletonLoader,
   ProgressBar,
   SpinnerLoader,
-} from '@/components/ui/loading';
+} from '@/ui/loading';
 
 describe('PulseLoader', () => {
   it('renders with default props', () => {

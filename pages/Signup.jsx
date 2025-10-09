@@ -5,13 +5,13 @@
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card.jsx';
-import { Button } from '@/ui/button.jsx';
-import { Input } from '@/ui/input.jsx';
-import { Label } from '@/ui/label.jsx';
-import { Separator } from '@/ui/separator.jsx';
-import { Checkbox } from '@/ui/checkbox.jsx';
-import { useToast } from '@/ui/use-toast.jsx';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Label } from '@/ui/label';
+import { Separator } from '@/ui/separator';
+import { Checkbox } from '@/ui/checkbox';
+import { useToast } from '@/ui/use-toast';
 import { Loader2, DollarSign, Mail, Lock, Eye, EyeOff, User, CheckCircle, XCircle } from 'lucide-react';
 import { logError, logInfo } from '@/utils/logger.js';
 

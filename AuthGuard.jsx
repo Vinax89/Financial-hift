@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 // TEMP: Commented out to prevent SDK initialization redirect in development
 // import { User } from '@/api/entities';
-import { Card, CardContent } from '@/ui/card.jsx';
+import { Card, CardContent } from '@/ui/card';
 import { Loader2 } from 'lucide-react';
 import { logWarn, logInfo } from '@/utils/logger.js';
 

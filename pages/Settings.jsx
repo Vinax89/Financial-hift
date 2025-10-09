@@ -2,15 +2,15 @@ import React from "react";
 import { User } from "@/api/entities";
 import { useTheme } from "@/theme/ThemeProvider";
 import { ThemeSelector } from "@/theme/ThemeToggle";
-import PrivacyToggle from "@/shared/PrivacyToggle.jsx";
+import PrivacyToggle from "@/shared/PrivacyToggle";
 import { useToast } from "@/ui/use-toast";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card.jsx";
-import { Button } from "@/ui/button.jsx";
-import { Label } from "@/ui/label.jsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select.jsx";
-import { Switch } from "@/ui/switch.jsx";
-import { Separator } from "@/ui/separator.jsx";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Label } from "@/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
+import { Switch } from "@/ui/switch";
+import { Separator } from "@/ui/separator";
 import { RefreshCw, Save, Palette, Shield, Globe, CalendarDays, LayoutGrid } from "lucide-react";
 
 const DEFAULT_TABS = ["overview", "debts", "budget", "tools", "automations", "progress"];

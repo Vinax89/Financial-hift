@@ -4,11 +4,11 @@
  */
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
-import { Button } from '@/ui/button.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { Button } from '@/ui/button';
 import { Calendar as CalendarIcon, Clock, MapPin } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, getDay, isToday } from 'date-fns';
-import { Skeleton } from '@/ui/skeleton.jsx';
+import { Skeleton } from '@/ui/skeleton';
 import { cn } from '@/lib/utils';
 
 /**

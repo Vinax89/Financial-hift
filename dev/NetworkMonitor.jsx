@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
-import { Badge } from '@/ui/badge.jsx';
-import { ScrollArea } from '@/ui/scroll-area.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { Badge } from '@/ui/badge';
+import { ScrollArea } from '@/ui/scroll-area';
 
 function subscribeToNetwork(callback) {
     const update = () => {

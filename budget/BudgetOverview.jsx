@@ -5,7 +5,7 @@
  */
 
 import React, { useMemo, memo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { ThemedProgress } from '../ui/enhanced-components';
 import { DollarSign, TrendingDown, PiggyBank } from 'lucide-react';
 import { format, startOfMonth, endOfMonth } from 'date-fns';

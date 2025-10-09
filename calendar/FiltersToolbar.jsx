@@ -4,9 +4,9 @@
  */
 
 import React from "react";
-import { Switch } from "@/ui/switch.jsx";
-import { Label } from "@/ui/label.jsx";
-import { Card } from "@/ui/card.jsx";
+import { Switch } from "@/ui/switch";
+import { Label } from "@/ui/label";
+import { Card } from "@/ui/card";
 
 /**
  * Filters toolbar component

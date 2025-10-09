@@ -4,10 +4,10 @@
  */
 
 import React from "react";
-import { Button } from "@/ui/button.jsx";
-import { Switch } from "@/ui/switch.jsx";
-import { Label } from "@/ui/label.jsx";
-import { Popover, PopoverTrigger, PopoverContent } from "@/ui/popover.jsx";
+import { Button } from "@/ui/button";
+import { Switch } from "@/ui/switch";
+import { Label } from "@/ui/label";
+import { Popover, PopoverTrigger, PopoverContent } from "@/ui/popover";
 import { SlidersHorizontal } from "lucide-react";
 
 /**

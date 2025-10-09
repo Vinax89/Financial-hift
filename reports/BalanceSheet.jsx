@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from '@/ui/table.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from '@/ui/table';
 
 const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 

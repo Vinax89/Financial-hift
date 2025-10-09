@@ -5,9 +5,9 @@
  */
 
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { ThemedProgress } from '../ui/enhanced-components';
-import { Button } from '@/ui/button.jsx';
+import { Button } from '@/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
 

@@ -1,19 +1,19 @@
 
 import React, { useState } from 'react';
-import { useBudgets, useTransactions, useCreateBudget, useUpdateBudget, useDeleteBudget } from '@/hooks/useEntityQueries.jsx';
-import BudgetOverview from '@/budget/BudgetOverview.jsx';
-import CategoryBreakdown from '@/budget/CategoryBreakdown.jsx';
-import BudgetForm from '@/budget/BudgetForm.jsx';
-import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
-import { LoadingWrapper, CardLoading } from '@/ui/loading.jsx';
-import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { useBudgets, useTransactions, useCreateBudget, useUpdateBudget, useDeleteBudget } from '@/hooks/useEntityQueries';
+import BudgetOverview from '@/budget/BudgetOverview';
+import CategoryBreakdown from '@/budget/CategoryBreakdown';
+import BudgetForm from '@/budget/BudgetForm';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
+import { LoadingWrapper, CardLoading } from '@/ui/loading';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Plus, Wallet } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 import { ErrorBoundary } from '@/shared/ErrorBoundary';
-import { useToast } from '@/ui/use-toast.jsx';
+import { useToast } from '@/ui/use-toast';
 
 export default function BudgetPage() {
     // React Query hooks - automatic caching and background refetching

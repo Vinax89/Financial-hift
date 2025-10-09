@@ -6,8 +6,8 @@
 
 import React, { Component, ReactNode, ComponentType } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
-import { Button } from '@/ui/button.jsx';
-import { ThemedCard } from '@/ui/enhanced-components.jsx';
+import { Button } from '@/ui/button';
+import { ThemedCard } from '@/ui/enhanced-components';
 
 // ============================================================================
 // TYPE DEFINITIONS

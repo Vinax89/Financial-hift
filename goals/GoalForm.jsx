@@ -5,14 +5,14 @@
  */
 
 import React, { useEffect, useState, memo } from 'react';
-import { Input } from '@/ui/input.jsx';
-import { Label } from '@/ui/label.jsx';
-import { Textarea } from '@/ui/textarea.jsx';
-import { Button } from '@/ui/button.jsx';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select.jsx';
+import { Input } from '@/ui/input';
+import { Label } from '@/ui/label';
+import { Textarea } from '@/ui/textarea';
+import { Button } from '@/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
 import { Save, Check } from 'lucide-react';
 import { format } from 'date-fns';
-import { useAutosave } from '@/utils/formEnhancement.jsx';
+import { useAutosave } from '@/utils/formEnhancement';
 
 /**
  * Default goal form state

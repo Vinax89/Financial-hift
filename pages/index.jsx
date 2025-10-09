@@ -6,18 +6,18 @@
 import React, { Suspense } from 'react';
 import { createPageUrl } from "@/utils";
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
-import { useIdlePrefetch } from '@/hooks/usePrefetch.jsx';
+import { useIdlePrefetch } from '@/hooks/usePrefetch';
 import { lazyLoadWithRetry } from '@/utils/lazyLoad';
 import { RouteLoader, SkeletonRouteLoader } from '@/components/ui/RouteLoader';
 
 // Eager load Layout and Transactions (landing page - critical path)
-import Layout from "@/pages/Layout.jsx";
-import Transactions from "@/pages/Transactions.jsx";
+import Layout from "@/pages/Layout";
+import Transactions from "@/pages/Transactions";
 
 // Eager load auth pages (no auth guard - shown before app loads)
-import Login from "@/pages/Login.jsx";
-import Signup from "@/pages/Signup.jsx";
-import ForgotPassword from "@/pages/ForgotPassword.jsx";
+import Login from "@/pages/Login";
+import Signup from "@/pages/Signup";
+import ForgotPassword from "@/pages/ForgotPassword";
 
 // Lazy load all other pages with retry logic for better reliability
 const FileUpload = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/FileUpload.jsx")));

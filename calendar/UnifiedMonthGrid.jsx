@@ -4,10 +4,10 @@
  */
 
 import React from "react";
-import { Badge } from "@/ui/badge.jsx";
-import { Button } from "@/ui/button.jsx";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/sheet.jsx";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu.jsx";
+import { Badge } from "@/ui/badge";
+import { Button } from "@/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ui/dropdown-menu";
 import { format, isSameDay } from "date-fns";
 import { Plus, Check, MoreHorizontal, DollarSign } from "lucide-react";
 

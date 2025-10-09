@@ -1,10 +1,10 @@
 
 import React, { Suspense } from "react";
-import { GlassContainer } from "@/ui/enhanced-components.jsx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs.jsx";
-import PerfInspector from "@/dev/PerfInspector.jsx";
-import NetworkMonitor from "@/dev/NetworkMonitor.jsx";
-import { Button } from "@/ui/button.jsx";
+import { GlassContainer } from "@/ui/enhanced-components";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import PerfInspector from "@/dev/PerfInspector";
+import NetworkMonitor from "@/dev/NetworkMonitor";
+import { Button } from "@/ui/button";
 
 // Lazy import only - no static import to enable proper code splitting
 const StressTesterLazy = React.lazy(() => import("@/dev/StressTester.jsx"));

@@ -33,7 +33,7 @@
 // - Module preloading
 
 // Use PrefetchLink for hover prefetching:
-import { PrefetchLink } from '@/components/PrefetchLink.jsx';
+import { PrefetchLink } from '@/components/PrefetchLink';
 
 function Navigation() {
   return (
@@ -49,7 +49,7 @@ function Navigation() {
 // 3. WEB WORKERS (Background Calculations)
 // ============================================
 
-import { useWebWorker } from '@/hooks/useWebWorker.jsx';
+import { useWebWorker } from '@/hooks/useWebWorker';
 
 function Analytics() {
   const { calculateTotals, calculateAnalytics, filterTransactions } = useWebWorker();
@@ -81,7 +81,7 @@ function Analytics() {
 // 4. PARALLEL LOADING
 // ============================================
 
-import { useParallelQueries } from '@/hooks/usePrefetch.jsx';
+import { useParallelQueries } from '@/hooks/usePrefetch';
 
 function Dashboard() {
   // Load multiple queries with priority management
@@ -108,7 +108,7 @@ function Dashboard() {
 // 5. STAGGERED DASHBOARD LOADING
 // ============================================
 
-import { useDashboardData } from '@/hooks/useDashboardData.jsx';
+import { useDashboardData } from '@/hooks/useDashboardData';
 
 function Dashboard() {
   const {
@@ -149,7 +149,7 @@ function Dashboard() {
 // 6. MANUAL PREFETCHING
 // ============================================
 
-import { usePrefetchRoute } from '@/hooks/usePrefetch.jsx';
+import { usePrefetchRoute } from '@/hooks/usePrefetch';
 
 function MyComponent() {
   const { prefetch, cancelPrefetch } = usePrefetchRoute('/dashboard');

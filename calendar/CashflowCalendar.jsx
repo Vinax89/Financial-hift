@@ -5,7 +5,7 @@
  */
 
 import React, { memo } from 'react';
-import { Card, CardContent } from '@/ui/card.jsx';
+import { Card, CardContent } from '@/ui/card';
 import { CardSkeleton } from '@/shared/SkeletonLoaders';
 import { format, isToday, getDay } from 'date-fns';
 import { cn } from '@/lib/utils';

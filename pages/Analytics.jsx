@@ -1,12 +1,12 @@
 
 import React, { Suspense } from 'react';
-import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
 import { BarChart3 } from 'lucide-react';
-import { CardHeader, CardTitle, CardContent } from '@/ui/card.jsx'; // This import is now mostly unused but kept as it was in original.
-import { useTransactions, useShifts, useBills, useGoals } from '@/hooks/useEntityQueries.jsx';
-import { ErrorBoundary } from '@/shared/ErrorBoundary.jsx';
-import { CardLoading, ChartLoading } from '@/ui/loading.jsx';
+import { CardHeader, CardTitle, CardContent } from '@/ui/card'; // This import is now mostly unused but kept as it was in original.
+import { useTransactions, useShifts, useBills, useGoals } from '@/hooks/useEntityQueries';
+import { ErrorBoundary } from '@/shared/ErrorBoundary';
+import { CardLoading, ChartLoading } from '@/ui/loading';
 
 // Lazy load chart components
 const FinancialMetrics = React.lazy(() => import('@/analytics/FinancialMetrics.jsx'));

@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Button } from "@/ui/button.jsx";
+import { Button } from '@/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,9 +8,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/ui/dropdown-menu.jsx";
+} from '@/ui/dropdown-menu';
 import { Download, FileJson, FileSpreadsheet } from "lucide-react";
-import { useToast } from "@/ui/use-toast.jsx";
+import { useToast } from '@/ui/use-toast';
 
 function toCSV(rows) {
   const data = Array.isArray(rows) ? rows : [];

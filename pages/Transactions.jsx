@@ -1,19 +1,19 @@
 
 import React, { useState, useRef } from 'react';
-import { useTransactions, useCreateTransaction, useUpdateTransaction, useDeleteTransaction } from '@/hooks/useEntityQueries.jsx';
-import TransactionList from '@/transactions/TransactionList.jsx';
-import TransactionForm from '@/transactions/TransactionForm.jsx';
-import TransactionFilters from '@/transactions/TransactionFilters.jsx';
-import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
-import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
-import { ShimmerEffect } from '@/loading/LoadingStates.jsx';
-import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { useTransactions, useCreateTransaction, useUpdateTransaction, useDeleteTransaction } from '@/hooks/useEntityQueries';
+import TransactionList from '@/transactions/TransactionList';
+import TransactionForm from '@/transactions/TransactionForm';
+import TransactionFilters from '@/transactions/TransactionFilters';
+import { ThemedCard, ThemedButton, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
+import { LoadingWrapper, TableLoading } from '@/ui/loading';
+import { ShimmerEffect } from '@/loading/LoadingStates';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { CreditCard, Plus } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
-import { useToast } from '@/ui/use-toast.jsx';
+import { useToast } from '@/ui/use-toast';
 
 export default function TransactionsPage() {
     // React Query hooks - automatic caching and background refetching

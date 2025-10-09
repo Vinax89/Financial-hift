@@ -1,27 +1,27 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs.jsx';
-import { ThemedCard, GlassContainer } from '@/ui/enhanced-components.jsx';
-import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations.jsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
+import { ThemedCard, GlassContainer } from '@/ui/enhanced-components';
+import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
 import { Clock, Calculator, Settings, Upload, Plus, Briefcase } from 'lucide-react';
-import { Button } from '@/ui/button.jsx';
-import { Badge } from '@/ui/badge.jsx';
+import { Button } from '@/ui/button';
+import { Badge } from '@/ui/badge';
 import { FocusTrapWrapper } from '@/ui/FocusTrapWrapper';
 
 // Import OPTIMIZED entities with rate limiting
 import { Shift, ShiftRule, invalidateCache } from '@/api/optimizedEntities.js';
-import ShiftForm from '@/shifts/ShiftForm.jsx';
-import ShiftList from '@/shifts/ShiftList.jsx';
-import ShiftStats from '@/shifts/ShiftStats.jsx';
-import PaycheckCalculator from '@/paycheck/PaycheckCalculator.jsx';
-import ShiftRuleForm from '@/shift-rules/ShiftRuleForm.jsx';
-import ShiftRuleList from '@/shift-rules/ShiftRuleList.jsx';
-import ShiftRulePreview from '@/shift-rules/ShiftRulePreview.jsx';
-import ShiftImport from '@/shifts/ShiftImport.jsx';
-import { LoadingWrapper, TableLoading } from '@/ui/loading.jsx';
-import { CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import ShiftForm from '@/shifts/ShiftForm';
+import ShiftList from '@/shifts/ShiftList';
+import ShiftStats from '@/shifts/ShiftStats';
+import PaycheckCalculator from '@/paycheck/PaycheckCalculator';
+import ShiftRuleForm from '@/shift-rules/ShiftRuleForm';
+import ShiftRuleList from '@/shift-rules/ShiftRuleList';
+import ShiftRulePreview from '@/shift-rules/ShiftRulePreview';
+import ShiftImport from '@/shifts/ShiftImport';
+import { LoadingWrapper, TableLoading } from '@/ui/loading';
+import { CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { AnimatePresence } from 'framer-motion';
-import { useToast } from '@/ui/use-toast.jsx';
+import { useToast } from '@/ui/use-toast';
 
 export default function WorkHubPage() {
     const [activeTab, setActiveTab] = useState('schedule');

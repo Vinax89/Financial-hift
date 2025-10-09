@@ -1,6 +1,6 @@
 import React from "react";
-import { Input } from "@/ui/input.jsx";
-import { Label } from "@/ui/label.jsx";
+import { Input } from "@/ui/input";
+import { Label } from "@/ui/label";
 import { DollarSign, MapPin, Calendar, User } from "lucide-react";
 
 export default function ViabilityInputs({

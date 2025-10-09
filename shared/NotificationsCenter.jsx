@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@/ui/button.jsx";
+import { Button } from '@/ui/button';
 import { Bell, Check } from "lucide-react";
 import {
   DropdownMenu,
@@ -8,9 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuLabel,
-} from "@/ui/dropdown-menu.jsx";
+} from '@/ui/dropdown-menu';
 import { Notification } from "@/api/entities";
-import { useToast } from "@/ui/use-toast.jsx";
+import { useToast } from '@/ui/use-toast';
 
 export default function NotificationsCenter() {
   const { toast } = useToast();
