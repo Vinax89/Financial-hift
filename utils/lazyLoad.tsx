@@ -4,24 +4,34 @@
  * with loading fallbacks and error boundaries
  */
 
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, ComponentType, ReactNode } from 'react';
 import { CardSkeleton } from '@/shared/SkeletonLoaders';
+import type { 
+  ImportFunc, 
+  ComponentProps, 
+  LazyLoadOptions, 
+  ImportsMap, 
+  LazyComponentsMap 
+} from '../types/lazyLoad.types';
 
 /**
  * Wraps a lazy-loaded component with Suspense boundary
- * @param {Function} importFunc - Dynamic import function
- * @param {React.ReactNode} fallback - Optional custom loading component
- * @returns {React.Component} Lazy-loaded component with Suspense wrapper
+ * @param importFunc - Dynamic import function
+ * @param fallback - Optional custom loading component
+ * @returns Lazy-loaded component with Suspense wrapper
  * 
  * @example
  * const Dashboard = lazyLoad(() => import('@/pages/Dashboard'));
  */
-export function lazyLoad(importFunc, fallback = null) {
+export function lazyLoad<T extends ComponentType<any>>(
+  importFunc: ImportFunc<T>,
+  fallback: ReactNode = null
+): ComponentType<any> {
   const LazyComponent = lazy(importFunc);
   
-  return function LazyLoadedComponent(props) {
+  return function LazyLoadedComponent(props: any) {
     return (
-      <Suspense fallback={fallback || <CardSkeleton />}>
+      <Suspense fallback={fallback || <CardSkeleton className="" />}>
         <LazyComponent {...props} />
       </Suspense>
     );
@@ -31,8 +41,8 @@ export function lazyLoad(importFunc, fallback = null) {
 /**
  * Preloads a lazy-loaded component
  * Useful for optimistic loading on hover or route preparation
- * @param {Function} importFunc - Dynamic import function
- * @returns {Promise} Promise that resolves when component is loaded
+ * @param importFunc - Dynamic import function
+ * @returns Promise that resolves when component is loaded
  * 
  * @example
  * <Link 
@@ -40,18 +50,17 @@ export function lazyLoad(importFunc, fallback = null) {
  *   onMouseEnter={() => preloadComponent(() => import('@/pages/Dashboard'))}
  * >
  */
-export function preloadComponent(importFunc) {
+export function preloadComponent<T extends ComponentType<any>>(
+  importFunc: ImportFunc<T>
+): Promise<{ default: T }> {
   return importFunc();
 }
 
 /**
  * Creates a lazy-loaded component with custom loading state
- * @param {Function} importFunc - Dynamic import function
- * @param {Object} options - Configuration options
- * @param {React.ReactNode} options.fallback - Custom loading component
- * @param {number} options.delay - Minimum delay before showing content (prevents flash)
- * @param {Function} options.onError - Error callback
- * @returns {React.Component} Configured lazy component
+ * @param importFunc - Dynamic import function
+ * @param options - Configuration options
+ * @returns Configured lazy component
  * 
  * @example
  * const Dashboard = lazyLoadWithOptions(
@@ -62,8 +71,11 @@ export function preloadComponent(importFunc) {
  *   }
  * );
  */
-export function lazyLoadWithOptions(importFunc, options = {}) {
-  const { fallback = <CardSkeleton />, delay = 0, onError } = options;
+export function lazyLoadWithOptions<T extends ComponentType<any>>(
+  importFunc: ImportFunc<T>,
+  options: LazyLoadOptions = {}
+): ComponentType<any> {
+  const { fallback = <CardSkeleton className="" />, delay = 0, onError } = options;
   
   const LazyComponent = lazy(async () => {
     try {
@@ -74,12 +86,12 @@ export function lazyLoadWithOptions(importFunc, options = {}) {
       ]);
       return component;
     } catch (error) {
-      if (onError) onError(error);
+      if (onError) onError(error as Error);
       throw error;
     }
   });
   
-  return function LazyLoadedComponentWithOptions(props) {
+  return function LazyLoadedComponentWithOptions(props: any) {
     return (
       <Suspense fallback={fallback}>
         <LazyComponent {...props} />
@@ -90,8 +102,8 @@ export function lazyLoadWithOptions(importFunc, options = {}) {
 
 /**
  * Lazy loads multiple components in parallel
- * @param {Object} imports - Object mapping names to import functions
- * @returns {Object} Object with lazy-loaded components
+ * @param imports - Object mapping names to import functions
+ * @returns Object with lazy-loaded components
  * 
  * @example
  * const { Dashboard, Analytics } = lazyLoadMultiple({
@@ -99,8 +111,8 @@ export function lazyLoadWithOptions(importFunc, options = {}) {
  *   Analytics: () => import('@/pages/Analytics')
  * });
  */
-export function lazyLoadMultiple(imports) {
-  const lazyComponents = {};
+export function lazyLoadMultiple(imports: ImportsMap): LazyComponentsMap {
+  const lazyComponents: LazyComponentsMap = {};
   
   for (const [name, importFunc] of Object.entries(imports)) {
     lazyComponents[name] = lazyLoad(importFunc);
@@ -112,24 +124,28 @@ export function lazyLoadMultiple(imports) {
 /**
  * Retries a failed lazy load up to specified attempts
  * Useful for handling network issues
- * @param {Function} importFunc - Dynamic import function
- * @param {number} retries - Maximum retry attempts
- * @param {number} retryDelay - Delay between retries (ms)
- * @returns {Promise} Component module
+ * @param importFunc - Dynamic import function
+ * @param retries - Maximum retry attempts
+ * @param retryDelay - Delay between retries (ms)
+ * @returns Component module
  * 
  * @example
  * const Dashboard = lazy(() => 
  *   lazyLoadWithRetry(() => import('@/pages/Dashboard'), 3, 1000)
  * );
  */
-export async function lazyLoadWithRetry(importFunc, retries = 3, retryDelay = 1000) {
-  let lastError;
+export async function lazyLoadWithRetry<T extends ComponentType<any>>(
+  importFunc: ImportFunc<T>,
+  retries = 3,
+  retryDelay = 1000
+): Promise<{ default: T }> {
+  let lastError: Error | undefined;
   
   for (let i = 0; i < retries; i++) {
     try {
       return await importFunc();
     } catch (error) {
-      lastError = error;
+      lastError = error as Error;
       
       // Don't retry on the last attempt
       if (i < retries - 1) {
@@ -139,7 +155,7 @@ export async function lazyLoadWithRetry(importFunc, retries = 3, retryDelay = 10
     }
   }
   
-  throw new Error(`Failed to load component after ${retries} retries: ${lastError.message}`);
+  throw new Error(`Failed to load component after ${retries} retries: ${lastError?.message || 'Unknown error'}`);
 }
 
 /**
