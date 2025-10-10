@@ -98,6 +98,11 @@ function stringifyStorageValue(value: unknown): string {
 
 /**
  * Persist state to localStorage with optional encryption and optimized cross-tab sync
+ * 
+ * **✨ NEW in Phase 3**: Automatic migration from plaintext to encrypted storage!
+ * When `encrypt: true` is enabled, the hook automatically detects existing plaintext
+ * data and migrates it to encrypted format on first use.
+ * 
  * @template T
  * @param {string} key - LocalStorage key
  * @param {T} initialValue - Initial value if key doesn't exist
@@ -107,12 +112,13 @@ function stringifyStorageValue(value: unknown): string {
  * @example Basic usage (no encryption)
  * const [theme, setTheme] = useLocalStorage<string>('theme', 'dark');
  * 
- * @example With encryption for sensitive data
+ * @example With encryption for sensitive data (auto-migrates existing plaintext)
  * const [apiKey, setApiKey, removeApiKey] = useLocalStorage<string>(
  *   'apiKey',
  *   '',
  *   { encrypt: true, expiresIn: 3600000 } // 1 hour
  * );
+ * // If plaintext 'apiKey' exists, it's automatically migrated to encrypted format
  * 
  * @example With namespace and expiration
  * const [userData, setUserData] = useLocalStorage<UserData>(
@@ -124,6 +130,12 @@ function stringifyStorageValue(value: unknown): string {
  *     expiresIn: 86400000 // 24 hours
  *   }
  * );
+ * 
+ * @example Migration behavior
+ * // Before: plaintext localStorage.setItem('token', 'abc123')
+ * const [token] = useLocalStorage('token', null, { encrypt: true });
+ * // After: Automatically migrated to encrypted storage, plaintext deleted
+ * // Console log (dev only): "🔒 Auto-migrated "token" to encrypted storage"
  */
 export function useLocalStorage<T>(
   key: string,
@@ -224,19 +236,46 @@ export function useLocalStorage<T>(
     }
   }, [storageKey, initialValue, encrypt]);
 
-  // Load encrypted data asynchronously on mount
+  // Load encrypted data asynchronously on mount (with automatic migration)
   useEffect(() => {
     if (!encrypt || typeof window === 'undefined' || isInitialized) return;
 
     const loadEncryptedData = async () => {
       try {
+        // Try to load encrypted data first
         const data = await secureStorage.get<T>(storageKey, {
           decrypt: true,
         });
 
         if (data !== null) {
+          // Encrypted data found
           setStoredValue(data);
+        } else {
+          // No encrypted data - check for plaintext data to migrate
+          const plaintextValue = window.localStorage.getItem(storageKey);
+          
+          if (plaintextValue !== null) {
+            // Plaintext data exists - migrate to encrypted storage
+            const parsedValue = parseStorageValue(plaintextValue, initialValue);
+            
+            // Store encrypted version
+            await secureStorage.set(storageKey, parsedValue, {
+              encrypt: true,
+              expiresIn,
+            });
+            
+            // Clear plaintext version for security
+            window.localStorage.removeItem(storageKey);
+            
+            // Update state with migrated data
+            setStoredValue(parsedValue);
+            
+            if (import.meta.env.DEV) {
+              console.log(`🔒 Auto-migrated "${storageKey}" to encrypted storage`);
+            }
+          }
         }
+        
         setIsInitialized(true);
       } catch (error) {
         if (import.meta.env.DEV) {
@@ -247,7 +286,7 @@ export function useLocalStorage<T>(
     };
 
     loadEncryptedData();
-  }, [encrypt, storageKey, isInitialized]);
+  }, [encrypt, storageKey, isInitialized, initialValue, expiresIn]);
 
   // Cross-tab synchronization
   useEffect(() => {
