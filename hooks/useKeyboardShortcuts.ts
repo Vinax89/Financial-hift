@@ -123,8 +123,6 @@ export function useKeyboardShortcutsHelp(): () => void {
     }
   }, []);
 
-import { logDebug } from '@/utils/logger';
-
   return () => {
     if (shortcutsRef.current) {
       // Get all shortcuts and display them

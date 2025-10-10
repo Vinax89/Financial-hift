@@ -24,8 +24,8 @@ export default function TransactionsPage() {
     const updateTransaction = useUpdateTransaction();
     const deleteTransaction = useDeleteTransaction();
     
-    const [showForm, setShowForm] = useState<boolean>(false);
-    const [editingTransaction, setEditingTransaction] = useState<any>(null);
+    const [showForm, setShowForm] = useState(false);
+    const [editingTransaction, setEditingTransaction] = useState(null);
     const [filters, setFilters] = useState({});
     const { toast } = useToast();
 
