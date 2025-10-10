@@ -123,7 +123,6 @@ export function useKeyboardShortcutsHelp(): () => void {
     }
   }, []);
 
-
   return () => {
     if (shortcutsRef.current) {
       // Get all shortcuts and display them
