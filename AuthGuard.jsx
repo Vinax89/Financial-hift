@@ -11,6 +11,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent } from '@/ui/card';
 import { Loader2 } from 'lucide-react';
 import { logWarn, logInfo } from '@/utils/logger.js';
+import { isAuthenticated, getUserData } from '@/utils/authStorage';
 
 /**
  * Authentication state type definition
@@ -71,14 +72,17 @@ export default function AuthGuard({ children }) {
                 // Simulate API call
                 await new Promise(resolve => setTimeout(resolve, 500));
                 
-                // Mock: Check if user has token (you'd check localStorage, cookies, etc.)
-                const hasToken = localStorage.getItem('auth_token');
+                // Check authentication using secure encrypted storage
+                const authenticated = await isAuthenticated();
                 
-                if (hasToken) {
+                if (authenticated) {
+                    // Get user data from secure storage
+                    const userData = await getUserData();
+                    
                     setAuthState({
                         isLoading: false,
                         isAuthenticated: true,
-                        user: { id: 'mock-user', email: 'user@example.com', name: 'Mock User' },
+                        user: userData || { id: 'mock-user', email: 'user@example.com', name: 'Mock User' },
                         error: null
                     });
                 } else {

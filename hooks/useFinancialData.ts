@@ -18,6 +18,7 @@ import { useLocalStorage } from './useLocalStorage';
 import { retryWithBackoff } from '@/utils/api';
 import { perfLog } from '@/utils/perf';
 import { logError, logWarn } from '@/utils/logger.js';
+import { secureStorage } from '@/utils/secureStorage';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -158,6 +159,8 @@ const ENTITIES: EntityMap = {
 
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const STORAGE_PREFIX = 'apex-finance:snapshot:';
+const OFFLINE_CACHE_NAMESPACE = 'financial-snapshots';
+const OFFLINE_CACHE_EXPIRATION = 60 * 60 * 1000; // 1 hour
 
 // ============================================================================
 // HOOK IMPLEMENTATION
@@ -238,22 +241,33 @@ export function useFinancialData(): UseFinancialDataReturn {
   }, []);
 
   /**
-   * Hydrate data from localStorage (offline fallback)
+   * Hydrate data from secure storage (offline fallback)
    */
-  const hydrateFromLocal = useCallback((): void => {
-    const hydrated: Partial<FinancialData> = {};
-    
-    (Object.keys(ENTITIES) as EntityType[]).forEach((key) => {
-      try {
-        const raw = typeof window !== 'undefined' 
-          ? window.localStorage.getItem(STORAGE_PREFIX + key) 
-          : null;
-        hydrated[key] = raw ? JSON.parse(raw) : [];
-      } catch {
-        hydrated[key] = [];
-      }
-    });
-    
+  const hydrateFromLocal = useCallback(async (): Promise<void> => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const entries = await Promise.all(
+      (Object.keys(ENTITIES) as EntityType[]).map(async (key) => {
+        try {
+          const snapshot = await secureStorage.get<any[]>(
+            STORAGE_PREFIX + key,
+            { namespace: OFFLINE_CACHE_NAMESPACE }
+          );
+          return [key, Array.isArray(snapshot) ? snapshot : []] as const;
+        } catch (error) {
+          logWarn(`Failed to hydrate ${key} from secure storage`, { error });
+          return [key, []] as const;
+        }
+      })
+    );
+
+    const hydrated = entries.reduce<Partial<FinancialData>>((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {});
+
     setData(prev => ({ ...prev, ...hydrated } as FinancialData));
   }, []);
 
@@ -324,14 +338,19 @@ export function useFinancialData(): UseFinancialDataReturn {
       // Persist snapshot for offline use
       try {
         if (typeof window !== 'undefined') {
-          window.localStorage.setItem(
-            STORAGE_PREFIX + entityType, 
-            JSON.stringify(safeResult)
+          await secureStorage.set(
+            STORAGE_PREFIX + entityType,
+            safeResult,
+            {
+              encrypt: true,
+              namespace: OFFLINE_CACHE_NAMESPACE,
+              expiresIn: OFFLINE_CACHE_EXPIRATION,
+            }
           );
         }
       } catch (storageError) {
-        logWarn(`Failed to save ${entityType} to local storage`, { 
-          error: storageError 
+        logWarn(`Failed to save ${entityType} to secure storage`, {
+          error: storageError,
         });
       }
       
@@ -417,12 +436,17 @@ export function useFinancialData(): UseFinancialDataReturn {
   }, []);
 
   /**
-   * Hydrate from localStorage if offline on first mount
+   * Hydrate from secure storage if offline on first mount
    */
   useEffect(() => {
     if (typeof navigator !== 'undefined' && !navigator.onLine && !dataLoadedRef.current) {
-      hydrateFromLocal();
-      dataLoadedRef.current = true;
+      hydrateFromLocal()
+        .then(() => {
+          dataLoadedRef.current = true;
+        })
+        .catch((error) => {
+          logWarn('Failed to hydrate financial data from secure storage', { error });
+        });
     }
   }, [hydrateFromLocal]);
 

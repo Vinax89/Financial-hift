@@ -32,6 +32,7 @@
 
 import { useEffect, useRef } from 'react';
 import { KeyboardShortcuts } from '@/utils/accessibility';
+import { logDebug } from '@/utils/logger';
 
 /**
  * Keyboard shortcut configuration
@@ -121,8 +122,6 @@ export function useKeyboardShortcutsHelp(): () => void {
       shortcutsRef.current = new KeyboardShortcuts();
     }
   }, []);
-
-import { logDebug } from '@/utils/logger';
 
   return () => {
     if (shortcutsRef.current) {

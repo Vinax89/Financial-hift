@@ -1,18 +1,24 @@
 /**
- * @fileoverview Custom React Hook for form state management with auto-save
- * @description Provides auto-save functionality, draft persistence, and unsaved changes warning
+ * @fileoverview Custom React Hook for form state management with auto-save and encryption
+ * @description Provides auto-save functionality, encrypted draft persistence, and unsaved changes warning
  *
  * Features:
  * - Auto-save with debounce (configurable delay)
- * - Draft persistence to localStorage
+ * - Draft persistence with AES-GCM encryption support 🔐
+ * - Automatic expiration for draft storage
  * - Unsaved changes warning on navigation
  * - Loading states integration
  * - Works with all FormComponents and react-hook-form
  *
- * @example
+ * Security Classifications:
+ * - 🔴 CRITICAL: Enable encryption for forms with passwords, tokens, API keys
+ * - 🟡 SENSITIVE: Enable encryption for forms with PII, financial data
+ * - 🟢 PUBLIC: No encryption needed for non-sensitive forms
+ *
+ * @example Basic Usage
  * ```tsx
  * const TransactionForm = () => {
- *   const { methods, isSaving, lastSaved, hasUnsavedChanges } = useFormWithAutoSave({
+ *   const { methods, isSaving, lastSaved } = useFormWithAutoSave({
  *     schema: transactionSchema,
  *     onSave: async (data) => await saveTransaction(data),
  *     storageKey: 'transaction-draft',
@@ -23,12 +29,23 @@
  *     <FormProvider {...methods}>
  *       <form onSubmit={methods.handleSubmit(onSubmit)}>
  *         <FormInput name="description" />
- *         {isSaving && <span>Saving...</span>}
- *         {lastSaved && <span>Last saved: {lastSaved}</span>}
+ *         {isSaving && <span>💾 Saving...</span>}
+ *         {lastSaved && <span>✅ Last saved: {lastSaved}</span>}
  *       </form>
  *     </FormProvider>
  *   );
  * };
+ * ```
+ *
+ * @example With Encryption (for sensitive forms)
+ * ```tsx
+ * const { methods } = useFormWithAutoSave({
+ *   schema: transactionSchema,
+ *   onSave: saveTransactionDraft,
+ *   storageKey: 'transaction-draft',
+ *   encryptDrafts: true, // 🔒 Enable AES-GCM encryption
+ *   draftExpiresIn: 86400000, // 24 hours
+ * });
  * ```
  */
 
@@ -38,6 +55,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { z } from 'zod';
 import { useDebounce } from './useDebounce';
 import { logError } from '@/utils/logger';
+import { secureStorage } from '@/utils/secureStorage';
 
 /**
  * Configuration options for useFormWithAutoSave
@@ -65,6 +83,18 @@ export interface UseFormWithAutoSaveOptions<T extends FieldValues> {
   onAutoSaveSuccess?: (data: T) => void;
   /** Callback after failed auto-save */
   onAutoSaveError?: (error: Error, data: T) => void;
+  /** 
+   * Enable AES-GCM encryption for sensitive form drafts (🔴 HIGH SECURITY)
+   * @default false
+   * @remarks Use for forms containing PII, financial data, or credentials
+   */
+  encryptDrafts?: boolean;
+  /**
+   * Expiration time for draft storage in milliseconds
+   * @default 86400000 (24 hours)
+   * @remarks After this time, drafts will be automatically removed
+   */
+  draftExpiresIn?: number;
 }
 
 /**
@@ -81,12 +111,12 @@ export interface UseFormWithAutoSaveReturn<T extends FieldValues> {
   lastSavedTime: Date | null;
   /** True when form has unsaved changes */
   hasUnsavedChanges: boolean;
-  /** Clear draft from localStorage */
-  clearDraft: () => void;
-  /** Manually save draft to localStorage */
-  saveDraft: () => void;
-  /** Manually load draft from localStorage */
-  loadDraft: () => T | null;
+  /** Clear draft from secure storage (async with encryption support) */
+  clearDraft: () => Promise<void>;
+  /** Manually save draft to secure storage (async with encryption support) */
+  saveDraft: () => Promise<void>;
+  /** Manually load draft from secure storage (async with automatic decryption) */
+  loadDraft: () => Promise<T | null>;
   /** Manually trigger auto-save */
   triggerAutoSave: () => Promise<void>;
 }
@@ -106,6 +136,8 @@ export const useFormWithAutoSave = <T extends FieldValues>({
   mode = 'onBlur',
   onAutoSaveSuccess,
   onAutoSaveError,
+  encryptDrafts = false,
+  draftExpiresIn = 86400000, // 24 hours default
 }: UseFormWithAutoSaveOptions<T>): UseFormWithAutoSaveReturn<T> => {
   // State management
   const [isSaving, setIsSaving] = useState(false);
@@ -123,19 +155,9 @@ export const useFormWithAutoSave = <T extends FieldValues>({
     onSaveRef.current = onSave;
   }, [onSave]);
 
-  // Load draft from localStorage on mount
+  // Load draft from secure storage on mount (synchronously for initialization)
   const loadedDefaultValues = useRef<Partial<T>>(defaultValues);
-  if (enableDraftPersistence && storageKey) {
-    try {
-      const draft = localStorage.getItem(storageKey);
-      if (draft) {
-        const parsedDraft = JSON.parse(draft) as Partial<T>;
-        loadedDefaultValues.current = { ...defaultValues, ...parsedDraft };
-      }
-    } catch (error) {
-      logError('Failed to load draft from localStorage', error);
-    }
-  }
+  const [isDraftLoaded, setIsDraftLoaded] = useState(false);
 
   // Initialize react-hook-form
   const methods = useForm<T>({
@@ -154,48 +176,56 @@ export const useFormWithAutoSave = <T extends FieldValues>({
   const debouncedFormValues = useDebounce(formValues, autoSaveDelay);
 
   /**
-   * Save draft to localStorage
+   * Save draft to secure storage with optional encryption
+   * @remarks Uses AES-GCM encryption if encryptDrafts is true
    */
-  const saveDraft = useCallback(() => {
+  const saveDraft = useCallback(async () => {
     if (!enableDraftPersistence || !storageKey) return;
 
     try {
-      localStorage.setItem(storageKey, JSON.stringify(formValues));
+      await secureStorage.set(storageKey, formValues, {
+        encrypt: encryptDrafts,
+        expiresIn: draftExpiresIn,
+      });
     } catch (error) {
-      logError('Failed to save draft to localStorage', error);
+      logError('Failed to save draft to secure storage', error);
     }
-  }, [enableDraftPersistence, storageKey, formValues]);
+  }, [enableDraftPersistence, storageKey, formValues, encryptDrafts, draftExpiresIn]);
 
   /**
-   * Load draft from localStorage
+   * Load draft from secure storage with automatic decryption
+   * @returns Promise resolving to draft data or null
+   * @remarks Automatically decrypts if encryptDrafts is true
    */
-  const loadDraft = useCallback((): T | null => {
+  const loadDraft = useCallback(async (): Promise<T | null> => {
     if (!enableDraftPersistence || !storageKey) return null;
 
     try {
-      const draft = localStorage.getItem(storageKey);
+      const draft = await secureStorage.get<T>(storageKey, {
+        decrypt: encryptDrafts,
+      });
       if (draft) {
-        const parsedDraft = JSON.parse(draft) as T;
-        methods.reset(parsedDraft);
-        return parsedDraft;
+        methods.reset(draft);
+        return draft;
       }
     } catch (error) {
-      logError('Failed to load draft from localStorage', error);
+      logError('Failed to load draft from secure storage', error);
     }
     return null;
-  }, [enableDraftPersistence, storageKey, methods]);
+  }, [enableDraftPersistence, storageKey, methods, encryptDrafts]);
 
   /**
-   * Clear draft from localStorage
+   * Clear draft from secure storage
+   * @remarks Removes both encrypted and unencrypted drafts
    */
-  const clearDraft = useCallback(() => {
+  const clearDraft = useCallback(async () => {
     if (!storageKey) return;
 
     try {
-      localStorage.removeItem(storageKey);
+      await secureStorage.remove(storageKey);
       setHasUnsavedChanges(false);
     } catch (error) {
-      logError('Failed to clear draft from localStorage', error);
+      logError('Failed to clear draft from secure storage', error);
     }
   }, [storageKey]);
 
@@ -302,6 +332,29 @@ export const useFormWithAutoSave = <T extends FieldValues>({
       setHasUnsavedChanges(false);
     }
   }, [isDirty, formValues, lastSavedData]);
+
+  /**
+   * Effect: Load draft from secure storage on mount
+   */
+  useEffect(() => {
+    if (!enableDraftPersistence || !storageKey || isDraftLoaded) return;
+
+    const loadInitialDraft = async () => {
+      try {
+        const draft = await secureStorage.get<Partial<T>>(storageKey, {
+          decrypt: encryptDrafts,
+        });
+        if (draft && isMountedRef.current) {
+          methods.reset({ ...defaultValues, ...draft } as any);
+          setIsDraftLoaded(true);
+        }
+      } catch (error) {
+        logError('Failed to load initial draft from secure storage', error);
+      }
+    };
+
+    loadInitialDraft();
+  }, [enableDraftPersistence, storageKey, encryptDrafts, methods, defaultValues, isDraftLoaded]);
 
   /**
    * Effect: Cleanup on unmount

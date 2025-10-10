@@ -52,7 +52,15 @@ interface EnvelopeBudgetingProps {
 }
 
 function EnvelopeBudgeting({ budgets, transactions, income, refreshData }: EnvelopeBudgetingProps) {
-    const [envelopes, setEnvelopes] = useLocalStorage<Record<string, number>>('envelope-allocations', {});
+    const [envelopes, setEnvelopes] = useLocalStorage<Record<string, number>>(
+        'envelope-allocations',
+        {},
+        {
+            encrypt: true,
+            namespace: 'budgeting',
+            expiresIn: 1000 * 60 * 60 * 24, // 24 hours
+        }
+    );
     const [isOptimizing, setIsOptimizing] = useState(false);
     const [optimizationSuggestion, setOptimizationSuggestion] = useState('');
     const { toast } = useToast();
@@ -148,13 +156,13 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }: Envel
      * Handle allocation with validation
      * Prevents negative values, very large numbers, and invalid input
      */
-    const handleAllocate = useCallback((category: string, amount: number) => {
+    const handleAllocate = useCallback(async (category: string, amount: number) => {
         // Parse and validate the input
         const parsedAmount = parseFloat(amount as any);
         
         // Empty input - allow it (represents 0)
         if (amount === '' || amount === null || amount === undefined) {
-            setEnvelopes(prev => ({
+            await setEnvelopes(prev => ({
                 ...prev,
                 [category]: 0
             }));
@@ -195,13 +203,13 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }: Envel
         // Round to 2 decimal places for currency
         const roundedAmount = Math.round(parsedAmount * 100) / 100;
         
-        setEnvelopes(prev => ({
+        await setEnvelopes(prev => ({
             ...prev,
             [category]: roundedAmount
         }));
     }, [setEnvelopes, toast]);
 
-    const autoAllocate = useCallback(() => {
+    const autoAllocate = useCallback(async () => {
         if (!income || income <= 0) {
             toast({
                 title: "Income Required",
@@ -260,7 +268,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }: Envel
             }
         }
     
-        setEnvelopes(newEnvelopes);
+        await setEnvelopes(newEnvelopes);
         toast({
             title: "Auto-allocated",
             description: "Budget allocations have been adjusted.",

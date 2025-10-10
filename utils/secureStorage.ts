@@ -122,9 +122,10 @@ const ENCRYPTION_KEY_NAME = 'app-encryption-key';
  * @internal
  */
 function isCryptoAvailable(): boolean {
-  return typeof window !== 'undefined' && 
-         window.crypto && 
-         window.crypto.subtle;
+  if (typeof window === 'undefined') return false;
+  if (!window.crypto) return false;
+  if (!window.crypto.subtle) return false;
+  return true;
 }
 
 /**
@@ -266,7 +267,7 @@ function buildKey(key: string, namespace?: string): string {
  * @public
  */
 export class SecureStorage {
-  private namespace?: string;
+  private _namespace?: string;
   
   /**
    * Create a new SecureStorage instance
@@ -274,7 +275,7 @@ export class SecureStorage {
    * @param namespace - Optional namespace for key isolation
    */
   constructor(namespace?: string) {
-    this.namespace = namespace;
+    this._namespace = namespace;
   }
   
   /**
@@ -304,7 +305,7 @@ export class SecureStorage {
    */
   async set(key: string, value: any, options: SecureStorageOptions = {}): Promise<void> {
     try {
-      const fullKey = buildKey(key, options.namespace || this.namespace);
+      const fullKey = buildKey(key, options.namespace || this._namespace);
       
       let dataToStore = value;
       let encrypted = false;
@@ -370,7 +371,7 @@ export class SecureStorage {
    */
   async get<T = any>(key: string, options: Pick<SecureStorageOptions, 'namespace'> = {}): Promise<T | null> {
     try {
-      const fullKey = buildKey(key, options.namespace || this.namespace);
+      const fullKey = buildKey(key, options.namespace || this._namespace);
       const stored = localStorage.getItem(fullKey);
       
       if (!stored) return null;
@@ -418,7 +419,7 @@ export class SecureStorage {
    */
   remove(key: string, options: Pick<SecureStorageOptions, 'namespace'> = {}): void {
     try {
-      const fullKey = buildKey(key, options.namespace || this.namespace);
+      const fullKey = buildKey(key, options.namespace || this._namespace);
       localStorage.removeItem(fullKey);
       logDebug(`Removed ${fullKey}`);
     } catch (error) {
@@ -470,7 +471,7 @@ export class SecureStorage {
    */
   clear(options: Pick<SecureStorageOptions, 'namespace'> = {}): void {
     try {
-      const namespace = options.namespace || this.namespace;
+      const namespace = options.namespace || this._namespace;
       
       if (namespace) {
         // Clear only namespaced keys
@@ -506,7 +507,7 @@ export class SecureStorage {
    */
   keys(options: Pick<SecureStorageOptions, 'namespace'> = {}): string[] {
     try {
-      const namespace = options.namespace || this.namespace;
+      const namespace = options.namespace || this._namespace;
       const allKeys: string[] = [];
       
       for (let i = 0; i < localStorage.length; i++) {
@@ -537,7 +538,7 @@ export class SecureStorage {
    * Creates a new SecureStorage instance with a namespace prefix.
    * Useful for isolating data by user, session, or feature.
    * 
-   * @param namespace - Namespace prefix
+   * @param ns - Namespace prefix
    * @returns New SecureStorage instance with namespace
    * 
    * @example
@@ -551,8 +552,8 @@ export class SecureStorage {
    * 
    * @public
    */
-  namespace(namespace: string): SecureStorage {
-    return new SecureStorage(namespace);
+  namespace(ns: string): SecureStorage {
+    return new SecureStorage(ns);
   }
   
   /**
@@ -578,7 +579,7 @@ export class SecureStorage {
       
       for (const key of keys) {
         try {
-          const fullKey = buildKey(key, this.namespace);
+          const fullKey = buildKey(key, this._namespace);
           const stored = localStorage.getItem(fullKey);
           
           if (stored) {
@@ -649,10 +650,3 @@ if (typeof window !== 'undefined') {
     });
   }, 5 * 60 * 1000);
 }
-
-/**
- * Export types
- * 
- * @public
- */
-export type { SecureStorageOptions };

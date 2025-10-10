@@ -15,6 +15,7 @@ import { Checkbox } from '@/ui/checkbox';
 import { useToast } from '@/ui/use-toast';
 import { Loader2, DollarSign, Mail, Lock, Eye, EyeOff, User, CheckCircle, XCircle } from 'lucide-react';
 import { logError, logInfo } from '@/utils/logger.js';
+import { saveAuthTokens, saveUserData } from '@/utils/authStorage';
 
 export default function Signup() {
     const [formData, setFormData] = useState({
@@ -102,10 +103,19 @@ export default function Signup() {
         try {
             logInfo('New user signup attempt', { email: formData.email });
             await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            localStorage.setItem('auth_token', 'mock-jwt-token-' + Date.now());
-            localStorage.setItem('user_email', formData.email);
-            localStorage.setItem('user_name', formData.fullName);
+
+            const mockAccessToken = `mock-jwt-token-${Date.now()}`;
+
+            await saveAuthTokens({
+                accessToken: mockAccessToken,
+                expiresIn: 3600000,
+            });
+
+            await saveUserData({
+                id: `user-${formData.email}`,
+                email: formData.email,
+                name: formData.fullName,
+            });
             
             toast({
                 title: 'Welcome to Financial $hift!',
