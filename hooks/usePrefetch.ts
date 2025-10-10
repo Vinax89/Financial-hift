@@ -164,6 +164,12 @@ export function useIdlePrefetch(): void {
   const location = useLocation();
 
   useEffect(() => {
+    // DISABLED: This automatic prefetching was causing "Invalid hook call" errors
+    // because it tried to call usePrefetchRoute inside requestIdleCallback callback.
+    // TODO: Refactor this to properly prefetch without violating Rules of Hooks
+    // The hook can still be used manually via usePrefetchRoute() in components.
+    
+    /* ORIGINAL CODE - DISABLED
     // Only prefetch if browser supports requestIdleCallback
     if (typeof window === 'undefined' || !('requestIdleCallback' in window)) {
       return;
@@ -201,6 +207,7 @@ export function useIdlePrefetch(): void {
     const timeoutId = setTimeout(prefetchNextRoutes, 1000);
 
     return () => clearTimeout(timeoutId);
+    */
   }, [location.pathname, queryClient]);
 }
 

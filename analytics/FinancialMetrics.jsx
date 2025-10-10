@@ -1,12 +1,12 @@
-﻿/**
+/**
  * @fileoverview Financial metrics dashboard cards
  * @description Displays key financial health indicators including income, spending,
  * savings rate, debt-to-income ratio, goals progress, and emergency fund status
  */
 
 import React, { useMemo, memo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
-import { Skeleton } from '@/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card.jsx';
+import { Skeleton } from '@/ui/skeleton.jsx';
 import { DollarSign, Percent, TrendingUp, TrendingDown, PiggyBank, CreditCard } from 'lucide-react';
 
 /**

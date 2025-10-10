@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @fileoverview Weekly income chart displaying gross and net pay from shifts
  * @description Bar chart showing last 8 weeks of income with gradient fills
  */
