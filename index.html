@@ -116,7 +116,7 @@
     <script type="module" src="/main.tsx"></script>
     
     <!-- Service Worker Registration (Progressive Web App) -->
-    <script>
+    <script type="module">
       // Register service worker for caching and offline support
       if ('serviceWorker' in navigator && import.meta.env.PROD) {
         window.addEventListener('load', () => {
