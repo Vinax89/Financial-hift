@@ -1,6 +1,6 @@
-﻿/**
+/**
  * @fileoverview Tests for storage migration utility
- * @description Validates migration logic for plaintext  encrypted storage
+ * @description Validates migration logic for plaintext → encrypted storage
  */
 
 import { describe, test, expect, beforeEach, vi } from 'vitest';

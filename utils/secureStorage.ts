@@ -121,7 +121,12 @@ const ENCRYPTION_KEY_NAME = 'app-encryption-key';
  * 
  * @internal
  */
-function isCryptoAvailable(): boolean { if (typeof window === "undefined") return false; if (!window.crypto) return false; if (!window.crypto.subtle) return false; return true; }
+function isCryptoAvailable(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (!window.crypto) return false;
+  if (!window.crypto.subtle) return false;
+  return true;
+}
 
 /**
  * Generate or retrieve encryption key
@@ -533,7 +538,7 @@ export class SecureStorage {
    * Creates a new SecureStorage instance with a namespace prefix.
    * Useful for isolating data by user, session, or feature.
    * 
-   * @param namespace - Namespace prefix
+   * @param ns - Namespace prefix
    * @returns New SecureStorage instance with namespace
    * 
    * @example
@@ -547,8 +552,8 @@ export class SecureStorage {
    * 
    * @public
    */
-  namespace(namespace: string): SecureStorage {
-    return new SecureStorage(namespace);
+  namespace(ns: string): SecureStorage {
+    return new SecureStorage(ns);
   }
   
   /**
@@ -645,10 +650,3 @@ if (typeof window !== 'undefined') {
     });
   }, 5 * 60 * 1000);
 }
-
-/**
- * Export types
- * 
- * @public
- */
-

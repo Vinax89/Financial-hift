@@ -30,7 +30,11 @@ const PaycheckProjector = ({ shifts, recentTransactions, onClose }) => {
         overtime_threshold: 40,
         overtime_multiplier: 1.5,
         tax_settings: { filing_status: 'single', state: 'CA' }
-    }]);
+    }], {
+        encrypt: true,
+        namespace: 'paycheck-projector',
+        expiresIn: 1000 * 60 * 60 * 24,
+    });
 
     const [extraHours, setExtraHours] = useState(0);
     const [projectedShifts, setProjectedShifts] = useState(2);

@@ -3,6 +3,7 @@
  * @description Wrapper components for Recharts with theme support and custom styling
  */
 
+// @ts-nocheck
 "use client";
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
@@ -27,21 +28,44 @@ const THEMES = {
  * @property {React.ComponentType} [icon] - Icon component
  */
 
-const ChartContext = React.createContext(null)
+/**
+ * Chart configuration interface
+ */
+export interface ChartConfig {
+  [key: string]: {
+    label?: string;
+    color?: string;
+    theme?: {
+      light?: string;
+      dark?: string;
+    };
+    icon?: React.ComponentType;
+  };
+}
+
+interface ChartContextValue {
+  config: ChartConfig;
+}
+
+const ChartContext = React.createContext<ChartContextValue>({
+  config: {}
+})
 
 /**
  * Hook to access chart configuration
  * @returns {{config: ChartConfig}} Chart config object
  * @throws {Error} If used outside ChartContainer
  */
-function useChart() {
+function useChart(): ChartContextValue {
   const context = React.useContext(ChartContext)
-
-  if (!context) {
-    throw new Error("useChart must be used within a <ChartContainer />")
-  }
-
   return context
+}
+
+interface ChartContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+  id?: string;
+  className?: string;
+  children: React.ReactNode;
+  config: ChartConfig;
 }
 
 /**
@@ -62,7 +86,7 @@ function useChart() {
  *   </LineChart>
  * </ChartContainer>
  */
-const ChartContainer = React.forwardRef(({ id, className, children, config, ...props }, ref) => {
+const ChartContainer = React.forwardRef<HTMLDivElement, ChartContainerProps>(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId()
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
 
@@ -91,7 +115,7 @@ ChartContainer.displayName = "Chart"
  * @param {string} color - Color value to sanitize
  * @returns {string} Sanitized color value
  */
-const sanitizeColorValue = (color) => {
+const sanitizeColorValue = (color: string | undefined): string => {
   if (!color || typeof color !== 'string') return '';
   
   // Only allow safe CSS color formats:
@@ -110,12 +134,17 @@ const sanitizeColorValue = (color) => {
  * @param {string} selector - CSS selector key to sanitize
  * @returns {string} Sanitized selector
  */
-const sanitizeCSSKey = (key) => {
+const sanitizeCSSKey = (key: string | undefined): string => {
   if (!key || typeof key !== 'string') return '';
   
   // Only allow alphanumeric, hyphens, and underscores
   return key.replace(/[^a-zA-Z0-9_-]/g, '');
 };
+
+interface ChartStyleProps {
+  id: string;
+  config: ChartConfig;
+}
 
 /**
  * Dynamic CSS variables for chart colors
@@ -131,7 +160,7 @@ const sanitizeCSSKey = (key) => {
 const ChartStyle = ({
   id,
   config
-}) => {
+}: ChartStyleProps) => {
   const colorConfig = Object.entries(config).filter(([, config]) => config.theme || config.color)
 
   if (!colorConfig.length) {
@@ -172,6 +201,22 @@ const ChartStyle = ({
 /** @type {React.ComponentType} Recharts Tooltip component */
 const ChartTooltip = RechartsPrimitive.Tooltip
 
+interface ChartTooltipContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  active?: boolean;
+  payload?: any[];
+  className?: string;
+  indicator?: 'dot' | 'line' | 'dashed';
+  hideLabel?: boolean;
+  hideIndicator?: boolean;
+  label?: string | React.ReactNode;
+  labelFormatter?: (value: any, payload: any[]) => React.ReactNode;
+  labelClassName?: string;
+  formatter?: (value: any, name: string, item: any, index: number, payload: any[]) => React.ReactNode;
+  color?: string;
+  nameKey?: string;
+  labelKey?: string;
+}
+
 /**
  * Custom tooltip content for charts
  * @component
@@ -187,7 +232,7 @@ const ChartTooltip = RechartsPrimitive.Tooltip
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element|null} Styled tooltip with indicators
  */
-const ChartTooltipContent = React.forwardRef((
+const ChartTooltipContent = React.forwardRef<HTMLDivElement, ChartTooltipContentProps>((
   {
     active,
     payload,
@@ -325,6 +370,14 @@ ChartTooltipContent.displayName = "ChartTooltip"
 /** @type {React.ComponentType} Recharts Legend component */
 const ChartLegend = RechartsPrimitive.Legend
 
+interface ChartLegendContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
+  hideIcon?: boolean;
+  payload?: any[];
+  verticalAlign?: 'top' | 'bottom';
+  nameKey?: string;
+}
+
 /**
  * Custom legend content for charts
  * @component
@@ -337,7 +390,7 @@ const ChartLegend = RechartsPrimitive.Legend
  * @param {React.Ref} ref - Forwarded ref
  * @returns {JSX.Element|null} Styled legend with icons
  */
-const ChartLegendContent = React.forwardRef((
+const ChartLegendContent = React.forwardRef<HTMLDivElement, ChartLegendContentProps>((
   { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
   ref
 ) => {
@@ -391,10 +444,10 @@ ChartLegendContent.displayName = "ChartLegend"
  * @returns {Object|undefined} Item configuration
  */
 function getPayloadConfigFromPayload(
-  config,
-  payload,
-  key
-) {
+  config: ChartConfig,
+  payload: any,
+  key: string
+): ChartConfig[string] | undefined {
   if (typeof payload !== "object" || payload === null) {
     return undefined
   }

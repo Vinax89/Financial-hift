@@ -14,6 +14,7 @@ import { Separator } from '@/ui/separator';
 import { useToast } from '@/ui/use-toast';
 import { Loader2, DollarSign, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { logError, logInfo } from '@/utils/logger.js';
+import { saveAuthTokens, saveUserData } from '@/utils/authStorage';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -43,9 +44,19 @@ export default function Login() {
         try {
             logInfo('User login attempt', { email });
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            localStorage.setItem('auth_token', 'mock-jwt-token-' + Date.now());
-            localStorage.setItem('user_email', email);
+
+            const mockAccessToken = `mock-jwt-token-${Date.now()}`;
+
+            await saveAuthTokens({
+                accessToken: mockAccessToken,
+                expiresIn: 3600000, // 1 hour demo session
+            });
+
+            await saveUserData({
+                id: `user-${email}`,
+                email,
+                name: email?.split('@')?.[0] || email,
+            });
             
             toast({
                 title: 'Welcome back!',

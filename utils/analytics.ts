@@ -26,7 +26,7 @@
  * ```
  */
 
-// Extend Window interface for gtag
+// Extend Window interface for dataLayer
 declare global {
   interface Window {
     dataLayer: any[];
