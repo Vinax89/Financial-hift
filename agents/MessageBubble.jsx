@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from "@/ui/button";
 import { Copy, Zap, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock } from 'lucide-react';
@@ -56,7 +56,7 @@ const FunctionDisplay = ({ toolCall }) => {
                 <span className="text-slate-700">{formattedName}</span>
                 {statusConfig.text && (
                     <span className={cn("text-slate-500", isError && "text-red-600")}>
-                        • {statusConfig.text}
+                        â€¢ {statusConfig.text}
                     </span>
                 )}
                 {!statusConfig.spin && (toolCall.arguments_string || results) && (

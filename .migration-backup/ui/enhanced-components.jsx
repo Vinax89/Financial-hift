@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Theme-aware enhanced components with professional styling
  * @description Component library with theme integration: cards, buttons, progress bars, metrics, glass containers, status indicators
  */
@@ -356,9 +356,9 @@ export function MetricCard({ title, value, subtitle, icon: Icon, trend, classNam
   const { actualTheme } = useTheme();
   
   const trendConfig = {
-    up: { color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-900/20', symbol: '↗' },
-    down: { color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20', symbol: '↘' },
-    neutral: { color: 'text-slate-600', bg: 'bg-slate-50 dark:bg-slate-900/20', symbol: '→' }
+    up: { color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-900/20', symbol: 'â†—' },
+    down: { color: 'text-red-600', bg: 'bg-red-50 dark:bg-red-900/20', symbol: 'â†˜' },
+    neutral: { color: 'text-slate-600', bg: 'bg-slate-50 dark:bg-slate-900/20', symbol: 'â†’' }
   };
 
   if (loading) {

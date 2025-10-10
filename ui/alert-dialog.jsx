@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Alert dialog component for critical user confirmations
  * @description Modal dialog requiring explicit user action, typically for destructive operations.
  * Interrupts user flow and demands attention before proceeding.

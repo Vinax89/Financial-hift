@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Upcoming due items display component
  * @description Shows upcoming bills and debt payments sorted by due date
  */
@@ -15,11 +15,11 @@ import { format } from 'date-fns';
  * @returns {string} Formatted date string (MMM d) or fallback
  */
 const formatDate = (value) => {
-    if (!value) return '—';
+    if (!value) return 'â€”';
     try {
         return format(new Date(value), 'MMM d');
     } catch (error) {
-        return '—';
+        return 'â€”';
     }
 };
 

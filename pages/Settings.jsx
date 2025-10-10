@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { User } from "@/api/entities";
 import { useTheme } from "@/theme/ThemeProvider";
 import { ThemeSelector } from "@/theme/ThemeToggle";
@@ -21,14 +21,14 @@ export default function Settings() {
   const { toast } = useToast();
   const { setTheme } = useTheme();
 
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [saving, setSaving] = React.useState<boolean>(false);
-  const [user, setUser] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [saving, setSaving] = React.useState(false);
+  const [user, setUser] = React.useState(null);
 
   const [currency, setCurrency] = React.useState("USD");
   const [dateFormat, setDateFormat] = React.useState("MM/dd/yyyy");
-  const [privacy, setPrivacy] = React.useState<boolean>(false);
-  const [reducedMotion, setReducedMotion] = React.useState<boolean>(false);
+  const [privacy, setPrivacy] = React.useState(false);
+  const [reducedMotion, setReducedMotion] = React.useState(false);
   const [defaultTab, setDefaultTab] = React.useState("overview");
 
   React.useEffect(() => {
@@ -107,7 +107,7 @@ export default function Settings() {
     return (
       <div className="p-6">
         <Card>
-          <CardContent className="p-8 text-muted-foreground">Loading settings…</CardContent>
+          <CardContent className="p-8 text-muted-foreground">Loading settingsâ€¦</CardContent>
         </Card>
       </div>
     );
@@ -255,7 +255,7 @@ export default function Settings() {
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              This tab will open first on your dashboard. We’ll also remember your last selection.
+              This tab will open first on your dashboard. Weâ€™ll also remember your last selection.
             </p>
           </CardContent>
         </Card>

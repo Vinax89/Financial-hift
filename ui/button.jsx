@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Button component with multiple variants and sizes
  * @description Flexible button component using Radix UI Slot for composition and CVA for variant styling.
  * Supports both button and custom component rendering via asChild prop.

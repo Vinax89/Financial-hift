@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Performance-optimized main dashboard hub
  * @description Enhanced MoneyHub with React.memo optimizations, memoized calculations,
  * and themed components for better performance with large datasets

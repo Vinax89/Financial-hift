@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Debt list component displaying all debt accounts in a table
  * @description Shows debt details including balance, interest rate, minimum payment,
  * and status with edit/delete actions. Uses virtualization for large lists (100+ items).

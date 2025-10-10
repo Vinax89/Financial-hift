@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview ToggleGroup component using Radix UI primitives
  * @description Group of toggle buttons with single or multiple selection (like radio group but with toggle styling)
  */

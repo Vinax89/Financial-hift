@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Route transition loader component
  * @description Displays a loading indicator during route transitions
  * with smooth animations and progress indication

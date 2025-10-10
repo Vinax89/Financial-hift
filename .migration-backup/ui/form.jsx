@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Form components for React Hook Form integration
  * @description Accessible form components with automatic error handling, validation, and ARIA attributes.
  * Wraps React Hook Form with consistent styling and accessibility patterns.

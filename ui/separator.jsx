@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Separator component using Radix UI primitives
  * @description Visual divider line (horizontal or vertical) with accessibility support
  */

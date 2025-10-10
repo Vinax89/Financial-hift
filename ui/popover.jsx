@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Popover component using Radix UI primitives
  * @description Floating content panel triggered by user interaction with portal rendering
  */

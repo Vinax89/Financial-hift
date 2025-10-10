@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Alert component for important messages and notifications
  * @description Styled alert banner with title and description, supports default and destructive variants
  */

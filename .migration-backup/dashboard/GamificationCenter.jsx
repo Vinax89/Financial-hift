@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Gamification progress display center
  * @description Shows user level, XP progress, earned badges, and achievements
  * to encourage continued engagement with financial management tasks

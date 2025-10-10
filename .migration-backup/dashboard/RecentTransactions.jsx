@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Recent transactions display component
  * @description Shows recent transactions with virtualization for performance,
  * category badges, transaction type indicators, and scroll position restoration

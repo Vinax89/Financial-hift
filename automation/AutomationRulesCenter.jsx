@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/ui/card";
 import { Button } from "@/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/select";
@@ -155,7 +155,7 @@ export default function AutomationRulesCenter({ transactions = [] }) {
           <div className="flex flex-wrap gap-2">
             {rules.map(r => (
               <Badge key={r.id} variant={r.enabled ? "secondary" : "outline"} className="capitalize">
-                {r.name} • {r.entity} • {r.condition.field} {r.condition.operator} {String(r.condition.value)}
+                {r.name} â€¢ {r.entity} â€¢ {r.condition.field} {r.condition.operator} {String(r.condition.value)}
               </Badge>
             ))}
           </div>

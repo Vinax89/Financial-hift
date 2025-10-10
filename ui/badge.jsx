@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Badge component for status indicators and labels
  * @description Small styled badge with multiple variants for different semantic meanings
  */

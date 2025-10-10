@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Financial summary cards component
  * @description Displays key financial metrics in a grid of cards with
  * icons, colors, and loading states

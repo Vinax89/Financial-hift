@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Main financial dashboard hub component
  * @description Displays comprehensive overview of user's financial status including
  * income, expenses, goals, bills, and upcoming shifts with real-time calculations

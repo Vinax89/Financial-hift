@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Badge } from '@/ui/badge';
@@ -89,7 +89,7 @@ export default function AIAdvisorPanel({ transactions, debts, goals, metrics }) 
             const remaining = getRemainingRequests();
             setResults(prev => ({ 
                 ...prev, 
-                [serviceId]: `⚠️ **Rate Limit Reached**\n\nYou've reached the limit of 5 AI requests per minute. Please wait ${formatRetryTime(retryAfter)} before trying again.\n\nRemaining requests: ${remaining}/5` 
+                [serviceId]: `âš ï¸ **Rate Limit Reached**\n\nYou've reached the limit of 5 AI requests per minute. Please wait ${formatRetryTime(retryAfter)} before trying again.\n\nRemaining requests: ${remaining}/5` 
             }));
             return;
         }

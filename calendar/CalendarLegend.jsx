@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Calendar legend component displaying event type colors
  * @description Shows color-coded legend for calendar event types
  */

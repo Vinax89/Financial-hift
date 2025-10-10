@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Integration tests for API interactions
  * @description Tests API client methods with mocked responses
  */

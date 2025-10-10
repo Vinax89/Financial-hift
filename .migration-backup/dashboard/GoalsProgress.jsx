@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Goals progress display component
  * @description Shows active savings goals with progress bars, target dates, and amounts
  */

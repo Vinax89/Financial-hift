@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/ui/card';
 import { Badge } from '@/ui/badge';
 import { DollarSign, Clock, ShieldAlert, BadgePercent, Utensils, Zap, CheckCircle, XCircle } from 'lucide-react';

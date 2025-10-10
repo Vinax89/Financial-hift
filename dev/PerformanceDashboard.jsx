@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { getRateLimiterStats } from '@/api/optimizedEntities.js';
@@ -57,7 +57,7 @@ export function PerformanceDashboard() {
     // Component Render Times
     const componentMeasures = performance
       .getEntriesByType('measure')
-      .filter(entry => entry.name.includes('⚛'))
+      .filter(entry => entry.name.includes('âš›'))
       .slice(-10)
       .map(entry => ({
         name: entry.name,
@@ -135,7 +135,7 @@ export function PerformanceDashboard() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
-            Live • Updated {timeSinceUpdate}s ago
+            Live â€¢ Updated {timeSinceUpdate}s ago
           </span>
         ) : (
           'Paused'
@@ -337,7 +337,7 @@ export function PerformanceDashboard() {
 
           <div className="mt-4 text-sm text-muted-foreground">
             <p>
-              ⚡ Good: &lt;8ms • ⚠️ Warning: 8-16ms • 🔴 Slow: &gt;16ms
+              âš¡ Good: &lt;8ms â€¢ âš ï¸ Warning: 8-16ms â€¢ ðŸ”´ Slow: &gt;16ms
             </p>
           </div>
         </Card>
@@ -345,28 +345,28 @@ export function PerformanceDashboard() {
 
       {/* Performance Tips */}
       <Card className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20">
-        <h2 className="text-xl font-semibold mb-4">💡 Performance Tips</h2>
+        <h2 className="text-xl font-semibold mb-4">ðŸ’¡ Performance Tips</h2>
         <ul className="space-y-2 text-sm">
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>
               Rate limiter keeps API calls under control (~120 req/min)
             </span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Request deduplication eliminates duplicate API calls</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Components taking &gt;16ms to render should be optimized</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Keep memory usage below 80% to prevent slowdowns</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Monitor queue length - high values indicate bottlenecks</span>
           </li>
         </ul>

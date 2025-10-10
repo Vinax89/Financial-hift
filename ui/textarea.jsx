@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Textarea component for multi-line text input
  * @description Accessible textarea with consistent styling and ref forwarding for form integration
  */

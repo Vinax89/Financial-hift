@@ -1,1 +1,1 @@
-export { default } from './PrivacyToggle';
+﻿export { default } from './PrivacyToggle';

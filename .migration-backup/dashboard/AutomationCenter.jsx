@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Autonomous agent orchestration center
  * @description Triggers and monitors multi-agent workflows with health checks,
  * chaos mode testing, and real-time activity tracking with markdown results
@@ -320,7 +320,7 @@ function AutomationCenter() {
                             <CardTitle>Recent Agent Activity</CardTitle>
                             <p className="text-sm text-muted-foreground">
                                 Last updated: {new Date(lastRefresh).toLocaleTimeString()}
-                                {chaosMode && ' • Chaos mode may cause instability'}
+                                {chaosMode && ' â€¢ Chaos mode may cause instability'}
                             </p>
                         </div>
                         <Button variant="ghost" size="sm" onClick={loadTasks} disabled={isLoading}>

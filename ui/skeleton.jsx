@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Skeleton loading placeholder component
  * @description Animated pulse skeleton for content loading states
  */

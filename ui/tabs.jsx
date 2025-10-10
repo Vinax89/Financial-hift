@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Tabs component using Radix UI primitives
  * @description Accessible tab navigation with list, triggers, and content panels
  */

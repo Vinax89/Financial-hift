@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Dropdown menu component using Radix UI primitives
  * @description Rich dropdown menu with submenus, checkboxes, radio items, and keyboard navigation
  */

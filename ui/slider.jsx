@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Slider component using Radix UI primitives
  * @description Accessible range slider with track, range indicator, and draggable thumb
  */

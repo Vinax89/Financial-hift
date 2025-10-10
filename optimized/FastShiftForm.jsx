@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+﻿import React, { useState, useCallback, useMemo } from 'react';
 import { Button } from '@/ui/button';
 import { Input } from '@/ui/input';
 import { Label } from '@/ui/label';
@@ -53,7 +53,7 @@ const TagInput = React.memo(({ tags = [], onChange, suggestions = [] }) => {
                             onClick={() => removeTag(tag)}
                             className="ml-1 text-muted-foreground hover:text-destructive"
                         >
-                            ×
+                            Ã—
                         </button>
                     </Badge>
                 ))}

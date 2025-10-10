@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Tests for financial calculations
  * @description Test coverage for income calculations, savings rate, burn rate, etc.
  */

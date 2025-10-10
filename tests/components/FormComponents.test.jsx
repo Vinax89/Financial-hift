@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Tests for Form Components
  * @description Unit tests for FormInput, FormTextarea, FormSelect, etc.
  */
@@ -423,11 +423,11 @@ describe('FormCurrencyInput', () => {
   });
 
   it('supports custom currency symbols', () => {
-    renderWithForm(<FormCurrencyInput name="price" label="Price" currency="€" />, {
+    renderWithForm(<FormCurrencyInput name="price" label="Price" currency="â‚¬" />, {
       schema: testSchema,
     });
 
-    expect(screen.getByText('€')).toBeInTheDocument();
+    expect(screen.getByText('â‚¬')).toBeInTheDocument();
   });
 
   it('validates positive amounts', async () => {

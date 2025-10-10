@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Avatar component using Radix UI primitives
  * @description User avatar with automatic fallback for failed or missing images
  */

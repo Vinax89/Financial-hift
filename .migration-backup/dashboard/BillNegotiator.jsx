@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview AI-powered bill negotiation script generator
  * @description Generates personalized negotiation scripts for lowering bills
  * using LLM integration with markdown formatting

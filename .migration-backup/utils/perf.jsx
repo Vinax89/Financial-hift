@@ -1,4 +1,4 @@
-export function perfEnabled() {
+﻿export function perfEnabled() {
   try {
     if (typeof window === "undefined") return false;
     return window.localStorage.getItem("apex-finance:perf-logs") === "true";

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Advanced loading state components
  * @description Rich loading states for better UX during data fetching and page transitions
  */

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import { ThemedCard, GlassContainer } from '@/ui/enhanced-components';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Tests for useEntityQueries hook
  * @description Comprehensive test coverage for all entity query hooks
  */

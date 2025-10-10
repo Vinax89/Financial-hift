@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Progress bar component using Radix UI primitives
  * @description Accessible progress indicator with smooth transitions
  */

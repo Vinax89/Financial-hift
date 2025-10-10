@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Checkbox component using Radix UI primitives
  * @description Accessible checkbox with checked state indicator and form integration support
  */

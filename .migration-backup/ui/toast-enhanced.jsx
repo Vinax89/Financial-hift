@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Enhanced toast notification hook with rich visual feedback
  * @description Extended toast system with styled variants (success, error, warning, info) and icons
  */
@@ -111,47 +111,47 @@ export function useEnhancedToast() {
 // Toast templates for common actions
 export const ToastTemplates = {
     SAVE_SUCCESS: (itemName = 'Item') => ({
-        title: '✅ Saved successfully',
+        title: 'âœ… Saved successfully',
         description: `Your ${itemName.toLowerCase()} has been saved.`
     }),
     
     DELETE_SUCCESS: (itemName = 'Item') => ({
-        title: '🗑️ Deleted successfully',
+        title: 'ðŸ—‘ï¸ Deleted successfully',
         description: `${itemName} has been removed.`
     }),
     
     UPDATE_SUCCESS: (itemName = 'Item') => ({
-        title: '✨ Updated successfully', 
+        title: 'âœ¨ Updated successfully', 
         description: `Your ${itemName.toLowerCase()} has been updated.`
     }),
     
     GENERIC_ERROR: {
-        title: '❌ Something went wrong',
+        title: 'âŒ Something went wrong',
         description: 'Please try again in a moment.'
     },
     
     NETWORK_ERROR: {
-        title: '📡 Connection error',
+        title: 'ðŸ“¡ Connection error',
         description: 'Please check your internet connection.'
     },
     
     VALIDATION_ERROR: (field) => ({
-        title: '⚠️ Invalid input',
+        title: 'âš ï¸ Invalid input',
         description: `Please check your ${field} and try again.`
     }),
 
     LEVEL_UP: (level) => ({
-        title: '🎉 Level up!',
+        title: 'ðŸŽ‰ Level up!',
         description: `Congratulations! You've reached level ${level}!`
     }),
 
     BADGE_EARNED: (badgeName) => ({
-        title: '🏆 Badge unlocked!',
+        title: 'ðŸ† Badge unlocked!',
         description: `You've earned the "${badgeName}" badge!`
     }),
 
     GOAL_REACHED: (goalName) => ({
-        title: '🎯 Goal achieved!',
+        title: 'ðŸŽ¯ Goal achieved!',
         description: `Congratulations on reaching your "${goalName}" goal!`
     })
 };

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Shift statistics component showing weekly and monthly totals
  * @description Displays hours and pay statistics for current week and month
  */

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Shift list component displaying shifts in a virtualized table
  * @description Shows shift details including date, duration, and pay with edit/delete actions
  */

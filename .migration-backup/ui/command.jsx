@@ -1,6 +1,6 @@
-/**
+﻿/**
  * @fileoverview Command palette component using cmdk
- * @description Searchable command menu with keyboard navigation (⌘K style)
+ * @description Searchable command menu with keyboard navigation (âŒ˜K style)
  */
 
 import * as React from "react"
@@ -34,7 +34,7 @@ Command.displayName = CommandPrimitive.displayName
  * @component
  * @param {Object} props - Component props
  * @param {React.ReactNode} props.children - Command content
- * @returns {JSX.Element} Command palette in dialog (⌘K style)
+ * @returns {JSX.Element} Command palette in dialog (âŒ˜K style)
  */
 const CommandDialog = ({
   children,
@@ -163,7 +163,7 @@ CommandItem.displayName = CommandPrimitive.Item.displayName
  * @component
  * @param {Object} props - Component props
  * @param {string} [props.className] - Additional CSS classes
- * @returns {JSX.Element} Shortcut text (e.g., "⌘K")
+ * @returns {JSX.Element} Shortcut text (e.g., "âŒ˜K")
  */
 const CommandShortcut = ({
   className,

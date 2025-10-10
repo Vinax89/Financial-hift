@@ -1,4 +1,4 @@
-
+﻿
 import React, { Suspense } from "react";
 import { GlassContainer } from "@/ui/enhanced-components";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
@@ -57,7 +57,7 @@ export default function Diagnostics() {
 
           <TabsContent value="stress" className="space-y-6">
             <GlassContainer intensity="light" className="p-0 border-none bg-transparent">
-              <Suspense fallback={<div className="p-8 text-sm text-muted-foreground">Loading tester…</div>}>
+              <Suspense fallback={<div className="p-8 text-sm text-muted-foreground">Loading testerâ€¦</div>}>
                 <StressTesterLazy />
               </Suspense>
             </GlassContainer>

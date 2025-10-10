@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Investment portfolio tracker and manager
  * @description Manages investment portfolio with CRUD operations, tracks gains/losses,
  * calculates total value and performance metrics across all accounts

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Integration tests for form flows
  * @description Tests complete user workflows with forms
  */

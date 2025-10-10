@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Professional loading components with multiple variants
  * @description Loading spinners, skeletons, progress bars, and loading wrappers with theme support
  */

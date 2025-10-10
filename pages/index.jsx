@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Application routing with optimized code splitting
  * @description Uses lazy loading with retry logic and intelligent prefetching
  */
@@ -111,7 +111,7 @@ function PagesContent() {
     const location = useLocation();
     const currentPage = _getCurrentPage(location.pathname);
     
-    // ✅ Intelligent idle-time prefetching (now inside Router context)
+    // âœ… Intelligent idle-time prefetching (now inside Router context)
     useIdlePrefetch();
 
     // Public routes (no auth required)

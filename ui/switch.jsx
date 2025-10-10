@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Toggle switch component using Radix UI primitives
  * @description Accessible on/off switch with smooth animations and form integration
  */

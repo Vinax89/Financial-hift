@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Transaction creation and editing form
  * @description Full-featured form with validation, sanitization, animations,
  * and dynamic category selection based on transaction type
@@ -193,8 +193,8 @@ function TransactionForm({ transaction, onSubmit, onCancel }) {
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="income">💰 Income</SelectItem>
-                                <SelectItem value="expense">💸 Expense</SelectItem>
+                                <SelectItem value="income">ðŸ’° Income</SelectItem>
+                                <SelectItem value="expense">ðŸ’¸ Expense</SelectItem>
                             </SelectContent>
                         </Select>
                         {errors.type && (

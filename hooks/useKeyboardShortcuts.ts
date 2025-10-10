@@ -123,7 +123,6 @@ export function useKeyboardShortcutsHelp(): () => void {
     }
   }, []);
 
-import { logDebug } from '@/utils/logger';
 
   return () => {
     if (shortcutsRef.current) {

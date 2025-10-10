@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Button } from '@/ui/button';
 import { Progress } from '@/ui/progress';
@@ -63,7 +63,7 @@ export default function StressTester() {
                 </div>
                 <Progress value={Math.min(100, running ? 50 : iterations > 0 ? 100 : 0)} className="h-2" />
                 <Button onClick={() => setRunning(true)} disabled={running}>
-                    {running ? 'Running…' : 'Run Stress Test'}
+                    {running ? 'Runningâ€¦' : 'Run Stress Test'}
                 </Button>
             </CardContent>
         </Card>

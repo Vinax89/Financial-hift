@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Virtualized transaction list with filtering and actions
  * @description Displays transactions in a performant virtualized list with
  * edit/delete actions, type-based styling, and empty states

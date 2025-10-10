@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Sheet (slide-out panel) component using Radix UI Dialog primitives
  * @description Sliding panel overlay that can appear from any side of the screen.
  * Commonly used for navigation menus, filters, or detailed views.

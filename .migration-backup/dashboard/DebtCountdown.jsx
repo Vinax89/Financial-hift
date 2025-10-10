@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Debt payoff countdown and scenario planner
  * @description Shows debt freedom timeline with different payment scenarios
  * using avalanche method (highest APR first) and calculates interest savings

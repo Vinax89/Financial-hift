@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Net worth tracking and visualization component
  * @description Displays total net worth with historical trends, asset breakdown,
  * and interactive charts for investments, savings, and liabilities

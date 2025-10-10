@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Table components for data display
  * @description Semantic HTML table components with consistent styling and responsive overflow handling
  */

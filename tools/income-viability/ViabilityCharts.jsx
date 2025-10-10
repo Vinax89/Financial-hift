@@ -1,4 +1,4 @@
-
+﻿
 import React from "react";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 import { Card, CardContent } from "@/ui/card";

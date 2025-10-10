@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Chart components using Recharts library
  * @description Wrapper components for Recharts with theme support and custom styling
  */

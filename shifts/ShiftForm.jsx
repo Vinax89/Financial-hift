@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Shift form component alias
  * @description Re-exports the performance-optimized FastShiftForm component
  * for consistent naming throughout the application

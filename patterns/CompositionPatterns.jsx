@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Component Composition Patterns
  * @description Reusable patterns for building complex UI components
  * Phase B - Task B4: Advanced composition techniques and best practices

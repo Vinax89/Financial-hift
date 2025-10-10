@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Dialog modal component using Radix UI primitives
  * @description Accessible modal dialog with overlay, header, content, and footer sections
  */

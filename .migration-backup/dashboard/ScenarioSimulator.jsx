@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Investment scenario simulator with growth projections
  * @description Calculates future investment value with different growth rates
  * (conservative/moderate/aggressive) over a specified time horizon

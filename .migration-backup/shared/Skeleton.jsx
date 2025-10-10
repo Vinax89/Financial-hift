@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Loading skeleton components for better perceived performance
  * @description Provides animated placeholder components to display while content loads
  */

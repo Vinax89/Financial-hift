@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { User } from '@/api/entities';
 import { ErrorMessage } from '@/shared/ErrorMessage';
 import { ContentSkeleton } from '@/shared/SkeletonLoaders';

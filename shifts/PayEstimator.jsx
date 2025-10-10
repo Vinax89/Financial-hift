@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Pay estimator component for calculating shift earnings
  * @description Interactive calculator for estimating gross and net pay with differentials and premiums
  */

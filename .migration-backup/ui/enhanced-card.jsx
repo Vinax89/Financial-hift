@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Enhanced card components with advanced styling and interactions
  * @description Card extensions with status indicators, trends, actions, and multiple variants (stats, features)
  */

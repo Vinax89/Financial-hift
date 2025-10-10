@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Tests for Loading Components
  * @description Unit tests for PulseLoader, SkeletonLoader, ProgressBar, SpinnerLoader
  */

@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import { logInfo } from '@/utils/logger.js';
 import ReceiptScanner from '@/scanning/ReceiptScanner';
@@ -93,10 +93,10 @@ export default function ScannerPage() {
                                 <CardContent className="p-6 space-y-3">
                                     <h3 className="font-semibold">Supported Formats</h3>
                                     <div className="space-y-2 text-sm text-muted-foreground">
-                                        <p>📱 Mobile Camera Capture</p>
-                                        <p>🖼️ JPEG, PNG, WebP Images</p>
-                                        <p>📄 PDF Documents</p>
-                                        <p>📊 Up to 10MB file size</p>
+                                        <p>ðŸ“± Mobile Camera Capture</p>
+                                        <p>ðŸ–¼ï¸ JPEG, PNG, WebP Images</p>
+                                        <p>ðŸ“„ PDF Documents</p>
+                                        <p>ðŸ“Š Up to 10MB file size</p>
                                     </div>
                                 </CardContent>
                             </ThemedCard>

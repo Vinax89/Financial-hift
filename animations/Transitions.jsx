@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Smooth Animations & Transitions with Framer Motion
  * @description Enhanced animation components for Financial $hift
  * Phase B - Task B2: Advanced animations with spring physics and micro-interactions

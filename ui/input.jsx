@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Styled input component with form integration support
  * @description Accessible input field with consistent styling, ref forwarding for form libraries
  */

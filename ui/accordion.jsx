@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Accordion component using Radix UI primitives
  * @description Collapsible accordion with animated expand/collapse transitions
  */

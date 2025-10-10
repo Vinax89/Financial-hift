@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Badge } from '@/ui/badge';
 import { ScrollArea } from '@/ui/scroll-area';
@@ -53,7 +53,7 @@ export default function NetworkMonitor() {
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <p className="text-muted-foreground">Downlink</p>
-                        <p className="font-semibold">{state.downlink ? `${state.downlink.toFixed(1)} Mbps` : '—'}</p>
+                        <p className="font-semibold">{state.downlink ? `${state.downlink.toFixed(1)} Mbps` : 'â€”'}</p>
                     </div>
                     <div>
                         <p className="text-muted-foreground">Connection</p>
@@ -65,7 +65,7 @@ export default function NetworkMonitor() {
                     <ScrollArea className="h-32 rounded border">
                         <div className="p-3 space-y-2">
                             {events.length === 0 ? (
-                                <p className="text-muted-foreground text-xs">Waiting for changes…</p>
+                                <p className="text-muted-foreground text-xs">Waiting for changesâ€¦</p>
                             ) : (
                                 events.map((event) => (
                                     <div key={event.timestamp} className="flex items-center justify-between text-xs">

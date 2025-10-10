@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Shift calendar component displaying monthly shift schedule
  * @description Calendar grid view showing shifts by day with click-to-edit functionality
  */

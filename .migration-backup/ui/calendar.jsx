@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Calendar component using react-day-picker
  * @description Date picker calendar with range selection, navigation, and accessibility
  */

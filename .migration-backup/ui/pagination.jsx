@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Pagination component for navigating data pages
  * @description Accessible pagination controls with previous/next and page numbers
  */

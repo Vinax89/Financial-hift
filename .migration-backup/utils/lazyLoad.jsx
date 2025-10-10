@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Lazy loading utility with Suspense wrapper
  * @description Provides utilities for code splitting and lazy loading React components
  * with loading fallbacks and error boundaries

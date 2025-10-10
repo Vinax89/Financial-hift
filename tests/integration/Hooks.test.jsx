@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Integration tests for hooks
  * @description Tests custom hooks with realistic scenarios
  */

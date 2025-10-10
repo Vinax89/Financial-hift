@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Card component with header, title, description, content, and footer subcomponents
  * @description Flexible card container with semantic sections for structured content display
  */

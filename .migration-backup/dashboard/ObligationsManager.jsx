@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Bill obligations manager with urgency tracking
  * @description Manages monthly bills with status indicators (critical/due soon/upcoming),
  * auto-pay tracking, and quick pay actions based on due dates
@@ -169,11 +169,11 @@ function ObligationsManager({ bills, refreshData }) {
                                                 <h4 className="font-medium text-slate-900">{bill.name}</h4>
                                                 <div className="flex items-center gap-4 mt-1 text-sm text-slate-600">
                                                     <span>Due {bill.formattedDueDate}</span>
-                                                    <span>•</span>
+                                                    <span>â€¢</span>
                                                     <span className="capitalize">{bill.category.replace('_', ' ')}</span>
                                                     {bill.auto_pay && (
                                                         <>
-                                                            <span>•</span>
+                                                            <span>â€¢</span>
                                                             <Badge variant="secondary" className="text-xs">Auto Pay</Badge>
                                                         </>
                                                     )}

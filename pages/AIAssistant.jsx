@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import useSubscription from "@/subscription/useSubscription";
 import Paywall from "@/subscription/Paywall";
 import AIAssistantContent from "@/ai/AIAssistantContent";
@@ -7,7 +7,7 @@ export default function AIAssistantPage() {
   const { loading, hasFeature } = useSubscription();
 
   if (loading) {
-    return <div className="p-6 text-sm text-muted-foreground">Checking subscription…</div>;
+    return <div className="p-6 text-sm text-muted-foreground">Checking subscriptionâ€¦</div>;
   }
 
   if (!hasFeature("ai_assistant")) {

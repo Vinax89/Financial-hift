@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Carousel component using Embla Carousel
  * @description Accessible carousel with keyboard navigation, scroll controls, and horizontal/vertical orientation
  */

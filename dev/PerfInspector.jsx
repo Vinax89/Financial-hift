@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Badge } from '@/ui/badge';
 
 const formatMemory = (value) => {
-    if (!value) return '—';
+    if (!value) return 'â€”';
     const mb = value / (1024 * 1024);
     return `${mb.toFixed(1)} MB`;
 };
@@ -50,7 +50,7 @@ export default function PerfInspector() {
                 <CardTitle className="flex items-center gap-2">
                     Performance Inspector
                     <Badge variant={metrics.fps >= 50 ? 'default' : metrics.fps >= 30 ? 'secondary' : 'destructive'}>
-                        {metrics.fps || '—'} FPS
+                        {metrics.fps || 'â€”'} FPS
                     </Badge>
                 </CardTitle>
             </CardHeader>

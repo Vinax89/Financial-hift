@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Paycheck projection calculator for shift workers
  * @description Projects gross/net pay based on shift count, hours, overtime,
  * and tax calculations with comparison to historical averages

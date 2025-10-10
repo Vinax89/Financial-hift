@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Financial reports center with charts and analysis
  * @description Displays income vs expense trends and spending by category
  * using bar charts and pie charts for last 6 months

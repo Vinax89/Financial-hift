@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Select dropdown component using Radix UI primitives
  * @description Accessible select component with customizable styling, portal support, and scroll buttons
  */

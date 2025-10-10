@@ -1,4 +1,4 @@
-
+﻿
 import React, { Suspense } from "react";
 import { useFinancialData } from "@/hooks/useFinancialData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";

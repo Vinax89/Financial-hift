@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Shift import component for CSV file uploads
  * @description Drag-and-drop CSV importer with bulk shift creation
  */

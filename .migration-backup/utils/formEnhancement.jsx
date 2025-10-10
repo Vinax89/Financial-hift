@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Progressive Form Enhancement Utilities
  * 
  * Features:

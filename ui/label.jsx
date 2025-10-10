@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Label component for form fields using Radix UI
  * @description Accessible label with peer state handling for disabled inputs
  */

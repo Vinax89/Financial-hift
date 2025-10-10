@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState } from 'react';
 import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from '@/hooks/useEntityQueries';
 import GoalList from '@/goals/GoalList';
@@ -23,8 +23,8 @@ export default function GoalsPage() {
     const deleteGoal = useDeleteGoal();
     
     const { toast } = useToast();
-    const [showForm, setShowForm] = useState<boolean>(false);
-    const [editingGoal, setEditingGoal] = useState<any>(null);
+    const [showForm, setShowForm] = useState(false);
+    const [editingGoal, setEditingGoal] = useState(null);
 
     const handleFormSubmit = async (data) => {
         try {

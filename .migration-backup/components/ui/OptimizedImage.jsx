@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Optimized image component with lazy loading and blur-up effect
  * @description Provides optimized image loading with progressive enhancement,
  * lazy loading, blur placeholders, and error handling

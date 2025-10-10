@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Debt account creation and editing form with autosave
  * @description Form for managing debt accounts with validation, autosave,
  * and support for balance, interest rate, and minimum payment tracking

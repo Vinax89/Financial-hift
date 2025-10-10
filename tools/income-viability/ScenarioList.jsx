@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { Save, FolderOpen, Trash2 } from "lucide-react";
@@ -32,7 +32,7 @@ export default function ScenarioList({ current, onLoad }) {
     if (!current) return;
     const item = {
       id: Date.now(),
-      name: name || `${current.zipCode} · $${current.grossIncome}`,
+      name: name || `${current.zipCode} Â· $${current.grossIncome}`,
       zipCode: current.zipCode,
       grossIncome: current.grossIncome,
       filingStatus: current.filingStatus,
@@ -65,7 +65,7 @@ export default function ScenarioList({ current, onLoad }) {
             <div key={s.id} className="flex items-center justify-between p-2 rounded-md bg-muted/40">
               <div className="text-sm">
                 <div className="font-medium">{s.name}</div>
-                <div className="text-muted-foreground">{s.zipCode} • ${s.grossIncome} • {s.filingStatus} • {s.year}</div>
+                <div className="text-muted-foreground">{s.zipCode} â€¢ ${s.grossIncome} â€¢ {s.filingStatus} â€¢ {s.year}</div>
               </div>
               <div className="flex gap-2">
                 <Button size="sm" variant="outline" onClick={() => onLoad(s)}>

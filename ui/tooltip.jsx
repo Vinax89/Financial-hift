@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Tooltip component using Radix UI primitives
  * @description Accessible tooltip with portal rendering and smooth animations
  */

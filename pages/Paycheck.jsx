@@ -1,4 +1,4 @@
-
+﻿
 import React from 'react';
 import PaycheckCalculator from '@/paycheck/PaycheckCalculator';
 import { ThemedCard, GlassContainer } from '@/ui/enhanced-components';

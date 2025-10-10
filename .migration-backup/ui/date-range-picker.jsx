@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview Date range picker component
  * @description Date range selector with calendar popover (from/to dates)
  */

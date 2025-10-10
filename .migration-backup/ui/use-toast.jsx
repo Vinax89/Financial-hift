@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @fileoverview useToast hook for provider-less global toast notifications
  * @description Hook that wraps Sonner toast with consistent API (supports variants: success, error, warning)
  */

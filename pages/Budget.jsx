@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState } from 'react';
 import { useBudgets, useTransactions, useCreateBudget, useUpdateBudget, useDeleteBudget } from '@/hooks/useEntityQueries';
 import BudgetOverview from '@/budget/BudgetOverview';
@@ -30,8 +30,8 @@ export default function BudgetPage() {
     // Combined loading state
     const loading = loadingBudgets || loadingTransactions;
     
-    const [showForm, setShowForm] = useState<boolean>(false);
-    const [editingBudget, setEditingBudget] = useState<any>(null);
+    const [showForm, setShowForm] = useState(false);
+    const [editingBudget, setEditingBudget] = useState(null);
 
     const handleFormSubmit = async (data) => {
         try {
