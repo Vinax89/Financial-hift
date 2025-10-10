@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -116,7 +116,7 @@
     <script type="module" src="/main.tsx"></script>
     
     <!-- Service Worker Registration (Progressive Web App) -->
-    <script>
+    <script type="module">
       // Register service worker for caching and offline support
       if ('serviceWorker' in navigator && import.meta.env.PROD) {
         window.addEventListener('load', () => {
@@ -133,7 +133,7 @@
           if (import.meta.env.DEV) {
             const perfData = performance.getEntriesByType('navigation')[0];
             if (perfData) {
-              console.log('⚡ Performance Metrics:', {
+              console.log('âš¡ Performance Metrics:', {
                 'DNS Lookup': `${perfData.domainLookupEnd - perfData.domainLookupStart}ms`,
                 'TCP Connection': `${perfData.connectEnd - perfData.connectStart}ms`,
                 'Request Time': `${perfData.responseStart - perfData.requestStart}ms`,
@@ -149,3 +149,4 @@
     </script>
   </body>
 </html>
+

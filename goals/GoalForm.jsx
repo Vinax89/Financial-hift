@@ -1,0 +1,205 @@
+﻿/**
+ * @fileoverview Goal creation and editing form with autosave
+ * @description Form for managing financial goals with validation, autosave,
+ * and support for target amounts, deadlines, and status tracking
+ */
+
+import React, { useEffect, useState, memo } from 'react';
+import { Input } from '@/ui/input';
+import { Label } from '@/ui/label';
+import { Textarea } from '@/ui/textarea';
+import { Button } from '@/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
+import { Save, Check } from 'lucide-react';
+import { format } from 'date-fns';
+import { useAutosave } from '@/utils/formEnhancement';
+
+/**
+ * Default goal form state
+ * @constant {Object}
+ */
+const defaultGoal = {
+    title: '',
+    description: '',
+    target_amount: '',
+    current_amount: '',
+    deadline: '',
+    status: 'active'
+};
+
+/**
+ * Safely coerce value to number
+ * @param {*} value - Value to convert
+ * @returns {number} Parsed number or 0
+ */
+const coerceNumber = (value) => {
+    const parsed = parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+};
+
+/**
+ * Goal Form Component
+ * @component
+ * @param {Object} props
+ * @param {Object} [props.goal] - Existing goal to edit (null for new)
+ * @param {Function} props.onSubmit - Form submission handler
+ * @param {Function} props.onCancel - Cancel handler
+ * @returns {JSX.Element}
+ */
+function GoalForm({ goal, onSubmit, onCancel }) {
+    const [formState, setFormState] = useState(defaultGoal);
+
+    useEffect(() => {
+        if (goal) {
+            let formattedDeadline = '';
+            if (goal.deadline) {
+                try {
+                    const date = new Date(goal.deadline);
+                    if (!isNaN(date.getTime())) {
+                        formattedDeadline = format(date, 'yyyy-MM-dd');
+                    }
+                } catch (error) {
+                    // Invalid date, leave empty
+                }
+            }
+            setFormState({
+                title: goal.title || '',
+                description: goal.description || '',
+                target_amount: goal.target_amount ?? '',
+                current_amount: goal.current_amount ?? '',
+                deadline: formattedDeadline,
+                status: goal.status || 'active'
+            });
+        } else {
+            setFormState(defaultGoal);
+        }
+    }, [goal]);
+
+    const handleChange = (field) => (event) => {
+        const value = event?.target ? event.target.value : event;
+        setFormState((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const handleSave = () => {
+        if (formState.title && formState.target_amount) {
+            onSubmit?.({
+                title: formState.title.trim(),
+                description: formState.description.trim(),
+                target_amount: coerceNumber(formState.target_amount),
+                current_amount: coerceNumber(formState.current_amount),
+                deadline: formState.deadline ? new Date(formState.deadline).toISOString() : null,
+                status: formState.status
+            });
+        }
+    };
+
+    const { isSaving, lastSaved } = useAutosave(handleSave, {
+        delay: 3000,
+        enabled: goal !== null && goal !== undefined,
+    });
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        handleSave();
+    };
+
+    return (
+        <form className="space-y-4" onSubmit={handleSubmit}>
+            <div className="grid gap-2">
+                <Label htmlFor="goal-title">Title</Label>
+                <Input
+                    id="goal-title"
+                    value={formState.title}
+                    onChange={handleChange('title')}
+                    placeholder="Build an emergency fund"
+                    required
+                />
+            </div>
+            <div className="grid gap-2">
+                <Label htmlFor="goal-description">Description</Label>
+                <Textarea
+                    id="goal-description"
+                    value={formState.description}
+                    onChange={handleChange('description')}
+                    placeholder="Add context or milestones to stay on track"
+                    rows={3}
+                />
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                    <Label htmlFor="goal-target">Target Amount</Label>
+                    <Input
+                        id="goal-target"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={formState.target_amount}
+                        onChange={handleChange('target_amount')}
+                        placeholder="5000"
+                        required
+                    />
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="goal-current">Current Amount</Label>
+                    <Input
+                        id="goal-current"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={formState.current_amount}
+                        onChange={handleChange('current_amount')}
+                        placeholder="1500"
+                    />
+                </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                    <Label htmlFor="goal-deadline">Target Date</Label>
+                    <Input
+                        id="goal-deadline"
+                        type="date"
+                        value={formState.deadline}
+                        onChange={handleChange('deadline')}
+                    />
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="goal-status">Status</Label>
+                    <Select value={formState.status} onValueChange={handleChange('status')}>
+                        <SelectTrigger id="goal-status">
+                            <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="active">Active</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="paused">Paused</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    {isSaving && (
+                        <>
+                            <Save className="h-4 w-4 animate-pulse" />
+                            <span>Saving...</span>
+                        </>
+                    )}
+                    {!isSaving && lastSaved && (
+                        <>
+                            <Check className="h-4 w-4 text-green-500" />
+                            <span>Saved {new Date(lastSaved).toLocaleTimeString()}</span>
+                        </>
+                    )}
+                </div>
+                <div className="flex gap-2">
+                    <Button type="button" variant="outline" onClick={() => onCancel?.()}>
+                        Cancel
+                    </Button>
+                    <Button type="submit">{goal ? 'Update Goal' : 'Create Goal'}</Button>
+                </div>
+            </div>
+        </form>
+    );
+}
+
+export default memo(GoalForm);

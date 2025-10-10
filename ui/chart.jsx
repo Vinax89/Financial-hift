@@ -31,20 +31,9 @@ const THEMES = {
 /**
  * Chart configuration interface
  */
-export interface ChartConfig {
-  [key: string]: {
-    label?: string;
-    color?: string;
-    theme?: {
-      light?: string;
-      dark?: string;
-    };
+export ;
     icon?: React.ComponentType;
   };
-}
-
-interface ChartContextValue {
-  config: ChartConfig;
 }
 
 const ChartContext = React.createContext<ChartContextValue>({
@@ -141,11 +130,6 @@ const sanitizeCSSKey = (key: string | undefined): string => {
   return key.replace(/[^a-zA-Z0-9_-]/g, '');
 };
 
-interface ChartStyleProps {
-  id: string;
-  config: ChartConfig;
-}
-
 /**
  * Dynamic CSS variables for chart colors
  * @component
@@ -160,7 +144,7 @@ interface ChartStyleProps {
 const ChartStyle = ({
   id,
   config
-}: ChartStyleProps) => {
+}) => {
   const colorConfig = Object.entries(config).filter(([, config]) => config.theme || config.color)
 
   if (!colorConfig.length) {

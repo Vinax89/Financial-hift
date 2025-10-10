@@ -1,10 +1,10 @@
-/**
+﻿/**
  * @fileoverview Enhanced Link Component with Prefetching
  * @description Drop-in replacement for react-router Link with intelligent prefetching
  */
 
 import { Link as RouterLink } from 'react-router-dom';
-import { usePrefetchOnHover } from '@/hooks/usePrefetch.jsx';
+import { usePrefetchOnHover } from '@/hooks/usePrefetch';
 
 /**
  * Enhanced Link component with hover prefetching
