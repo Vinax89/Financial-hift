@@ -14,6 +14,7 @@ import { Checkbox } from '@/ui/checkbox';
 import { useToast } from '@/ui/use-toast';
 import { Loader2, DollarSign, Mail, Lock, Eye, EyeOff, User, CheckCircle, XCircle } from 'lucide-react';
 import { logError, logInfo } from '@/utils/logger.js';
+import { saveAuthTokens, saveUserData } from '@/utils/authStorage';
 
 export default function Signup() {
     const [formData, setFormData] = useState({
@@ -100,11 +101,28 @@ export default function Signup() {
         
         try {
             logInfo('New user signup attempt', { email: formData.email });
+            
+            // TODO: Replace with actual API call to your backend
+            // Simulate API registration
             await new Promise(resolve => setTimeout(resolve, 1500));
             
-            localStorage.setItem('auth_token', 'mock-jwt-token-' + Date.now());
-            localStorage.setItem('user_email', formData.email);
-            localStorage.setItem('user_name', formData.fullName);
+            // Mock JWT token (in production, this would come from your API)
+            const mockToken = 'mock-jwt-token-' + Date.now();
+            
+            // Save authentication tokens using secure storage
+            await saveAuthTokens({
+                accessToken: mockToken,
+                refreshToken: 'mock-refresh-token-' + Date.now(),
+                expiresIn: 3600000, // 1 hour
+            });
+            
+            // Save user data using secure storage
+            await saveUserData({
+                id: 'mock-user-' + Date.now(),
+                email: formData.email,
+                name: formData.fullName,
+                provider: 'email',
+            });
             
             toast({
                 title: 'Welcome to Financial $hift!',
@@ -112,7 +130,13 @@ export default function Signup() {
             });
             
             logInfo('User signed up successfully', { email: formData.email });
-            navigate('/dashboard', { replace: true });
+            
+            // Small delay to ensure storage is complete, then force reload
+            setTimeout(() => {
+                logInfo('Navigating to dashboard after signup');
+                // Force a full page reload to ensure AuthGuard picks up new auth state
+                window.location.href = '/dashboard';
+            }, 200);
             
         } catch (error) {
             logError('Signup failed', error);
@@ -121,7 +145,6 @@ export default function Signup() {
                 description: error?.message || 'Unable to create account. Please try again.',
                 variant: 'destructive'
             });
-        } finally {
             setIsLoading(false);
         }
     };

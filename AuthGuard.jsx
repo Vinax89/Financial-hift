@@ -101,7 +101,7 @@ export default function AuthGuard({ children }) {
         };
         
         checkAuth();
-    }, [AUTH_ENABLED]);
+    }, [AUTH_ENABLED, location.pathname]); // Re-check auth when route changes
 
     // Show loading state while checking auth
     if (authState.isLoading) {

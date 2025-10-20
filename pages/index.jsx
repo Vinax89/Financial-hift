@@ -47,6 +47,7 @@ const Pricing = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Pricing
 
 // Dev tools (only in development)
 const PerformanceDashboard = React.lazy(() => lazyLoadWithRetry(() => import("@/dev/PerformanceDashboard.jsx")));
+const AuthDebug = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/AuthDebug.jsx")));
 
 // Loading component for page transitions
 const PageLoader = () => <RouteLoader message="Loading page..." />;
@@ -115,24 +116,33 @@ function PagesContent() {
     useIdlePrefetch();
 
     // Public routes (no auth required)
-    const isPublicRoute = ['/login', '/signup', '/forgot-password'].includes(location.pathname);
+    const isPublicRoute = ['/login', '/signup', '/forgot-password', '/auth-debug'].includes(location.pathname);
 
+    // If user visits root and it's not authenticated, show login
+    // If authenticated, Layout's AuthGuard will handle showing protected content
     if (isPublicRoute) {
         return (
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/auth-debug" element={<AuthDebug />} />
+                <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
         );
     }
 
-    // Protected routes (require auth)
+    // Protected routes (require auth) - AuthGuard in Layout will redirect to /login if not authenticated
     return (
         <Layout currentPageName={currentPage}>
             <Suspense fallback={<PageLoader />}>
                 <Routes>
+<<<<<<< HEAD
+                    {/* Default route: Dashboard for authenticated users */}
                     <Route path="/" element={<Dashboard />} />
+=======
+                    <Route path="/" element={<Dashboard />} />
+>>>>>>> 46eca4be5f1c7ad9745878616edc1f3f3316da64
                     {/* Dev tools route (development only) */}
                     {import.meta.env.DEV && (
                         <Route path="/dev/performance" element={<PerformanceDashboard />} />

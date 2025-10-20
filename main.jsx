@@ -8,13 +8,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from '@/App.jsx';
 import '@/index.css';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tantml:@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { initSentry, ErrorBoundary } from '@/utils/sentry.js';
 import { queryClient } from '@/lib/queryClient.js';
 
 // Initialize Sentry for production error tracking
 initSentry();
+
+// Google OAuth Client ID from environment variables
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
 // Render application with Sentry error boundary
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -42,10 +46,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     )}
     showDialog={import.meta.env.PROD}
   >
-    <QueryClientProvider client={queryClient}>
-      <App />
-      {/* React Query DevTools (only visible in development) */}
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+        {/* React Query DevTools (only visible in development) */}
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   </ErrorBoundary>
 ); 
