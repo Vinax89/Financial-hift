@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @fileoverview Application routing with optimized code splitting
  * @description Uses lazy loading with retry logic and intelligent prefetching
  */
@@ -10,9 +10,9 @@ import { useIdlePrefetch } from '@/hooks/usePrefetch';
 import { lazyLoadWithRetry } from '@/utils/lazyLoad';
 import { RouteLoader, SkeletonRouteLoader } from '@/components/ui/RouteLoader';
 
-// Eager load Layout and Transactions (landing page - critical path)
+// Eager load Layout and Dashboard (landing page - critical path)
 import Layout from "@/pages/Layout";
-import Transactions from "@/pages/Transactions";
+import Dashboard from "@/pages/Dashboard";
 
 // Eager load auth pages (no auth guard - shown before app loads)
 import Login from "@/pages/Login";
@@ -20,6 +20,7 @@ import Signup from "@/pages/Signup";
 import ForgotPassword from "@/pages/ForgotPassword";
 
 // Lazy load all other pages with retry logic for better reliability
+const Transactions = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Transactions.jsx")));
 const FileUpload = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/FileUpload.jsx")));
 const BNPL = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/BNPL.jsx")));
 const Shifts = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Shifts.jsx")));
@@ -41,7 +42,6 @@ const AIAssistant = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/AIA
 const Settings = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Settings.jsx")));
 const MoneyManager = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/MoneyManager.jsx")));
 const UnifiedCalendar = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/UnifiedCalendar.jsx")));
-const Dashboard = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Dashboard.jsx")));
 const Diagnostics = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Diagnostics.jsx")));
 const Pricing = React.lazy(() => lazyLoadWithRetry(() => import("@/pages/Pricing.jsx")));
 
@@ -111,7 +111,7 @@ function PagesContent() {
     const location = useLocation();
     const currentPage = _getCurrentPage(location.pathname);
     
-    // âœ… Intelligent idle-time prefetching (now inside Router context)
+    // ✅ Intelligent idle-time prefetching (now inside Router context)
     useIdlePrefetch();
 
     // Public routes (no auth required)
@@ -132,7 +132,7 @@ function PagesContent() {
         <Layout currentPageName={currentPage}>
             <Suspense fallback={<PageLoader />}>
                 <Routes>
-                    <Route path="/" element={<Transactions />} />
+                    <Route path="/" element={<Dashboard />} />
                     {/* Dev tools route (development only) */}
                     {import.meta.env.DEV && (
                         <Route path="/dev/performance" element={<PerformanceDashboard />} />
