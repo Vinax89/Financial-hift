@@ -26,8 +26,8 @@
  * ```
  */
 
-import { secureStorage } from './secureStorage';
-import { logWarn, logError } from './logger';
+import { secureStorage } from './utils/secureStorage';
+import { logWarn, logError } from './utils/logger';
 
 // ============================================================================
 // TYPE DEFINITIONS

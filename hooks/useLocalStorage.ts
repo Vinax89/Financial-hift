@@ -244,7 +244,7 @@ export function useLocalStorage<T>(
       try {
         // Try to load encrypted data first
         const data = await secureStorage.get<T>(storageKey, {
-          decrypt: true,
+          namespace: 'encrypted',
         });
 
         if (data !== null) {
@@ -358,7 +358,7 @@ export function useLocalStorage<T>(
  * const theme = await getLocalStorageValue('theme', 'dark');
  * 
  * @example Encrypted
- * const apiKey = await getLocalStorageValue('apiKey', '', { decrypt: true });
+ * const apiKey = await getLocalStorageValue('apiKey', '', { namespace: 'encrypted' });
  */
 export async function getLocalStorageValue<T>(
   key: string, 
@@ -371,7 +371,7 @@ export async function getLocalStorageValue<T>(
     }
 
     if (options.decrypt) {
-      const value = await secureStorage.get<T>(key, { decrypt: true });
+      const value = await secureStorage.get<T>(key, { namespace: 'encrypted' });
       return value !== null ? value : fallback;
     } else {
       const item = window.localStorage.getItem(key);

@@ -258,7 +258,7 @@ export function useFinancialData(): UseFinancialDataReturn {
           return [key, Array.isArray(snapshot) ? snapshot : []] as const;
         } catch (error) {
           logWarn(`Failed to hydrate ${key} from secure storage`, { error });
-          return [key, []] as const;
+          return [key, []] as [EntityType, any[]];
         }
       })
     );

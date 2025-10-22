@@ -202,7 +202,7 @@ export const useFormWithAutoSave = <T extends FieldValues>({
 
     try {
       const draft = await secureStorage.get<T>(storageKey, {
-        decrypt: encryptDrafts,
+        namespace: encryptDrafts ? 'encrypted' : undefined,
       });
       if (draft) {
         methods.reset(draft);
@@ -342,7 +342,7 @@ export const useFormWithAutoSave = <T extends FieldValues>({
     const loadInitialDraft = async () => {
       try {
         const draft = await secureStorage.get<Partial<T>>(storageKey, {
-          decrypt: encryptDrafts,
+          namespace: encryptDrafts ? 'encrypted' : undefined,
         });
         if (draft && isMountedRef.current) {
           methods.reset({ ...defaultValues, ...draft } as any);
