@@ -14,7 +14,7 @@ import { Check, Crown, Rocket } from "lucide-react";
 import { Plan } from "@/api/entities";
 import { Subscription } from "@/api/entities";
 import { User } from "@/api/entities";
-import useSubscription from "./useSubscription";
+import useSubscription from "./useSubscription.tsx";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 

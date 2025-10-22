@@ -277,7 +277,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }: Envel
 
     return (
         <div className="space-y-6">
-            <ThemedCard className="" elevated className="" className="">
+            <ThemedCard elevated>
                 <CardHeader className="pb-2">
                     <div className="space-y-4">
                         <CardTitle className="text-2xl font-bold flex items-center gap-2">
@@ -378,7 +378,7 @@ function EnvelopeBudgeting({ budgets, transactions, income, refreshData }: Envel
             </ThemedCard>
 
             {(isOptimizing || optimizationSuggestion) && (
-                <ThemedCard className="" glowing className="" className="">
+                <ThemedCard glowing>
                     <CardHeader>
                         <CardTitle className="text-primary flex items-center gap-2">
                             <Brain className="w-5 h-5"/>

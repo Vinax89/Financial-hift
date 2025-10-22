@@ -26,7 +26,7 @@ import { EmptyState } from '../ui/empty-state';
  * @returns {JSX.Element}
  */
 const MetricCard = React.memo(({ title, value, subtitle, icon: Icon, colorClass }) => (
-    <ThemedCard className="" className="" className="" className="">
+    <ThemedCard>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">{title}</CardTitle>
             <Icon className={`h-4 w-4 text-muted-foreground ${colorClass}`} />
@@ -193,7 +193,7 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
             </div>
 
             <div className="grid lg:grid-cols-2 gap-8">
-                <ThemedCard className="" className="" className="" className="">
+                <ThemedCard>
                     <CardHeader><CardTitle className="flex items-center gap-2"><Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />Coming Up Next 7 Days</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
                         <div>
@@ -215,7 +215,7 @@ const OptimizedMoneyHub = ({ transactions, shifts, goals, bills, metrics: extern
                     </CardContent>
                 </ThemedCard>
 
-                <ThemedCard className="" className="" className="" className="">
+                <ThemedCard>
                     <CardHeader><CardTitle className="flex items-center gap-2"><Target className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />Goal Progress</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
                         {topGoals.length > 0 ? (

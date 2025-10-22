@@ -176,16 +176,16 @@ function AutomationCenter() {
 
     const StatusBadge = ({ status }) => {
         const config = {
-            pending: { icon: Loader2, color: 'bg-gray-500', spin: true, text: 'Pending' },
-            running: { icon: Loader2, color: 'bg-blue-500', spin: true, text: 'Running' },
-            completed: { icon: CheckCircle, color: 'bg-green-500', spin: false, text: 'Completed' },
-            failed: { icon: XCircle, color: 'bg-red-500', spin: false, text: 'Failed' },
+            pending: { icon: Loader2, color: 'bg-muted', spin: true, text: 'Pending' },
+            running: { icon: Loader2, color: 'bg-primary', spin: true, text: 'Running' },
+            completed: { icon: CheckCircle, color: 'bg-primary', spin: false, text: 'Completed' },
+            failed: { icon: XCircle, color: 'bg-destructive', spin: false, text: 'Failed' },
         };
         
         const { icon: Icon, color, spin, text } = config[status] || config.pending;
         
         return (
-            <Badge className={`flex items-center gap-1.5 ${color} text-white`}>
+            <Badge className={`flex items-center gap-1.5 ${color} text-primary-foreground`}>
                 <Icon className={`w-3 h-3 ${spin ? 'animate-spin' : ''}`} />
                 <span>{text}</span>
             </Badge>
@@ -245,7 +245,7 @@ function AutomationCenter() {
                             {createdDate.toLocaleString()}
                         </span>
                         {task.completed_at && (
-                            <span className="text-xs text-green-600 dark:text-green-400">
+                            <span className="text-xs text-primary">
                                 Completed {new Date(task.completed_at).toLocaleTimeString()}
                             </span>
                         )}
@@ -299,13 +299,13 @@ function AutomationCenter() {
                             <div className="text-sm text-muted-foreground">Total Tasks</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-2xl font-bold text-green-600">
+                            <div className="text-2xl font-bold text-primary">
                                 {tasks.filter(t => t.status === 'completed').length}
                             </div>
                             <div className="text-sm text-muted-foreground">Completed</div>
                         </div>
                         <div className="text-center">
-                            <div className="text-2xl font-bold text-blue-600">
+                            <div className="text-2xl font-bold text-primary">
                                 {tasks.filter(t => t.status === 'running').length}
                             </div>
                             <div className="text-sm text-muted-foreground">Running</div>

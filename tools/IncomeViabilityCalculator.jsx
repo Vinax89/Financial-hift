@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import useSubscription from "@/subscription/useSubscription";
+import useSubscription from "@/subscription/useSubscription.tsx";
 import Paywall from "@/subscription/Paywall";
 import IncomeViabilityCalculatorInner from "./IncomeViabilityCalculatorInner";
 

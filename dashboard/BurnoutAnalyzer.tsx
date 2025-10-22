@@ -179,19 +179,19 @@ export default function BurnoutAnalyzer({ shifts }) {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="text-center p-3 bg-blue-500/10 rounded-lg">
-                        <div className="text-2xl font-bold text-blue-700 dark:text-blue-300">{burnoutMetrics.avgWeeklyHours}</div>
-                        <p className="text-sm text-blue-600 dark:text-blue-400">Avg Weekly Hours</p>
+                    <div className="text-center p-3 bg-primary/10 rounded-lg">
+                        <div className="text-2xl font-bold text-primary">{burnoutMetrics.avgWeeklyHours}</div>
+                        <p className="text-sm text-muted-foreground">Avg Weekly Hours</p>
                     </div>
-                    <div className="text-center p-3 bg-purple-500/10 rounded-lg">
-                        <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">{burnoutMetrics.totalNightShifts}</div>
-                        <p className="text-sm text-purple-600 dark:text-purple-400">Night Shifts (8 wks)</p>
+                    <div className="text-center p-3 bg-accent/10 rounded-lg">
+                        <div className="text-2xl font-bold text-accent-foreground">{burnoutMetrics.totalNightShifts}</div>
+                        <p className="text-sm text-muted-foreground">Night Shifts (8 wks)</p>
                     </div>
-                    <div className="text-center p-3 bg-emerald-500/10 rounded-lg">
-                        <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">
+                    <div className="text-center p-3 bg-primary/10 rounded-lg">
+                        <div className="text-2xl font-bold text-primary">
                             {Math.max(0, 40 - parseFloat(burnoutMetrics.avgWeeklyHours)).toFixed(1)}
                         </div>
-                        <p className="text-sm text-emerald-600 dark:text-emerald-400">Hours to Standard</p>
+                        <p className="text-sm text-muted-foreground">Hours to Standard</p>
                     </div>
                 </div>
 

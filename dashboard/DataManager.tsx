@@ -163,7 +163,7 @@ function DataManager() {
                     <Download className="w-4 h-4 mr-2" />
                     Export Snapshot
                 </Button>
-                <Button onClick={handleDataCleaning} disabled={isCleaning} className="bg-green-600 hover:bg-green-700 text-white">
+                <Button onClick={handleDataCleaning} disabled={isCleaning}>
                     {isCleaning ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ShieldCheck className="w-4 h-4 mr-2" />}
                     Clean My Data
                 </Button>
