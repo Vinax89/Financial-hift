@@ -6,9 +6,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from '@/App.jsx';
+import App from '@/App.tsx';
 import '@/index.css';
-import { QueryClientProvider } from '@tantml:@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { initSentry, ErrorBoundary } from '@/utils/sentry.js';

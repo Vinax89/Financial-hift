@@ -137,12 +137,8 @@ function PagesContent() {
         <Layout currentPageName={currentPage}>
             <Suspense fallback={<PageLoader />}>
                 <Routes>
-<<<<<<< HEAD
                     {/* Default route: Dashboard for authenticated users */}
                     <Route path="/" element={<Dashboard />} />
-=======
-                    <Route path="/" element={<Dashboard />} />
->>>>>>> 46eca4be5f1c7ad9745878616edc1f3f3316da64
                     {/* Dev tools route (development only) */}
                     {import.meta.env.DEV && (
                         <Route path="/dev/performance" element={<PerformanceDashboard />} />
@@ -165,7 +161,9 @@ function PagesContent() {
             </Suspense>
         </Layout>
     );
-}export default function Pages() {
+}
+
+export default function Pages() {
     return (
         <Router>
             <PagesContent />
