@@ -1,6 +1,5 @@
-// @ts-nocheck
 /**
- * @fileoverview Paycheck projection calculator for shift workers
+ * @fileoverview Paycheck projection calculator for shift workers (TypeScript)
  * @description Projects gross/net pay based on shift count, hours, overtime,
  * and tax calculations with comparison to historical averages
  */
@@ -13,34 +12,105 @@ import { Label } from '@/ui/label';
 import { X, Calculator, Plus, Minus, DollarSign } from 'lucide-react';
 import { formatCurrency, calculateTaxes } from '../utils/calculations';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import type { Shift, Transaction } from '@/types/entities';
+
+/**
+ * Tax settings for paycheck calculation
+ */
+interface TaxSettings {
+    filing_status: string;
+    state: string;
+}
+
+/**
+ * Shift rule configuration
+ */
+interface ShiftRule {
+    name: string;
+    base_hourly_rate: number;
+    overtime_threshold: number;
+    overtime_multiplier: number;
+    tax_settings: TaxSettings;
+}
+
+/**
+ * Tax calculation result
+ */
+interface TaxDetails {
+    net: number;
+    total_tax: number;
+    gross?: number;
+}
+
+/**
+ * Projected pay calculation
+ */
+interface ProjectedPay {
+    gross: number;
+    net: number;
+    taxes: number;
+    regularHours: number;
+    overtimeHours: number;
+    hourlyRate: number;
+}
+
+/**
+ * Historical average data
+ */
+interface HistoricalAverage {
+    avgGross: number;
+    avgNet: number;
+    avgHours: number;
+}
+
+/**
+ * Extended Shift with optional fields
+ */
+interface ExtendedShift extends Shift {
+    actual_hours?: number;
+    scheduled_hours?: number;
+}
+
+/**
+ * Props for PaycheckProjector component
+ */
+interface PaycheckProjectorProps {
+    /** Historical shift data */
+    shifts: ExtendedShift[];
+    /** Recent transaction history */
+    recentTransactions: Transaction[];
+    /** Close modal handler */
+    onClose: () => void;
+}
 
 /**
  * Paycheck Projector Component
+ * 
+ * Projects paychecks with:
+ * - Shift count and hours inputs
+ * - Regular and overtime calculations
+ * - Tax withholding estimates
+ * - Historical average comparison
+ * - Interactive adjustment controls
+ * 
  * @component
- * @param {Object} props
- * @param {Array} props.shifts - Historical shift data
- * @param {Array} props.recentTransactions - Recent transaction history
- * @param {Function} props.onClose - Close modal handler
- * @returns {JSX.Element}
+ * @param {PaycheckProjectorProps} props - Component props
+ * @returns {JSX.Element} Rendered component
  */
-const PaycheckProjector = ({ shifts, recentTransactions, onClose }) => {
-    const [shiftRules] = useLocalStorage('shift-rules', [{
+const PaycheckProjector: React.FC<PaycheckProjectorProps> = ({ shifts, recentTransactions, onClose }) => {
+    const [shiftRules] = useLocalStorage<ShiftRule[]>('shift-rules', [{
         name: 'Default Rule',
         base_hourly_rate: 35,
         overtime_threshold: 40,
         overtime_multiplier: 1.5,
         tax_settings: { filing_status: 'single', state: 'CA' }
-    }], {
-        encrypt: true,
-        namespace: 'paycheck-projector',
-        expiresIn: 1000 * 60 * 60 * 24,
-    });
+    }]);
 
-    const [extraHours, setExtraHours] = useState(0);
-    const [projectedShifts, setProjectedShifts] = useState(2);
-    const [shiftHours, setShiftHours] = useState(8);
+    const [extraHours, setExtraHours] = useState<number>(0);
+    const [projectedShifts, setProjectedShifts] = useState<number>(2);
+    const [shiftHours, setShiftHours] = useState<number>(8);
 
-    const projectedPay = useMemo(() => {
+    const projectedPay = useMemo<ProjectedPay | null>(() => {
         const activeRule = shiftRules[0];
         if (!activeRule) return null;
 
@@ -67,7 +137,7 @@ const PaycheckProjector = ({ shifts, recentTransactions, onClose }) => {
         };
     }, [shiftRules, extraHours, projectedShifts, shiftHours]);
 
-    const historicalAverage = useMemo(() => {
+    const historicalAverage = useMemo<HistoricalAverage | null>(() => {
         const recentShifts = shifts.slice(0, 8);
         if (recentShifts.length === 0) return null;
 
