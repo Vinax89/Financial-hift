@@ -23,6 +23,7 @@
     "generate:hook": "node scripts/generate-component.js --hook",
     "analyze": "node scripts/analyze-bundle.js",
     "check:deps": "node scripts/check-deps.js",
+    "audit:design": "node scripts/audit-design-system.js",
     "perf": "npm run dev",
     "docs": "typedoc",
     "docs:watch": "typedoc --watch",

@@ -1,5 +1,10 @@
 # Financial $hift 💰
 
+[![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue.svg)](https://www.typescriptlang.org/)
+[![Documentation](https://img.shields.io/badge/docs-TypeDoc-green.svg)](https://vinax89.github.io/Financial-hift/)
+[![Tests](https://img.shields.io/badge/tests-Vitest-yellow.svg)](./tests/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
 A comprehensive financial management platform built with React, Vite, and Base44 SDK. Features AI-powered insights, real-time analytics, automated bill payments, debt management, and intelligent budgeting tools.
 
 **🎉 NEW: Complete developer toolkit with code generators, bundle analysis, performance monitoring, and comprehensive documentation!**
