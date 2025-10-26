@@ -18,7 +18,18 @@ import { queryClient } from '@/lib/queryClient.js';
 initSentry();
 
 // Google OAuth Client ID from environment variables
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+// Check for valid client ID (not empty string or undefined)
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim();
+const isGoogleConfigured = GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID.length > 0;
+
+// App content component (wrapped conditionally with GoogleOAuthProvider)
+const AppContent = () => (
+  <QueryClientProvider client={queryClient}>
+    <App />
+    {/* React Query DevTools (only visible in development) */}
+    <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+  </QueryClientProvider>
+);
 
 // Render application with Sentry error boundary
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -46,12 +57,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     )}
     showDialog={import.meta.env.PROD}
   >
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <QueryClientProvider client={queryClient}>
-        <App />
-        {/* React Query DevTools (only visible in development) */}
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </QueryClientProvider>
-    </GoogleOAuthProvider>
+    {/* Only wrap with GoogleOAuthProvider if client ID is properly configured */}
+    {isGoogleConfigured ? (
+      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+        <AppContent />
+      </GoogleOAuthProvider>
+    ) : (
+      <AppContent />
+    )}
   </ErrorBoundary>
 ); 

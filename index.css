@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import design tokens and polish utilities */
+@import './design-tokens.css';
+@import './polish-utilities.css';
+
 /* ========================================
    HARDWARE ACCELERATION & PERFORMANCE
    ======================================== */

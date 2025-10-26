@@ -66,13 +66,8 @@ export default function AuthGuard({ children }) {
                 //     error: null
                 // });
                 
-                // TEMPORARY: Mock auth check
-                logInfo('Checking authentication status');
-                
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
                 // Check authentication using secure encrypted storage
+                logInfo('Checking authentication status');
                 const authenticated = await isAuthenticated();
                 
                 if (authenticated) {
@@ -101,17 +96,17 @@ export default function AuthGuard({ children }) {
         };
         
         checkAuth();
-    }, [AUTH_ENABLED, location.pathname]); // Re-check auth when route changes
+    }, [AUTH_ENABLED]); // Only check auth on mount or when AUTH_ENABLED changes
 
     // Show loading state while checking auth
     if (authState.isLoading) {
         return (
-            <div className="min-h-screen bg-background flex items-center justify-center">
-                <Card className="w-full max-w-md border shadow-xl bg-card backdrop-blur-sm">
-                    <CardContent className="p-8 text-center">
+            <div className="min-h-screen bg-background flex-center">
+                <Card className="w-full max-w-md card-glass card-elevated">
+                    <CardContent className="card-padding text-center section-spacing">
                         <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
-                        <h2 className="text-lg font-semibold text-foreground mb-2">Loading Financial $hift</h2>
-                        <p className="text-muted-foreground">Setting up your financial dashboard...</p>
+                        <h2 className="heading-4 mb-2">Loading Financial $hift</h2>
+                        <p className="body-small">Setting up your financial dashboard...</p>
                     </CardContent>
                 </Card>
             </div>
