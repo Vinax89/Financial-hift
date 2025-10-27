@@ -3,19 +3,21 @@
  * @description Generic table component with built-in filtering, pagination, and loading states
  */
 
-import React, { useState, useMemo, useEffect } from 'react';
-// @ts-ignore - Using .jsx component until TypeScript migration complete
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table.jsx';
-// @ts-ignore - Using .jsx component until TypeScript migration complete
-import { Card, CardContent } from '@/ui/card.jsx';
-// @ts-ignore - Using .jsx component until TypeScript migration complete
-import { Button } from '@/ui/button.jsx';
-// @ts-ignore - Using .jsx component until TypeScript migration complete
-import { Input } from '@/ui/input.jsx';
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
-// @ts-ignore - Using .jsx component until TypeScript migration complete
-import { Loading, TableLoading } from '@/ui/loading.jsx';
-import { cn } from '@/lib/utils';
+import React, { useState, useMemo, useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/ui/table";
+import { Card, CardContent } from "@/ui/card";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { Loading, TableLoading } from "@/ui/loading";
+import { cn } from "@/lib/utils";
 
 /**
  * Column definition for DataTable
@@ -70,7 +72,7 @@ export default function DataTable<T = any>({
   loadingRows = 5,
   emptyState = null,
   searchable = false,
-  searchPlaceholder = 'Search...',
+  searchPlaceholder = "Search...",
   pageSize = 10,
   pagination = true,
   className,
@@ -78,7 +80,7 @@ export default function DataTable<T = any>({
   showHeader = true,
 }: DataTableProps<T>): JSX.Element {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Filter data based on search term
   const filteredData = useMemo(() => {
@@ -108,9 +110,18 @@ export default function DataTable<T = any>({
 
   if (isLoading) {
     return (
-      <Card className={cn('border-0 shadow-lg shadow-slate-200/50 bg-white/80 backdrop-blur-sm', className)}>
+      <Card
+        className={cn(
+          "border-0 shadow-lg shadow-slate-200/50 bg-white/80 backdrop-blur-sm",
+          className
+        )}
+      >
         <CardContent className="p-6">
-          <TableLoading rows={loadingRows} columns={columns.length} className="" />
+          <TableLoading
+            rows={loadingRows}
+            columns={columns.length}
+            className=""
+          />
         </CardContent>
       </Card>
     );
@@ -118,14 +129,24 @@ export default function DataTable<T = any>({
 
   if (data.length === 0 && emptyState) {
     return (
-      <Card className={cn('border-0 shadow-lg shadow-slate-200/50 bg-white/80 backdrop-blur-sm', className)}>
+      <Card
+        className={cn(
+          "border-0 shadow-lg shadow-slate-200/50 bg-white/80 backdrop-blur-sm",
+          className
+        )}
+      >
         <CardContent className="p-6">{emptyState}</CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className={cn('border-0 shadow-lg shadow-slate-200/50 bg-white/80 backdrop-blur-sm', className)}>
+    <Card
+      className={cn(
+        "border-0 shadow-lg shadow-slate-200/50 bg-white/80 backdrop-blur-sm",
+        className
+      )}
+    >
       {searchable && (
         <div className="p-4 border-b border-slate-200">
           <div className="relative">
@@ -147,7 +168,13 @@ export default function DataTable<T = any>({
               <TableHeader>
                 <TableRow className="bg-slate-50/50">
                   {columns.map((column, index) => (
-                    <TableHead key={index} className={cn('font-semibold text-slate-700', column.className)}>
+                    <TableHead
+                      key={index}
+                      className={cn(
+                        "font-semibold text-slate-700",
+                        column.className
+                      )}
+                    >
                       {column.header}
                     </TableHead>
                   ))}
@@ -159,10 +186,15 @@ export default function DataTable<T = any>({
                 paginatedData.map((item, index) => renderRow(item, index))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="text-center py-8 text-slate-500">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="text-center py-8 text-slate-500"
+                  >
                     No data found
                     {searchTerm && (
-                      <span className="block mt-1 text-sm">Try adjusting your search criteria</span>
+                      <span className="block mt-1 text-sm">
+                        Try adjusting your search criteria
+                      </span>
                     )}
                   </TableCell>
                 </TableRow>
@@ -174,8 +206,9 @@ export default function DataTable<T = any>({
         {pagination && totalPages > 1 && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200">
             <div className="text-sm text-slate-600">
-              Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, filteredData.length)}{' '}
-              of {filteredData.length} results
+              Showing {(currentPage - 1) * pageSize + 1} to{" "}
+              {Math.min(currentPage * pageSize, filteredData.length)} of{" "}
+              {filteredData.length} results
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -203,7 +236,7 @@ export default function DataTable<T = any>({
                   return (
                     <Button
                       key={pageNum}
-                      variant={currentPage === pageNum ? 'default' : 'ghost'}
+                      variant={currentPage === pageNum ? "default" : "ghost"}
                       size="sm"
                       onClick={() => setCurrentPage(pageNum)}
                       className="w-8 h-8 p-0"
@@ -216,7 +249,9 @@ export default function DataTable<T = any>({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
                 disabled={currentPage >= totalPages}
               >
                 Next
@@ -229,4 +264,3 @@ export default function DataTable<T = any>({
     </Card>
   );
 }
-

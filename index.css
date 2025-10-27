@@ -1,10 +1,11 @@
+@import "./design-tokens.css";
+@import "./polish-utilities.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Import design tokens and polish utilities */
-@import './design-tokens.css';
-@import './polish-utilities.css';
 
 /* ========================================
    HARDWARE ACCELERATION & PERFORMANCE
@@ -59,14 +60,19 @@ html {
 }
 
 /* Optimize images and media for GPU */
-img, video, canvas, iframe {
+img,
+video,
+canvas,
+iframe {
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
 /* Force GPU layer for frequently animated elements */
-button, a, [role="button"] {
+button,
+a,
+[role="button"] {
   transform: translateZ(0);
   backface-visibility: hidden;
 }
@@ -78,17 +84,21 @@ table {
 }
 
 /* Optimize list scrolling */
-ul, ol {
+ul,
+ol {
   transform: translateZ(0);
   backface-visibility: hidden;
 }
 
 /* Prevent text selection lag on interactive elements */
-button, a, input, select, textarea {
+button,
+a,
+input,
+select,
+textarea {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
 }
-
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -159,8 +169,6 @@ button:focus-visible {
   }
 } */
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -196,7 +204,7 @@ button:focus-visible {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    
+
     /* Enhanced color tokens for better component support */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 98%;
@@ -204,7 +212,7 @@ button:focus-visible {
     --warning-foreground: 0 0% 98%;
     --info: 199 89% 48%;
     --info-foreground: 0 0% 98%;
-    
+
     /* Loading state colors */
     --loading-primary: 199 89% 55%;
     --loading-secondary: 0 0% 45.1%;
@@ -245,7 +253,7 @@ button:focus-visible {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    
+
     /* Enhanced dark mode colors with better contrast (WCAG AA) */
     --success: 142 71% 45%;
     --success-foreground: 0 0% 98%;
@@ -253,7 +261,7 @@ button:focus-visible {
     --warning-foreground: 0 0% 10%;
     --info: 199 89% 55%;
     --info-foreground: 222.2 47.4% 11.2%;
-    
+
     /* Dark mode loading states */
     --loading-primary: 199 89% 55%;
     --loading-secondary: 215 20% 65%;
@@ -263,8 +271,6 @@ button:focus-visible {
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -272,13 +278,13 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
-  
+
   /* Smooth theme transitions */
   :root {
     transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
+
   /* Respect user's motion preferences */
   @media (prefers-reduced-motion: reduce) {
     *,
