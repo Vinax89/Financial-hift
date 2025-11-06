@@ -3,12 +3,14 @@
  * @description Uses lazy loading with retry logic and intelligent prefetching
  */
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { createPageUrl } from "@/utils";
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { useIdlePrefetch } from '@/hooks/usePrefetch';
 import { lazyLoadWithRetry } from '@/utils/lazyLoad';
 import { RouteLoader, SkeletonRouteLoader } from '@/components/ui/RouteLoader';
+import { CommandPalette } from '@/components/CommandPalette';
+import { useGlobalShortcuts } from '@/hooks/useGlobalShortcuts';
 
 // Eager load Layout and Dashboard (landing page - critical path)
 import Layout from "@/pages/Layout";
@@ -111,9 +113,15 @@ function _getCurrentPage(url) {
 function PagesContent() {
     const location = useLocation();
     const currentPage = _getCurrentPage(location.pathname);
+    const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
     
     // ✅ Intelligent idle-time prefetching (now inside Router context)
     useIdlePrefetch();
+
+    // ✅ Global keyboard shortcuts (Ctrl+1-9, Ctrl+H, Ctrl+K)
+    useGlobalShortcuts({
+        onCommandPalette: () => setCommandPaletteOpen(true),
+    });
 
     // Public routes (no auth required)
     const isPublicRoute = ['/login', '/signup', '/forgot-password', '/auth-debug'].includes(location.pathname);
@@ -134,32 +142,38 @@ function PagesContent() {
 
     // Protected routes (require auth) - AuthGuard in Layout will redirect to /login if not authenticated
     return (
-        <Layout currentPageName={currentPage}>
-            <Suspense fallback={<PageLoader />}>
-                <Routes>
-                    {/* Default route: Dashboard for authenticated users */}
-                    <Route path="/" element={<Dashboard />} />
-                    {/* Dev tools route (development only) */}
-                    {import.meta.env.DEV && (
-                        <Route path="/dev/performance" element={<PerformanceDashboard />} />
-                    )}
-                    {Object.entries(PAGES).map(([pageName, Component]) => (
-                        <Route
-                            key={pageName}
-                            path={createPageUrl(pageName)}
-                            element={<Component />}
-                        />
-                    ))}
-                    {Object.keys(PAGES).map((pageName) => (
-                        <Route
-                            key={`${pageName}-legacy`}
-                            path={`/${pageName}`}
-                            element={<Navigate to={createPageUrl(pageName)} replace />}
-                        />
-                    ))}
-                </Routes>
-            </Suspense>
-        </Layout>
+        <>
+            <CommandPalette 
+                open={commandPaletteOpen} 
+                onOpenChange={setCommandPaletteOpen} 
+            />
+            <Layout currentPageName={currentPage}>
+                <Suspense fallback={<PageLoader />}>
+                    <Routes>
+                        {/* Default route: Dashboard for authenticated users */}
+                        <Route path="/" element={<Dashboard />} />
+                        {/* Dev tools route (development only) */}
+                        {import.meta.env.DEV && (
+                            <Route path="/dev/performance" element={<PerformanceDashboard />} />
+                        )}
+                        {Object.entries(PAGES).map(([pageName, Component]) => (
+                            <Route
+                                key={pageName}
+                                path={createPageUrl(pageName)}
+                                element={<Component />}
+                            />
+                        ))}
+                        {Object.keys(PAGES).map((pageName) => (
+                            <Route
+                                key={`${pageName}-legacy`}
+                                path={`/${pageName}`}
+                                element={<Navigate to={createPageUrl(pageName)} replace />}
+                            />
+                        ))}
+                    </Routes>
+                </Suspense>
+            </Layout>
+        </>
     );
 }
 

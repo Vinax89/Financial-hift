@@ -1,5 +1,6 @@
 ﻿
 import React, { useState, useEffect, useCallback } from 'react';
+import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import { ThemedCard, GlassContainer } from '@/ui/enhanced-components';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
@@ -78,6 +79,26 @@ export default function DebtControlPage() {
         loadDebts();
         loadBNPLPlans();
     }, [loadDebts, loadBNPLPlans]);
+
+    // Keyboard shortcuts
+    usePageShortcuts({
+        onCreate: () => {
+            if (activeTab === 'debts') {
+                setEditingDebt(null);
+                setShowDebtForm(true);
+            } else {
+                setEditingBNPL(null);
+                setShowBNPLForm(true);
+            }
+        },
+        onRefresh: () => {
+            if (activeTab === 'debts') {
+                loadDebts();
+            } else {
+                loadBNPLPlans();
+            }
+        },
+    });
 
     // Debt handlers
     const handleDebtSubmit = async (data) => {

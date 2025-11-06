@@ -1,6 +1,8 @@
 ﻿
 import React, { useState } from 'react';
 import { useGoals, useCreateGoal, useUpdateGoal, useDeleteGoal } from '@/hooks/useEntityQueries';
+import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { FocusTrapWrapper } from '@/components/FocusTrapWrapper';
 import GoalList from '@/goals/GoalList';
 import GoalForm from '@/goals/GoalForm';
 import GoalStats from '@/goals/GoalStats';
@@ -73,6 +75,17 @@ export default function GoalsPage() {
         }
     };
 
+    // Keyboard shortcuts
+    usePageShortcuts({
+        onCreate: () => {
+            setEditingGoal(null);
+            setShowForm(true);
+        },
+        onRefresh: () => {
+            window.location.reload();
+        },
+    });
+
     return (
         <div className="min-h-screen bg-background p-4 md:p-8">
             <div className="max-w-7xl mx-auto space-y-8">
@@ -105,20 +118,22 @@ export default function GoalsPage() {
                 <AnimatePresence>
                 {showForm && (
                     <FloatingElement>
-                        <ThemedCard elevated>
-                            <CardHeader>
-                                <CardTitle>{editingGoal ? 'Edit Goal' : 'Create New Goal'}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ErrorBoundary>
-                                    <GoalForm
-                                        goal={editingGoal}
-                                        onSubmit={handleFormSubmit}
-                                        onCancel={() => setShowForm(false)}
-                                    />
-                                </ErrorBoundary>
-                            </CardContent>
-                        </ThemedCard>
+                        <FocusTrapWrapper onEscape={() => setShowForm(false)}>
+                            <ThemedCard elevated>
+                                <CardHeader>
+                                    <CardTitle>{editingGoal ? 'Edit Goal' : 'Create New Goal'}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ErrorBoundary>
+                                        <GoalForm
+                                            goal={editingGoal}
+                                            onSubmit={handleFormSubmit}
+                                            onCancel={() => setShowForm(false)}
+                                        />
+                                    </ErrorBoundary>
+                                </CardContent>
+                            </ThemedCard>
+                        </FocusTrapWrapper>
                     </FloatingElement>
                 )}
                 </AnimatePresence>

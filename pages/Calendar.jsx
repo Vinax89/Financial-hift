@@ -1,5 +1,6 @@
 ﻿
 import React, { useState, useMemo } from 'react';
+import { usePageShortcuts } from '@/hooks/useKeyboardShortcuts';
 import CashflowCalendar from '@/calendar/CashflowCalendar';
 import { ThemedCard, GlassContainer, ThemedButton } from '@/ui/enhanced-components';
 import { FloatingElement, GlowEffect } from '@/ui/theme-aware-animations';
@@ -74,6 +75,11 @@ export default function CalendarPage() {
 
     const handlePrevMonth = () => setCurrentDate(subMonths(currentDate, 1));
     const handleNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+
+    // Keyboard shortcuts
+    usePageShortcuts({
+        onRefresh: () => window.location.reload(),
+    });
 
     return (
         <div className="min-h-screen bg-background p-4 md:p-8">
